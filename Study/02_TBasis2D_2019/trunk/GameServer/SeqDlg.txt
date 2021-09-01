@@ -1,0 +1,28 @@
+title Zone Server
+Client->Server: Connect
+note right of Server: Add LoginUserlist
+Client->+Server: PACKET_LOGIN_REQ
+Server->-Client: PACKET_LOGIN_ACK
+Client->+Server: PACKET_ZONE_ENTRY_REQ
+Server->-Client: PACKET_ZONE_ENTRY_ACK
+Client->+Server: PACKET_ZONE_NEW_PLAYER
+
+Server->OtherClient:PACKET_ZONE_NEW_PLAYER
+note right of Client
+    position, player, npc
+end note
+note left of Client: Set Position
+Server->Client:PACKET_ZONE_NEW_PLAYER
+Server->Client: PACKET_ZONE_PLAYERS_INFO
+Server->-Client: PACKET_SPAWN_NPC_LIST
+Server->OtherClient: PACKET_ZONE_NEW_PLAYER
+OtherClient->Server: PACKET_LOGOUT_ACK
+Server->Client : PACKET_LOGOUT_PLAYER
+loop SendGamePlayerData
+    Client->Server: PACKET_USER_POSITION
+    Server->Client: PACKET_USER_POSITION
+end
+loop SendGamePlayerData
+    Server->OtherClient: PACKET_USER_POSITION
+    OtherClient->Server: PACKET_USER_POSITION
+end

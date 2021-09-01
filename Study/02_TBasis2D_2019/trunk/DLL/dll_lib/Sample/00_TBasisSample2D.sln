@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_0", "SampleLib_0\SampleLib_0.vcxproj", "{58654422-027E-4C85-A066-D21FC3F8D415}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCoreLib", "TCoreLib\TCoreLib.vcxproj", "{4BF6EF83-BA6D-4ED0-8248-118AAD43D57E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TCoreDll", "TCoreDll\TCoreDll.vcxproj", "{0964F1B4-C6DD-4E3F-A05A-FE06B6F5F873}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{58654422-027E-4C85-A066-D21FC3F8D415}.Debug|Win32.ActiveCfg = Debug|Win32
+		{58654422-027E-4C85-A066-D21FC3F8D415}.Debug|Win32.Build.0 = Debug|Win32
+		{58654422-027E-4C85-A066-D21FC3F8D415}.Release|Win32.ActiveCfg = Release|Win32
+		{58654422-027E-4C85-A066-D21FC3F8D415}.Release|Win32.Build.0 = Release|Win32
+		{4BF6EF83-BA6D-4ED0-8248-118AAD43D57E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4BF6EF83-BA6D-4ED0-8248-118AAD43D57E}.Debug|Win32.Build.0 = Debug|Win32
+		{4BF6EF83-BA6D-4ED0-8248-118AAD43D57E}.Release|Win32.ActiveCfg = Release|Win32
+		{4BF6EF83-BA6D-4ED0-8248-118AAD43D57E}.Release|Win32.Build.0 = Release|Win32
+		{0964F1B4-C6DD-4E3F-A05A-FE06B6F5F873}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0964F1B4-C6DD-4E3F-A05A-FE06B6F5F873}.Debug|Win32.Build.0 = Debug|Win32
+		{0964F1B4-C6DD-4E3F-A05A-FE06B6F5F873}.Release|Win32.ActiveCfg = Release|Win32
+		{0964F1B4-C6DD-4E3F-A05A-FE06B6F5F873}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

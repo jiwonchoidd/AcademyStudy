@@ -1,0 +1,43 @@
+#OBJECT nullptr 4
+
+300 BACKGROUND nullptr 1 1
+../../data/bitmap/Loading800x600.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+400 300 -1 -1
+-1 -1 -1 -1
+0 255 0 255
+
+100 TGameUser nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+400 500 40 60
+91 1 40 60 
+0 255 0 255
+
+200 TNpcObject1 nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+400 100 68 79
+46 62 68 79	
+0 255 0 255
+
+200 TNpcObject2 nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+200 100 37 35
+115 62 37 35	
+0 255 0 255
+
+-1

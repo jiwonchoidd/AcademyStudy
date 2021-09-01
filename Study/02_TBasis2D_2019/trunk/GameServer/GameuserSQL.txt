@@ -1,0 +1,37 @@
+USE [KGCA38]
+GO
+/****** Object:  StoredProcedure [dbo].[LoginUser]    Script Date: 01/11/2021 14:19:19 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[LoginUser] 	@UID VARCHAR(10), @UPS VARCHAR(10)
+AS
+BEGIN
+	SET NOCOUNT ON
+    DECLARE @tmpPw VARCHAR(10) = N''
+	
+	SELECT @tmpPw = userps
+	FROM GameUser
+	WHERE userid = @UID
+	
+	-- 아이디가 없으면 1
+	IF( N'' = @tmpPw )
+		BEGIN
+			RETURN 0;
+		END
+	-- 비번이 틀리면 2.
+	IF( @UPS <> @tmpPw )
+		BEGIN
+			RETURN 1;
+		END
+		
+	-- 성공 0.	
+	RETURN 2;
+END
+

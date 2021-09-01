@@ -1,0 +1,34 @@
+#OBJECT nullptr 3
+
+100 USER nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+400 500 40 60
+91 1 40 60 
+0 255 0 255
+
+200 NPC1 nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+400 100 68 79
+46 62 68 79	
+0 255 0 255
+
+200 NPC2 nullptr 1 1
+../../data/bitmap/bitmap1Alpha.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+200 100 37 35
+115 62 37 35	
+0 255 0 255
+
+-1
+

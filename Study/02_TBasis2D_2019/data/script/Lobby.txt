@@ -1,0 +1,33 @@
+#OBJECT nullptr 3
+
+300 BACKGROUND_LOBBY nullptr 1 1
+../../data/bitmap/kgcabk.bmp
+nullptr
+../../data/bitmap/main_start_sel.bmp
+nullptr
+nullptr
+400 300 -1 -1
+-1 -1 -1 -1
+0 255 0 255
+
+301 GO nullptr 1 1
+../../data/bitmap/go.bmp
+nullptr
+nullptr
+nullptr
+nullptr
+500 100 -1 -1
+-1 -1 -1 -1
+1 255 0 255
+
+301 BUTTON1 nullptr 1 1
+../../data/bitmap/main_start_nor.bmp
+../../data/bitmap/main_start_pus.bmp
+../../data/bitmap/main_start_sel.bmp
+../../data/bitmap/main_start_dis.bmp
+nullptr
+400 300 -1 -1
+-1 -1 -1 -1
+0 255 255 255
+
+-1
