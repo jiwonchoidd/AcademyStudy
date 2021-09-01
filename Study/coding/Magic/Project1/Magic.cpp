@@ -2,12 +2,12 @@
 using namespace std;
 int arr[20][20];
 void Print(int);
+int Input();
 int main() {
 	//하드 코딩이다
 	while (1)
 	{
-	int n;
-	cin >> n;
+	int n= Input();
 	//for (int i = 1; i < n * n; i++) {
 	//	for (int j = 1; i < n * n; j++)
 	//		arr[i][j] = 0;
@@ -52,4 +52,10 @@ int main() {
 				cout << arr[i][j] << "\t";
 			cout << "\n";
 		}
+	}
+	int Input()
+	{
+		int n;
+		cin >> n;
+		return n;
 	}
