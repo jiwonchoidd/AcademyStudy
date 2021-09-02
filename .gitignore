@@ -1,0 +1,6 @@
+﻿################################################################################
+# 이 .gitignore 파일은 Microsoft(R) Visual Studio에서 자동으로 만들어졌습니다.
+################################################################################
+
+/Study/coding/ex/Magic/.vs/Magic/v16/ipch/AutoPCH/324e19f1757b5b22/SAMPLE.ipch
+/Study/coding/ex/Magic/Debug
