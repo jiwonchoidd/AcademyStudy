@@ -1,6 +1,6 @@
 ﻿#include <iostream>
 #define MAX 3
-int g_iSize = MAX+1;
+int g_iSize = MAX;
 int g_iArray[MAX];
 int g_iBack;
 int g_iFront;
