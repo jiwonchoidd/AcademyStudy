@@ -1,0 +1,4 @@
+﻿  TLinkedList.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\LinkedList\TLinkedList.cpp(60): warning C4715: 'TLinkedList::Search': 모든 제어 경로에서 값을 반환하지는 않습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\LinkedList\TLinkedList.cpp(91): warning C4715: 'TLinkedList::Killed': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  LinkedList.vcxproj -> E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\Debug\LinkedList.exe
