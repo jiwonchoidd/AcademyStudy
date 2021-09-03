@@ -138,15 +138,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\LinkedList\DLinkedList.cpp" />
-    <ClCompile Include="..\LinkedList\LinkedList.cpp" />
-    <ClCompile Include="T1.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\LinkedList\DLinkedList.h" />
-    <ClInclude Include="T1.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

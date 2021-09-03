@@ -9,5 +9,4 @@ int main()
 	std::cout << a * b << std::endl;
 	std::cout << a / b << std::endl;
 	std::cout << a % b << std::endl;
-
 }

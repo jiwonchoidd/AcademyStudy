@@ -61,9 +61,9 @@ TNode* TLinkedList::Search(int i)
 int TLinkedList::Killed(TNode* pSel,int i)
 {
 	//삭제 값이 헤드일 경우
-	if (m_pHead->m_pNext==m_pTail)
+	if (m_pHead->m_pNext==m_pEnd)
 	{
-		return 0;
+		return 999995;
 	}
 	else if (m_pHead->m_pNext== pSel)
 	{
@@ -72,7 +72,7 @@ int TLinkedList::Killed(TNode* pSel,int i)
 		delete pSel;
 		return m_pHead->m_pNext->m_iValue;
 	}
-	else if (m_pTail == pSel)
+	else if (m_pEnd == pSel)
 	{
 		TNode* pTemp = m_pEnd->m_pNext;
 		m_pEnd = pTemp;
