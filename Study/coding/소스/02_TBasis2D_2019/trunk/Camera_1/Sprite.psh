@@ -1,0 +1,20 @@
+Texture2D		g_txDiffuse;
+SamplerState	g_sampler;
+
+struct PS_INPUT
+{
+	float4 p : SV_POSITION;
+	float4 c : COLOR0;
+	float2 t : TEXCOORD0;
+};
+struct PS_OUTPUT
+{
+	float4 c : SV_TARGET;
+};
+PS_OUTPUT PS(PS_INPUT input)
+{
+	PS_OUTPUT output = (PS_OUTPUT)0;
+	float4 fResult = g_txDiffuse.Sample(g_sampler, input.t);
+	output.c = fResult * input.c;
+	return output;
+}

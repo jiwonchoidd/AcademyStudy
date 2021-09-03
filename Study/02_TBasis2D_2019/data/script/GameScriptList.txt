@@ -1,4 +1,0 @@
-#SCRIPTLIST 3  
-Number.txt
-ui.txt
-SpriteCoord.txt

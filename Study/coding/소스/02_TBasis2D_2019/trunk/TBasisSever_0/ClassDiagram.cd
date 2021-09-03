@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TServer" Collapsed="true">
+    <Position X="2.25" Y="3.5" Width="1.5" />
+    <InheritanceLine Type="TThread" ManuallyRouted="true">
+      <Path>
+        <Point X="5" Y="2.941" />
+        <Point X="5" Y="3.2" />
+        <Point X="3" Y="3.2" />
+        <Point X="3" Y="3.5" />
+      </Path>
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="0.366" Y="0.042" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAACAAAAAAAEgAIACEBBAAAI=</HashCode>
+      <FileName>TServer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TThread" Collapsed="true">
+    <Position X="4.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAACAAAAAAAAAAAAAAAIAAAASAAAAAAAAiAAAI=</HashCode>
+      <FileName>TThread.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TSynchronize" Collapsed="true">
+    <Position X="11" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQACAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TSynchronize.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TServerObj" Collapsed="true">
+    <Position X="4.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAAAAAAEAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TServerObj.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TAcceptor" Collapsed="true">
+    <Position X="4.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABACAAAAQAAABAAAAAAAAAAAAABAAAAI=</HashCode>
+      <FileName>TAcceptor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TDebugString" Collapsed="true">
+    <Position X="6" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>TDebugString.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TUser" Collapsed="true">
+    <Position X="6.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAgAEAAAAACAAAAAAAAAAAEAAAAAQAAAAEAI=</HashCode>
+      <FileName>TUser.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TStreamPacket" Collapsed="true">
+    <Position X="11" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAIAAAAAAAAAAAAIAAEAAAAAAIBAiAAEAAg=</HashCode>
+      <FileName>TStreamPacket.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="__unnamed_struct_014d_1" Collapsed="true">
+    <Position X="5.25" Y="5.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAACAAAAAAAABAAAAAAAAAAABAAA=</HashCode>
+      <FileName>TProtocol.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_014d_2" Collapsed="true">
+    <Position X="8.75" Y="4.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAA=</HashCode>
+      <FileName>TProtocol.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="__unnamed_struct_0154_1" Collapsed="true">
+    <Position X="8" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>TStreamPacket.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="PACKET_HEADER" Collapsed="true">
+    <Position X="5.25" Y="4.75" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TProtocol.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="UPACKET" Collapsed="true">
+    <Position X="8" Y="6" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TProtocol.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="P_UPACKET" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TProtocol.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Typedef Name="P_TPACKET" Collapsed="true">
+    <Position X="8" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>TStreamPacket.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Font Name="맑은 고딕" Size="9" />
+</ClassDiagram>

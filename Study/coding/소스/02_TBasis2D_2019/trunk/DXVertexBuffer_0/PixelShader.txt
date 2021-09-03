@@ -1,0 +1,33 @@
+// Pixel Shader
+// 이전 쉐이더의 반환값이 인자값으로 전달된다.
+// 픽쉘세이더 역활 : 반드시 1개의 컬러(SV_Target)를 반환해야 한다.
+
+struct PS_INPUT
+{
+	float4 p : SV_POSITION;
+	float4 c : COLOR0;
+	float1 t : TEXCOORD0;
+};
+struct PS_OUTPUT
+{
+	float4 c : SV_TARGET;
+};
+float4 PS( in float4 p : SV_POSITION ) : SV_TARGET
+{
+	return float4(1,0,1,1);
+}
+float4 PS2( PS_INPUT input ) : SV_TARGET
+{
+	return float4(1,0,1,1);
+}
+PS_OUTPUT PS3( PS_INPUT input )
+{
+	PS_OUTPUT output = (PS_OUTPUT)0;
+	//output.c = float4(input.c.r,input.c.g, input.c.b,input.c.a);
+	//output.c = float4(input.c.x,input.c.y, input.c.z,input.c.w);	
+	output.c = float4(	input.c.x,
+						input.c.y, 
+						input.c.z,
+						1.0f);
+	return output;
+}
