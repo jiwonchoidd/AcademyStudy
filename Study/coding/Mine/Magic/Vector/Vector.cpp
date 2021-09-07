@@ -35,12 +35,12 @@ int main()
     {
         std::cout << list[i] << "\n";
     }
-    /*  for (std::vector<int>::iterator iter=list.begin();
+      for (std::vector<int>::iterator iter=list.begin();
            iter != list.end();
            iter++)
       {
           int iValue = *iter;
           std::cout << iValue << "\n";
-      }*/
+      }
     std::cout << "Hello World!\n";
 }
