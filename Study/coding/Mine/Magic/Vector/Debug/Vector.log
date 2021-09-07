@@ -1,0 +1,3 @@
+﻿  Vector.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\Vector\Vector.cpp(10,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Vector.vcxproj -> E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\Debug\Vector.exe

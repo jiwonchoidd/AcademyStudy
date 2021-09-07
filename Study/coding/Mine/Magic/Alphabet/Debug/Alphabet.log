@@ -1,0 +1,4 @@
+﻿  AlphabetSort.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\Alphabet\AlphabetSort.cpp(10,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+MSVCRTD.lib(exe_main.obj) : error LNK2019: _main"int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\Debug\Alphabet.exe : fatal error LNK1120: 1개의 확인할 수 없는 외부 참조입니다.
