@@ -1,4 +1,3 @@
-
 #include <iostream>
 int array[20][20];
 int main()
