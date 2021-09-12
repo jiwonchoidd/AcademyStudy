@@ -18,6 +18,16 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TNode.h" />
+    <ClInclude Include="TQuadtree.h" />
+    <ClInclude Include="TStd.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="TNode.cpp" />
+    <ClCompile Include="TQuadtree.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -72,8 +82,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../output/</OutDir>
-    <IntDir>../output/QuadTree</IntDir>
+    <OutDir>..\output\QuadTree</OutDir>
+    <IntDir>..\output\QuadTree</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -140,13 +150,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="QuadTree.cpp" />
-    <ClCompile Include="TQuadTree.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="QuadTree.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

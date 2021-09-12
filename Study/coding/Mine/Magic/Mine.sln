@@ -43,6 +43,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProgrammersTest", "Programm
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuadTree", "QuadTree\QuadTree.vcxproj", "{935731F9-7F1E-445A-BA37-33A2008EC036}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OctTree", "OctTree\OctTree.vcxproj", "{81B7D6BB-E426-46D0-82EE-115AA2A4911D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -171,6 +173,14 @@ Global
 		{935731F9-7F1E-445A-BA37-33A2008EC036}.Release|x64.Build.0 = Release|x64
 		{935731F9-7F1E-445A-BA37-33A2008EC036}.Release|x86.ActiveCfg = Release|Win32
 		{935731F9-7F1E-445A-BA37-33A2008EC036}.Release|x86.Build.0 = Release|Win32
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Debug|x64.ActiveCfg = Debug|x64
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Debug|x64.Build.0 = Debug|x64
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Debug|x86.ActiveCfg = Debug|Win32
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Debug|x86.Build.0 = Debug|Win32
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Release|x64.ActiveCfg = Release|x64
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Release|x64.Build.0 = Release|x64
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Release|x86.ActiveCfg = Release|Win32
+		{81B7D6BB-E426-46D0-82EE-115AA2A4911D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
