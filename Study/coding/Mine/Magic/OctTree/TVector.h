@@ -17,7 +17,26 @@ struct TVector
 		ret.y = this->y + tv.y;
 		return ret;
 	}
-
+	TVector  operator * (float s)
+	{
+		TVector ret;
+		ret.x = x * s;
+		ret.y = y * s;
+		return ret;
+	}
+	TVector  operator - (TVector p)
+	{
+		TVector ret;
+		ret.x = x - p.x;
+		ret.y = y - p.y;
+		return ret;
+	}
+	// ³»Àû
+	float   operator | (TVector p);
+	float   DotProduct(TVector a, TVector b);
+	float   ProjectionPoint(TVector q1, TVector q2, TVector p);
+	TVector Normalize();
+	float    Length();
 	TVector(){}
 	TVector(float x, float y)
 	{
