@@ -145,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TNode.h" />
+    <ClInclude Include="TObject.h" />
     <ClInclude Include="TRect.h" />
     <ClInclude Include="TVector.h" />
     <ClInclude Include="OctTree.h" />

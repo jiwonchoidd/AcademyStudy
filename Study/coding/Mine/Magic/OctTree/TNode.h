@@ -4,6 +4,7 @@ class TNode
 {
 public:
 	TRect m_TRect;
+	std::vector<TVector>  m_ObjectList;
 	//¿ÁÆ®¸® 8°³
 	TNode* m_pChild[8];
 	TNode* m_pParent;

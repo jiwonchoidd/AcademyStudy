@@ -2,7 +2,8 @@
 
 bool TNode::AddObject(TVector pos)
 {
-	
+	m_ObjectList.push_back(pos);
+	return true;
 }
 
 bool TNode::isRect(TVector pos)
