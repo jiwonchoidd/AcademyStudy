@@ -8,8 +8,8 @@ using namespace std;
 
 struct TVector
 {
-	float x;
-	float y;
+	float x = 0;
+	float y = 0;
 	//연산자 오버로딩
 	TVector operator+ (TVector p)
 	{
@@ -19,7 +19,7 @@ struct TVector
 		return ret;
 	}
 	//생성자
-	TVector();
+	TVector() {}
 	TVector(float x, float y)
 	{
 		this->x = x;

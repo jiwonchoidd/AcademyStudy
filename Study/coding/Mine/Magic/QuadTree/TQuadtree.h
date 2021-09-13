@@ -7,7 +7,7 @@ public:
 	TNode* m_pRootNode;
 	int m_iWidth;
 	int m_iHeigth;
-	queue<TNode*> m_Queue;
+	std::queue<TNode*> m_Queue;
 
 public:
 	bool Init(int iWidth, int iHeight);

@@ -12,7 +12,7 @@ public:
 	bool AddObject(TVector pos);
 	bool isRect(TVector pos);
 public:
-	TNode();
+	TNode() {};
 	TNode(float x, float y, float w, float h);
 	~TNode();
 };

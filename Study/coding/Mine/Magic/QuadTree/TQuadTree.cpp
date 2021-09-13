@@ -47,14 +47,24 @@ TNode* TQuadtree::CreateNode(TNode* pParent, float x, float y, float w, float h)
 	}
 	return pNode;
 }
+
+bool    TQuadtree::AddObject(TVector pos)
+{
+	TNode* pFindNode = FindNode(m_pRootNode, pos);
+	if (pFindNode != nullptr)
+	{
+		pFindNode->AddObject(pos);
+		return true;
+	}
+	return false;
+}
 TNode* TQuadtree::FindNode(TNode* pNode, TVector pos)
 {
-	while (pNode)
-	{
+	do {
 		for (int iNode = 0; iNode < 4; iNode++)
 		{
-			if (pNode->m_pChild[iNode] != nullptr 
-				&& pNode->m_pChild[iNode]->isRect(pos))
+			if (pNode->m_pChild[iNode] != nullptr &&
+				pNode->m_pChild[iNode]->isRect(pos))
 			{
 				m_Queue.push(pNode->m_pChild[iNode]);
 				break;
@@ -63,15 +73,17 @@ TNode* TQuadtree::FindNode(TNode* pNode, TVector pos)
 		if (m_Queue.empty())break;
 		pNode = m_Queue.front();
 		m_Queue.pop();
-	}
+	} while (pNode);
 	return pNode;
 }
-
+void TQuadtree::Release()
+{
+	delete m_pRootNode;
+	m_pRootNode = nullptr;
+}
 TQuadtree::TQuadtree()
 {
 	m_pRootNode = nullptr;
-	m_iHeigth = 0;
-	m_iWidth = 0;
 }
 
 TQuadtree::~TQuadtree()
