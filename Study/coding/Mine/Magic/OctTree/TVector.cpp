@@ -3,11 +3,11 @@ float   TVector:: operator | (TVector p)
 {
 	//내적 공식
 	//a.x * b.x + a.y * b.y 제2 코사인법칙
-	return x * p.x + y * p.y;
+	return x * p.x + y * p.y + z * p.z;
 }
 float TVector::DotProduct(TVector a, TVector b)
 {
-	return a.x * b.x + a.y * b.y;
+	return a.x * b.x + a.y * b.y + a.z + b.z;
 }
 float TVector::ProjectionPoint(TVector q1, TVector q2, TVector v)
 {
@@ -20,16 +20,17 @@ float TVector::ProjectionPoint(TVector q1, TVector q2, TVector v)
 }
 TVector TVector::Normalize()
 {
-	//이해안감
+	//노말라이즈 정규화
 	TVector d;
 	float length = 1.0f / Length();
 	d.x = d.x * length;
 	d.y = d.y * length;
+	d.z = d.z * length;
 	return d;
 }
 float TVector::Length()
 {
 	//피타고라스
-	float ret = x * x + y * y;
+	float ret = x * x + y * y + z * z;
 	return sqrt(ret);
 }

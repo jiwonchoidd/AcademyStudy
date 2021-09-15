@@ -27,6 +27,9 @@
     <ClCompile Include="TVector.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="TObject.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TVector.h">

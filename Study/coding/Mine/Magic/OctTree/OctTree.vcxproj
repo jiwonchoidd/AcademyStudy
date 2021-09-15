@@ -142,6 +142,7 @@
     <ClCompile Include="OctTree.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="TNode.cpp" />
+    <ClCompile Include="TObject.cpp" />
     <ClCompile Include="TVector.cpp" />
   </ItemGroup>
   <ItemGroup>

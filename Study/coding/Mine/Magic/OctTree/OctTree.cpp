@@ -1,10 +1,30 @@
 ﻿#include "OctTree.h"
-
+void	OctTree::Frame(float time)
+{
+	Tobj.Velocity.x = 10.0f;
+	Tobj.Velocity.y = 0.0f;
+	Tobj.Velocity.z = 0.0f;
+	Tobj.pos += Tobj.Velocity * time;
+	TNode* pFind = FindPlayerNode(Tobj.pos);
+	if (pFind != nullptr)
+	{
+		std::cout << pFind->m_iIndex << " ";
+	}
+}
+TNode* OctTree::FindPlayerNode(TVector pos)
+{
+	TNode* pFindNode = FindNode(m_pRootNode, pos);
+	if (pFindNode != nullptr)
+	{
+		return pFindNode;
+	}
+	return nullptr;
+}
 bool OctTree::Init(int iWidth, int iHeight)
 {
 	m_iWidth = iWidth;
 	m_iHeight = iHeight;
-	m_pRootNode = CreateNode(nullptr, 0, 0, iWidth, iHeight);
+	m_pRootNode = CreateNode(nullptr, 0, 0, 0, iWidth, iHeight);
 	Buildtree(m_pRootNode);
 	return true;
 }
@@ -12,28 +32,70 @@ bool OctTree::Init(int iWidth, int iHeight)
 void OctTree::Buildtree(TNode* pNode)
 {
 	if (pNode->m_TRect.wh.x >= 30.0f &&
-		pNode->m_TRect.wh.y >= 30.0f)
+		pNode->m_TRect.wh.y >= 30.0f&&
+		pNode->m_TRect.wh.z >= 30.0f)
 	{
-		pNode->m_pChild[0] = CreateNode(pNode, pNode->m_TRect.p0.x,
-			pNode->m_TRect.p0.y,
-			pNode->m_TRect.wh.x / 2.0f,
-			pNode->m_TRect.wh.y / 2.0f);
-		Buildtree(pNode->m_pChild[0]);
-		//child
-		for (int iChild = 1; iChild < 8; iChild++)
+		for (int ZAxis = 0; ZAxis < 2; ZAxis++)
 		{
-		pNode->m_pChild[iChild] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p1.x,
-			pNode->m_pChild[0]->m_TRect.p0.y,
-			pNode->m_pChild[0]->m_TRect.wh.x,
-			pNode->m_pChild[0]->m_TRect.wh.y);
-		Buildtree(pNode->m_pChild[iChild]);
+			if (ZAxis == 1)
+			{
+				pNode->m_pChild[4] = CreateNode(pNode, pNode->m_TRect.p0.x,
+					pNode->m_TRect.p0.y, pNode->m_TRect.p1.z/2,
+					pNode->m_TRect.wh.x / 2.0f,
+					pNode->m_TRect.wh.y / 2.0f);
+				Buildtree(pNode->m_pChild[4]);
+				//
+				pNode->m_pChild[5] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p1.x,
+					pNode->m_pChild[0]->m_TRect.p0.y, pNode->m_TRect.p1.z/2,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[5]);
+
+				pNode->m_pChild[6] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p1.x,
+					pNode->m_pChild[0]->m_TRect.p1.y, pNode->m_TRect.p1.z/2,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[6]);
+
+				pNode->m_pChild[7] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p0.x,
+					pNode->m_pChild[0]->m_TRect.p1.y, pNode->m_TRect.p1.z/2,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[7]);
+			}
+			else 
+			{
+				pNode->m_pChild[0] = CreateNode(pNode, pNode->m_TRect.p0.x,
+					pNode->m_TRect.p0.y, pNode->m_TRect.p0.z,
+					pNode->m_TRect.wh.x / 2.0f,
+					pNode->m_TRect.wh.y / 2.0f);
+				Buildtree(pNode->m_pChild[0]);
+				//
+				pNode->m_pChild[1] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p1.x,
+					pNode->m_pChild[0]->m_TRect.p0.y, pNode->m_TRect.p0.z,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[1]);
+
+				pNode->m_pChild[2] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p1.x,
+					pNode->m_pChild[0]->m_TRect.p1.y, pNode->m_TRect.p0.z,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[2]);
+
+				pNode->m_pChild[3] = CreateNode(pNode, pNode->m_pChild[0]->m_TRect.p0.x,
+					pNode->m_pChild[0]->m_TRect.p1.y, pNode->m_TRect.p0.z,
+					pNode->m_pChild[0]->m_TRect.wh.x,
+					pNode->m_pChild[0]->m_TRect.wh.y);
+				Buildtree(pNode->m_pChild[3]);
+			}
 		}
 	}
 }
 
-TNode* OctTree::CreateNode(TNode* pParent, float x, float y, float w, float h)
+TNode* OctTree::CreateNode(TNode* pParent, float x, float y, float z, float w, float h)
 {
-	TNode* pNode = new TNode(x, y, w, h);
+	TNode* pNode = new TNode(x, y, z, w, h);
 	if (pParent != nullptr)
 	{
 		pNode->m_iDepth = pParent->m_iDepth + 1;

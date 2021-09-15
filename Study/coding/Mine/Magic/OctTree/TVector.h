@@ -8,13 +8,14 @@ struct TVector
 {
 	float x = 0;
 	float y = 0;
-
+	float z = 0;
 	//연산자 오버로딩
 	TVector operator+(TVector tv)
 	{
 		TVector ret;
-		ret.x = this->x+tv.x;
+		ret.x = this->x + tv.x;
 		ret.y = this->y + tv.y;
+		ret.z = this->z + tv.z;
 		return ret;
 	}
 	TVector  operator * (float s)
@@ -22,6 +23,7 @@ struct TVector
 		TVector ret;
 		ret.x = x * s;
 		ret.y = y * s;
+		ret.z = z * s;
 		return ret;
 	}
 	TVector  operator - (TVector p)
@@ -29,7 +31,15 @@ struct TVector
 		TVector ret;
 		ret.x = x - p.x;
 		ret.y = y - p.y;
+		ret.z = z - p.z;
 		return ret;
+	}
+	TVector  operator += (TVector p)
+	{
+		x += p.x;
+		y += p.y;
+		z += p.z;
+		return *this;
 	}
 	// 내적
 	float   operator | (TVector p);
@@ -38,10 +48,11 @@ struct TVector
 	TVector Normalize();
 	float    Length();
 	TVector(){}
-	TVector(float x, float y)
+	TVector(float x, float y, float z)
 	{
 		this->x = x;
 		this->y = y;
+		this->z = z;
 	}
 };
 
