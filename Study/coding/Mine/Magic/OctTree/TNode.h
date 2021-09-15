@@ -4,6 +4,7 @@
 class TNode
 {
 public:
+	static int  g_iNewCounter;
 	TRect m_TRect;
 	std::vector<TVector>  m_ObjectList;
 	//¿ÁÆ®¸® 8°³

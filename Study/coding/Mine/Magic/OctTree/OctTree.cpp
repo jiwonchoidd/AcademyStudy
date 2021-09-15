@@ -8,7 +8,7 @@ void	OctTree::Frame(float time)
 	TNode* pFind = FindPlayerNode(Tobj.pos);
 	if (pFind != nullptr)
 	{
-		std::cout << pFind->m_iIndex << " ";
+		std::cout << " [ index- " << pFind->m_iIndex<< " ] ";
 	}
 }
 TNode* OctTree::FindPlayerNode(TVector pos)
@@ -19,6 +19,24 @@ TNode* OctTree::FindPlayerNode(TVector pos)
 		return pFindNode;
 	}
 	return nullptr;
+}
+TNode* OctTree::FindNode(TNode* pNode, TVector pos)
+{
+	do {
+		for (int iNode = 0; iNode < 8; iNode++)
+		{
+			if (pNode->m_pChild[iNode] != nullptr &&
+				pNode->m_pChild[iNode]->isRect(pos))
+			{
+				m_Queue.push(pNode->m_pChild[iNode]);
+				break;
+			}
+		}
+		if (m_Queue.empty())break;
+		pNode = m_Queue.front();
+		m_Queue.pop();
+	} while (pNode);
+	return pNode;
 }
 bool OctTree::Init(int iWidth, int iHeight)
 {
@@ -101,6 +119,8 @@ TNode* OctTree::CreateNode(TNode* pParent, float x, float y, float z, float w, f
 		pNode->m_iDepth = pParent->m_iDepth + 1;
 		pNode->m_pParent = pParent;
 	}
+	pNode->m_iIndex = TNode::g_iNewCounter;
+	TNode::g_iNewCounter++;
 	return pNode;
 }
 
@@ -115,24 +135,6 @@ bool OctTree::AddObject(TVector pos)
 	return false;
 }
 
-TNode* OctTree::FindNode(TNode* pNode, TVector pos)
-{
-	do {
-		for (int iNode = 0; iNode < 8; iNode++)
-		{
-			if (pNode->m_pChild[iNode] != nullptr &&
-				pNode->m_pChild[iNode]->isRect(pos))
-			{
-				m_Queue.push(pNode->m_pChild[iNode]);
-				break;
-			}
-		}
-		if (m_Queue.empty())break;
-		pNode = m_Queue.front();
-		m_Queue.pop();
-	} while (pNode);
-	return pNode;
-}
 
 void OctTree::Release()
 {
