@@ -2,13 +2,15 @@
 void	OctTree::Frame(float time)
 {
 	Tobj.Velocity.x = 10.0f;
-	Tobj.Velocity.y = 0.0f;
-	Tobj.Velocity.z = 0.0f;
+	Tobj.Velocity.y = 10.0f;
+	Tobj.Velocity.z = 10.0f;
 	Tobj.pos += Tobj.Velocity * time;
+
 	TNode* pFind = FindPlayerNode(Tobj.pos);
 	if (pFind != nullptr)
 	{
-		std::cout << " [ index- " << pFind->m_iIndex<< " ] ";
+		std::cout << " [ index- " << pFind->m_iIndex<<" x : "<< pFind->m_TRect.p0.x << " y : "<<
+			pFind->m_TRect.p0.y<<" z : " << pFind->m_TRect.p0.z << " ] \n";
 	}
 }
 TNode* OctTree::FindPlayerNode(TVector pos)

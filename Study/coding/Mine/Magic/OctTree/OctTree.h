@@ -14,6 +14,7 @@ public:
 	bool Init(int iWidth, int iHeight);
 	void Buildtree(TNode* t);
 	void Frame(float time);
+	void Move(TNode* pNode, TVector pos);
 	TNode* CreateNode(TNode* p, float x, float y, float z, float w, float h);
 	TNode* FindNode(TNode* pNode, TVector pos);
 	TNode* FindPlayerNode(TVector pos);
