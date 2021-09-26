@@ -1,25 +1,30 @@
 #include <iostream>
-#include <vector>
 #include <string>
-int main()
-{
-	//https://www.acmicpc.net/problem/1032
-	int iName_Amount=0;
-	std::cin >> iName_Amount;
-	std::vector<std::string> vName;
-	for (int i = 0; i < iName_Amount; i++)
-	{
-		std::string tempname="";
-		std::cin >> tempname;
-		vName.push_back(tempname);
-	}
+int main() {
 
-	for (std::vector<std::string>::iterator iter = vName.begin();
-		iter != vName.end();
-		iter++)
-	{
-		//최대 길이를 받고
-		//점이 있는 
+    // https://www.acmicpc.net/problem/1032
 
-	}
+    int n;
+
+    std::cin >> n;
+
+    std::string str[50];
+
+    for (int i = 0; i < n; i++) {
+        std::cin >> str[i];
+    }
+
+    char c;
+
+    for (int i = 0; i < str[0].length(); i++) {
+        c = str[0][i];
+        for (int j = 0; j < n; j++) {
+            if (c != str[j][i]) {
+                c = '?';
+                break;
+            }
+        }
+        std::cout << c;
+    }
+
 }
