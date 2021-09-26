@@ -21,8 +21,7 @@ LRESULT GWindow::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM IParam)
 	return 0;
 }
 
-bool GWindow::InitWindows(HINSTANCE hInstance, int nCmdShow, 
-	const WCHAR* strWindowTitle)
+bool GWindow::InitWindows(HINSTANCE hInstance, int nCmdShow, const WCHAR* strWindowTitle)
 {
 	m_hInstance = hInstance;
 
@@ -63,7 +62,6 @@ bool GWindow::InitWindows(HINSTANCE hInstance, int nCmdShow,
 	ShowWindow(m_hWnd, nCmdShow);
 	return true;
 }
-
 bool GWindow::Run()
 {
 	GameInit();
