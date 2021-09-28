@@ -1,0 +1,13 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+  TTimer.cpp
+  EngineCore.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\EngineCore.lib
+          1개 파일이 복사되었습니다.
+  TCore.h
+  TDevice.h
+  TInput.h
+  TSound.h
+  TStd.h
+  TTimer.h
+  TWindow.h
+  TWrite.h
+          8개 파일이 복사되었습니다.
