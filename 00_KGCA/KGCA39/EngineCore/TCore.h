@@ -5,12 +5,14 @@
 #include "TInput.h"
 #include "TSound.h"
 #include "TWrite.h"
+#include "VertexBuffer.h"
 class TCore : public TWindow
 {
 public:
 	TTimer		m_Timer;
 	TSound		m_Sound;
 	TWrite		m_Write;
+	VertexBuffer m_Buffer;
 	bool		m_bDebugText = false;
 private:
 	bool	GameInit()	override;

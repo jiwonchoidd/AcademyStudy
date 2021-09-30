@@ -36,6 +36,12 @@
     <ClCompile Include="TWrite.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TCore.h">
@@ -60,6 +66,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TWrite.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

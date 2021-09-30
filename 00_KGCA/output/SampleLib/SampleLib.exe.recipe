@@ -5,7 +5,14 @@
       <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles />
+  <ContentFiles>
+    <ContentFile>
+      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\PixelShader.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\VertexShader.cso</FullPath>
+    </ContentFile>
+  </ContentFiles>
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

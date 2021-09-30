@@ -1,6 +1,6 @@
 #pragma once
 #include "TStd.h"
-// 키보드, 마우스 ->윈도우API 사용
+//윈도우API 사용
 enum  KeyState
 {
 	KEY_FREE = 0,
@@ -11,12 +11,7 @@ enum  KeyState
 class TInput : public TSingleton<TInput>
 {
 	friend class TSingleton<TInput>;
-//public:
-//	static TInput* Get()
-//	{
-//		static TInput gInput;
-//		return &gInput;
-//	}
+
 private:
 	DWORD	m_dwKeyState[256];
 	POINT   m_ptPos;

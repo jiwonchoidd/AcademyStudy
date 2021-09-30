@@ -1,10 +1,15 @@
 #pragma once
+#include <d3d11.h>
+#include <dxgi.h>
+#include <assert.h>
 #include<windows.h>
-#include < tchar.h >
+#include <tchar.h>
 #include <string>
 #include <map>
 #include <vector>
 #include <list>
+#pragma comment	(lib, "d3d11.lib")
+#pragma comment		(lib, "dxgi.lib")
 #pragma comment (lib, "EngineCore.lib")
 
 #pragma region wWinMain 매크로
@@ -23,7 +28,8 @@
 extern float g_fSecPerFrame;
 extern HWND  g_hWnd;
 extern RECT  g_rtClient;
-
+extern ID3D11Device* g_pd3dDevice;		// 디바이스 객체
+extern ID3D11DeviceContext* g_pImmediateContext;// 디바이스 컨텍스트
 //싱글톤
 template<class T>
 class TSingleton

@@ -1,5 +1,11 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-  TTimer.cpp
+  VertexBuffer.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(8,70): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(110,24): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(110,24): message : 이 인수는 버퍼 크기로 사용됩니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(110,54): warning C4474: 'swscanf_s' : 서식 문자열에 전달된 인수가 너무 많습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(110,54): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 2개 필요하지만 3개가 제공되었습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCore\VertexBuffer.cpp(155,53): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   EngineCore.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\EngineCore.lib
           1개 파일이 복사되었습니다.
   TCore.h
@@ -10,4 +16,6 @@
   TTimer.h
   TWindow.h
   TWrite.h
-          8개 파일이 복사되었습니다.
+  Vector.h
+  VertexBuffer.h
+         10개 파일이 복사되었습니다.
