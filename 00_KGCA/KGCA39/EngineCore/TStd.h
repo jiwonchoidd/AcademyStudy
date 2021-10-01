@@ -22,9 +22,10 @@
 //스트링화연산자를 이용한 매크로
 #define WinRUN_OPT(NAME, WIDTH, HEIGHT) Sample g_Sample; g_Sample.InitWindows(hInstance,nCmdShow,L#NAME, WIDTH, HEIGHT); g_Sample.Run();}
 #define WinMain_OPT(NAME, WIDTH, HEIGHT) WinSTART WinRUN_OPT(NAME, WIDTH, HEIGHT)
+//인풋 매크로
 
 #pragma endregion
-
+extern float g_fTimer;
 extern float g_fSecPerFrame;
 extern HWND  g_hWnd;
 extern RECT  g_rtClient;

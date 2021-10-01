@@ -27,5 +27,4 @@ private:
 public:
 	~TInput();
 };
-
 #define g_Input TInput::Get()

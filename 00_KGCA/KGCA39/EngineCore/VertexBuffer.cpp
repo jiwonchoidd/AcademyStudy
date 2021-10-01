@@ -15,17 +15,36 @@ HRESULT VertexBuffer::CreateVertexBuffer()
     if (FAILED(hr)) return hr;
     return hr;
 }
+HRESULT VertexBuffer::CreateConstBuffer()
+{
+    HRESULT hr = S_OK;
+    D3D11_BUFFER_DESC bufferDesc;
+    ZeroMemory(&bufferDesc, sizeof(D3D11_BUFFER_DESC));
+    bufferDesc.ByteWidth = sizeof(CBuffer_DATA);
+    bufferDesc.Usage = D3D11_USAGE_DEFAULT;
+    bufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    D3D11_SUBRESOURCE_DATA data;
+    ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
+    data.pSysMem = &m_ConstBufferData;
+    hr = g_pd3dDevice->CreateBuffer(&bufferDesc, &data, &m_pConstBuffer);
+    if (FAILED(hr)) return hr;
+    return hr;
+}
 
 HRESULT VertexBuffer::CreateInputLayout()
 {
     HRESULT hr = S_OK;
-    D3D11_INPUT_ELEMENT_DESC layout[] =
-    {
-        { "POSITION",  0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",  0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12,  D3D11_INPUT_PER_VERTEX_DATA, 0 }
-    };
-    UINT numLayout = sizeof(layout) / sizeof(layout[0]);
-    hr = g_pd3dDevice->CreateInputLayout(layout, numLayout,
+    D3D11_INPUT_ELEMENT_DESC layout[2];
+    ZeroMemory(layout, sizeof(D3D11_INPUT_ELEMENT_DESC) * 2);
+    layout[0].SemanticName = "POSITION";
+    layout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
+    layout[0].AlignedByteOffset = 0;
+    layout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    layout[1].SemanticName = "COLOR";
+    layout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
+    layout[1].AlignedByteOffset = 12;
+    layout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
+    hr = g_pd3dDevice->CreateInputLayout(layout, 2,
         m_pBlob->GetBufferPointer(),
         m_pBlob->GetBufferSize(),
         &m_pInputLayout);
@@ -130,6 +149,7 @@ bool VertexBuffer::LoadFile(std::wstring filename)
 bool VertexBuffer::Init()
 {
     LoadFile(L"ObjectData.txt");
+    CreateConstBuffer();
     CreateVertexBuffer();
     LoadShader();
     CreateInputLayout();
@@ -138,11 +158,28 @@ bool VertexBuffer::Init()
 
 bool VertexBuffer::Frame()
 {
-	return false;
+    m_ConstBufferData.matWorld = Matrix::RotationX(g_fTimer*10);
+    Vector3 vUp = { 0,1,0.0f };
+    m_ConstBufferData.matView = Matrix::ViewLookAt(
+        m_vCamPos, m_vCamTarget, vUp);
+    m_ConstBufferData.matProj = Matrix::PerspectiveFovLH(1.0f,
+        100.0f, PI * 0.5f,
+        (float)g_rtClient.right / (float)g_rtClient.bottom);
+
+    m_ConstBufferData.matWorld = m_ConstBufferData.matWorld.Transpose();
+    m_ConstBufferData.matView = m_ConstBufferData.matView.Transpose();
+    m_ConstBufferData.matProj = m_ConstBufferData.matProj.Transpose();
+    //로컬->월드->뷰->프로젝션->뷰포트
+    //상수버퍼 바꿔주는 것
+    g_pImmediateContext->UpdateSubresource(m_pConstBuffer, 0, NULL, &m_ConstBufferData, 0, 0);
+   
+    return false;
 }
 
 bool VertexBuffer::Render()
 {
+    //vs ps 어디에 전달할지 VertexShader에 전달하기로함, 0번 슬롯에 있는 Constanbuffer
+    g_pImmediateContext->VSSetConstantBuffers(0, 1, &m_pConstBuffer);
     g_pImmediateContext->VSSetShader(m_pVertexShader, NULL, 0);
     g_pImmediateContext->PSSetShader(m_pPixelShader, NULL, 0);
     g_pImmediateContext->IASetInputLayout(m_pInputLayout);
@@ -158,6 +195,7 @@ bool VertexBuffer::Render()
 
 bool VertexBuffer::Release()
 {
+    m_pConstBuffer->Release();
     m_pVertexBuffer->Release();
     m_pInputLayout->Release();
     m_pPixelShader->Release();
@@ -167,6 +205,9 @@ bool VertexBuffer::Release()
 //생성자 초기화
 VertexBuffer::VertexBuffer()
 {
+    m_vCamPos = { 0,0,-5.0f };
+    m_vCamTarget = { 0,0,0.0f };
+    m_pConstBuffer = nullptr;
     m_pVertexBuffer = nullptr;
     m_pInputLayout = nullptr;
     m_pVertexShader = nullptr;

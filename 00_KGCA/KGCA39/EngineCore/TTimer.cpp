@@ -1,5 +1,5 @@
 #include "TTimer.h"
-
+float g_fTimer = 0.0f;
 float g_fSecPerFrame = 0.0f;
 
 bool TTimer::Init()
@@ -27,6 +27,7 @@ bool TTimer::Frame()
 	}
 	
 	m_fGameTimer += m_fSecPerFrame;
+	g_fTimer = m_fGameTimer;
 	m_Frame = m_Current;
 	return true;
 }

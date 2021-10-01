@@ -28,7 +28,7 @@ bool	TCore::GameFrame()
     m_Timer.Frame();
     g_Input.Frame();
     m_Write.Frame();
-    
+    m_Buffer.Frame();
     if (g_Input.GetKey('1') == KEY_PUSH)
     {
         m_bDebugText = !m_bDebugText;
