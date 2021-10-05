@@ -1,4 +1,0 @@
-﻿  WordPractice.cpp
-E:\github\AcademyStudy\Study\coding\Mine\Magic\Back1157\WordPractice.cpp(13,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-E:\github\AcademyStudy\Study\coding\Mine\Magic\Back1157\WordPractice.cpp(20,20): warning C4018: '<=': signed 또는 unsigned가 일치하지 않습니다.
-  Back1157.vcxproj -> E:\github\AcademyStudy\Study\coding\Mine\Magic\Debug\Back1157.exe
