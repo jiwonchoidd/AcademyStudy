@@ -5,7 +5,6 @@
 #include "TInput.h"
 #include "TSound.h"
 #include "TWrite.h"
-#include "VertexBuffer.h"
 class TCore : public TWindow
 {
 public:

@@ -14,11 +14,12 @@ public:
 	bool   InitWindows(HINSTANCE hInstance,
 		int nCmdShow,
 		const WCHAR* strWindowTitle=L"Default Name", int iWidth=800, int iHeight=600 );
-	LRESULT MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-	bool	Run();
+	LRESULT WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+	virtual LRESULT MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	virtual bool	GameInit();
 	virtual bool	GameRun();
 	virtual bool	GameRelease();
+	bool	Run();
 public:
 	TWindow();
 };

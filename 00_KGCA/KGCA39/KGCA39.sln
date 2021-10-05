@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_Map", "SampleLib_
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK_Desktop_2019_Win10", "..\..\..\KGCA\KGCA40\KGCA40\DirectXTK-master\DirectXTK_Desktop_2019_Win10.vcxproj", "{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_Quadtree", "SampleLib_Quadtree\SampleLib_Quadtree.vcxproj", "{C769D45D-3B5C-400C-83C1-13FB950397F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -125,6 +127,16 @@ Global
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x64.Build.0 = Release|x64
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x86.ActiveCfg = Release|Win32
 		{E0B52AE7-E160-4D32-BF3F-910B785E5A8E}.Release|x86.Build.0 = Release|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Debug|x64.ActiveCfg = Debug|x64
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Debug|x64.Build.0 = Debug|x64
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Debug|x86.ActiveCfg = Debug|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Debug|x86.Build.0 = Debug|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|ARM64.ActiveCfg = Release|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x64.ActiveCfg = Release|x64
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x64.Build.0 = Release|x64
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x86.ActiveCfg = Release|Win32
+		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,61 @@
 #include "TInput.h"
 
+void   TInput::OnMove(int iX, int iY)
+{
+    if (m_bDrag)
+    {
+        m_pDrag.x = iX - m_pDragDown.x;
+        m_pDrag.y = iY - m_pDragDown.y;
+    }
+    m_pDragDown.x = iX;
+    m_pDragDown.y = iY;
+    return;
+}
+void   TInput::OnBegin(int iX, int iY)
+{
+    //클릭 시작할때
+    m_bDrag = true;
+    m_pDragDown.x = iX;
+    m_pDragDown.y = iY;
+    return;
+}
+void   TInput::OnEnd()
+{
+    //클릭이 종료되면 x,y 값을 0을
+    m_bMove = false;
+    m_bDrag = false;
+    m_pDrag.x = 0;
+    m_pDrag.y = 0;
+    return;
+}
+LRESULT TInput::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+    int iMouseX = (short)LOWORD(lParam);
+    int iMouseY = (short)HIWORD(lParam);
+    switch (message)
+    {
+    case  WM_MOUSEMOVE:
+        OnMove(iMouseX, iMouseY);
+        return TRUE;
+    case WM_LBUTTONDOWN:
+        //set은 화면 밖에서도 작동 get은 클라이언트 화면에서만 가져옴
+        SetCapture(g_hWnd);
+        OnBegin(iMouseX, iMouseY);
+        return TRUE;
+    case WM_LBUTTONUP:
+        ReleaseCapture();
+        OnEnd();
+        return TRUE;
+    case WM_MOUSEWHEEL:
+    {
+        //휠은 -120~120
+        m_iWheel = GET_WHEEL_DELTA_WPARAM(wParam);   
+        return 0;
+    }
+    }
+    return 0;
+}
+
 bool TInput::Init()
 {    
     ZeroMemory(&m_dwKeyState, sizeof(DWORD) * 256);
@@ -58,11 +114,6 @@ bool TInput::Frame()
 
 bool TInput::Render()
 {
-    //TCHAR timerString[MAX_PATH] = { 0, };
-    //_stprintf_s(timerString,
-    //    L"\nx=%d:y%d",
-    //    m_ptPos.x, m_ptPos.y);
-    //OutputDebugString(timerString);
     return true;
 }
 

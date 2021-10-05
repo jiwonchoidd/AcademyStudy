@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+Sample.obj : error LNK2019: "public: __cdecl Sample::Sample(void)" (??0Sample@@QEAA@XZ)wWinMain 함수에서 참조되는 확인할 수 없는 외부 기호
+Sample.obj : error LNK2019: "public: virtual __cdecl Sample::~Sample(void)" (??1Sample@@UEAA@XZ)wWinMain 함수에서 참조되는 확인할 수 없는 외부 기호
+..\..\output\SampleLib_Quadtree.exe : fatal error LNK1120: 2개의 확인할 수 없는 외부 참조입니다.

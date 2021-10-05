@@ -7,7 +7,7 @@
 #include <list>
 #include <windows.h>
 #include "KMath.h"
-#include "dxtoolkit/SimpleMath.h"
+#include "d3dtk/SimpleMath.h"
 #include <d3d11.h>
 #include <dxgi.h>
 #include <d3dcompiler.h>
@@ -23,7 +23,7 @@ using namespace DirectX::SimpleMath;
 
 //기본 매크로
 #define WinSTART int APIENTRY wWinMain(_In_ HINSTANCE hInstance,_In_opt_ HINSTANCE hPrevInstance,_In_ LPWSTR lpCmdLine,_In_ int nCmdShow){
-#define WinRUN Sample g_Sample; g_Sample.InitWindows(hInstance,nCmdShow,L"라이브러리"); g_Sample.Run();}
+#define WinRUN Sample g_Sample; g_Sample.InitWindows(hInstance,nCmdShow,L"lib"); g_Sample.Run();}
 #define WinMain WinSTART WinRUN
 
 //스트링화연산자를 이용한 매크로
