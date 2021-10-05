@@ -1,6 +1,5 @@
 #include "TDevice.h"
 ID3D11Device* g_pd3dDevice;		// 디바이스 객체
-ID3D11DeviceContext* g_pImmediateContext;// 디바이스 컨텍스트
 bool	TDevice::SetDevice()
 {
 	HRESULT hr;
@@ -46,15 +45,12 @@ HRESULT TDevice::CreateDevice()
 	};
 	UINT numFeatureLevels = sizeof(featureLevels) / sizeof(featureLevels[0]);
 
-
-
 	m_DriverType = driverTypes[0];
 	hr = D3D11CreateDevice(NULL, m_DriverType, NULL, createDeviceFlags,
 		featureLevels, numFeatureLevels,
 		D3D11_SDK_VERSION, &m_pd3dDevice,
 		&m_FeatureLevel, &m_pImmediateContext);
 	g_pd3dDevice = m_pd3dDevice;
-	g_pImmediateContext = m_pImmediateContext;
 	return hr;
 }
 

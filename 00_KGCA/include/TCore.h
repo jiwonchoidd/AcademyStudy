@@ -12,7 +12,6 @@ public:
 	TTimer		m_Timer;
 	TSound		m_Sound;
 	TWrite		m_Write;
-	VertexBuffer m_Buffer;
 	bool		m_bDebugText = false;
 private:
 	bool	GameInit()	override;

@@ -50,6 +50,22 @@ public:
 		matRet._32 = -fSin; matRet._33 = fCos;
 		return matRet;
 	}
+	static Matrix RotationXZ(float fRadian)
+	{
+		Matrix matRet;
+		float fCos = cosf(fRadian);
+		float fSin = sinf(fRadian);
+		//½ÎÄÚÄÚ½Î
+		matRet._11 = fCos;
+		matRet._12 = fSin;
+		matRet._21 = -fSin;
+		matRet._22 = fCos;
+		matRet._22 = fCos;
+		matRet._32 = fSin;
+		matRet._32 = -fSin;
+		matRet._33 = fCos;
+		return matRet;
+	}
 	//¹Ù²Û´Ù.
 	Matrix Transpose()
 	{

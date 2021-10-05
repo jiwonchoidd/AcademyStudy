@@ -12,7 +12,6 @@ bool	TCore::GameInit()
     m_Timer.Init();
     g_Input.Init();
     m_Write.Init();
-    m_Buffer.Init();
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
         __uuidof(IDXGISurface),
@@ -28,7 +27,6 @@ bool	TCore::GameFrame()
     m_Timer.Frame();
     g_Input.Frame();
     m_Write.Frame();
-    m_Buffer.Frame();
     if (g_Input.GetKey('1') == KEY_PUSH)
     {
         m_bDebugText = !m_bDebugText;
@@ -43,7 +41,6 @@ bool	TCore::GameRender()
         m_Timer.Render();
         g_Input.Render();
         m_Write.Render();
-        m_Buffer.Render();
         if (m_bDebugText)
         {
             RECT  rt = { 0, 0, 800, 600 };
@@ -61,7 +58,6 @@ bool	TCore::GameRelease()
     m_Timer.Release();
     g_Input.Release();
     m_Write.Release();
-    m_Buffer.Release();
     CleanupDevice();
     return true;
 }

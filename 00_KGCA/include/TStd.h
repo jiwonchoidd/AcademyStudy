@@ -1,16 +1,23 @@
 #pragma once
-#include <d3d11.h>
-#include <dxgi.h>
 #include <assert.h>
-#include<windows.h>
 #include <tchar.h>
 #include <string>
 #include <map>
 #include <vector>
 #include <list>
+#include <windows.h>
+#include "KMath.h"
+#include "dxtoolkit/SimpleMath.h"
+#include <d3d11.h>
+#include <dxgi.h>
+#include <d3dcompiler.h>
+#pragma comment (lib, "D3DCompiler.lib")
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment		(lib, "dxgi.lib")
 #pragma comment (lib, "EngineCore.lib")
+#pragma comment	(lib, "DirectXTK.lib")
+
+using namespace DirectX::SimpleMath;
 
 #pragma region wWinMain 매크로
 
@@ -25,12 +32,13 @@
 //인풋 매크로
 
 #pragma endregion
+
 extern float g_fTimer;
 extern float g_fSecPerFrame;
 extern HWND  g_hWnd;
 extern RECT  g_rtClient;
-extern ID3D11Device* g_pd3dDevice;		// 디바이스 객체
-extern ID3D11DeviceContext* g_pImmediateContext;// 디바이스 컨텍스트
+extern ID3D11Device* g_pd3dDevice;		// 디바이스 객체 외부변수
+
 //싱글톤
 template<class T>
 class TSingleton

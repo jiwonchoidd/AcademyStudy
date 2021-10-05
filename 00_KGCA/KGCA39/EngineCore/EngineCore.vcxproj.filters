@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Legacy">
+      <UniqueIdentifier>{c822b8a9-919c-4b60-8bd1-8d1e2945d7fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TCore.cpp">
@@ -36,11 +39,14 @@
     <ClCompile Include="TWrite.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="VertexBuffer.cpp">
+    <ClCompile Include="%28Legacy%29Vector.cpp">
+      <Filter>Legacy</Filter>
+    </ClCompile>
+    <ClCompile Include="KMath.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>Legacy</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,14 +74,17 @@
     <ClInclude Include="TWrite.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="%28Legacy%29Matrix.h">
+      <Filter>Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="%28Legacy%29Vector.h">
+      <Filter>Legacy</Filter>
+    </ClInclude>
+    <ClInclude Include="KMath.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="VertexBuffer.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>Legacy</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,3 @@
+﻿  Cmd.cpp
+E:\github\AcademyStudy\Study\coding\Mine\Magic\Back1032\Cmd.cpp(19,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  Back1032.vcxproj -> E:\github\AcademyStudy\Study\coding\Mine\Magic\Debug\Back1032.exe

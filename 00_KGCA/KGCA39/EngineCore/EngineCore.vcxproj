@@ -126,6 +126,7 @@ copy "*.h" "..\\include\\"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\dxtoolkit</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -155,6 +156,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KMath.cpp" />
     <ClCompile Include="TCore.cpp" />
     <ClCompile Include="TDevice.cpp" />
     <ClCompile Include="TInput.cpp" />
@@ -162,11 +164,12 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClCompile Include="TTimer.cpp" />
     <ClCompile Include="TWindow.cpp" />
     <ClCompile Include="TWrite.cpp" />
-    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="%28Legacy%29Vector.cpp" />
     <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="%28Legacy%29Matrix.h" />
+    <ClInclude Include="KMath.h" />
     <ClInclude Include="TCore.h" />
     <ClInclude Include="TDevice.h" />
     <ClInclude Include="TInput.h" />
@@ -175,7 +178,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="TTimer.h" />
     <ClInclude Include="TWindow.h" />
     <ClInclude Include="TWrite.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="%28Legacy%29Vector.h" />
     <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
