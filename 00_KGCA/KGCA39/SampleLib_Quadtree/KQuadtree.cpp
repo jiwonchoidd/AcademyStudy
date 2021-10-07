@@ -67,9 +67,9 @@ void    KQuadtree::Build(MapObj* pMap)
 	m_pMap = pMap;
 	m_iNumCol = pMap->m_info.m_iNumCol;
 	m_iNumRow = pMap->m_info.m_iNumRow;
-	m_pRooKNode = CreateNode(nullptr, 0, m_iNumCol - 1,
+	m_pRootNode = CreateNode(nullptr, 0, m_iNumCol - 1,
 		(m_iNumRow - 1) * m_iNumCol, m_iNumRow * m_iNumCol - 1);
-	Buildtree(m_pRooKNode);
+	Buildtree(m_pRootNode);
 }
 bool    KQuadtree::Init()
 {
@@ -151,7 +151,7 @@ KNode* KQuadtree::FindNode(KNode* pNode, KVector2 pos)
 }
 bool    KQuadtree::AddObject(KVector2 pos)
 {
-	KNode* pFindNode = FindNode(m_pRooKNode, pos);
+	KNode* pFindNode = FindNode(m_pRootNode, pos);
 	if (pFindNode != nullptr)
 	{
 		pFindNode->AddObject(pos);
@@ -161,7 +161,7 @@ bool    KQuadtree::AddObject(KVector2 pos)
 }
 KNode* KQuadtree::FindPlayerNode(KVector2 pos)
 {
-	KNode* pFindNode = FindNode(m_pRooKNode, pos);
+	KNode* pFindNode = FindNode(m_pRootNode, pos);
 	if (pFindNode != nullptr)
 	{
 		return pFindNode;
@@ -170,8 +170,8 @@ KNode* KQuadtree::FindPlayerNode(KVector2 pos)
 }
 bool KQuadtree::Release()
 {
-	delete m_pRooKNode;
-	m_pRooKNode = nullptr;
+	delete m_pRootNode;
+	m_pRootNode = nullptr;
 	return true;
 }
 KNode* KQuadtree::CreateNode(KNode* pParent, float x, float y, float w, float h)
@@ -188,7 +188,7 @@ KNode* KQuadtree::CreateNode(KNode* pParent, float x, float y, float w, float h)
 }
 KQuadtree::KQuadtree()
 {
-	m_pRooKNode = nullptr;
+	m_pRootNode = nullptr;
 }
 
 KQuadtree::~KQuadtree()

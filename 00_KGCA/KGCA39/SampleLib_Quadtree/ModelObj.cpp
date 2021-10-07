@@ -120,9 +120,11 @@ HRESULT ModelObj::CreateIndexBuffer()
     bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
-    data.pSysMem = &m_VertexList.at(0);
+    data.pSysMem = &m_IndexList.at(0);
     hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pIndexBuffer);
     if (FAILED(hr)) return hr;
+
+    m_iNumIndex = m_IndexList.size();
     return hr;
 }
 
@@ -243,6 +245,7 @@ bool ModelObj::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 bool ModelObj::Release()
 {
     m_pVertexBuffer->Release();
+    m_pIndexBuffer->Release();
     m_pVertexLayout->Release();
     m_pConstantBuffer->Release();
     m_pVS->Release();

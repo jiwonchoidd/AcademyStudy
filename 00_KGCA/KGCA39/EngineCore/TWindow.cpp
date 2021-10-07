@@ -4,8 +4,8 @@ TWindow* g_pWindow = nullptr;
 HWND  g_hWnd;
 RECT  g_rtClient;
 
-LRESULT CALLBACK OriginWndProc(HWND, UINT, WPARAM, LPARAM);
-LRESULT CALLBACK OriginWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK StaticWndProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     // 메세지 핸들링
     assert(g_pWindow);
@@ -42,7 +42,7 @@ bool   TWindow::InitWindows(
     ZeroMemory(&wcex, sizeof(WNDCLASSEXW));
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = OriginWndProc;
+    wcex.lpfnWndProc = StaticWndProc;
     wcex.hInstance = hInstance;
     wcex.hbrBackground = CreateSolidBrush(RGB(0,0,0));
     wcex.lpszClassName = L"Jiwon";
@@ -80,8 +80,6 @@ bool   TWindow::InitWindows(
     
     g_hWnd = m_hWnd;
     g_rtClient = m_rtClient;
-    
-    // WM_SHOW
     
     ShowWindow(m_hWnd, nCmdShow);
 

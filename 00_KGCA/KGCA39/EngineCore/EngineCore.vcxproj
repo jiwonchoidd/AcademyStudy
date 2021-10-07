@@ -164,11 +164,8 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClCompile Include="TTimer.cpp" />
     <ClCompile Include="TWindow.cpp" />
     <ClCompile Include="TWrite.cpp" />
-    <ClCompile Include="%28Legacy%29Vector.cpp" />
-    <ClCompile Include="VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="%28Legacy%29Matrix.h" />
     <ClInclude Include="KMath.h" />
     <ClInclude Include="TCore.h" />
     <ClInclude Include="TDevice.h" />
@@ -178,8 +175,6 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="TTimer.h" />
     <ClInclude Include="TWindow.h" />
     <ClInclude Include="TWrite.h" />
-    <ClInclude Include="%28Legacy%29Vector.h" />
-    <ClInclude Include="VertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

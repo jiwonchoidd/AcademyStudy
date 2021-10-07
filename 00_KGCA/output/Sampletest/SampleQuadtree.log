@@ -1,0 +1,66 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(../../output/Sampletest\)에 다른 프로젝트(SampleQuadtree.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+  Sample.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\Sample.cpp(24,59): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+  KCamera.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KMap.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TModel.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\TModel.cpp(31,24): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\TModel.cpp(31,24): message : 이 인수는 버퍼 크기로 사용됩니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\TModel.cpp(78,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\TModel.cpp(94,54): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\TModel.cpp(103,37): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TNode.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KQuadtree.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(45,58): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(62,70): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(88,51): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(88,16): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(87,48): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(123,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(122,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(121,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(120,63): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=DWORD
+          ]
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(129,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(128,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(127,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=DWORD
+          ]
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(126,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(135,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(134,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=DWORD
+          ]
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(133,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(132,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(141,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=DWORD
+          ]
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(140,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(139,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(138,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(199,33): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(199,31): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(199,29): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\test\KQuadtree.cpp(199,27): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KShape.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  SampleQuadtree.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleTQuadtree.exe

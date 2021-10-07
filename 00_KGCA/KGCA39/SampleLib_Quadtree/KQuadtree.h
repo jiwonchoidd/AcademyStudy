@@ -4,7 +4,7 @@
 class KQuadtree
 {
 public:
-	KNode* m_pRooKNode;
+	KNode* m_pRootNode;
 	int			m_iNumCol;
 	int			m_iNumRow;
 	std::queue<KNode*>  m_Queue;

@@ -25,6 +25,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTK_Desktop_2019_Win1
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_Quadtree", "SampleLib_Quadtree\SampleLib_Quadtree.vcxproj", "{C769D45D-3B5C-400C-83C1-13FB950397F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleQuadtree", "test\SampleQuadtree.vcxproj", "{318044D6-B61E-4E9D-AC17-58121D26CD7C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B525CCA3-3BC5-43C6-9425-82DF4AE91756}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -137,6 +144,16 @@ Global
 		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x64.Build.0 = Release|x64
 		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x86.ActiveCfg = Release|Win32
 		{C769D45D-3B5C-400C-83C1-13FB950397F4}.Release|x86.Build.0 = Release|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Debug|x64.ActiveCfg = Debug|x64
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Debug|x64.Build.0 = Debug|x64
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Debug|x86.ActiveCfg = Debug|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Debug|x86.Build.0 = Debug|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Release|ARM64.ActiveCfg = Release|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Release|x64.ActiveCfg = Release|x64
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Release|x64.Build.0 = Release|x64
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Release|x86.ActiveCfg = Release|Win32
+		{318044D6-B61E-4E9D-AC17-58121D26CD7C}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +162,7 @@ Global
 		{B49AB26A-8228-4C1F-B03F-BE6BCD4BDCD9} = {053D694D-2673-4D71-9D4C-22A1BA36B194}
 		{A8788971-CCAA-4FF7-B3A5-BFE444578070} = {053D694D-2673-4D71-9D4C-22A1BA36B194}
 		{6ABA300B-1002-4F2D-A1BE-1710AC3BB3FB} = {053D694D-2673-4D71-9D4C-22A1BA36B194}
+		{C769D45D-3B5C-400C-83C1-13FB950397F4} = {053D694D-2673-4D71-9D4C-22A1BA36B194}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE193472-19FA-4E4D-84EB-D0A03D209243}

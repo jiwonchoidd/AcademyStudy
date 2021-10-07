@@ -1,3 +1,17 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-  SampleInput.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleInput.exe
+  Sample.cpp
+  TCore.cpp
+  TDevice.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\Practice\SampleInput\TDevice.cpp(5,10): warning C4101: 'hr' :참조되지 않은 지역 변수입니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\Practice\SampleInput\TDevice.cpp(92,1): warning C4002: 함수 같은 매크로 호출 'FAILED'에 대해 인수가 너무 많습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\Practice\SampleInput\TDevice.cpp(118,36): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\Practice\SampleInput\TDevice.cpp(119,37): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Tinput.cpp
+  TTimer.cpp
+  TWindow.cpp
+  코드를 생성하고 있습니다...
+Sample.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual bool __cdecl Sample::Init(void)" (?Init@Sample@@UEAA_NXZ)
+Sample.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual bool __cdecl Sample::Render(void)" (?Render@Sample@@UEAA_NXZ)
+Sample.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual bool __cdecl Sample::Release(void)" (?Release@Sample@@UEAA_NXZ)
+..\..\..\output\SampleInput.exe : fatal error LNK1120: 3개의 확인할 수 없는 외부 참조입니다.

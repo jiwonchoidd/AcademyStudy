@@ -31,8 +31,8 @@ public:
 	ID3D11VertexShader* m_pVS;
 	ID3D11PixelShader* m_pPS;
 	//버텍스리스트 인덱스리스트
-	std::vector< SimpleVertex> m_VertexList;
-	std::vector< DWORD> m_IndexList;
+	std::vector<SimpleVertex> m_VertexList;
+	std::vector<DWORD> m_IndexList;
 	UINT				m_iNumIndex;
 public:
 	KMatrix		m_matWorld;

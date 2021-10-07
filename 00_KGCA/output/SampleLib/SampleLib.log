@@ -3,5 +3,5 @@ C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microso
   compilation object save succeeded; see E:\Choijiwon\AcademyStudy\00_KGCA\output\PixelShader.cso
   compilation object save succeeded; see E:\Choijiwon\AcademyStudy\00_KGCA\output\VertexShader.cso
   Sample.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\include\Matrix.h(86,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   SampleLib.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib.exe

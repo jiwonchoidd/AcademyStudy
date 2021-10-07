@@ -8,7 +8,8 @@ LRESULT Sample::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 bool	Sample::Init()
 {
-    MapInfo info{128 + 1, 128 + 1,
+    MapInfo info{ 
+        128 + 1, 128 + 1,
         0, 0, 0, 1.0f
     };
     if (m_Map.Load(info))
@@ -48,7 +49,7 @@ bool	Sample::Frame()
 }
 bool	Sample::Render()
 {
-    m_Map.SetMatrix(nullptr,&m_Camera.m_matView,&m_Camera.m_matProj);
+    m_Map.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
     m_Quadtree.Render(m_pImmediateContext);
     return false;
 }
@@ -59,4 +60,4 @@ bool	Sample::Release()
     return false;
 }
 
-WinMain_OPT(매크로함수,800,600);
+WinMain_OPT(Quadtree, 800, 600);
