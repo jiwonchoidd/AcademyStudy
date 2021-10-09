@@ -70,4 +70,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(매크로함수, 800, 600);
+WinMain_OPT(쿼드트리 렌더링, 800, 600);

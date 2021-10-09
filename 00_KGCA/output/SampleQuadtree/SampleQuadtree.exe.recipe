@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleQuadtree.exe</FullPath>
+      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\SampleQuadtree.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\PixelShader.cso</FullPath>
+      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\VertexShader.cso</FullPath>
+      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

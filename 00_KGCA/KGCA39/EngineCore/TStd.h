@@ -50,3 +50,5 @@ public:
 		return theSingle;
 	}
 };
+
+#define randstep(fMin,fMax) (fMin+((float)fMax-(float)fMin)*rand()/(float)RAND_MAX)
