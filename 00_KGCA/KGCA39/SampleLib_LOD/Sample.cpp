@@ -1,31 +1,16 @@
 #include "Sample.h"
-// 1)리프노드 랜더링
-//   - 공유 정점버퍼(맵), 리프노드 당 인덱스 버퍼 사용
-// 2)리프노드 랜더링
-//   - 리프노드 당 정점버퍼, 공유되는 인덱스 버퍼 사용
-//   = LOD -> 패치단위로 16개의 정점 인덱스 버퍼가 있어야 된다. 
-//  LOD
-// 1) 리프노드에 패치 몇개야 ? 
-//   - PatchList[][16] 인덱스버퍼가 있다.
+
+//마우스 동작 메세지로 받아옴.
 LRESULT Sample::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     return g_Input.MsgProc(hWnd, message, wParam, lParam);
 }
 bool Sample::Init()
 {
-    D3D11_RASTERIZER_DESC rd;
-    ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
-    rd.FillMode = D3D11_FILL_WIREFRAME;
-    rd.CullMode = D3D11_CULL_BACK;
-    g_pd3dDevice->CreateRasterizerState(&rd, &m_pRSWireFrame);
-    ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
-    rd.FillMode = D3D11_FILL_SOLID;
-    rd.CullMode = D3D11_CULL_BACK;
-    g_pd3dDevice->CreateRasterizerState(&rd, &m_pRSSolid);
-
-    TMapInfo info{
-            16 + 1, 
-            16 + 1, 0,0, 0,
+    m_Rs.Init();
+    KMapInfo info{
+            32 + 1, 
+            32 + 1, 0,0, 0,
             10.0f
     };
     if (m_Map.Load(info))
@@ -56,45 +41,25 @@ bool Sample::Frame()
     m_fPitch += g_fSecPerFrame * g_Input.m_pDrag.y * 5.0f;
     m_Camera.Update(KVector4(m_fPitch, m_fYaw, 0.0f, 0.0f));
     m_Camera.Frame();
-
     m_Map.Frame();
-    /*for (int iObj = 0; iObj < 2; iObj++)
-    {
-        m_BoxObj[iObj].Frame();
-    }*/
     g_Input.m_ptBeforePos = g_Input.m_ptPos;
     return true;
 }
 
 bool Sample::Render()
 {
-    if (g_Input.GetKey(VK_F2) >= KEY_PUSH)
-    {
-        m_pImmediateContext->RSSetState(m_pRSWireFrame);
-    }
-    else
-    {
-        m_pImmediateContext->RSSetState(m_pRSSolid);
-    }
-    m_Map.SeKMatrix(
-        nullptr,
-        &m_Camera.m_matView,
-        &m_Camera.m_matProj);
+    m_Rs.Render(m_pImmediateContext);
+    m_Map.SetMatrix(nullptr,&m_Camera.m_matView,&m_Camera.m_matProj);
     //m_Map.Render(m_pImmediateContext);
-    m_Quadtree.Render(m_pImmediateContext, m_Camera.m_vCameraPos);
+    m_Quadtree.Render(m_pImmediateContext, *m_Camera.GetCameraPos());
     return false;
 }
 
 bool Sample::Release()
 {
-    m_pRSWireFrame->Release();
-    m_pRSSolid->Release();
+    m_Rs.Release();
     m_Map.Release();
     m_Quadtree.Release();
-    /*for (int iObj = 0; iObj < 2; iObj++)
-    {
-        m_BoxObj[iObj].Release();
-    }*/
     m_Camera.Release();
     return false;
 }
@@ -106,4 +71,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(매크로함수, 800, 600);
+WinMain_OPT(정적 LOD, 800, 600);

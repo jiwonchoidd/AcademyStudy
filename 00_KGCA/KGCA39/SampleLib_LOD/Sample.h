@@ -1,18 +1,17 @@
 #pragma once
 #include <TCore.h>
-#include "TShape.h"
-#include "TMap.h"
-#include "TCamera.h"
-#include "TQuadtree.h"
+#include "KShape.h"
+#include "KMap.h"
+#include "KCamera.h"
+#include "KQuadtree.h"
+#include "KRState.h"
 class Sample : public TCore
 {
 public:
-	ID3D11RasterizerState* m_pRSSolid;
-	ID3D11RasterizerState* m_pRSWireFrame;
-	//TBoxShape			m_BoxObj[2];
-	TMap				m_Map;
+	KRState				m_Rs;
+	KMap				m_Map;
 	TDebugCamera		m_Camera;
-	TQuadtree			m_Quadtree;
+	KQuadtree			m_Quadtree;
 	float m_fYaw =0.0f;
 	float m_fPitch=0.0f;
 public:

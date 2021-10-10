@@ -18,22 +18,25 @@
     <ClInclude Include="Sample.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TModel.h">
+    <ClInclude Include="KModel.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TShape.h">
+    <ClInclude Include="KShape.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TMap.h">
+    <ClInclude Include="KMap.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TCamera.h">
+    <ClInclude Include="KCamera.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TQuadtree.h">
+    <ClInclude Include="KQuadtree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="KNode.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="KRState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,29 +44,37 @@
     <ClCompile Include="Sample.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TModel.cpp">
+    <ClCompile Include="KModel.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TShape.cpp">
+    <ClCompile Include="KShape.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TMap.cpp">
+    <ClCompile Include="KMap.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TCamera.cpp">
+    <ClCompile Include="KCamera.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TQuadtree.cpp">
+    <ClCompile Include="KQuadtree.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="KNode.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="KRState.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="VertexShader.txt" />
-    <Text Include="PixelShader.txt" />
     <Text Include="ObjectData.txt" />
     <Text Include="StaticLod.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PixelShader.hlsl" />
+    <FxCompile Include="VertexShader.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

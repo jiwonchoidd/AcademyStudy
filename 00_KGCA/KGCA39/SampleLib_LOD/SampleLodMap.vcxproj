@@ -144,33 +144,46 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KRState.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="TCamera.h" />
-    <ClInclude Include="TMap.h" />
-    <ClInclude Include="TModel.h" />
+    <ClInclude Include="KCamera.h" />
+    <ClInclude Include="KMap.h" />
+    <ClInclude Include="KModel.h" />
     <ClInclude Include="KNode.h" />
-    <ClInclude Include="TQuadtree.h" />
-    <ClInclude Include="TShape.h" />
+    <ClInclude Include="KQuadtree.h" />
+    <ClInclude Include="KShape.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KRState.cpp" />
     <ClCompile Include="Sample.cpp" />
-    <ClCompile Include="TCamera.cpp" />
-    <ClCompile Include="TMap.cpp" />
-    <ClCompile Include="TModel.cpp" />
+    <ClCompile Include="KCamera.cpp" />
+    <ClCompile Include="KMap.cpp" />
+    <ClCompile Include="KModel.cpp" />
     <ClCompile Include="KNode.cpp" />
-    <ClCompile Include="TQuadtree.cpp" />
-    <ClCompile Include="TShape.cpp" />
+    <ClCompile Include="KQuadtree.cpp" />
+    <ClCompile Include="KShape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ObjectData.txt" />
-    <Text Include="PixelShader.txt" />
     <Text Include="StaticLod.txt" />
-    <Text Include="VertexShader.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EngineCore\EngineCore.vcxproj">
       <Project>{8b12b561-111c-45dc-8e51-7643beebc7ea}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="PixelShader.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">PS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
