@@ -2,15 +2,15 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\SampleLib_Lod.exe</FullPath>
+      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib_Lod.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles>
     <ContentFile>
-      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\PixelShader.cso</FullPath>
+      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\VertexShader.cso</FullPath>
+      <FullPath>E:\Choijiwon\AcademyStudy\00_KGCA\output\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />

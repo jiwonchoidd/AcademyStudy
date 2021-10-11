@@ -176,6 +176,9 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="TWindow.h" />
     <ClInclude Include="TWrite.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
