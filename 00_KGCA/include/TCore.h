@@ -5,19 +5,27 @@
 #include "TInput.h"
 #include "TSound.h"
 #include "TWrite.h"
+#include "KCamera.h"
+#include "KRState.h"
 class TCore : public TWindow
 {
 public:
-	TTimer		m_Timer;
-	TSound		m_Sound;
-	TWrite		m_Write;
-	bool		m_bDebugText = false;
+	TTimer			m_Timer;
+	TSound			m_Sound;
+	TWrite			m_Write;
+	KDebugCamera	m_DebugCamera;
+	KRState			m_RState;
+	bool			m_bDebugText = false;
 private:
 	bool	GameInit()	override;
 	bool	GameRun()	override;
 	bool	GameFrame();
 	bool	GameRender();
 	bool	GameRelease()override;
+
+public:
+	void	FrameCamera();
+	LRESULT MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)override;
 public:
 	virtual bool	Init();
 	virtual bool	Frame();

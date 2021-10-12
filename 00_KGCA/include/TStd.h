@@ -16,7 +16,7 @@
 #pragma comment		(lib, "dxgi.lib")
 #pragma comment (lib, "EngineCore.lib")
 #pragma comment	(lib, "DirectXTK.lib")
-
+using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
 #pragma region wWinMain ∏≈≈©∑Œ
