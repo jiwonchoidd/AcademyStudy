@@ -37,7 +37,7 @@ bool  KModel::LoadObject(std::wstring filename)
     int index = 0;
     for (int iLine = 0; iLine < iNumVertex; iLine++)
     {
-        PC_VERTEX v;
+        PNCT_VERTEX v;
         _fgetts(buffer, 256, fp);
         _stscanf_s(buffer, _T("%d %f %f %f %f %f %f %f"),
             &index,
@@ -75,7 +75,7 @@ HRESULT KModel::CreateVertexBuffer()
     HRESULT hr = S_OK;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-    bd.ByteWidth = sizeof(PC_VERTEX) * m_pVertexList.size();
+    bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pVertexList.size();
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     D3D11_SUBRESOURCE_DATA data;
@@ -106,17 +106,14 @@ HRESULT KModel::CreateIndexBuffer()
 HRESULT KModel::CreateVertexLayout()
 {
     HRESULT hr = S_OK;
-    D3D11_INPUT_ELEMENT_DESC layout[2];
-    ZeroMemory(layout, sizeof(D3D11_INPUT_ELEMENT_DESC) * 2);
-    layout[0].SemanticName = "POSITION";
-    layout[0].Format = DXGI_FORMAT_R32G32B32_FLOAT;
-    layout[0].AlignedByteOffset = 0;
-    layout[0].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    layout[1].SemanticName = "COLOR";
-    layout[1].Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-    layout[1].AlignedByteOffset = 12;
-    layout[1].InputSlotClass = D3D11_INPUT_PER_VERTEX_DATA;
-    hr = g_pd3dDevice->CreateInputLayout(layout, 2,
+    D3D11_INPUT_ELEMENT_DESC layout[] =
+    {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+    hr = g_pd3dDevice->CreateInputLayout(layout, _countof(layout),
         m_pVSBlob->GetBufferPointer(),
         m_pVSBlob->GetBufferSize(),
         &m_pVertexLayout);
@@ -232,7 +229,7 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
     pContext->VSSetShader(m_pVS, NULL, 0);
     pContext->PSSetShader(m_pPS, NULL, 0);
     pContext->IASetInputLayout(m_pVertexLayout);
-    UINT pStrides = sizeof(PC_VERTEX);
+    UINT pStrides = sizeof(PNCT_VERTEX);
     UINT pOffsets = 0;
     pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer,
         &pStrides, &pOffsets);
@@ -248,11 +245,16 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
 }
 bool KModel::Release()
 {
-    m_pVertexBuffer->Release();
-    m_pIndexBuffer->Release();
-    m_pVertexLayout->Release();
-    m_pConstantBuffer->Release();
-    m_pVS->Release();
-    m_pPS->Release();
+    if (m_pVertexBuffer)m_pVertexBuffer->Release();
+    if (m_pIndexBuffer)m_pIndexBuffer->Release();
+    if (m_pVertexLayout)m_pVertexLayout->Release();
+    if (m_pConstantBuffer)m_pConstantBuffer->Release();
+    if (m_pVS)m_pVS->Release();
+    if (m_pPS)m_pPS->Release();
+    m_pIndexBuffer = nullptr;
+    m_pVertexLayout = nullptr;
+    m_pConstantBuffer = nullptr;
+    m_pVS = nullptr;
+    m_pPS = nullptr;
     return false;
 }

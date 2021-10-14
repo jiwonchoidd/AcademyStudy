@@ -6,7 +6,6 @@ bool    KMap::Load(KMapInfo& info, std::wstring vs, std::wstring ps)
     m_info.m_iNumRowCell = m_info.m_iNumRow - 1;
     m_info.m_iNumVertex = m_info.m_iNumCol * m_info.m_iNumRow;
     return CreateModel(vs, ps);
-    return true;
 }
 bool	KMap::CreateVertexData()
 {
@@ -23,9 +22,13 @@ bool	KMap::CreateVertexData()
             m_pVertexList[iIndex].pos.z = -m_info.m_fCellDistance * iRow;
             m_pVertexList[iIndex].color = 
                 KVector4(
-                    randstep(0.0f, 1.0f),
-                    randstep(0.0f, 1.0f),
-                    randstep(0.0f, 1.0f),1.0f);            
+                    randstep(0.3f, 0.6f),
+                    randstep(0.3f, 0.6f),
+                    randstep(0.3f, 0.6f),1.0f);     
+            //UV texture x, y
+            m_pVertexList[iIndex].tex.x = ((float)iCol / (float)m_info.m_iNumCol)*2.0f;
+            m_pVertexList[iIndex].tex.y = ((float)iRow / (float)m_info.m_iNumRow)*2.0f;
+
         }
     }
     if (m_pVertexList.size() > 0) return true;

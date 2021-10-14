@@ -126,7 +126,7 @@ copy "*.h" "..\\include\\"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\fbx\\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -157,6 +157,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="KCamera.cpp" />
+    <ClCompile Include="KFbxObj.cpp" />
     <ClCompile Include="KMap.cpp" />
     <ClCompile Include="KMath.cpp" />
     <ClCompile Include="KModel.cpp" />
@@ -175,6 +176,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KCamera.h" />
+    <ClInclude Include="KFbxObj.h" />
     <ClInclude Include="KMap.h" />
     <ClInclude Include="KMath.h" />
     <ClInclude Include="KModel.h" />
@@ -196,11 +198,18 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\data\shader\box.txt" />
-    <Text Include="..\..\data\shader\PixelShader.txt" />
-    <Text Include="..\..\data\shader\PSMap.txt" />
-    <Text Include="..\..\data\shader\VertexShader.txt" />
-    <Text Include="..\..\data\shader\VSMap.txt" />
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\box.txt" />
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PC_PS.txt" />
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PC_VS.txt" />
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PixelShader.txt" />
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\VertexShader.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\..\KGCA\KGCA40\data\shader\DefaultShader.hlsl">
+      <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

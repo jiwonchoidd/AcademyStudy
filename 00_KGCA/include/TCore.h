@@ -6,6 +6,8 @@
 #include "TSound.h"
 #include "TWrite.h"
 #include "KCamera.h"
+#include "KFbxObj.h"
+#include "KTexture.h"
 #include "KRState.h"
 class TCore : public TWindow
 {
@@ -15,6 +17,8 @@ public:
 	TWrite			m_Write;
 	KDebugCamera	m_DebugCamera;
 	KRState			m_RState;
+	KFbxObj			m_KFbxObj;
+	KTexture		m_KTexture;
 	bool			m_bDebugText = false;
 private:
 	bool	GameInit()	override;

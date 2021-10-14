@@ -25,7 +25,6 @@ public:
 	HRESULT CreateVertexBuffer(KNode* pNode);
 public:
 	void    Build(KMap* pMap);
-	bool    Init();
 	KNode*  CreateNode(KNode* pParent, float x, float y, float w, float h);
 	void	Buildtree(KNode*);
 	bool    AddObject(KVector2 pos);
@@ -33,10 +32,10 @@ public:
 	
 	KNode*  FindPlayerNode(KVector2 pos);
 	bool	SubDivide(KNode* pNode);
-
 	void	SetNeighborNode();
 	bool    LoadObject(std::wstring filename);
 public:
+	bool    Init();
 	bool	Frame();
 	bool	Render(ID3D11DeviceContext* pContext, KVector3* vCamera);
 	bool    Release();

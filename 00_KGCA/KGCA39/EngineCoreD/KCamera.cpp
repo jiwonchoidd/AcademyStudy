@@ -7,6 +7,13 @@ bool KCamera::Init()
     //    (float)g_rtClient.right / (float)g_rtClient.bottom);
     return true;
 }
+bool KCamera::InitCameraSet(KVector3 ipos, KVector3 itarget)
+{
+    m_vCameraPos = ipos;
+    m_vCameraTarget = itarget;
+    return true;
+}
+
 KVector3* KCamera::GetCameraPos()
 {
     return &m_vCameraPos;
@@ -90,7 +97,7 @@ bool KCamera::Release()
 }
 KCamera::KCamera()
 {
-    m_pSpeed = 25.0f;
+    m_pSpeed = 30.0f;
     m_vCameraPos = { 0, 20, -20.0f };
     m_vCameraTarget = { 0, 0, 1.0f };
 }

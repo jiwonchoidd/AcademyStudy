@@ -165,7 +165,7 @@ HRESULT KQuadtree::CreateVertexBuffer(KNode* pNode)
 	HRESULT hr = S_OK;
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-	bd.ByteWidth = sizeof(PC_VERTEX) * pNode->m_pVertexList.size();
+	bd.ByteWidth = sizeof(PNCT_VERTEX) * pNode->m_pVertexList.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	D3D11_SUBRESOURCE_DATA data;
@@ -235,7 +235,7 @@ bool	KQuadtree::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 			pRenderBuffer = m_pIndexBuffer;
 		}
 		m_pMap->PreRender(pContext);
-		UINT pStrides = sizeof(PC_VERTEX);
+		UINT pStrides = sizeof(PNCT_VERTEX);
 		UINT pOffsets = 0;
 		pContext->IASetVertexBuffers(0, 1, &m_pLeafList[iNode]->m_pVertexBuffer,&pStrides, &pOffsets);		
 		pContext->IASetIndexBuffer(pRenderBuffer, DXGI_FORMAT_R32_UINT, 0);

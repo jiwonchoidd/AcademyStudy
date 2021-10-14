@@ -59,29 +59,30 @@ public:
 	ID3D11InputLayout* m_pVertexLayout;
 	ID3D11VertexShader* m_pVS;
 	ID3D11PixelShader* m_pPS;
-	std::vector< PC_VERTEX> m_pVertexList;
+	//PNCT가 기본형이다.
+	std::vector< PNCT_VERTEX> m_pVertexList;
 	std::vector< DWORD> m_IndexList;
 public:
 	KMatrix		m_matWorld;
 public:
 	virtual bool	CreateVertexData();
 	virtual bool	CreateIndexData();
-	HRESULT		CreateConstantBuffer();
-	HRESULT		CreateVertexBuffer();
-	HRESULT		CreateIndexBuffer();
-	HRESULT		CreateVertexLayout();
-	HRESULT		LoadShader(std::wstring vsFile, std::wstring psFile);
-	bool		LoadObject(std::wstring filename);
-	void		SetMatrix(KMatrix* pMatWorld,
-		KMatrix* pMatView, KMatrix* pMatProj);
+	virtual HRESULT		CreateConstantBuffer();
+	virtual HRESULT		CreateVertexBuffer();
+	virtual HRESULT		CreateIndexBuffer();
+	virtual HRESULT		CreateVertexLayout();
+	virtual HRESULT		LoadShader(std::wstring vsFile, std::wstring psFile);
+	virtual bool		LoadObject(std::wstring filename);
+	virtual void		SetMatrix(KMatrix* pMatWorld,
+						KMatrix* pMatView, KMatrix* pMatProj);
 public:
-	bool		CreateModel(std::wstring vsFile, std::wstring psFile);
-	bool   Init();	
-	bool   Frame();
-	bool   PreRender(ID3D11DeviceContext* pContext);
-	bool   Render(ID3D11DeviceContext* pContext);
-	bool   PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex);
-	bool   Release();
+	virtual bool		CreateModel(std::wstring vsFile, std::wstring psFile);
+	virtual bool   Init();
+	virtual bool   Frame();
+	virtual bool   PreRender(ID3D11DeviceContext* pContext);
+	virtual bool   Render(ID3D11DeviceContext* pContext);
+	virtual bool   PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex);
+	virtual bool   Release();
 public:
 	KModel();
 };

@@ -11,6 +11,7 @@ public:
 	//TBoxShape			m_BoxObj[2];
 	KMap				m_Map;
 	KQuadtree			m_Quadtree;
+	KTexture			m_KTexture;
 public:
 	bool   Init() override;
 	bool   Frame()override;

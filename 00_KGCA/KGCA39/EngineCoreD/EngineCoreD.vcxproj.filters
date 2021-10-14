@@ -69,6 +69,9 @@
     <ClCompile Include="KTexture.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="KFbxObj.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="TCore.h">
@@ -122,25 +125,33 @@
     <ClInclude Include="KTexture.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="KFbxObj.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\data\shader\box.txt">
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\box.txt">
       <Filter>Shader</Filter>
     </Text>
-    <Text Include="..\..\data\shader\PixelShader.txt">
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PC_PS.txt">
       <Filter>Shader</Filter>
     </Text>
-    <Text Include="..\..\data\shader\PSMap.txt">
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PC_VS.txt">
       <Filter>Shader</Filter>
     </Text>
-    <Text Include="..\..\data\shader\VertexShader.txt">
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PixelShader.txt">
       <Filter>Shader</Filter>
     </Text>
-    <Text Include="..\..\data\shader\VSMap.txt">
+    <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\VertexShader.txt">
       <Filter>Shader</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\..\..\KGCA\KGCA40\data\shader\DefaultShader.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

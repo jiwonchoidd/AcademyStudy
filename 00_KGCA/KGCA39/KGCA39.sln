@@ -37,6 +37,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_Texture", "Sample
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_TEXTURE_LOD", "SampleLib_TEXTURE_LOD\SampleLib_TEXTURE_LOD.vcxproj", "{06A67296-BEB9-4FEB-B36C-F976E2D543C0}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleLib_FBXLoader", "SampleLib_FBXLoader\SampleLib_FBXLoader.vcxproj", "{21E7A242-2C81-442C-869D-8613E8A33A2A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64
@@ -199,6 +201,16 @@ Global
 		{06A67296-BEB9-4FEB-B36C-F976E2D543C0}.Release|x64.Build.0 = Release|x64
 		{06A67296-BEB9-4FEB-B36C-F976E2D543C0}.Release|x86.ActiveCfg = Release|Win32
 		{06A67296-BEB9-4FEB-B36C-F976E2D543C0}.Release|x86.Build.0 = Release|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Debug|ARM64.ActiveCfg = Debug|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Debug|x64.ActiveCfg = Debug|x64
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Debug|x64.Build.0 = Debug|x64
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Debug|x86.ActiveCfg = Debug|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Debug|x86.Build.0 = Debug|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Release|ARM64.ActiveCfg = Release|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Release|x64.ActiveCfg = Release|x64
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Release|x64.Build.0 = Release|x64
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Release|x86.ActiveCfg = Release|Win32
+		{21E7A242-2C81-442C-869D-8613E8A33A2A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

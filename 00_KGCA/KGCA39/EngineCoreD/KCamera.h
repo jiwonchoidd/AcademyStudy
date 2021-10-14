@@ -20,6 +20,7 @@ public:
 	KMatrix m_matProj;
 public:
 	KVector3* GetCameraPos();
+	virtual	bool		InitCameraSet(KVector3 ipos, KVector3 itarget);
 	virtual KMatrix     CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp= KVector3(0,1,0));
 	virtual KMatrix  	CreateProjMatrix(float fNear, float fFar, float fFov, float fAspect);
 public:
