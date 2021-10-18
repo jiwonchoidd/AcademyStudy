@@ -15,8 +15,8 @@ void TCore::FrameCamera()
     {
         g_Input.m_pDrag.y = 0;
     }
-    float fYaw = g_fSecPerFrame * g_Input.m_pDrag.x * 5.0f;
-    float fPitch = g_fSecPerFrame * g_Input.m_pDrag.y * 5.0f;
+    float fYaw = g_fSecPerFrame * g_Input.m_pDrag.x * 8.0f;
+    float fPitch = g_fSecPerFrame * g_Input.m_pDrag.y * 8.0f;
     m_DebugCamera.Update(KVector4(fPitch, fYaw, 0.0f, 0.0f));
     m_DebugCamera.Frame();
 }
@@ -109,7 +109,8 @@ bool	TCore::Frame() {
 bool	TCore::PreRender() {
     float ClearColor[4] = { 0.3f, 0.5f, 0.3f, 1.0f }; //red,green,blue,alpha
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
-
+    m_pImmediateContext->IASetPrimitiveTopology(
+        D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     return true;
 }
 bool	TCore::Render() {

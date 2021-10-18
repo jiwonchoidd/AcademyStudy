@@ -38,6 +38,11 @@ struct PNCT_VERTEX
 		color.y = 1.0f;
 		color.z = 1.0f;
 		color.w = 1.0f;
+		normal.x = 0.0f;
+		normal.y = 0.0f;
+		normal.z = 0.0f;
+		tex.x = 0.0f;
+		tex.y = 0.0f;
 	}
 };
 struct CB_DATA
@@ -65,8 +70,8 @@ public:
 public:
 	KMatrix		m_matWorld;
 public:
-	virtual bool	CreateVertexData();
-	virtual bool	CreateIndexData();
+	virtual bool		CreateVertexData();
+	virtual bool		CreateIndexData();
 	virtual HRESULT		CreateConstantBuffer();
 	virtual HRESULT		CreateVertexBuffer();
 	virtual HRESULT		CreateIndexBuffer();
@@ -76,13 +81,13 @@ public:
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 						KMatrix* pMatView, KMatrix* pMatProj);
 public:
-	virtual bool		CreateModel(std::wstring vsFile, std::wstring psFile);
-	virtual bool   Init();
-	virtual bool   Frame();
-	virtual bool   PreRender(ID3D11DeviceContext* pContext);
-	virtual bool   Render(ID3D11DeviceContext* pContext);
-	virtual bool   PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex);
-	virtual bool   Release();
+	virtual bool	CreateModel(std::wstring vsFile, std::wstring psFile);
+	virtual bool    Init();
+	virtual bool    Frame();
+	virtual bool    PreRender(ID3D11DeviceContext* pContext);
+	virtual bool    Render(ID3D11DeviceContext* pContext);
+	virtual bool    PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex=0);
+	virtual bool    Release();
 public:
 	KModel();
 };

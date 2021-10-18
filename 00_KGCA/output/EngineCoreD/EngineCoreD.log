@@ -2,106 +2,61 @@
 C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
   KFbxObj.cpp
 E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(20,40): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(104,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(41,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(315,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(105,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(316,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(106,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(317,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(113,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(323,32): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(114,27): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(324,27): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=fbxsdk::FbxDouble
           ]
-  KMap.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KModel.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(31,24): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(31,24): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(78,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(94,54): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(103,37): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KNode.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KQuadtree.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(36,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(36,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(40,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(40,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(52,23): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(52,23): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(83,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(129,51): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(168,66): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(224,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(229,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(234,34): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(258,51): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(258,16): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(257,48): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(262,30): warning C4244: '=': 'double'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(263,33): warning C4244: '=': 'double'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(299,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(298,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(297,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(296,63): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(336,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(337,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(338,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(351,39): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
-              _Ty=DWORD
+              T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(305,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(304,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(303,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(352,39): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
-              _Ty=DWORD
+              T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(302,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(311,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(310,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KFbxObj.cpp(353,39): warning C4244: '=': 'T'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
-              _Ty=DWORD
+              T=fbxsdk::FbxDouble
           ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(309,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(308,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(317,25): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(316,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(315,4): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(314,42): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(323,19): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(401,26): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(417,26): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(430,33): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(430,31): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(430,29): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KQuadtree.cpp(430,27): warning C4244: '인수': 'float'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KShape.cpp
-E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   TCore.cpp
 E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\TCore.cpp(42,59): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+  TDevice.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\TDevice.cpp(5,10): warning C4101: 'hr' :참조되지 않은 지역 변수입니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\TDevice.cpp(96,1): warning C4002: 함수 같은 매크로 호출 'FAILED'에 대해 인수가 너무 많습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\TDevice.cpp(123,36): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\TDevice.cpp(124,37): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TWindow.cpp
+E:\Choijiwon\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
   EngineCoreD.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\EngineCoreD\EngineCoreD.lib
           1개 파일이 복사되었습니다.

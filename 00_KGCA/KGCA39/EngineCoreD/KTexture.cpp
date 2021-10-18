@@ -48,3 +48,9 @@ bool KTexture::Release()
     m_pSampler = nullptr;
     return true;
 }
+KTexture::KTexture()
+{
+    m_pTexture=nullptr;
+    m_pTextureSRV = nullptr;
+    m_pSampler = nullptr;
+}

@@ -52,8 +52,11 @@ KModel::KModel()
 {
     m_pVertexBuffer = nullptr;
     m_pVertexLayout = nullptr;
+    m_pIndexBuffer = nullptr;
+    m_pConstantBuffer = nullptr;
     m_pVS = nullptr;
     m_pPS = nullptr;
+    m_iNumIndex = 0;
 }
 HRESULT KModel::CreateConstantBuffer()
 {
@@ -73,6 +76,7 @@ HRESULT KModel::CreateConstantBuffer()
 HRESULT KModel::CreateVertexBuffer()
 {
     HRESULT hr = S_OK;
+    if (m_pVertexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
     bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pVertexList.size();
@@ -89,6 +93,7 @@ HRESULT KModel::CreateVertexBuffer()
 HRESULT KModel::CreateIndexBuffer()
 {
     HRESULT hr = S_OK;
+    if (m_IndexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
     bd.ByteWidth = sizeof(DWORD) * m_IndexList.size();
@@ -194,14 +199,23 @@ bool KModel::Init()
 
 bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
 {
-    if (CreateVertexData() && CreateIndexData())
+    //조건 변경
+    CreateConstantBuffer();
+
+    if (CreateVertexData())
     {
-        CreateConstantBuffer();
         CreateVertexBuffer();
+    }
+    if (CreateIndexData())
+    {
         CreateIndexBuffer();
-        LoadShader(vsFile, psFile);
-        CreateVertexLayout();
-        return true;
+    }
+    if (SUCCEEDED(LoadShader(vsFile, psFile)))
+    {
+        if (SUCCEEDED(CreateVertexLayout()))
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -236,11 +250,17 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
     pContext->IASetIndexBuffer(m_pIndexBuffer,
         DXGI_FORMAT_R32_UINT, 0);
     return true;
-}bool KModel::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
+}
+bool KModel::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 {
-    pContext->IASetPrimitiveTopology(
-        D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    pContext->DrawIndexed(iNumIndex, 0, 0);
+    if (m_IndexList.size() > 0)
+    {
+        pContext->DrawIndexed(iNumIndex, 0, 0);
+    }
+    else
+    {
+        pContext->Draw(m_pVertexList.size(), 0);
+    }
     return false;
 }
 bool KModel::Release()

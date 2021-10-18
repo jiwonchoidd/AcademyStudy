@@ -40,5 +40,5 @@ VS_OUT VS(VS_IN vIn)
 }
 float4 PS(VS_OUT v) : SV_TARGET
 {
-	return g_txDiffuse.Sample(g_Sampler, v.t) * v.c;
+	return g_txDiffuse.Sample(g_Sampler, v.t) *v.c;
 }

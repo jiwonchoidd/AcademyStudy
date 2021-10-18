@@ -157,6 +157,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="KCamera.cpp" />
+    <ClCompile Include="KFbxMeshData.cpp" />
     <ClCompile Include="KFbxObj.cpp" />
     <ClCompile Include="KMap.cpp" />
     <ClCompile Include="KMath.cpp" />
