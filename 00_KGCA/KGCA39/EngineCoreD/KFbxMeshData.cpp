@@ -1,5 +1,7 @@
 #include "KFbxObj.h"
-//UV 좌표에는 eByControlPoint,eByPolygonVertex가 있다. 제어점 당 1개의 텍스쳐 좌표, 정점 당 1개의 매핑 좌표 제어점은 평면의 4개 정점, 폴리곤 정점은 6개 정점을 의미한다.
+//UV 좌표에는 eByControlPoint,eByPolygonVertex가 있다.
+//제어점 당 1개의 텍스쳐 좌표, 정점 당 1개의 매핑 좌표 제어점은
+//평면의 4개 정점, 폴리곤 정점은 6개 정점을 의미한다.
 FbxVector2 KFbxObj::ReadTextureCoord(FbxMesh* pFbxMesh, DWORD dwVertexTextureCount, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex)
 {
 	FbxVector2 uv(0, 0);

@@ -27,6 +27,8 @@ HRESULT TWrite::CreateDeviceResources(IDXGISurface1* pSurface)
 }
 bool TWrite::Init()
 {
+    toastTime=0.0f;
+    alpha = 1;
     HRESULT hr;
     hr = D2D1CreateFactory(
         D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pd2dFactory);
@@ -67,23 +69,10 @@ bool TWrite::Frame()
 
 bool TWrite::Render()
 {
-    //RECT  rt = { 0, 0, 800, 600 };
-    //DrawText(rt, L"KGCA",//m_Timer.m_szTimerString,
-    //    D2D1::ColorF(1, 1, 1, 1));
-    /*if (m_pRT)
-    {
-        m_pRT->BeginDraw();
-            m_pRT->SetTransform(D2D1::IdentityMatrix());
-            TCHAR data[] = L"KGCA";
-            RECT rt = { 0,0,800, 600 };
-            D2D1_RECT_F rect = D2D1::RectF( rt.left, rt.top, rt.right, rt.bottom);
-            m_pTextBrush->SetColor(D2D1::ColorF(1,0,0,1));
-            m_pRT->DrawText(data, wcslen(data), 
-                m_pTextFormat, rect, m_pTextBrush);
-        m_pRT->EndDraw();
-    }*/
+ 
     return false;
 }
+
 bool TWrite::DrawText(RECT rt, 
     const TCHAR* data, D2D1::ColorF color,
     IDWriteTextFormat* pTextFormat)
@@ -107,6 +96,12 @@ bool TWrite::DrawText(RECT rt,
         m_pRT->EndDraw();
     }
     return true;
+}
+bool TWrite::ToastMessage(wstring text)
+{
+        RECT  rt = { 650, 570, 800, 600};
+        DrawText(rt, text.c_str(), D2D1::ColorF{1,1,1,alpha});
+        return true;
 }
 bool TWrite::Release()
 {

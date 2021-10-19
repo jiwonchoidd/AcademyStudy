@@ -2,14 +2,20 @@
 #include "KModel.h"
 #include "TStd.h"
 #include "KTexture.h"
-
+const enum OBJECTCLASSTYPE {
+	CLASS_GEOM = 0,
+	CLASS_BONE,
+	CLASS_DUMMY,
+	CLASS_BIPED,
+};
 struct KMtrl
 {
-	FbxNode* m_pFbxNode;
+	FbxNode*			m_pFbxNode;
 	FbxSurfaceMaterial* m_pFbxSurfaceMtrl;
-	KTexture	m_Texture;
+	KTexture			m_Texture;
 	std::vector<KMtrl*> m_pSubMtrl;
 	KMtrl() {}
+	//생성자로 노드와 매터리얼 저장 
 	KMtrl(FbxNode* pFbxNode, FbxSurfaceMaterial* pFbxMtrl)
 	{
 		m_pFbxNode = pFbxNode;
@@ -25,21 +31,30 @@ struct KMtrl
 		}
 	}
 };
-struct TLayer
+//레이어는 하나 일 것이다.
+struct KLayer
 {
-	FbxLayerElementUV* pUV;
 	FbxLayerElementVertexColor* pColor;
 	FbxLayerElementNormal* pNormal;
+	FbxLayerElementUV* pUV;
 	FbxLayerElementMaterial* pMaterial;
 };
 struct KMesh : public KModel
 {
-	std::vector<TLayer> m_LayerList;
-	int				m_iNumLayer;
+	KMesh()
+	{
+		m_ClassType = CLASS_GEOM;
+	}
+	KMesh*				m_pParent; // 부모
+	wstring				m_szName;
+	wstring				m_szParentName;
+	OBJECTCLASSTYPE     m_ClassType;
+	vector<KLayer>		m_LayerList;
+	int					m_iNumLayer;
 	//해당하는 서브매쉬에 서브 매터리얼 연결해야함
-	int				m_iMtrlRef;
-	KMatrix			m_matWorld;
-	vector<KMesh*>  m_pSubMesh;
+	int					m_iMtrlRef;
+	KMatrix				m_matWorld;
+	vector<KMesh*>		m_pSubMesh;
 	bool Release() override
 	{
 		//부모 해제
@@ -62,8 +77,6 @@ public:
 	std::vector<KMtrl*>  m_pFbxMaterialList;
 	std::vector<KMesh*> m_pMeshList;
 	CB_DATA				m_cbData;
-	// 가상함수 리스트
-public:
 public:
 	KMatrix     DxConvertMatrix(KMatrix m);
 	KMatrix     ConvertMatrix(FbxMatrix& m);
@@ -77,8 +90,9 @@ public:
 	// 일반함수 리스트
 public:
 	void	PreProcess(FbxNode* pNode);
-	void	ParseNode(FbxNode* pNode, KMesh* pMesh);
-
+	void	ParseMesh(FbxNode* pNode, KMesh* pMesh);
+	void	ParseNode(FbxNode* pNode, KMesh* pParentMesh);
+	KMatrix	ParseTransform(FbxNode* pNode, KMatrix& matParent);
 public:
 	FbxVector2  ReadTextureCoord(FbxMesh* pFbxMesh, DWORD dwVertexTextureCount, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex);
 	FbxVector4  ReadNormal(const FbxMesh* mesh, DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,

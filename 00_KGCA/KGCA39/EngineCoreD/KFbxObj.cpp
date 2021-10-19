@@ -1,6 +1,58 @@
 #include "KFbxObj.h"
 #define _CRT_SECURE_NO_WARNINGS
 
+void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
+{
+	// 카메라나 라이트 등 매쉬가 아니라면 리턴
+	if (pNode->GetCamera() || pNode->GetLight())
+	{
+		return;
+	}
+	//전체 다 매쉬로 생성한다.
+	KMesh* pMesh = new KMesh;
+	pMesh->m_szName = TBASIS::mtw(pNode->GetName());
+	KMatrix matParent;
+	if (pParentMesh != nullptr)
+	{
+		pMesh->m_szParentName = pParentMesh->m_szName;
+		matParent = pParentMesh->m_matWorld;
+	}
+	//재귀함수로 부모 매쉬를 넣어준다.
+	pMesh->m_pParent = pParentMesh;
+	pMesh->m_matWorld = ParseTransform(pNode, matParent);
+	//매쉬라면 기하타입 //본 타입은 행렬만 가지고 있음
+	if (pNode->GetMesh())
+	{
+		ParseMesh(pNode, pMesh);
+		pMesh->m_ClassType = CLASS_GEOM;
+	}
+	else
+	{
+		pMesh->m_ClassType = CLASS_BONE;
+	}
+
+	m_pMeshList.push_back(pMesh);
+	int iNumChild = pNode->GetChildCount();
+	for (int iNode = 0; iNode < iNumChild; iNode++)
+	{
+		FbxNode* pChildNode = pNode->GetChild(iNode);
+		ParseNode(pChildNode, pMesh);
+	}
+}
+KMatrix   KFbxObj::ParseTransform(FbxNode* pNode, KMatrix& matParent)
+{
+	//// TODO : 월드행렬
+	//월드행렬에 지오매트리까지 곱해야 월드 행렬 나중에 애니메이션를 고려해서
+	//나중에 지오매트릭행렬을 곱한다.
+	//로컬좌표 곱하기 부모 좌표
+	FbxVector4 rotLcl = pNode->LclRotation.Get();
+	FbxVector4 transLcl = pNode->LclTranslation.Get();
+	FbxVector4 scaleLcl = pNode->LclScaling.Get();
+	FbxMatrix matTransform(transLcl, rotLcl, scaleLcl);
+	KMatrix matLocal = DxConvertMatrix(ConvertMatrix(matTransform));
+	KMatrix matWorld = matLocal * matParent;
+	return matWorld;
+}
 void	KFbxObj::SetMatrix(
 	KMatrix* pMatWorld,
 	KMatrix* pMatView, KMatrix* pMatProj)
@@ -18,6 +70,7 @@ void	KFbxObj::SetMatrix(
 		m_cbData.matProj = *pMatProj;
 	}
 }
+
 //dx는 행단위 우선 저장 max는 열단위 우선저장 그리고 축도 다르기 때문에 컨버팅 변환해준다  
 KMatrix     KFbxObj::DxConvertMatrix(KMatrix m)
 {
@@ -144,9 +197,11 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 	for (int iObj = 0; iObj < m_pMeshList.size(); iObj++)
 	{
 		KMesh* pMesh = m_pMeshList[iObj];
+		//본타입 같이 지오매트릭 타입이 아니라면 렌더 대상이 아니다.
+		if (pMesh->m_ClassType != CLASS_GEOM) continue;
 		KMtrl* pMtrl = nullptr;
 		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
+		// 서브 메터리얼의 존재한다면..
 		if (pMesh->m_pSubMesh.size() > 0)
 		{
 			for (int iSub = 0; iSub < pMesh->m_pSubMesh.size(); iSub++)
@@ -154,6 +209,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				KMtrl* pSubMtrl=m_pFbxMaterialList[pMesh->m_iMtrlRef]->m_pSubMtrl[iSub];
 				pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
 				pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
+				//행렬 적용 구간
 				pMesh->m_pSubMesh[iSub]->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
 				pMesh->m_pSubMesh[iSub]->Render(pContext);
 			}
@@ -187,16 +243,16 @@ int     KFbxObj::GetRootMtrl(FbxSurfaceMaterial* pFbxMaterial)
 	return -1;
 }
 
-//노드 해석하는 함수
-void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
+//매쉬 해석 버텍스를 가진 기하 타입을 pnct_vertex를 채워줘서 vertexlist를 pushback
+void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 {
 	//무조건 0번째 주소값을 가져와서 비교한다.
 	FbxSurfaceMaterial* pFbxMaterial = pNode->GetMaterial(0);
 	pMesh->m_iMtrlRef = GetRootMtrl(pFbxMaterial);
 
-	std::string name = pNode->GetName();
+	string name = pNode->GetName();
 	FbxMesh* pFbxMesh = pNode->GetMesh();
-	std::vector< std::string> fbxFileTexList;
+	vector<string> fbxFileTexList;
 
 	if (pFbxMesh != nullptr)
 	{
@@ -207,6 +263,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 		for (int iLayer = 0; iLayer < pMesh->m_iNumLayer; iLayer++)
 		{
 			FbxLayer* pLayer = pFbxMesh->GetLayer(iLayer);
+			//color, normal, UV, material
 			if (pLayer->GetVertexColors() != nullptr)
 			{
 				pMesh->m_LayerList[iLayer].pColor = pLayer->GetVertexColors();
@@ -224,23 +281,26 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 				pMesh->m_LayerList[iLayer].pMaterial = pLayer->GetMaterials();
 			}
 		}
-		//애니메이션 매트릭스, 피봇은 행렬 곱셈의 원점
+		// 월드행렬이 아니다.상속관계에서 되물림되지 않는 행렬 기하행렬. 애니메이션 매트릭스, 피봇은 행렬 곱셈의 원점
+			///*GetTransform(); 변환을 해주는 변환 행렬
+			//애니메이션이 들어가기전까지는 단위행렬이다.
+			//로컬 행렬을 월드 행렬로 적용을했더니 결과가 월드 정점이 나왔다.
+			//우리가 읽어들인 정점은 리스트에서 그냥 그대로 가져온 정점
+			//월드좌표에다가 월드 행렬을 곱해지는 결과가 나옴 */
 		FbxAMatrix matGeo;
-		{
-			FbxVector4 rot = pNode->GetGeometricRotation(FbxNode::eSourcePivot);
-			FbxVector4 trans = pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
-			FbxVector4 scale = pNode->GetGeometricScaling(FbxNode::eSourcePivot);
-			matGeo.SetT(trans);
-			matGeo.SetR(rot);
-			matGeo.SetS(scale);
-		}
-		FbxMatrix matA = matGeo;
-		pMesh->m_matWorld = DxConvertMatrix(ConvertMatrix(matA));
+		FbxVector4 rot = pNode->GetGeometricRotation(FbxNode::eSourcePivot);
+		FbxVector4 trans = pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
+		FbxVector4 scale = pNode->GetGeometricScaling(FbxNode::eSourcePivot);
+		matGeo.SetT(trans);
+		matGeo.SetR(rot);
+		matGeo.SetS(scale);
+		
 		int m_iNumPolygon = pFbxMesh->GetPolygonCount();
 		// 정점리스트 주소
 		FbxVector4* pVertexPositions = pFbxMesh->GetControlPoints();
-		int iBasePlayIndex = 0;
+		int iBasePolyIndex = 0;
 		int iNumFbxMaterial = pNode->GetMaterialCount();
+		//1보다 많다는것은 서브메터리얼이 있다는 뜻
 		if (iNumFbxMaterial > 1)
 		{
 			pMesh->m_pSubMesh.resize(iNumFbxMaterial);
@@ -270,6 +330,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 				{
 					switch (fbxSubMaterial->GetReferenceMode())
 					{
+					//배열에 직접넣었나
 					case FbxLayerElement::eDirect:
 					{
 						iSubMtrlIndex = iPoly;
@@ -288,6 +349,10 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 				}break;
 				}
 			}
+			if (iSubMtrlIndex < 0 || iSubMtrlIndex >= iNumFbxMaterial)
+			{
+
+			}
 			// 삼각형, 사각형
 			int iPolySize = pFbxMesh->GetPolygonSize(iPoly);
 			int m_iNumTriangle = iPolySize - 2;
@@ -301,6 +366,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 				iCornerIndex[1] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 2);
 				iCornerIndex[2] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 1);
 				// UV 인덱스 yz 좌표 바꿔서 넣어야함
+				// UV
 				int u[3];
 				u[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
 				u[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
@@ -311,10 +377,14 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 					iIndex++)
 				{
 					PNCT_VERTEX vertex;
+					//이것은 로컬 위치라고 생각하면됨
 					FbxVector4 pos = pVertexPositions[iCornerIndex[iIndex]];
-					vertex.pos.x = pos.mData[0];
-					vertex.pos.y = pos.mData[2];
-					vertex.pos.z = pos.mData[1];
+					//열우선방식의 행열 곱하기 정점.
+					//나중에 애니메이션를 위해 기하좌표는 나중에 곱해줌
+					FbxVector4 vPos = matGeo.MultT(pos);
+					vertex.pos.x = vPos.mData[0];
+					vertex.pos.y = vPos.mData[2];
+					vertex.pos.z = vPos.mData[1];
 					if (VertexUVList != nullptr)
 					{
 						FbxVector2 uv = ReadTextureCoord(
@@ -323,12 +393,13 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 						vertex.tex.x = uv.mData[0];
 						vertex.tex.y = 1.0f - uv.mData[1];
 					}
+					//컬러 노말은 인덱스가 같아 똑같은 수식이다.
 					if (VertexColorList != nullptr)
 					{
 						int iColorIndex[3];
-						iColorIndex[0] = iBasePlayIndex + 0;
-						iColorIndex[1] = iBasePlayIndex + iTriangle + 2;
-						iColorIndex[2] = iBasePlayIndex + iTriangle + 1;
+						iColorIndex[0] = iBasePolyIndex + 0;
+						iColorIndex[1] = iBasePolyIndex + iTriangle + 2;
+						iColorIndex[2] = iBasePolyIndex + iTriangle + 1;
 
 						FbxColor color = ReadColor(
 							pFbxMesh, 1, VertexColorList,
@@ -342,9 +413,9 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 					if (VertexNormalList != nullptr)
 					{
 						int iNormalIndex[3];
-						iNormalIndex[0] = iBasePlayIndex + 0;
-						iNormalIndex[1] = iBasePlayIndex + iTriangle + 2;
-						iNormalIndex[2] = iBasePlayIndex + iTriangle + 1;
+						iNormalIndex[0] = iBasePolyIndex + 0;
+						iNormalIndex[1] = iBasePolyIndex + iTriangle + 2;
+						iNormalIndex[2] = iBasePolyIndex + iTriangle + 1;
 						FbxVector4 normal = ReadNormal(
 							pFbxMesh, 1, VertexNormalList,
 							iCornerIndex[iIndex], iNormalIndex[iIndex]);
@@ -354,6 +425,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 					}
 					if (iNumFbxMaterial > 1)
 					{
+						//핵심 
 						pMesh->m_pSubMesh[iSubMtrlIndex]->m_pVertexList.push_back(vertex);
 					}
 					else
@@ -362,7 +434,8 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 					}
 				}
 			}
-			iBasePlayIndex += iPolySize;
+			//폴리 인덱스가 계속 추가되는 것
+			iBasePolyIndex += iPolySize;
 		}
 	}
 }
@@ -421,6 +494,10 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pMesh)
 //}
 void	KFbxObj::PreProcess(FbxNode* pNode)
 {
+	if (pNode->GetCamera() || pNode->GetLight())
+	{
+		return;
+	}
 	// pNode 정보 얻기
 	int iNumFbxMaterial = pNode->GetMaterialCount();
 	FbxSurfaceMaterial* pFbxMaterial = pNode->GetMaterial(0);
@@ -451,15 +528,16 @@ void	KFbxObj::PreProcess(FbxNode* pNode)
 	for (int iNode = 0; iNode < iNumChild; iNode++)
 	{
 		FbxNode* pChildNode = pNode->GetChild(iNode);
-		FbxNodeAttribute::EType type =
-			pChildNode->GetNodeAttribute()->GetAttributeType();
-		if (type == FbxNodeAttribute::eMesh)
+		//FbxNodeAttribute::EType type =pChildNode->GetNodeAttribute()->GetAttributeType();
+		//무조건 속성이 있다면 넣어준다.
+		if (pChildNode->GetNodeAttribute() != nullptr)
 		{
 			m_pFbxNodeList.push_back(pChildNode);
 		}
 		PreProcess(pChildNode);
 	}
 }
+//파일이름을 인자로 받아 오브젝트 import
 bool	KFbxObj::LoadObject(std::string filename)
 {
 	//fbx 로더 설정
@@ -468,22 +546,22 @@ bool	KFbxObj::LoadObject(std::string filename)
 	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");
 	bool bRet = m_pFbxImporter->Initialize(filename.c_str());
 	bRet = m_pFbxImporter->Import(m_pFbxScene);
+	//축 시스템은 마야Z축버젼으로 설정함
+	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene);
 
 	FbxNode* m_pRootNode = m_pFbxScene->GetRootNode();
 	PreProcess(m_pRootNode);
+
 	// todo : 중복처리 미작업
+	//preprecess로 채워준 매터리얼 리스트로 매터리얼 로드함
 	for (int iMtrl = 0; iMtrl < m_pFbxMaterialList.size(); iMtrl++)
 	{
 		KMtrl* pMtrl = m_pFbxMaterialList[iMtrl];
 		LoadMaterial(pMtrl);
 	}
-	for (int iNode = 0; iNode < m_pFbxNodeList.size(); iNode++)
-	{
-		FbxNode* pNode = m_pFbxNodeList[iNode];
-		KMesh* pMesh = new KMesh;
-		m_pMeshList.push_back(pMesh);
-		ParseNode(pNode, pMesh);
-	}
+	//노드 해석 오브젝트 상속구조를 파악해 meshlist에 넣어준다.
+	ParseNode(m_pRootNode, nullptr);
+
 	for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
 	{
 		KMesh* pMesh = m_pMeshList[iMesh];

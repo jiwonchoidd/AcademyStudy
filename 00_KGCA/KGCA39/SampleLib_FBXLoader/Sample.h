@@ -2,7 +2,8 @@
 #include "TCore.h"
 class Sample : public TCore
 {
-	KFbxObj		m_FbxObj;
+	KFbxObj		m_FbxObjA;
+	KFbxObj		m_FbxObjB;
 	KTexture	m_Texture;
 public:
 	bool		Init()override;

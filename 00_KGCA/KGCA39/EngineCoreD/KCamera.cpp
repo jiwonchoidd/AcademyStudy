@@ -2,15 +2,6 @@
 #include "TInput.h"
 bool KCamera::Init()
 {
-    //CreateViewMatrix(KVector3(0, 0, -30),KVector3(0, 0, 0));
-    //CreateProjMatrix(1.0f,1000.0f, 3.14 * 0.5f,
-    //    (float)g_rtClient.right / (float)g_rtClient.bottom);
-    return true;
-}
-bool KCamera::InitCameraSet(KVector3 ipos, KVector3 itarget)
-{
-    m_vCameraPos = ipos;
-    m_vCameraTarget = itarget;
     return true;
 }
 
@@ -97,9 +88,11 @@ bool KCamera::Release()
 }
 KCamera::KCamera()
 {
-    m_pSpeed = 30.0f;
     m_vCameraPos = { 0, 20, -20.0f };
     m_vCameraTarget = { 0, 0, 1.0f };
+    m_pSpeed = 20.0f;
+    m_pMouseSensitivity = 90;
+    m_pOriginSpeed = m_pSpeed;
 }
 
 KCamera::~KCamera()
@@ -151,5 +144,16 @@ bool KDebugCamera::Frame()
         m_vCameraPos = m_vCameraPos + m_vSide * -m_pSpeed * g_fSecPerFrame;
     }
 
+    g_Input.GetKey(VK_SHIFT) >= KEY_HOLD ?
+        m_pSpeed+=60.0f*g_fSecPerFrame : m_pSpeed -=60.0f*g_fSecPerFrame;
+
+    if (m_pSpeed >= m_pOriginSpeed * 2.0f)
+    {
+        m_pSpeed = m_pOriginSpeed*2.0f;
+    }
+    if (m_pSpeed <= m_pOriginSpeed)
+    {
+        m_pSpeed = m_pOriginSpeed;
+    }
     return true;
 }

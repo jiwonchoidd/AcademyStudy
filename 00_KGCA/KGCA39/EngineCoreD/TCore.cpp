@@ -4,22 +4,6 @@ LRESULT TCore::MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     return g_Input.MsgProc(hWnd, message, wParam, lParam);
 }
-void TCore::FrameCamera()
-{
-    if (g_Input.m_bDrag && g_Input.m_ptBeforePos.x == g_Input.m_pDragDown.x)
-    {
-        g_Input.m_pDrag.x = 0;
-
-    }
-    if (g_Input.m_bDrag && g_Input.m_ptBeforePos.y == g_Input.m_pDragDown.y)
-    {
-        g_Input.m_pDrag.y = 0;
-    }
-    float fYaw = g_fSecPerFrame * g_Input.m_pDrag.x * 8.0f;
-    float fPitch = g_fSecPerFrame * g_Input.m_pDrag.y * 8.0f;
-    m_DebugCamera.Update(KVector4(fPitch, fYaw, 0.0f, 0.0f));
-    m_DebugCamera.Frame();
-}
 bool	TCore::GameRun()
 {
     if (!GameFrame()) return false;
@@ -67,9 +51,25 @@ bool	TCore::GameFrame()
     Frame();
     return true;
 }
+void TCore::FrameCamera()
+{
+    if (g_Input.m_bDrag && g_Input.m_ptBeforePos.x == g_Input.m_pDragDown.x)
+    {
+        g_Input.m_pDrag.x = 0;
+
+    }
+    if (g_Input.m_bDrag && g_Input.m_ptBeforePos.y == g_Input.m_pDragDown.y)
+    {
+        g_Input.m_pDrag.y = 0;
+    }
+    float fYaw = g_fSecPerFrame * g_Input.m_pDrag.x * 8.0f;
+    float fPitch = g_fSecPerFrame * g_Input.m_pDrag.y * 8.0f;
+    m_DebugCamera.Update(KVector4(fPitch, fYaw, 0.0f, 0.0f));
+    m_DebugCamera.Frame();
+}
 bool	TCore::GameRender() 
 {
-    PreRender();   
+        PreRender();   
         // TODO : Render Timer
         m_Timer.Render();
         g_Input.Render();
@@ -82,6 +82,7 @@ bool	TCore::GameRender()
             m_Write.DrawText(rt, m_Timer.m_szTimerString,
                 D2D1::ColorF(1, 1, 1, 1));
         }
+        m_Write.ToastMessage(L"DebugCamera");
         Render();
     PostRender();    
     return true;
@@ -103,7 +104,8 @@ bool	TCore::Init()
 {
     return true;
 }
-bool	TCore::Frame() {
+bool	TCore::Frame() 
+{
     return true;
 }
 bool	TCore::PreRender() {
@@ -114,6 +116,7 @@ bool	TCore::PreRender() {
     return true;
 }
 bool	TCore::Render() {
+
     return true;
 }
 bool	TCore::PostRender() {
