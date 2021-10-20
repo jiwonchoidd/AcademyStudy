@@ -50,6 +50,16 @@ bool KWrite::Init()
             &m_pTextFormat
         );
      hr = m_pdWriteFactory->CreateTextFormat(
+         L"Showcard Gothic",
+         NULL,
+         DWRITE_FONT_WEIGHT_NORMAL,
+         DWRITE_FONT_STYLE_NORMAL,
+         DWRITE_FONT_STRETCH_NORMAL,
+         25,
+         L"ko-kr",//L"en-us",//L"ko-kr",
+         &m_pTextFormatRightAlign
+     );
+     hr = m_pdWriteFactory->CreateTextFormat(
          L"°íµñ",
          NULL,
          DWRITE_FONT_WEIGHT_NORMAL,
@@ -59,6 +69,10 @@ bool KWrite::Init()
          L"ko-kr",//L"en-us",//L"ko-kr",
          &m_pTextFormat50
      );
+     //ÁÂ¿ìÁ¤·Ä
+     m_pTextFormatRightAlign->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_TRAILING);
+     //»óÇÏÁ¤·Ä
+     m_pTextFormatRightAlign->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_FAR);
     if (FAILED(hr)) return false;
     return true;
 }
@@ -70,7 +84,6 @@ bool KWrite::Frame()
 
 bool KWrite::Render()
 {
- 
     return false;
 }
 
@@ -100,14 +113,14 @@ bool KWrite::DrawText(RECT rt,
 }
 bool KWrite::BlinkMessage(wstring text)
 {
-        RECT  rt = { 740, 570, 800, 600};
+        RECT  rt = { 0, 0, 800, 600};
         if (alpha < 0.0f)
         {
             alpha = 1.0f;
         }
         if(alpha > 0.0f)
         {
-        DrawText(rt, text.c_str(), D2D1::ColorF{1.0f,1.0f,1.0f,alpha});
+        DrawText(rt, text.c_str(), D2D1::ColorF{1.0f,1.0f,1.0f,alpha}, m_pTextFormatRightAlign);
         }
         alpha -= 0.5f * g_fSecPerFrame;
         return true;
