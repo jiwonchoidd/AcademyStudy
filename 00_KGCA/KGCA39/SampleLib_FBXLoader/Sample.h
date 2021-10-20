@@ -1,6 +1,6 @@
 #pragma once
-#include "TCore.h"
-class Sample : public TCore
+#include "KCore.h"
+class Sample : public KCore
 {
 	KFbxObj		m_FbxObjA;
 	KFbxObj		m_FbxObjB;

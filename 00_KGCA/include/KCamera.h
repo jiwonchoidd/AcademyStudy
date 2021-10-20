@@ -1,5 +1,5 @@
 #pragma once
-#include "TStd.h"
+#include "KStd.h"
 class KCamera
 {
 public:

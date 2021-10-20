@@ -1,6 +1,6 @@
 #pragma once
 #include "KModel.h"
-#include "TStd.h"
+#include "KStd.h"
 #include "KTexture.h"
 const enum OBJECTCLASSTYPE {
 	CLASS_GEOM = 0,

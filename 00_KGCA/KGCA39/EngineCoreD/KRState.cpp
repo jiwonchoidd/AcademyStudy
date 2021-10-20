@@ -1,5 +1,5 @@
 #include "KRState.h"
-#include "TInput.h"
+#include "KInput.h"
 bool KRState::Init()
 {
     D3D11_RASTERIZER_DESC rd;

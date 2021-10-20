@@ -19,6 +19,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	}
 	//재귀함수로 부모 매쉬를 넣어준다.
 	pMesh->m_pParent = pParentMesh;
+	//각 매쉬의 월드행렬은 부모를 더해지기 때문에 부모 매개변수로 넣음
 	pMesh->m_matWorld = ParseTransform(pNode, matParent);
 	//매쉬라면 기하타입 //본 타입은 행렬만 가지고 있음
 	if (pNode->GetMesh())
@@ -222,6 +223,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 			}
 			if (pMtrl != nullptr)
 			{
+				//샘플러는 텍스쳐마다 필요한건 아닌데 나중에 최적화부분이 필요함
 				pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
 				pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
 			}
@@ -256,12 +258,13 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 
 	if (pFbxMesh != nullptr)
 	{
-		//정점 성분 레이어 수만큼 
+		//정점 성분 레이어 수만큼 각각의 성분이 있는지
 		pMesh->m_iNumLayer = pFbxMesh->GetLayerCount();
 		pMesh->m_LayerList.resize(pMesh->m_iNumLayer);
 		// todo : 정점성분 레이어 리스트
 		for (int iLayer = 0; iLayer < pMesh->m_iNumLayer; iLayer++)
 		{
+			//하나의 레이어의 작업이다. 
 			FbxLayer* pLayer = pFbxMesh->GetLayer(iLayer);
 			//color, normal, UV, material
 			if (pLayer->GetVertexColors() != nullptr)
@@ -281,12 +284,13 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 				pMesh->m_LayerList[iLayer].pMaterial = pLayer->GetMaterials();
 			}
 		}
-		// 월드행렬이 아니다.상속관계에서 되물림되지 않는 행렬 기하행렬. 애니메이션 매트릭스, 피봇은 행렬 곱셈의 원점
-			///*GetTransform(); 변환을 해주는 변환 행렬
-			//애니메이션이 들어가기전까지는 단위행렬이다.
-			//로컬 행렬을 월드 행렬로 적용을했더니 결과가 월드 정점이 나왔다.
-			//우리가 읽어들인 정점은 리스트에서 그냥 그대로 가져온 정점
-			//월드좌표에다가 월드 행렬을 곱해지는 결과가 나옴 */
+		// 월드행렬이 아니다.상속관계에서 되물림되지 않는 행렬 기하행렬. 
+		// 피봇은  소스의 원점
+	    ///*GetTransform(); 변환을 해주는 변환 행렬
+		//애니메이션이 들어가기전까지는 단위행렬이다.
+		//로컬 행렬을 월드 행렬로 적용을했더니 결과가 월드 정점이 나왔다.
+		//우리가 읽어들인 정점은 리스트에서 그냥 그대로 가져온 정점
+		//월드좌표에다가 월드 행렬을 곱해지는 결과가 나옴 */
 		FbxAMatrix matGeo;
 		FbxVector4 rot = pNode->GetGeometricRotation(FbxNode::eSourcePivot);
 		FbxVector4 trans = pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
@@ -340,6 +344,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					{
 						iSubMtrlIndex =
 							fbxSubMaterial->GetIndexArray().GetAt(iPoly);
+						//리스트
 					}break;
 					}
 				}break;
@@ -356,21 +361,21 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 			// 삼각형, 사각형
 			int iPolySize = pFbxMesh->GetPolygonSize(iPoly);
 			int m_iNumTriangle = iPolySize - 2;
-			int iCornerIndex[3];
+			int iVertexIndex[3];
 			for (int iTriangle = 0;
 				iTriangle < m_iNumTriangle;
 				iTriangle++)
 			{
 				// 위치 인덱스 yz 좌표 바꿔서 넣어야함
-				iCornerIndex[0] = pFbxMesh->GetPolygonVertex(iPoly, 0);
-				iCornerIndex[1] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 2);
-				iCornerIndex[2] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 1);
+				iVertexIndex[0] = pFbxMesh->GetPolygonVertex(iPoly, 0);
+				iVertexIndex[1] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 2);
+				iVertexIndex[2] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 1);
 				// UV 인덱스 yz 좌표 바꿔서 넣어야함
 				// UV
-				int u[3];
-				u[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
-				u[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
-				u[2] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 1);
+				int uvIndex[3];
+				uvIndex[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
+				uvIndex[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
+				uvIndex[2] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 1);
 
 				for (int iIndex = 0;
 					iIndex < 3;
@@ -378,7 +383,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 				{
 					PNCT_VERTEX vertex;
 					//이것은 로컬 위치라고 생각하면됨
-					FbxVector4 pos = pVertexPositions[iCornerIndex[iIndex]];
+					FbxVector4 pos = pVertexPositions[iVertexIndex[iIndex]];
 					//열우선방식의 행열 곱하기 정점.
 					//나중에 애니메이션를 위해 기하좌표는 나중에 곱해줌
 					FbxVector4 vPos = matGeo.MultT(pos);
@@ -389,7 +394,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					{
 						FbxVector2 uv = ReadTextureCoord(
 							pFbxMesh, 1, VertexUVList,
-							iCornerIndex[iIndex], u[iIndex]);
+							iVertexIndex[iIndex], uvIndex[iIndex]);
 						vertex.tex.x = uv.mData[0];
 						vertex.tex.y = 1.0f - uv.mData[1];
 					}
@@ -403,7 +408,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 
 						FbxColor color = ReadColor(
 							pFbxMesh, 1, VertexColorList,
-							iCornerIndex[iIndex], iColorIndex[iIndex]);
+							iVertexIndex[iIndex], iColorIndex[iIndex]);
 						vertex.color.x = color.mRed;
 						vertex.color.y = color.mGreen;
 						vertex.color.z = color.mBlue;
@@ -418,7 +423,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 						iNormalIndex[2] = iBasePolyIndex + iTriangle + 1;
 						FbxVector4 normal = ReadNormal(
 							pFbxMesh, 1, VertexNormalList,
-							iCornerIndex[iIndex], iNormalIndex[iIndex]);
+							iVertexIndex[iIndex], iNormalIndex[iIndex]);
 						vertex.normal.x = normal.mData[0];
 						vertex.normal.y = normal.mData[2];
 						vertex.normal.z = normal.mData[1];
@@ -505,7 +510,7 @@ void	KFbxObj::PreProcess(FbxNode* pNode)
 	if (iNumFbxMaterial > 1)
 	{
 		KMtrl* pMtrl = new KMtrl(pNode, pFbxMaterial);
-		//서브매터리얼 수만큼 매터리얼 객체를 넣어준다.
+		//서브매터리얼 수만큼 매터리얼 객체를 넣어준다. 중복제거 어디서 하는거징..
 		for (int iSub = 0; iSub < iNumFbxMaterial; iSub++)
 		{
 			FbxSurfaceMaterial* pFbxSubMaterial = pNode->GetMaterial(iSub);
@@ -541,16 +546,17 @@ void	KFbxObj::PreProcess(FbxNode* pNode)
 bool	KFbxObj::LoadObject(std::string filename)
 {
 	//fbx 로더 설정
+	//매니저 static
 	m_pFbxManager = FbxManager::Create();
 	m_pFbxImporter = FbxImporter::Create(m_pFbxManager, "");
 	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");
-	bool bRet = m_pFbxImporter->Initialize(filename.c_str());
-	bRet = m_pFbxImporter->Import(m_pFbxScene);
+	bool bRet = m_pFbxImporter->Initialize(filename.c_str());//디폴트값이 있음
+	bRet = m_pFbxImporter->Import(m_pFbxScene);//씬에다가 저장해라
 	//축 시스템은 마야Z축버젼으로 설정함
 	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene);
 
-	FbxNode* m_pRootNode = m_pFbxScene->GetRootNode();
-	PreProcess(m_pRootNode);
+	FbxNode* m_pRootNode = m_pFbxScene->GetRootNode();// 루트노드 가져와서
+	PreProcess(m_pRootNode);// 이 안에 원하는게 다있기 때문에 전체 노드트리 순환
 
 	// todo : 중복처리 미작업
 	//preprecess로 채워준 매터리얼 리스트로 매터리얼 로드함
@@ -581,6 +587,9 @@ bool	KFbxObj::LoadObject(std::string filename)
 			pMesh->CreateModel(L"FbxShader.hlsl", L"../../data/shader/DefaultShader.hlsl");
 		}
 	}
+	m_pFbxScene->Destroy();
+	m_pFbxImporter->Destroy();
+	m_pFbxManager->Destroy();
 	return bRet;
 }
 bool    KFbxObj::Release()

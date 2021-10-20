@@ -1,5 +1,5 @@
 #include "KCamera.h"
-#include "TInput.h"
+#include "KInput.h"
 bool KCamera::Init()
 {
     return true;

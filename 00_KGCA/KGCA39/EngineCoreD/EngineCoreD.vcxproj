@@ -167,13 +167,13 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClCompile Include="KRState.cpp" />
     <ClCompile Include="KShape.cpp" />
     <ClCompile Include="KTexture.cpp" />
-    <ClCompile Include="TCore.cpp" />
-    <ClCompile Include="TDevice.cpp" />
-    <ClCompile Include="TInput.cpp" />
-    <ClCompile Include="TSound.cpp" />
-    <ClCompile Include="TTimer.cpp" />
-    <ClCompile Include="TWindow.cpp" />
-    <ClCompile Include="TWrite.cpp" />
+    <ClCompile Include="KCore.cpp" />
+    <ClCompile Include="KDevice.cpp" />
+    <ClCompile Include="KInput.cpp" />
+    <ClCompile Include="KSound.cpp" />
+    <ClCompile Include="KTimer.cpp" />
+    <ClCompile Include="KWindow.cpp" />
+    <ClCompile Include="KWrite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KCamera.h" />
@@ -186,14 +186,14 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="KRState.h" />
     <ClInclude Include="KShape.h" />
     <ClInclude Include="KTexture.h" />
-    <ClInclude Include="TCore.h" />
-    <ClInclude Include="TDevice.h" />
-    <ClInclude Include="TInput.h" />
-    <ClInclude Include="TSound.h" />
-    <ClInclude Include="TStd.h" />
-    <ClInclude Include="TTimer.h" />
-    <ClInclude Include="TWindow.h" />
-    <ClInclude Include="TWrite.h" />
+    <ClInclude Include="KCore.h" />
+    <ClInclude Include="KDevice.h" />
+    <ClInclude Include="KInput.h" />
+    <ClInclude Include="KSound.h" />
+    <ClInclude Include="KStd.h" />
+    <ClInclude Include="KTimer.h" />
+    <ClInclude Include="KWindow.h" />
+    <ClInclude Include="KWrite.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />

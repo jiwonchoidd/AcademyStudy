@@ -21,25 +21,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TCore.cpp">
+    <ClCompile Include="KCore.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TDevice.cpp">
+    <ClCompile Include="KDevice.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TInput.cpp">
+    <ClCompile Include="KInput.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TSound.cpp">
+    <ClCompile Include="KSound.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TTimer.cpp">
+    <ClCompile Include="KTimer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TWindow.cpp">
+    <ClCompile Include="KWindow.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="TWrite.cpp">
+    <ClCompile Include="KWrite.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="KMath.cpp">
@@ -77,28 +77,28 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TCore.h">
+    <ClInclude Include="KCore.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TDevice.h">
+    <ClInclude Include="KDevice.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TInput.h">
+    <ClInclude Include="KInput.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TSound.h">
+    <ClInclude Include="KSound.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TStd.h">
+    <ClInclude Include="KStd.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TTimer.h">
+    <ClInclude Include="KTimer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TWindow.h">
+    <ClInclude Include="KWindow.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="TWrite.h">
+    <ClInclude Include="KWrite.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="KMath.h">
