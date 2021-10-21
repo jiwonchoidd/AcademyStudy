@@ -1,6 +1,22 @@
 #include "KFbxObj.h"
 #define _CRT_SECURE_NO_WARNINGS
 
+bool KFbxObj::Frame()
+{
+	if (m_bAnimPlay)
+	{
+		m_fElpaseTime += 2.0f * g_fSecPerFrame;
+		m_iAnimIndex = m_fElpaseTime * 30.0f;
+		if (m_fEndTime < m_fElpaseTime)
+		{
+			m_iAnimIndex = 0;
+			m_fElpaseTime = 0;
+			//m_bAnimPlay = false;
+		}
+	}
+	return true;
+}
+
 void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 {
 	// 카메라나 라이트 등 매쉬가 아니라면 리턴
@@ -21,6 +37,10 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	pMesh->m_pParent = pParentMesh;
 	//각 매쉬의 월드행렬은 부모를 더해지기 때문에 부모 매개변수로 넣음
 	pMesh->m_matWorld = ParseTransform(pNode, matParent);
+
+	//모든 오브젝트를 돌면서 애니메이션 데이터 가져온다.
+	ParseAnimationNode(pNode, pMesh);
+
 	//매쉬라면 기하타입 //본 타입은 행렬만 가지고 있음
 	if (pNode->GetMesh())
 	{
@@ -86,6 +106,18 @@ KMatrix     KFbxObj::DxConvertMatrix(KMatrix m)
 }
 //복사
 KMatrix     KFbxObj::ConvertMatrix(FbxMatrix& m)
+{
+	KMatrix mat;
+	float* pMatArray = reinterpret_cast<float*>(&mat);
+	double* pSrcArray = reinterpret_cast<double*>(&m);
+	for (int i = 0; i < 16; i++)
+	{
+		pMatArray[i] = pSrcArray[i];
+	}
+	return mat;
+}
+//매개변수만 다름
+KMatrix     KFbxObj::ConvertAMatrix(FbxAMatrix& m)
 {
 	KMatrix mat;
 	float* pMatArray = reinterpret_cast<float*>(&mat);
@@ -211,7 +243,10 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
 				pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
 				//행렬 적용 구간
-				pMesh->m_pSubMesh[iSub]->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
+				//pMesh->m_pSubMesh[iSub]->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
+				pMesh->m_pSubMesh[iSub]->SetMatrix(
+					&pMesh->m_AnimationTrack[m_iAnimIndex],
+					&m_cbData.matView, &m_cbData.matProj);
 				pMesh->m_pSubMesh[iSub]->Render(pContext);
 			}
 		}
@@ -227,7 +262,9 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
 				pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
 			}
-			pMesh->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
+			//pMesh->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
+			pMesh->SetMatrix(&pMesh->m_AnimationTrack[m_iAnimIndex],
+				&m_cbData.matView, &m_cbData.matProj);
 			pMesh->Render(pContext);
 		}
 	}
@@ -444,59 +481,6 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 		}
 	}
 }
-//FbxVector2 KFbxObj::ReadTextureCoord(FbxMesh* pFbxMesh, DWORD dwVertexTextureCount, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex)
-//{
-//	FbxVector2 uv(0, 0);
-//	if (dwVertexTextureCount < 1 || pUVSet == nullptr)
-//	{
-//		return uv;
-//	}
-//	int iVertexTextureCountLayer = pFbxMesh->GetElementUVCount();
-//	FbxLayerElementUV* pFbxLayerElementUV = pFbxMesh->GetElementUV(0);
-//
-//	// 제어점은 평면의 4개 정점, 폴리곤 정점은 6개 정점을 위미한다.
-//	// 그래서 텍스처 좌표와 같은 레이어 들은 제어점 또는 정점으로 구분된다.
-//	switch (pUVSet->GetMappingMode())
-//	{
-//	case FbxLayerElementUV::eByControlPoint: // 제어점 당 1개의 텍스처 좌표가 있다.
-//	{
-//		switch (pUVSet->GetReferenceMode())
-//		{
-//		case FbxLayerElementUV::eDirect: // 배열에서 직접 얻는다.
-//		{
-//			FbxVector2 fbxUv = pUVSet->GetDirectArray().GetAt(vertexIndex);
-//			uv.mData[0] = fbxUv.mData[0];
-//			uv.mData[1] = fbxUv.mData[1];
-//			break;
-//		}
-//		case FbxLayerElementUV::eIndexToDirect: // 배열에 해당하는 인덱스를 통하여 얻는다.
-//		{
-//			int id = pUVSet->GetIndexArray().GetAt(vertexIndex);
-//			FbxVector2 fbxUv = pUVSet->GetDirectArray().GetAt(id);
-//			uv.mData[0] = fbxUv.mData[0];
-//			uv.mData[1] = fbxUv.mData[1];
-//			break;
-//		}
-//		}
-//		break;
-//	}
-//	case FbxLayerElementUV::eByPolygonVertex: // 정점 당 1개의 매핑 좌표가 있다.
-//	{
-//		switch (pUVSet->GetReferenceMode())
-//		{
-//		case FbxLayerElementUV::eDirect:
-//		case FbxLayerElementUV::eIndexToDirect:
-//		{
-//			uv.mData[0] = pUVSet->GetDirectArray().GetAt(uvIndex).mData[0];
-//			uv.mData[1] = pUVSet->GetDirectArray().GetAt(uvIndex).mData[1];
-//			break;
-//		}
-//		}
-//		break;
-//	}
-//	}
-//	return uv;
-//}
 void	KFbxObj::PreProcess(FbxNode* pNode)
 {
 	if (pNode->GetCamera() || pNode->GetLight())
@@ -565,6 +549,8 @@ bool	KFbxObj::LoadObject(std::string filename)
 		KMtrl* pMtrl = m_pFbxMaterialList[iMtrl];
 		LoadMaterial(pMtrl);
 	}
+	//애니메이션 끝 시작 몇 프레임인지 계산
+	ParseAnimation();
 	//노드 해석 오브젝트 상속구조를 파악해 meshlist에 넣어준다.
 	ParseNode(m_pRootNode, nullptr);
 

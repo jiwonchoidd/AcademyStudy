@@ -75,6 +75,12 @@
     <ClCompile Include="KFbxMeshData.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="KDepthStencil.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KFbxAnimation.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KCore.h">
@@ -129,6 +135,9 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="KFbxObj.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="KDepthStencil.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

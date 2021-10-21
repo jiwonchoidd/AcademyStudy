@@ -83,8 +83,6 @@ HRESULT KDevice::CreateSwapChain(HWND hWnd, UINT iWidth, UINT iHeight)
 
 	hr = m_pGIFactory->CreateSwapChain(
 		m_pd3dDevice, &sd, &m_pSwapChain);
-
-
 	return hr;
 }
 
@@ -93,7 +91,7 @@ HRESULT KDevice::SetRenderTargetView()
 	HRESULT hr = S_OK;
 	ID3D11Texture2D* pBackBuffer;
 	if (FAILED(hr = m_pSwapChain->GetBuffer(
-		0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer), hr))
+		0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer), hr))//출력대상
 	{
 		return hr;
 	}
@@ -108,8 +106,7 @@ HRESULT KDevice::SetRenderTargetView()
 	pBackBuffer->Release();	
 
 	m_pImmediateContext->OMSetRenderTargets(1, 
-		&m_pRenderTargetView, NULL);
-
+		&m_pRenderTargetView, NULL); // 여기가 depthstencilview
 
 	return hr;
 }

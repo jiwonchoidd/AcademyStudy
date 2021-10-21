@@ -17,8 +17,11 @@ bool	KCore::GameInit()
     m_Timer.Init();
     g_Input.Init();
     m_Write.Init();
-    m_RState.Init();
     m_DebugCamera.Init();
+
+    m_RState.Init();
+    m_DepthSten.Init(m_pImmediateContext, m_pRenderTargetView);
+
     m_DebugCamera.CreateViewMatrix(KVector3(0, 0, -30),KVector3(0, 0, 0));
     m_DebugCamera.CreateProjMatrix(1.0f,1000.0f, XM_PI * 0.5f,
         (float)g_rtClient.right / (float)g_rtClient.bottom);
@@ -30,7 +33,6 @@ bool	KCore::GameInit()
         (void**)&m_pBackBuffer);
     m_Write.CreateDeviceResources(m_pBackBuffer);
     if (m_pBackBuffer)m_pBackBuffer->Release();
-
     Init();
     return true;
 }
@@ -40,6 +42,7 @@ bool	KCore::GameFrame()
     g_Input.Frame();
     m_Write.Frame();
     m_RState.Frame();
+    m_DepthSten.Frame();
     FrameCamera();
     if (g_Input.GetKey('1') == KEY_PUSH)
     {
@@ -57,15 +60,16 @@ bool	KCore::GameRender()
     g_Input.Render();
     m_Write.Render();
     m_RState.Render(m_pImmediateContext);
-    m_Write.BlinkMessage(L"EngineCoreD");
     //프레임 디스플레이 텍스트
+    Render();
+    //렌더 다음으로 텍스트 렌더링
     if (m_bDebugText)
     {
         RECT  rt = { 0, 0, 800, 600 };
         m_Write.DrawText(rt, m_Timer.m_szTimerString,
             D2D1::ColorF(1, 1, 1, 1));
     }
-    Render();
+    m_Write.BlinkMessage(L"EngineCoreD");
     PostRender();
     return true;
 }
@@ -92,6 +96,7 @@ bool	KCore::GameRelease()
     g_Input.Release();
     m_Write.Release();
     m_RState.Release();
+    m_DepthSten.Release();
     m_DebugCamera.Release();
     CleanupDevice();
     return true;
@@ -108,8 +113,9 @@ bool	KCore::Frame()
 bool	KCore::PreRender() {
     float ClearColor[4] = { 0.1f, 0.15f, 0.15f, 1.0f }; //red,green,blue,alpha
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
-    m_pImmediateContext->IASetPrimitiveTopology(
-        D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    m_DepthSten.PreRender();
+
     return true;
 }
 bool	KCore::Render() 

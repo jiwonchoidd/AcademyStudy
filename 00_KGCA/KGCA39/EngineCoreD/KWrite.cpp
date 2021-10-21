@@ -27,9 +27,8 @@ HRESULT KWrite::CreateDeviceResources(IDXGISurface1* pSurface)
 }
 bool KWrite::Init()
 {
-    alpha = 0.0f;
     toastTime=0.0f;
-    alpha = 1;
+    alpha = 0.5;
     HRESULT hr;
     hr = D2D1CreateFactory(
         D2D1_FACTORY_TYPE_SINGLE_THREADED, &m_pd2dFactory);
@@ -116,13 +115,13 @@ bool KWrite::BlinkMessage(wstring text)
         RECT  rt = { 0, 0, 800, 600};
         if (alpha < 0.0f)
         {
-            alpha = 1.0f;
+            alpha = 0.5f;
         }
         if(alpha > 0.0f)
         {
         DrawText(rt, text.c_str(), D2D1::ColorF{1.0f,1.0f,1.0f,alpha}, m_pTextFormatRightAlign);
         }
-        alpha -= 0.5f * g_fSecPerFrame;
+        alpha -= 0.25f * g_fSecPerFrame;
         return true;
 }
 bool KWrite::Release()

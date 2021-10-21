@@ -136,6 +136,10 @@ KMatrix KDebugCamera::Update(KVector4 vValue)
     m_fPitch += vValue.x;
     m_fRoll += vValue.z;
     m_fRadius += vValue.w;
+    #pragma region Shake
+    m_fYaw += randstep(0.01f, 0.0f) * g_fSecPerFrame;
+    m_fPitch += randstep(-0.01f, 0.0f) * g_fSecPerFrame;
+    #pragma endregion   
     KQuaternion q;
     //사원수를 행렬로 변환하고 역행렬로 카메라
     D3DXQuaternionRotationYawPitchRoll(&q, m_fYaw, m_fPitch, m_fRoll);
