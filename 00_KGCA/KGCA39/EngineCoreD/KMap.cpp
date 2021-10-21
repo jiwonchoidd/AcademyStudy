@@ -36,7 +36,7 @@ bool	KMap::CreateVertexData()
 }
 bool	KMap::CreateIndexData()
 {
-
+    //16ÀÏ¶§ 2°öÇÏ±â 3°öÇÔ 1536
     m_IndexList.resize(m_info.m_iNumColCell * m_info.m_iNumRowCell * 2 * 3);
 
     int iIndex = 0;

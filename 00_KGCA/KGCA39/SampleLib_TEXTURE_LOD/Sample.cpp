@@ -14,12 +14,12 @@
 bool Sample::Init()
 {
     KMapInfo info{
-            32 + 1,
-            32 + 1, 0,0, 0,
+            16 + 1,
+            16 + 1, 0,0, 0,
             10.0f
     };
     //텍스쳐 붙이기
-    m_KTexture.LoadTexture(L"../../data/texture_grass.jpg");
+    m_KTexture.LoadTexture(L"../../data/charport.bmp");
 
     if (!m_Map.Load(info, L"../../data/shader/DefaultShader.hlsl", 
                             L"../../data/shader/DefaultShader.hlsl"))
@@ -29,6 +29,8 @@ bool Sample::Init()
     m_Quadtree.LoadObject(L"../../data/script/StaticLod.txt");
     m_Quadtree.Build(&m_Map);
 
+    m_DebugCamera.CreateViewMatrix(KVector3(0, 150, -20), KVector3(0, 0, 0));
+    m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
     return true;
 }
 bool Sample::Frame()
@@ -48,11 +50,11 @@ bool Sample::Render()
         &m_DebugCamera.m_matView,
         &m_DebugCamera.m_matProj);
     //m_Map.Render(m_pImmediateContext);
+    m_Quadtree.Render(m_pImmediateContext, m_DebugCamera.GetCameraPos());
     //텍스쳐 렌더
     m_pImmediateContext->PSSetSamplers(0, 1, &m_KTexture.m_pSampler);
     m_pImmediateContext->PSSetShaderResources(1, 1, &m_KTexture.m_pTextureSRV);
 
-    m_Quadtree.Render(m_pImmediateContext, m_DebugCamera.GetCameraPos());
     return false;
 }
 
@@ -60,6 +62,7 @@ bool Sample::Release()
 {
     m_Map.Release();
     m_Quadtree.Release();
+    m_DebugCamera.Release();
     m_KTexture.Release();
     /*for (int iObj = 0; iObj < 2; iObj++)
     {

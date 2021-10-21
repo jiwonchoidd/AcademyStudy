@@ -199,7 +199,7 @@ bool KModel::Init()
 
 bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
 {
-    //조건 변경
+    //조건 변경을 했는데 쿼드트리에서 왜 오류나지
     CreateConstantBuffer();
 
     if (CreateVertexData())

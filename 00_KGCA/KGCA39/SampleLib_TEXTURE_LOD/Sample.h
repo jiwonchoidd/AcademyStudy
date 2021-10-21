@@ -1,11 +1,11 @@
 #pragma once
-#include <TCore.h>
+#include <KCore.h>
 #include "KTexture.h"
 #include "KShape.h"
 #include "KMap.h"
 #include "KCamera.h"
 #include "KQuadtree.h"
-class Sample : public TCore
+class Sample : public KCore
 {
 public:
 	//TBoxShape			m_BoxObj[2];
