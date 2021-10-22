@@ -41,6 +41,7 @@ bool  KQuadtree::LoadObject(std::wstring filename)
 
 	int index = 0;
 	
+
 	for (int iLod = 0; iLod < iNumPatch; iLod++)
 	{
 		TLodPatch lod;
@@ -259,7 +260,7 @@ void    KQuadtree::Build(KMap* pMap)
 	SetNeighborNode();
 	// lod patch (전체 가로 개수(9), 리프노드 깊이(1))
 	m_iNumCell =  (m_iNumCol-1) / pow(2.0f, m_iMaxDepth);
-	m_iNumPatch = (log(m_iNumCell) / log(2.0f));
+	m_iNumPatch = (log(m_iNumCell)+1);
 	if (m_iNumPatch > 0)
 	{
 		m_LodPatchList.resize(m_iNumPatch);
@@ -323,7 +324,7 @@ void KQuadtree::Buildtree(KNode* pNode)
 		{
 			m_iMaxDepth = pNode->m_iDepth;
 		}				
-		// 공유 보택스버퍼용(정점버퍼 리프노드 당)
+		// 공유 버택스버퍼용(정점버퍼 리프노드 당)
 		if (UpdateVertexList(pNode))
 		{
 			CreateVertexBuffer(pNode);

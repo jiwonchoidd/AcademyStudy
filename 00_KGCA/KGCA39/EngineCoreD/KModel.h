@@ -57,13 +57,13 @@ class KModel
 public:
 	UINT				m_iNumIndex;
 	CB_DATA				m_cbData;
-	ID3DBlob* m_pVSBlob = nullptr;
-	ID3D11Buffer* m_pVertexBuffer;
-	ID3D11Buffer* m_pIndexBuffer;
-	ID3D11Buffer* m_pConstantBuffer;
-	ID3D11InputLayout* m_pVertexLayout;
+	ID3DBlob*			m_pVSBlob = nullptr;
+	ID3D11Buffer*		m_pVertexBuffer;
+	ID3D11Buffer*		m_pIndexBuffer;
+	ID3D11Buffer*		m_pConstantBuffer;
+	ID3D11InputLayout*	m_pVertexLayout;
 	ID3D11VertexShader* m_pVS;
-	ID3D11PixelShader* m_pPS;
+	ID3D11PixelShader*	m_pPS;
 	//PNCT가 기본형이다.
 	std::vector< PNCT_VERTEX> m_pVertexList;
 	std::vector< DWORD> m_IndexList;

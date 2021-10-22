@@ -13,7 +13,7 @@ struct KMtrl
 	FbxNode*			m_pFbxNode;
 	FbxSurfaceMaterial* m_pFbxSurfaceMtrl;
 	KTexture			m_Texture;
-	std::vector<KMtrl*> m_pSubMtrl;
+	vector<KMtrl*> m_pSubMtrl;
 	KMtrl() {}
 	//생성자로 노드와 매터리얼 저장 
 	KMtrl(FbxNode* pFbxNode, FbxSurfaceMaterial* pFbxMtrl)
@@ -39,12 +39,32 @@ struct KLayer
 	FbxLayerElementUV* pUV;
 	FbxLayerElementMaterial* pMaterial;
 };
+
+struct KWeight
+{
+	std::vector<int>     m_IndexList;
+	std::vector<float>   m_WegihtList;
+};
+
+struct KSkinData
+{
+	std::vector<FbxNode*>  m_MatrixList;
+	//정점당 가중치, 인덱스
+	std::vector<KWeight>   m_VertexList;
+};
+//상속받은 PNCT
+struct PNCTIW_VERTEX : public PNCT_VERTEX
+{
+	int     index[4];
+	float   weight[4];
+};
+
 struct KMesh : public KModel
 {
-	KMesh()
-	{
-		m_ClassType = CLASS_GEOM;
-	}
+	//정점당 가중치 인덱스 4개씩 쉐이더에 넣기 위함 
+	vector<PNCTIW_VERTEX>	m_WeightList;
+	FbxNode*			m_pFbxNode;
+
 	KMesh*				m_pParent; // 부모
 	wstring				m_szName;
 	wstring				m_szParentName;
@@ -56,6 +76,10 @@ struct KMesh : public KModel
 	KMatrix				m_matWorld;
 	vector<KMatrix>		m_AnimationTrack;
 	vector<KMesh*>		m_pSubMesh;
+	KMesh()
+	{
+		m_ClassType = CLASS_GEOM;
+	}
 	bool Release() override
 	{
 		//부모 해제
@@ -108,6 +132,7 @@ public:
 	void	ParseAnimStack(FbxString* szData);
 	void	ParseAnimation();
 	void	ParseAnimationNode(FbxNode* pNode, KMesh* pMesh);
+	bool	ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSkindata);
 public:
 	FbxVector2  ReadTextureCoord(FbxMesh* pFbxMesh, DWORD dwVertexTextureCount, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex);
 	FbxVector4  ReadNormal(const FbxMesh* mesh, DWORD dwVertexNormalCount, FbxLayerElementNormal* VertexNormalSets,

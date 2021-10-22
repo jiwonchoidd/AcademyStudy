@@ -76,7 +76,7 @@ HRESULT KModel::CreateConstantBuffer()
 HRESULT KModel::CreateVertexBuffer()
 {
     HRESULT hr = S_OK;
-    if (m_pVertexList.size() <= 0) return hr;
+    //if (m_pVertexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
     bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pVertexList.size();
@@ -93,7 +93,7 @@ HRESULT KModel::CreateVertexBuffer()
 HRESULT KModel::CreateIndexBuffer()
 {
     HRESULT hr = S_OK;
-    if (m_IndexList.size() <= 0) return hr;
+    //if (m_IndexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
     bd.ByteWidth = sizeof(DWORD) * m_IndexList.size();
@@ -199,7 +199,7 @@ bool KModel::Init()
 
 bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
 {
-    //조건 변경을 했는데 쿼드트리에서 왜 오류나지
+    //조건 변경
     CreateConstantBuffer();
 
     if (CreateVertexData())

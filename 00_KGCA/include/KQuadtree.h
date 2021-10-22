@@ -8,15 +8,15 @@ public:
 	UINT		m_iMaxDepth;
 	UINT		m_iNumCell;
 	UINT		m_iNumPatch;
-	std::vector<DWORD>  m_IndexList;
+	vector<DWORD>  m_IndexList;
 	ID3D11Buffer* m_pIndexBuffer;
-	std::vector<TLodPatch>   m_LodPatchList;
+	vector<TLodPatch>   m_LodPatchList;
 public:
 	KNode*		m_pRootNode;
 	int			m_iNumCol;
 	int			m_iNumRow;
-	std::queue<KNode*>  m_Queue;
-	std::map<int, KNode*>  m_pLeafList;
+	queue<KNode*>  m_Queue;
+	map<int, KNode*>  m_pLeafList;
 	KMap*		m_pMap;
 public:
 	bool	UpdateIndexList(KNode* pNode);

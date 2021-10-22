@@ -89,7 +89,7 @@ KCamera::KCamera()
     m_vCameraPos = { 0, 20, -20.0f };
     m_vCameraTarget = { 0, 0, 1.0f };
     m_pSpeed = 20.0f;
-    m_pMouseSensitivity = 90;
+    m_pMouseSensitivity = 50;
     m_pOriginSpeed = m_pSpeed;
 }
 KCamera::~KCamera()
@@ -120,9 +120,9 @@ bool KDebugCamera::Frame()
     g_Input.GetKey(VK_SHIFT) >= KEY_HOLD ?
         m_pSpeed+=60.0f*g_fSecPerFrame : m_pSpeed -=60.0f*g_fSecPerFrame;
 
-    if (m_pSpeed >= m_pOriginSpeed * 2.0f)
+    if (m_pSpeed >= m_pOriginSpeed * 5.0f)
     {
-        m_pSpeed = m_pOriginSpeed*2.0f;
+        m_pSpeed = m_pOriginSpeed*5.0f;
     }
     if (m_pSpeed <= m_pOriginSpeed)
     {
@@ -136,9 +136,12 @@ KMatrix KDebugCamera::Update(KVector4 vValue)
     m_fPitch += vValue.x;
     m_fRoll += vValue.z;
     m_fRadius += vValue.w;
-    #pragma region Shake
+    #pragma region Shake & Clamp
     m_fYaw += randstep(0.01f, 0.0f) * g_fSecPerFrame;
     m_fPitch += randstep(-0.01f, 0.0f) * g_fSecPerFrame;
+
+    if (m_fPitch > 1.0f)m_fPitch = 1.0f;
+    if (m_fPitch < -1.0f)m_fPitch = -1.0f;
     #pragma endregion   
     KQuaternion q;
     //사원수를 행렬로 변환하고 역행렬로 카메라

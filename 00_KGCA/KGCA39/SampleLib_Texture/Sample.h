@@ -1,5 +1,5 @@
 #pragma once
-#include <TCore.h>
+#include <KCore.h>
 #include "KTexture.h"
 #pragma comment	(lib, "D3DCompiler.lib")
 struct SimpleVertex
@@ -21,7 +21,7 @@ struct CB_DATA
 	KMatrix  matView;
 	KMatrix  matProj;
 };
-class Sample : public TCore
+class Sample : public KCore
 {
 	float				m_pSpeed;
 	KVector3			m_vCameraPos;

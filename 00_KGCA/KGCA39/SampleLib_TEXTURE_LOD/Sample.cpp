@@ -29,7 +29,7 @@ bool Sample::Init()
     m_Quadtree.LoadObject(L"../../data/script/StaticLod.txt");
     m_Quadtree.Build(&m_Map);
 
-    m_DebugCamera.CreateViewMatrix(KVector3(0, 150, -20), KVector3(0, 0, 0));
+    m_DebugCamera.CreateViewMatrix(KVector3(0, 20, -20), KVector3(0, 0, 0));
     m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
     return true;
 }

@@ -18,10 +18,8 @@ typedef std::vector<DWORD>  DWORD_VECTOR;
 struct TLodPatch
 {
 	UINT   iLodLevel;
-	//std::vector<DWORD_VECTOR>  IndexList;
 	DWORD_VECTOR		IndexList[16];
 	ID3D11Buffer* IndexBufferList[16] = { nullptr, };
-	//std::vector<ID3D11Buffer*> IndexBufferList;
 	void Release()
 	{
 		for (int iBuffer = 0; iBuffer < 16; iBuffer++)

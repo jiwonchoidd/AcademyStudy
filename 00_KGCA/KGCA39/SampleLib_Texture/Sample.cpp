@@ -54,7 +54,7 @@ HRESULT Sample::CreateConstantBuffer()
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
     data.pSysMem = &m_cbData;
-    hr = m_pd3dDevice->CreateBuffer(&bd, &data, &m_pConstantBuffer);
+    hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pConstantBuffer);
     if (FAILED(hr)) return hr;
     return hr;
 }
@@ -76,7 +76,7 @@ HRESULT Sample::CreateVertexBuffer()
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
     data.pSysMem = &m_VertexList.at(0);
-    hr = m_pd3dDevice->CreateBuffer(&bd, &data, &m_pVertexBuffer);
+    hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pVertexBuffer);
     if (FAILED(hr)) return hr;
     return hr;
 }
@@ -102,7 +102,7 @@ HRESULT Sample::CreateIndexBuffer()
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
     data.pSysMem = &m_IndexList.at(0);
-    hr = m_pd3dDevice->CreateBuffer(&bd, &data, &m_pIndexBuffer);
+    hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pIndexBuffer);
     if (FAILED(hr)) return hr;
     return hr;
 }
@@ -116,7 +116,7 @@ HRESULT Sample::CreateVertexLayout()
         { "TEXTURE",  0, DXGI_FORMAT_R32G32_FLOAT, 0, 28,  D3D11_INPUT_PER_VERTEX_DATA, 0 }
     };
     UINT numLayout = sizeof(layout) / sizeof(layout[0]);
-    hr = m_pd3dDevice->CreateInputLayout(layout, numLayout,
+    hr = g_pd3dDevice->CreateInputLayout(layout, numLayout,
         m_pVSBlob->GetBufferPointer(),
         m_pVSBlob->GetBufferSize(),
         &m_pVertexLayout);
@@ -148,7 +148,7 @@ HRESULT Sample::LoadShader()
         return hr;
     }
 
-    hr = m_pd3dDevice->CreateVertexShader(
+    hr = g_pd3dDevice->CreateVertexShader(
         m_pVSBlob->GetBufferPointer(), 
         m_pVSBlob->GetBufferSize(),
         NULL, &m_pVS);

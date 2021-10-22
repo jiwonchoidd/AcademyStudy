@@ -16,7 +16,7 @@ bool KFbxObj::Frame()
 	}
 	return true;
 }
-
+//재귀호출.
 void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 {
 	// 카메라나 라이트 등 매쉬가 아니라면 리턴
@@ -24,8 +24,10 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	{
 		return;
 	}
-	//전체 다 매쉬로 생성한다.
+	//전체 다 매쉬로
 	KMesh* pMesh = new KMesh;
+	//매쉬에 노드를 물려준다.
+	pMesh->m_pFbxNode = pNode;
 	pMesh->m_szName = TBASIS::mtw(pNode->GetName());
 	KMatrix matParent;
 	if (pParentMesh != nullptr)
@@ -38,8 +40,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	//각 매쉬의 월드행렬은 부모를 더해지기 때문에 부모 매개변수로 넣음
 	pMesh->m_matWorld = ParseTransform(pNode, matParent);
 
-	//모든 오브젝트를 돌면서 애니메이션 데이터 가져온다.
-	ParseAnimationNode(pNode, pMesh);
+
 
 	//매쉬라면 기하타입 //본 타입은 행렬만 가지고 있음
 	if (pNode->GetMesh())
@@ -51,7 +52,6 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	{
 		pMesh->m_ClassType = CLASS_BONE;
 	}
-
 	m_pMeshList.push_back(pMesh);
 	int iNumChild = pNode->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)
@@ -239,7 +239,9 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 		{
 			for (int iSub = 0; iSub < pMesh->m_pSubMesh.size(); iSub++)
 			{
-				KMtrl* pSubMtrl=m_pFbxMaterialList[pMesh->m_iMtrlRef]->m_pSubMtrl[iSub];
+				if (pMesh->m_pSubMesh[iSub]->m_pVertexList.size() <= 0) continue;
+				KMtrl* pSubMtrl=
+					m_pFbxMaterialList[pMesh->m_iMtrlRef]->m_pSubMtrl[iSub];
 				pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
 				pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
 				//행렬 적용 구간
@@ -295,6 +297,21 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 
 	if (pFbxMesh != nullptr)
 	{
+		// pFbxMesh에 영향을 미치는 행렬(노드)에 전체 개수?
+		// 행렬[0]=FbxNode ~ 행렬[3] = 4개
+		// 정점[0]->인덱스[1]		// 		
+		KSkinData skindata;
+		bool bSkinnedMesh = ParseMeshSkinning(pFbxMesh, pMesh, &skindata);
+		// 스키닝 오브젝트 여부?
+		if (bSkinnedMesh)
+		{
+			// 정점[N]-> 인덱스[20], 가중치
+			pMesh->m_WeightList.resize(skindata.m_VertexList.size());
+		}
+		else
+		{
+
+		}
 		//정점 성분 레이어 수만큼 각각의 성분이 있는지
 		pMesh->m_iNumLayer = pFbxMesh->GetLayerCount();
 		pMesh->m_LayerList.resize(pMesh->m_iNumLayer);
@@ -339,6 +356,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 		int m_iNumPolygon = pFbxMesh->GetPolygonCount();
 		// 정점리스트 주소
 		FbxVector4* pVertexPositions = pFbxMesh->GetControlPoints();
+		int iNumCP = pFbxMesh->GetControlPointsCount();
 		int iBasePolyIndex = 0;
 		int iNumFbxMaterial = pNode->GetMaterialCount();
 		//1보다 많다는것은 서브메터리얼이 있다는 뜻
@@ -399,8 +417,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 			int iPolySize = pFbxMesh->GetPolygonSize(iPoly);
 			int m_iNumTriangle = iPolySize - 2;
 			int iVertexIndex[3];
-			for (int iTriangle = 0;
-				iTriangle < m_iNumTriangle;
+			for (int iTriangle = 0; iTriangle < m_iNumTriangle;
 				iTriangle++)
 			{
 				// 위치 인덱스 yz 좌표 바꿔서 넣어야함
@@ -429,6 +446,11 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					vertex.pos.z = vPos.mData[1];
 					if (VertexUVList != nullptr)
 					{
+						// UV 인덱스
+						int uvIndex[3];
+						uvIndex[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
+						uvIndex[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
+						uvIndex[2] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 1);
 						FbxVector2 uv = ReadTextureCoord(
 							pFbxMesh, 1, VertexUVList,
 							iVertexIndex[iIndex], uvIndex[iIndex]);
@@ -464,6 +486,31 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 						vertex.normal.x = normal.mData[0];
 						vertex.normal.y = normal.mData[2];
 						vertex.normal.z = normal.mData[1];
+					}
+					// 인덱스 및 가중치 저장
+					int iRealIndex = iVertexIndex[iIndex];
+					if (bSkinnedMesh)
+					{
+						int iNum =
+							skindata.m_VertexList[iRealIndex].m_IndexList.size();
+						for (int i = 0; i < iNum; i++)
+						{
+							pMesh->m_WeightList[iRealIndex].index[i] =
+								skindata.m_VertexList[iRealIndex].m_IndexList[i];
+							pMesh->m_WeightList[iRealIndex].weight[i] =
+								skindata.m_VertexList[iRealIndex].m_WegihtList[i];
+						}
+					}
+					// 비 스키닝 오브젝트를 -> 스키닝화 처리
+					else
+					{
+						pMesh->m_WeightList[iRealIndex].index[0] = 0;
+						pMesh->m_WeightList[iRealIndex].weight[0] = 1.0f;
+						for (int i = 0; i < 4; i++)
+						{
+							pMesh->m_WeightList[iRealIndex].index[0] = 0;
+							pMesh->m_WeightList[iRealIndex].weight[i] = 0.0f;
+						}
 					}
 					if (iNumFbxMaterial > 1)
 					{
@@ -517,7 +564,7 @@ void	KFbxObj::PreProcess(FbxNode* pNode)
 	for (int iNode = 0; iNode < iNumChild; iNode++)
 	{
 		FbxNode* pChildNode = pNode->GetChild(iNode);
-		//FbxNodeAttribute::EType type =pChildNode->GetNodeAttribute()->GetAttributeType();
+		FbxNodeAttribute::EType type =pChildNode->GetNodeAttribute()->GetAttributeType();
 		//무조건 속성이 있다면 넣어준다.
 		if (pChildNode->GetNodeAttribute() != nullptr)
 		{
@@ -553,6 +600,10 @@ bool	KFbxObj::LoadObject(std::string filename)
 	ParseAnimation();
 	//노드 해석 오브젝트 상속구조를 파악해 meshlist에 넣어준다.
 	ParseNode(m_pRootNode, nullptr);
+
+	ParseAnimationNode(nullptr, nullptr);
+	//모든 오브젝트를 돌면서 애니메이션 데이터 가져온다.
+	//ParseAnimationNode(pNode, pMesh);
 
 	for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
 	{
