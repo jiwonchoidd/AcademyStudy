@@ -163,6 +163,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClCompile Include="KFbxObj.cpp" />
     <ClCompile Include="KMap.cpp" />
     <ClCompile Include="KMath.cpp" />
+    <ClCompile Include="KMesh.cpp" />
     <ClCompile Include="KModel.cpp" />
     <ClCompile Include="KNode.cpp" />
     <ClCompile Include="KQuadtree.cpp" />
@@ -183,6 +184,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="KFbxObj.h" />
     <ClInclude Include="KMap.h" />
     <ClInclude Include="KMath.h" />
+    <ClInclude Include="KMesh.h" />
     <ClInclude Include="KModel.h" />
     <ClInclude Include="KNode.h" />
     <ClInclude Include="KQuadtree.h" />

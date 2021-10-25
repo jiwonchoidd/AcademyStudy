@@ -1,7 +1,7 @@
 #include "Sample.h"
 bool		Sample::Init()
 {
-	m_FbxObjA.LoadObject("../../data/object/man.FBX");
+	m_FbxObjA.LoadObject("../../data/object/Man.fbx","CharacterShader.hlsl");
 	//m_FbxObjB.LoadObject("../../data/object/BoxAnim.fbx");
 	m_DebugCamera.CreateViewMatrix(KVector3(0, 15, -20), KVector3(0, 0, 0));
 	m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);

@@ -76,7 +76,7 @@ HRESULT KModel::CreateConstantBuffer()
 HRESULT KModel::CreateVertexBuffer()
 {
     HRESULT hr = S_OK;
-    //if (m_pVertexList.size() <= 0) return hr;
+    if (m_pVertexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
     bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pVertexList.size();

@@ -25,6 +25,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="FbxShader.hlsl" />
+    <FxCompile Include="CharacterShader.hlsl" />
   </ItemGroup>
 </Project>

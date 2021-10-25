@@ -1,4 +1,17 @@
 #include "KFbxObj.h"
+//값에 맞는 인덱스로 바꿔준다.
+int  KFbxObj::GetFindIndex(FbxNode* pNode)
+{
+	for (int iNode = 0; iNode < m_pFbxNodeList.size(); iNode++)
+	{
+		if (m_pFbxNodeList[iNode] == pNode)
+		{
+			return iNode;
+		}
+	}
+	return -1;
+}
+
 bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSkindata)
 {
 	int iNumDeformer = pFbxMesh->GetDeformerCount(FbxDeformer::eSkin);
@@ -20,14 +33,28 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 		// 영향을 미치는 행렬이 iNumCluster 있다.
 		for (int iCluster = 0; iCluster < iNumCluster; iCluster++)
 		{
+			//정점들이 원을 그리는데 일부의 정점만 포함되는 경우가 있을때
 			//클러스터 특정 정점에 영향을 미치는 행렬이 있는 구조체
 			FbxCluster* pCluster = pSkin->GetCluster(iCluster);
+
+			FbxAMatrix matXBindPose;
+			pCluster->GetTransformLinkMatrix(matXBindPose);
+			FbxAMatrix matInitPostion;
+			pCluster->GetTransformMatrix(matInitPostion);
+			FbxAMatrix matBoneBindPos = matInitPostion.Inverse() *
+				matXBindPose;
+			KMatrix matBinePos = DxConvertMatrix(ConvertAMatrix(matBoneBindPos));
 			// 영향을 미치는 행렬이 iClusterSize 정점에 영향을 미친다.
-			//한뼈가 미치는 영향 버텍스 수
 			int iNumVertex = pCluster->GetControlPointIndicesCount();
 
 			FbxNode* pLinkNode = pCluster->GetLink();
 			pSkindata->m_MatrixList.push_back(pLinkNode);
+			int iBone = GetFindIndex(pLinkNode);
+			_ASSERT(iBone >= 0);
+			pMesh->m_iBoneList.push_back(iBone);
+			D3DKMatrixInverse(&matBinePos, NULL, &matBinePos);
+			m_matBindPoseList[iBone] = matBinePos;
+
 			int iMatrixIndex = pSkindata->m_MatrixList.size() - 1;
 			//ControlPoint(제어점) 정점리스트
 			int* iIndex = pCluster->GetControlPointIndices();
@@ -36,7 +63,7 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 			for (int i = 0; i < iNumVertex; i++)
 			{
 				pSkindata->m_VertexList[iIndex[i]].m_IndexList.push_back(iMatrixIndex);
-				pSkindata->m_VertexList[iIndex[i]].m_WegihtList.push_back(pWeight[i]);
+				pSkindata->m_VertexList[iIndex[i]].m_WeightList.push_back(pWeight[i]);
 				//iIndex[i] 정점은  iMatrixIndex행렬이 pWeight[i]=1 가중치로 영향을 미친다.				
 			}
 		}
@@ -77,7 +104,7 @@ void	KFbxObj::ParseAnimation()
 		ParseAnimStack(AnimStackNameArray.GetAt(iStack));
 	}
 }
-	// Get Animation Data All Mesh Parse except Camera, Light 
+// Get Animation Data All Mesh Parse except Camera, Light 
 void	KFbxObj::ParseAnimationNode(FbxNode* pNode,
 	KMesh* pMesh)
 {
