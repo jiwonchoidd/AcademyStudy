@@ -71,7 +71,7 @@ public:
 	ID3D11Buffer*			m_pAnimCB;
 	ID3D11Buffer*			m_pIWVertrexBuffer;
 	//정점당 가중치 인덱스 4개씩 쉐이더에 넣기 위함 
-	vector<PNCTIW_VERTEX>	m_WeightList;
+	vector<PNCTIW_VERTEX>	m_iwList;
 	FbxNode* m_pFbxNode;
 
 	KMesh* m_pParent; // 부모

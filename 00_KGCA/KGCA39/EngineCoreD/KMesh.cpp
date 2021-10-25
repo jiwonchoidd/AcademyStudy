@@ -26,11 +26,11 @@ HRESULT KMesh::CreateVertexBuffer()
 	D3D11_BUFFER_DESC bd;
 	D3D11_SUBRESOURCE_DATA data;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-	bd.ByteWidth = sizeof(PNCTIW_VERTEX) * m_WeightList.size();
+	bd.ByteWidth = sizeof(PNCTIW_VERTEX) * m_iwList.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
-	data.pSysMem = &m_WeightList.at(0);
+	data.pSysMem = &m_iwList.at(0);
 	hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pIWVertrexBuffer);
 	if (FAILED(hr)) return hr;
 	return hr;

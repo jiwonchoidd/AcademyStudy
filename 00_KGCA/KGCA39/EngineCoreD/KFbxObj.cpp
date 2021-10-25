@@ -559,12 +559,12 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					{
 						//ÇÙ½É 
 						pMesh->m_pSubMesh[iSubMtrlIndex]->m_pVertexList.push_back(vertex);
-						pMesh->m_pSubMesh[iSubMtrlIndex]->m_WeightList.push_back(iwVertex);
+						pMesh->m_pSubMesh[iSubMtrlIndex]->m_iwList.push_back(iwVertex);
 					}
 					else
 					{
 						pMesh->m_pVertexList.push_back(vertex);
-						pMesh->m_WeightList.push_back(iwVertex);
+						pMesh->m_iwList.push_back(iwVertex);
 					}
 				}
 			}
