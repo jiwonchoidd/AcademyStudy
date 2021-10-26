@@ -3,15 +3,13 @@
 #include <algorithm>
 bool Compare(const pair<float, int>& a, const pair<float, int>& b)
 {
-	if (a.first == b.first)
-		return a.second > b.second;
 	return a.first > b.first;
 }
 bool KFbxObj::Frame()
 {
 	if (m_bAnimPlay)
 	{
-		m_fElpaseTime += 2.0f * g_fSecPerFrame;
+		m_fElpaseTime += 1.0f * g_fSecPerFrame;
 		m_iAnimIndex = m_fElpaseTime * 30.0f;
 		if (m_fEndTime < m_fElpaseTime)
 		{
@@ -20,26 +18,19 @@ bool KFbxObj::Frame()
 			//m_bAnimPlay = false;
 		}
 	}
-	for (int iObj = 0; iObj < m_pMeshList.size(); iObj++)
-	{
-		KMesh* pMesh = m_pMeshList[iObj];
-		m_matAnimMatrix.matAnimation[iObj] =
-			m_matBindPoseList[iObj] *
-			pMesh->m_AnimationTrack[m_iAnimIndex];
-	}
+
 	return true;
 }
 //재귀호출.
-void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
+void      KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 {
 	// 카메라나 라이트 등 매쉬가 아니라면 리턴
 	if (pNode->GetCamera() || pNode->GetLight())
 	{
 		return;
 	}
-	//전체 다 매쉬로
+	//전체 다 매쉬로 매쉬에 노드를 물려준다.
 	KMesh* pMesh = new KMesh;
-	//매쉬에 노드를 물려준다.
 	pMesh->m_pFbxNode = pNode;
 	pMesh->m_szName = TBASIS::mtw(pNode->GetName());
 	KMatrix matParent;
@@ -53,8 +44,6 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 	//각 매쉬의 월드행렬은 부모를 더해지기 때문에 부모 매개변수로 넣음
 	pMesh->m_matWorld = ParseTransform(pNode, matParent);
 
-
-	//매쉬라면 기하타입 //본 타입은 행렬만 가지고 있음
 	if (pNode->GetMesh())
 	{
 		ParseMesh(pNode, pMesh);
@@ -65,6 +54,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 		pMesh->m_ClassType = CLASS_BONE;
 	}
 	m_pMeshList.push_back(pMesh);
+
 	int iNumChild = pNode->GetChildCount();
 	for (int iNode = 0; iNode < iNumChild; iNode++)
 	{
@@ -74,7 +64,7 @@ void	KFbxObj::ParseNode(FbxNode* pNode, KMesh* pParentMesh)
 }
 KMatrix   KFbxObj::ParseTransform(FbxNode* pNode, KMatrix& matParent)
 {
-	//// TODO : 월드행렬
+	// TODO : 월드행렬
 	//월드행렬에 지오매트리까지 곱해야 월드 행렬 나중에 애니메이션를 고려해서
 	//나중에 지오매트릭행렬을 곱한다.
 	//로컬좌표 곱하기 부모 좌표
@@ -86,6 +76,7 @@ KMatrix   KFbxObj::ParseTransform(FbxNode* pNode, KMatrix& matParent)
 	KMatrix matWorld = matLocal * matParent;
 	return matWorld;
 }
+
 void	KFbxObj::SetMatrix(
 	KMatrix* pMatWorld,
 	KMatrix* pMatView, KMatrix* pMatProj)
@@ -104,7 +95,6 @@ void	KFbxObj::SetMatrix(
 	}
 }
 
-//dx는 행단위 우선 저장 max는 열단위 우선저장 그리고 축도 다르기 때문에 컨버팅 변환해준다  
 KMatrix     KFbxObj::DxConvertMatrix(KMatrix m)
 {
 	KMatrix mat;
@@ -116,7 +106,7 @@ KMatrix     KFbxObj::DxConvertMatrix(KMatrix m)
 	mat._44 = 1.0f;
 	return mat;
 }
-//복사
+//복사, 변환
 KMatrix     KFbxObj::ConvertMatrix(FbxMatrix& m)
 {
 	KMatrix mat;
@@ -140,15 +130,15 @@ KMatrix     KFbxObj::ConvertAMatrix(FbxAMatrix& m)
 	}
 	return mat;
 }
-void KFbxObj::LoadMaterial(KMtrl* pMtrl)
+void		KFbxObj::LoadMaterial(KMtrl* pMtrl)
 {
 	//서브 메터리얼일때와 루트 메터리얼 하나 있을때 구분함
 	if (pMtrl == nullptr) return;
 	if (pMtrl->m_pSubMtrl.size() > 0)
 	{
-		//서브 매트리얼 크기 만큼 포문 돌림
 		for (int iSub = 0; iSub < pMtrl->m_pSubMtrl.size(); iSub++)
 		{
+			//서브 매트리얼 크기 만큼 포문 돌림
 			KMtrl* pSubMtrl = pMtrl->m_pSubMtrl[iSub];
 			FbxSurfaceMaterial* pFbxMaterial = pSubMtrl->m_pFbxSurfaceMtrl;
 			FbxProperty prop = pFbxMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -168,10 +158,11 @@ void KFbxObj::LoadMaterial(KMtrl* pMtrl)
 					char Dir[MAX_PATH] = { 0, };
 					char FName[MAX_PATH] = { 0, };
 					char Ext[MAX_PATH] = { 0, };
+
 					//tga파일 지원하지 않아서 확장자 호환
 					if (fileTexture->GetFileName())
 					{
-						_splitpath_s(fileTexture->GetFileName(), Drive, Dir, FName, Ext);
+						_splitpath(fileTexture->GetFileName(), Drive, Dir, FName, Ext);
 						Ext[4] = 0;
 						szFileName = FName;
 						if (_stricmp(Ext, ".tga") == 0)
@@ -196,6 +187,7 @@ void KFbxObj::LoadMaterial(KMtrl* pMtrl)
 	else
 	{
 		//매터리얼의 첫번째 주소값을 받아옴 
+		//FbxSurfaceMaterial* pFbxSurfaceMtrl = pMtrl->m_pFbxSurfaceMtrl;
 		FbxSurfaceMaterial* pFbxMaterial = pMtrl->m_pFbxNode->GetMaterial(0);
 		//디퓨즈인 속성을 prop에 저장
 		FbxProperty prop = pFbxMaterial->FindProperty(FbxSurfaceMaterial::sDiffuse);
@@ -215,7 +207,7 @@ void KFbxObj::LoadMaterial(KMtrl* pMtrl)
 				char Ext[MAX_PATH] = { 0, };
 				if (fileTexture->GetFileName())
 				{
-					_splitpath_s(fileTexture->GetFileName(), Drive, Dir, FName, Ext);
+					_splitpath(fileTexture->GetFileName(), Drive, Dir, FName, Ext);
 					Ext[4] = 0;
 					szFileName = FName;
 					if (_stricmp(Ext, ".tga") == 0)
@@ -236,6 +228,7 @@ void KFbxObj::LoadMaterial(KMtrl* pMtrl)
 		}
 	}
 }
+//todo: 수정
 bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 {
 	// 서브메터리얼 존재할때 각각 렌더하거나 루트메터리얼 하나일때 렌더하는 방식
@@ -245,15 +238,16 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 		//본타입 같이 지오매트릭 타입이 아니라면 렌더 대상이 아니다.
 		if (pMesh->m_ClassType != CLASS_GEOM) continue;
 
-		for (int iBone = 0; iBone < pMesh->m_iBoneList.size(); iBone++)
-		{
-			int iIndex = pMesh->m_iBoneList[iBone];
-			pMesh->m_matAnimMatrix.matAnimation[iBone] =
-				m_matAnimMatrix.matAnimation[iIndex];
-			pMesh->m_matAnimMatrix.matAnimation[iBone] =
-				pMesh->m_matAnimMatrix.matAnimation[iBone].Transpose();
-		}
+		D3DKMatrixTranspose(&pMesh->m_matAnimMatrix.matAnimation[0],
+			&pMesh->m_AnimationTrack[m_iAnimIndex]);
 
+		for (int iBone = 0; iBone < pMesh->m_matBindPoseList.size(); iBone++)
+		{
+			KMatrix matAnim = pMesh->m_matBindPoseList[iBone] *
+				pMesh->m_pMeshLinkList[iBone]->m_AnimationTrack[m_iAnimIndex];
+			D3DKMatrixTranspose(&pMesh->m_matAnimMatrix.matAnimation[iBone],
+				&matAnim);
+		}
 		KMtrl* pMtrl = nullptr;
 		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -265,11 +259,21 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				if (pMesh->m_pSubMesh[iSub]->m_pVertexList.size() <= 0) continue;
 				KMtrl* pSubMtrl =
 					m_pFbxMaterialList[pMesh->m_iMtrlRef]->m_pSubMtrl[iSub];
-				pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
-				pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
-				//행렬 적용 구간
-				pMesh->m_pSubMesh[iSub]->SetMatrix(
-					nullptr,
+				if (pSubMtrl->m_Texture.m_pTextureSRV != nullptr)
+				{
+					pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
+					pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
+				}
+
+				// 캐릭터는 대부분 메터리얼 하나일것 스키닝도 서브메터리얼 사용 가능함. 
+				D3DKMatrixTranspose(&pMesh->m_pSubMesh[iSub]->m_matAnimMatrix.matAnimation[0],
+					&pMesh->m_AnimationTrack[m_iAnimIndex]);
+				for (int iBone = 0; iBone < pMesh->m_matBindPoseList.size(); iBone++)
+				{
+					pMesh->m_pSubMesh[iSub]->m_matAnimMatrix.matAnimation[iBone]
+						= pMesh->m_matAnimMatrix.matAnimation[iBone];
+				}
+				pMesh->m_pSubMesh[iSub]->SetMatrix(&m_matWorld,
 					&m_cbData.matView, &m_cbData.matProj);
 				pMesh->m_pSubMesh[iSub]->Render(pContext);
 			}
@@ -282,13 +286,13 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 			}
 			if (pMtrl != nullptr)
 			{
-				//샘플러는 텍스쳐마다 필요한건 아닌데 나중에 최적화부분이 필요함
-				pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
-				pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
+				if (pMtrl->m_Texture.m_pTextureSRV != nullptr)
+				{
+					pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
+					pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
+				}
 			}
-			//pMesh->SetMatrix(&pMesh->m_matWorld, &m_cbData.matView, &m_cbData.matProj);
-			pMesh->SetMatrix(nullptr,
-				&m_cbData.matView, &m_cbData.matProj);
+			pMesh->SetMatrix(&m_matWorld, &m_cbData.matView, &m_cbData.matProj);
 			pMesh->Render(pContext);
 		}
 	}
@@ -305,7 +309,6 @@ int     KFbxObj::GetRootMtrl(FbxSurfaceMaterial* pFbxMaterial)
 	}
 	return -1;
 }
-
 //매쉬 해석 버텍스를 가진 기하 타입을 pnct_vertex를 채워줘서 vertexlist를 pushback
 void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 {
@@ -313,29 +316,29 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 	FbxSurfaceMaterial* pFbxMaterial = pNode->GetMaterial(0);
 	pMesh->m_iMtrlRef = GetRootMtrl(pFbxMaterial);
 
-	string name = pNode->GetName();
+	std::string name = pNode->GetName();
 	FbxMesh* pFbxMesh = pNode->GetMesh();
-	vector<string> fbxFileTexList;
-
+	std::vector< std::string> fbxFileTexList;
 	if (pFbxMesh != nullptr)
 	{
 		int iNumCP = pFbxMesh->GetControlPointsCount();
+		// 스키닝 오브젝트 여부?
 		// pFbxMesh에 영향을 미치는 행렬(노드)에 전체 개수?
 		// 행렬[0]=FbxNode ~ 행렬[3] = 4개
 		// 정점[0]->인덱스[1]		// 		
 		KSkinData skindata;
 		bool bSkinnedMesh = ParseMeshSkinning(pFbxMesh, pMesh, &skindata);
-		_ASSERT(skindata.m_VertexList.size() == iNumCP);
-		//
 		if (bSkinnedMesh)
 		{
+			_ASSERT(skindata.m_VertexList.size() == iNumCP);
 			for (int i = 0; i < skindata.m_VertexList.size(); i++)
 			{
-				vector<pair<float, int>> list;
+				std::vector<std::pair<float, int>> list;
 				for (int j = 0; j <
 					skindata.m_VertexList[i].m_IndexList.size();
 					j++)
 				{
+					//Pair 정렬을 위한 리스트
 					list.push_back(std::make_pair(
 						skindata.m_VertexList[i].m_WeightList[j],
 						skindata.m_VertexList[i].m_IndexList[j]));
@@ -383,13 +386,13 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 		//우리가 읽어들인 정점은 리스트에서 그냥 그대로 가져온 정점
 		//월드좌표에다가 월드 행렬을 곱해지는 결과가 나옴 */
 	// TODO : 기하행렬
-		FbxAMatrix matGeo;
+		FbxAMatrix matGeom;
 		FbxVector4 rot = pNode->GetGeometricRotation(FbxNode::eSourcePivot);
 		FbxVector4 trans = pNode->GetGeometricTranslation(FbxNode::eSourcePivot);
 		FbxVector4 scale = pNode->GetGeometricScaling(FbxNode::eSourcePivot);
-		matGeo.SetT(trans);
-		matGeo.SetR(rot);
-		matGeo.SetS(scale);
+		matGeom.SetT(trans);
+		matGeom.SetR(rot);
+		matGeom.SetS(scale);
 
 		int m_iNumPolygon = pFbxMesh->GetPolygonCount();
 		// 정점리스트 주소
@@ -426,7 +429,6 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 				{
 					switch (fbxSubMaterial->GetReferenceMode())
 					{
-						//배열에 직접넣었나
 					case FbxLayerElement::eDirect:
 					{
 						iSubMtrlIndex = iPoly;
@@ -436,7 +438,6 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					{
 						iSubMtrlIndex =
 							fbxSubMaterial->GetIndexArray().GetAt(iPoly);
-						//리스트
 					}break;
 					}
 				}break;
@@ -448,30 +449,22 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 			}
 			if (iSubMtrlIndex < 0 || iSubMtrlIndex >= iNumFbxMaterial)
 			{
-
+				int kk = 0;
 			}
 			// 삼각형, 사각형
 			int iPolySize = pFbxMesh->GetPolygonSize(iPoly);
 			int m_iNumTriangle = iPolySize - 2;
 			int iVertexIndex[3];
-			for (int iTriangle = 0; iTriangle < m_iNumTriangle;
-				iTriangle++)
+			for (int iTriangle = 0; iTriangle < m_iNumTriangle; iTriangle++)
 			{
 				// 위치 인덱스 yz 좌표 바꿔서 넣어야함
 				iVertexIndex[0] = pFbxMesh->GetPolygonVertex(iPoly, 0);
 				iVertexIndex[1] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 2);
 				iVertexIndex[2] = pFbxMesh->GetPolygonVertex(iPoly, iTriangle + 1);
-				// UV 인덱스 yz 좌표 바꿔서 넣어야함
-				// UV
-				int uvIndex[3];
-				uvIndex[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
-				uvIndex[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
-				uvIndex[2] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 1);
 
-				for (int iIndex = 0;
-					iIndex < 3;
-					iIndex++)
+				for (int iIndex = 0; iIndex < 3; iIndex++)
 				{
+					//TODO : UV때문에 안나왔다고??? 나중에 확인해봐야겠다...
 					PNCT_VERTEX vertex;
 					PNCTIW_VERTEX iwVertex;
 					//안전빵 제로 메모리..
@@ -480,13 +473,14 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					FbxVector4 pos = pVertexPositions[iVertexIndex[iIndex]];
 					//열우선방식의 행열 곱하기 정점.
 					//나중에 애니메이션를 위해 기하좌표는 나중에 곱해줌
-					FbxVector4 vPos = matGeo.MultT(pos);
+					FbxVector4 vPos = matGeom.MultT(pos);
 					vertex.pos.x = vPos.mData[0];
 					vertex.pos.y = vPos.mData[2];
 					vertex.pos.z = vPos.mData[1];
 					if (VertexUVList != nullptr)
 					{
 						// UV 인덱스
+						// UV 인덱스 yz 좌표 바꿔서 넣어야함
 						int uvIndex[3];
 						uvIndex[0] = pFbxMesh->GetTextureUVIndex(iPoly, 0);
 						uvIndex[1] = pFbxMesh->GetTextureUVIndex(iPoly, iTriangle + 2);
@@ -529,12 +523,10 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					}
 					// 인덱스 및 가중치 저장
 					int iRealIndex = iVertexIndex[iIndex];
-
 					if (bSkinnedMesh)
 					{
 						int iNum =
 							skindata.m_VertexList[iRealIndex].m_IndexList.size();
-						//최소값 4 이하는 그냥 짤라버림
 						for (int i = 0; i < min(iNum, 4); i++)
 						{
 							iwVertex.index[i] =
@@ -549,7 +541,7 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 						//0번의 인덱스는 자기자신의 월드행렬이 곱해진다.
 						iwVertex.index[0] = 0;
 						iwVertex.weight[0] = 1.0f;
-						for (int i = 0; i < 4; i++)
+						for (int i = 1; i < 4; i++)
 						{
 							iwVertex.index[i] = 0;
 							iwVertex.weight[i] = 0.0f;
@@ -557,7 +549,6 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					}
 					if (iNumFbxMaterial > 1)
 					{
-						//핵심 
 						pMesh->m_pSubMesh[iSubMtrlIndex]->m_pVertexList.push_back(vertex);
 						pMesh->m_pSubMesh[iSubMtrlIndex]->m_iwList.push_back(iwVertex);
 					}
@@ -568,17 +559,14 @@ void	KFbxObj::ParseMesh(FbxNode* pNode, KMesh* pMesh)
 					}
 				}
 			}
-			//폴리 인덱스가 계속 추가되는 것
 			iBasePolyIndex += iPolySize;
 		}
 	}
 }
 void	KFbxObj::PreProcess(FbxNode* pNode)
 {
-	if (pNode->GetCamera() || pNode->GetLight())
-	{
-		return;
-	}
+	if (pNode && (pNode->GetCamera() || pNode->GetLight())) { return; }
+	m_pFbxNodeList.push_back(pNode);
 	// pNode 정보 얻기
 	int iNumFbxMaterial = pNode->GetMaterialCount();
 	FbxSurfaceMaterial* pFbxMaterial = pNode->GetMaterial(0);
@@ -611,66 +599,56 @@ void	KFbxObj::PreProcess(FbxNode* pNode)
 	for (int iNode = 0; iNode < iNumChild; iNode++)
 	{
 		FbxNode* pChildNode = pNode->GetChild(iNode);
-		FbxNodeAttribute::EType type = pChildNode->GetNodeAttribute()->GetAttributeType();
-		//무조건 속성이 있다면 넣어준다.
-		if (pChildNode->GetNodeAttribute() != nullptr)
-		{
-			m_pFbxNodeList.push_back(pChildNode);
-			m_matBindPoseList.push_back(KMatrix());
-		}
 		PreProcess(pChildNode);
 	}
 }
-//파일이름을 인자로 받아 오브젝트 import
-bool	KFbxObj::LoadObject(string filename, string shadername)
+//파일이름, 쉐이더 인자로 받아 오브젝트 import
+bool	KFbxObj::LoadObject(std::string filename, std::string shaderName)
 {
-	//fbx 로더 설정
-	//매니저 static
+	//fbx 로더 설정 fbx매니저 static으로 구성되어있음
 	m_pFbxManager = FbxManager::Create();
 	m_pFbxImporter = FbxImporter::Create(m_pFbxManager, "");
 	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");
-	bool bRet = m_pFbxImporter->Initialize(filename.c_str());//디폴트값이 있음
+	bool bRet = m_pFbxImporter->Initialize(filename.c_str());//디폴트값이 있음 안해도됨
 	bRet = m_pFbxImporter->Import(m_pFbxScene);//씬에다가 저장해라
-	//축 시스템은 마야Z축버젼으로 설정함
-	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene);
+	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene);//축 시스템은 마야Z축버젼으로 설정함
 
 	FbxNode* m_pRootNode = m_pFbxScene->GetRootNode();// 루트노드 가져와서
-	m_pFbxNodeList.push_back(m_pRootNode);//71개 갯수 맞추기 위해 루트까지 넣어줌
-	KMatrix matWorld;
-	m_matBindPoseList.push_back(matWorld);
 	PreProcess(m_pRootNode);// 이 안에 원하는게 다있기 때문에 전체 노드트리 순환
-
-	// todo : 중복처리 미작업
+		//PreProcess로 FBXNODELIST에 모든 FBX 정보 받아옴
 	//preprecess로 채워준 매터리얼 리스트로 매터리얼 로드함
 	for (int iMtrl = 0; iMtrl < m_pFbxMaterialList.size(); iMtrl++)
 	{
 		KMtrl* pMtrl = m_pFbxMaterialList[iMtrl];
 		LoadMaterial(pMtrl);
 	}
-	//애니메이션 끝 시작 몇 프레임인지 계산
-	ParseAnimation();
-	//노드 해석 오브젝트 상속구조를 파악해 meshlist에 넣어준다.
-	ParseNode(m_pRootNode, nullptr);
-	//모든 오브젝트를 돌면서 애니메이션 데이터 가져온다.
-	ParseAnimationNode(nullptr, nullptr);
-	//ParseAnimationNode(pNode, pMesh);
 
+	ParseAnimation();//애니메이션 끝 시작 몇 프레임인지 계산
+	ParseNode(m_pRootNode, nullptr);//노드 해석 오브젝트 상속구조를 파악해 meshlist에 넣어준다.
+	ParseAnimationNode();//모든 오브젝트를 돌면서 애니메이션 데이터 가져온다.
+	//ParseAnimationNode(pNode, pMesh);
 	for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
 	{
 		KMesh* pMesh = m_pMeshList[iMesh];
-		//서브 매터리얼 있을때 각각 모델 만듬
+		for (int iBone = 0; iBone < pMesh->m_pFbxNodeList.size(); iBone++)
+		{
+			KMesh* pLinkMesh = GetFindIndex(pMesh->m_pFbxNodeList[iBone]);
+			pMesh->m_pMeshLinkList.push_back(pLinkMesh);
+		}
 		if (pMesh->m_pSubMesh.size() > 0)
 		{
 			for (int iSubMesh = 0; iSubMesh < m_pMeshList[iMesh]->m_pSubMesh.size(); iSubMesh++)
 			{
 				KMesh* pSubMesh = m_pMeshList[iMesh]->m_pSubMesh[iSubMesh];
 				// todo : 쉐이더 등등 중복처리 미작업
-				pSubMesh->CreateModel(TBASIS::mtw(shadername), TBASIS::mtw(shadername));
+				pSubMesh->CreateModel(TBASIS::mtw(shaderName),
+					TBASIS::mtw(shaderName));
 			}
 		}
 		else
 		{
-			pMesh->CreateModel(TBASIS::mtw(shadername), TBASIS::mtw(shadername));
+			pMesh->CreateModel(TBASIS::mtw(shaderName),
+				TBASIS::mtw(shaderName));
 		}
 	}
 	m_pFbxScene->Destroy();

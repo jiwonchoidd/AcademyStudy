@@ -52,10 +52,9 @@ struct KSkinData
 	//정점당 가중치, 인덱스
 	std::vector<KWeight>   m_VertexList;
 };
-//상속받은 PNCT
-struct PNCTIW_VERTEX : public PNCT_VERTEX
+struct PNCTIW_VERTEX
 {
-	float   index[4];
+	float   index[4]; 
 	float   weight[4];
 };
 struct KAnimMatrix
@@ -66,15 +65,18 @@ class KMesh :public KModel
 {
 public:
 	//인덱스 정렬된
-	vector<int>				m_iBoneList;
+	vector<FbxNode*>		m_pFbxNodeList;
+	vector<KMatrix>			m_matBindPoseList;
+	vector<KMesh*>			m_pMeshLinkList;
+
 	KAnimMatrix				m_matAnimMatrix;
-	ID3D11Buffer*			m_pAnimCB;
-	ID3D11Buffer*			m_pIWVertrexBuffer;
+	ID3D11Buffer*			m_pAnimCB = nullptr;
+	ID3D11Buffer*			m_pIWVertrexBuffer=nullptr;
 	//정점당 가중치 인덱스 4개씩 쉐이더에 넣기 위함 
 	vector<PNCTIW_VERTEX>	m_iwList;
-	FbxNode* m_pFbxNode;
+	FbxNode* m_pFbxNode = nullptr;
 
-	KMesh* m_pParent; // 부모
+	KMesh* m_pParent = nullptr; // 부모
 	wstring				m_szName;
 	wstring				m_szParentName;
 	OBJECTCLASSTYPE     m_ClassType;
@@ -90,22 +92,9 @@ public:
 	virtual HRESULT		CreateConstantBuffer()override;
 	virtual HRESULT		CreateVertexBuffer()override;
 	virtual bool		PreRender(ID3D11DeviceContext* pContext)override;
-	bool Release() override
-	{
-		//부모 해제
-		KModel::Release();
-		for (auto data : m_pSubMesh)
-		{
-			data->Release();
-			delete data;
-		}
-		SAFE_RELEASE(m_pIWVertrexBuffer);
-		return true;
-	}
-	KMesh()
-	{
-		m_ClassType = CLASS_GEOM;
-		m_iMtrlRef = -1;
-	}
+	bool Release() override;
+public:
+	KMesh();
+	virtual ~KMesh();
 };
 

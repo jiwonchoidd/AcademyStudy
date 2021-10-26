@@ -1,5 +1,5 @@
 #include "KDevice.h"
-ID3D11Device* g_pd3dDevice;		// 디바이스 객체
+ID3D11Device* g_pd3dDevice=nullptr;		// 디바이스 객체
 bool	KDevice::SetDevice()
 {
 	HRESULT hr;
@@ -80,7 +80,6 @@ HRESULT KDevice::CreateSwapChain(HWND hWnd, UINT iWidth, UINT iHeight)
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = true;
 	//sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
-
 	hr = m_pGIFactory->CreateSwapChain(
 		m_pd3dDevice, &sd, &m_pSwapChain);
 	return hr;

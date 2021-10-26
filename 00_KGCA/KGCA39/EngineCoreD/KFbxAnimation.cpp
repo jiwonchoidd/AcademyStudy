@@ -1,17 +1,19 @@
 #include "KFbxObj.h"
+
 //값에 맞는 인덱스로 바꿔준다.
-int  KFbxObj::GetFindIndex(FbxNode* pNode)
+KMesh* KFbxObj::GetFindIndex(FbxNode* pNode)
 {
-	for (int iNode = 0; iNode < m_pFbxNodeList.size(); iNode++)
+	for (int iNode = 0; iNode < m_pMeshList.size(); iNode++)
 	{
-		if (m_pFbxNodeList[iNode] == pNode)
+		KMesh* pMesh = m_pMeshList[iNode];
+		if (pMesh->m_pFbxNode == pNode)
 		{
-			return iNode;
+			return pMesh;
 		}
 	}
-	return -1;
+	return nullptr;
 }
-
+//호출되기전에 모든 매쉬가 등록이 되어 있어야한다.
 bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSkindata)
 {
 	int iNumDeformer = pFbxMesh->GetDeformerCount(FbxDeformer::eSkin);
@@ -28,41 +30,37 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 		FbxDeformer* pFbxDeformer = pFbxMesh->GetDeformer(iDeformer, FbxDeformer::eSkin);
 		//디포머를 스킨으로 캐스팅
 		FbxSkin* pSkin = (FbxSkin*)pFbxDeformer;
-		//특정 정점에 영향을 미치는 개수
-		int iNumCluster = pSkin->GetClusterCount();
 		// 영향을 미치는 행렬이 iNumCluster 있다.
+		int iNumCluster = pSkin->GetClusterCount();
+		pMesh->m_matBindPoseList.resize(iNumCluster);
 		for (int iCluster = 0; iCluster < iNumCluster; iCluster++)
 		{
 			//정점들이 원을 그리는데 일부의 정점만 포함되는 경우가 있을때
 			//클러스터 특정 정점에 영향을 미치는 행렬이 있는 구조체
 			FbxCluster* pCluster = pSkin->GetCluster(iCluster);
-
-			FbxAMatrix matXBindPose;
-			pCluster->GetTransformLinkMatrix(matXBindPose);
-			FbxAMatrix matInitPostion;
-			pCluster->GetTransformMatrix(matInitPostion);
-			FbxAMatrix matBoneBindPos = matInitPostion.Inverse() *
-				matXBindPose;
-			KMatrix matBinePos = DxConvertMatrix(ConvertAMatrix(matBoneBindPos));
-			// 영향을 미치는 행렬이 iClusterSize 정점에 영향을 미친다.
 			int iNumVertex = pCluster->GetControlPointIndicesCount();
 
-			FbxNode* pLinkNode = pCluster->GetLink();
-			pSkindata->m_MatrixList.push_back(pLinkNode);
-			int iBone = GetFindIndex(pLinkNode);
-			_ASSERT(iBone >= 0);
-			pMesh->m_iBoneList.push_back(iBone);
+			//Tpose 만드는 행렬
+			//초기 위치값 행렬
+			FbxAMatrix matXBindPose, matInitPostion;
+			pCluster->GetTransformLinkMatrix(matXBindPose);
+			pCluster->GetTransformMatrix(matInitPostion);
+			FbxAMatrix matBoneBindPos = matInitPostion.Inverse() * matXBindPose;
+			KMatrix matBinePos = DxConvertMatrix(ConvertAMatrix(matBoneBindPos));
+			// 영향을 미치는 행렬이 iClusterSize 정점에 영향을 미친다.
 			D3DKMatrixInverse(&matBinePos, NULL, &matBinePos);
-			m_matBindPoseList[iBone] = matBinePos;
+			//이것만 상수버퍼를 넘겨줘도 되는것..
+			pMesh->m_matBindPoseList[iCluster] = matBinePos;
 
-			int iMatrixIndex = pSkindata->m_MatrixList.size() - 1;
+			FbxNode* pLinkNode = pCluster->GetLink();
+			pMesh->m_pFbxNodeList.push_back(pLinkNode);
 			//ControlPoint(제어점) 정점리스트
 			int* iIndex = pCluster->GetControlPointIndices();
 			// 가중치리스트
 			double* pWeight = pCluster->GetControlPointWeights();
 			for (int i = 0; i < iNumVertex; i++)
 			{
-				pSkindata->m_VertexList[iIndex[i]].m_IndexList.push_back(iMatrixIndex);
+				pSkindata->m_VertexList[iIndex[i]].m_IndexList.push_back(iCluster);
 				pSkindata->m_VertexList[iIndex[i]].m_WeightList.push_back(pWeight[i]);
 				//iIndex[i] 정점은  iMatrixIndex행렬이 pWeight[i]=1 가중치로 영향을 미친다.				
 			}
@@ -72,6 +70,9 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 }
 void    KFbxObj::ParseAnimStack(FbxString* szData)
 {
+	//설마 이거?
+	m_pFbxScene->GetAnimationEvaluator()->Reset();
+
 	FbxTakeInfo* pTakeInfo = m_pFbxScene->GetTakeInfo(*szData);
 	FbxTime FrameTime;
 	FrameTime.SetTime(0, 0, 0, 1, 0,
@@ -82,11 +83,13 @@ void    KFbxObj::ParseAnimStack(FbxString* szData)
 	//읽어진 info가 있을 경우에 로컬 타임을 넣음
 	if (pTakeInfo)
 	{
+		//first last frame 시간으로 환산해서 시간으로 분리하게 함 
 		m_fStartTime = (float)pTakeInfo->mLocalTimeSpan.GetStart().GetSecondDouble();
 		m_fEndTime = (float)pTakeInfo->mLocalTimeSpan.GetStop().GetSecondDouble();
 	}
 	else
 	{
+		//디자이너가 설정 안건드렸을경우 디폴트 값
 		FbxTimeSpan tlTimeSpan;
 		m_pFbxScene->GetGlobalSettings().GetTimelineDefaultTimeSpan(tlTimeSpan);
 		m_fStartTime = (float)tlTimeSpan.GetStart().GetSecondDouble();
@@ -94,6 +97,7 @@ void    KFbxObj::ParseAnimStack(FbxString* szData)
 	}
 }
 // Parse Animation Total Frame, Begin, End
+//샘플링 방식의 애니메이션 우리는 선형 보간, 맥스는 곡선보간
 void	KFbxObj::ParseAnimation()
 {
 	FbxArray<FbxString*> AnimStackNameArray;
@@ -105,8 +109,7 @@ void	KFbxObj::ParseAnimation()
 	}
 }
 // Get Animation Data All Mesh Parse except Camera, Light 
-void	KFbxObj::ParseAnimationNode(FbxNode* pNode,
-	KMesh* pMesh)
+void	KFbxObj::ParseAnimationNode()
 {
 	//애니메이션 데이터 저장
 	FbxAnimEvaluator* pAnim = m_pFbxScene->GetAnimationEvaluator();
@@ -118,6 +121,7 @@ void	KFbxObj::ParseAnimationNode(FbxNode* pNode,
 		for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
 		{
 			KMesh* pMesh = m_pMeshList[iMesh];
+			//todo : 부모행렬을 제외해야하는 것?
 			FbxAMatrix matGlobal = pAnim->GetNodeGlobalTransform(pMesh->m_pFbxNode, time);
 			KMatrix matGlobaDX = DxConvertMatrix(ConvertAMatrix(matGlobal));
 			pMesh->m_AnimationTrack.push_back(matGlobaDX);
@@ -125,17 +129,3 @@ void	KFbxObj::ParseAnimationNode(FbxNode* pNode,
 		fCurrentTime += m_fSampleTime;
 	}
 }
-/*for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
-{
-	float fCurrentTime = m_fStartTime;
-	TMesh* pMesh = m_pMeshList[iMesh];
-	while (fCurrentTime < m_fEndTime)
-	{
-		FbxTime time;
-		time.SetSecondDouble(fCurrentTime);
-		FbxAMatrix matGlobal = pAnim->GetNodeGlobalTransform(pMesh->m_pFbxNode, time);
-		TMatrix matGlobaDX = DxConvertMatrix(ConvertAMatrix(matGlobal));
-		pMesh->m_AnimationTrack.push_back(matGlobaDX);
-		fCurrentTime += m_fSampleTime;
-	}
-}*/

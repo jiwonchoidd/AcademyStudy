@@ -22,7 +22,6 @@ HRESULT KMesh::CreateVertexBuffer()
 {
 	HRESULT hr = S_OK;
 	KModel::CreateVertexBuffer();
-
 	D3D11_BUFFER_DESC bd;
 	D3D11_SUBRESOURCE_DATA data;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
@@ -48,7 +47,6 @@ HRESULT KMesh::CreateVertexLayout()
 	//멀티 스트림
 		{ "INDEX",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 		{ "WEIGHT",   0, DXGI_FORMAT_R32G32B32A32_FLOAT, 1, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-
 	};
 	hr = g_pd3dDevice->CreateInputLayout(layout, _countof(layout),
 		m_pVSBlob->GetBufferPointer(),
@@ -79,4 +77,25 @@ bool KMesh::PreRender(ID3D11DeviceContext* pContext)
 	pContext->IASetIndexBuffer(m_pIndexBuffer,
 		DXGI_FORMAT_R32_UINT, 0);
 	return true;
+}
+
+bool KMesh::Release()
+{
+	KModel::Release();
+	for (auto data : m_pSubMesh)
+	{
+		data->Release();
+		SAFE_DEL(data);
+	}
+	SAFE_RELEASE(m_pIWVertrexBuffer);
+	SAFE_RELEASE(m_pAnimCB);
+	return true;
+}
+KMesh::KMesh()
+{
+	m_ClassType = CLASS_GEOM;
+	m_iMtrlRef = -1;
+}
+KMesh::~KMesh()
+{
 }

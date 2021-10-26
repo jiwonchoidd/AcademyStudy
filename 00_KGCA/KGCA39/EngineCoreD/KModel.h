@@ -55,8 +55,8 @@ struct CB_DATA
 class KModel 
 {
 public:
-	UINT				m_iNumIndex;
-	UINT				m_iVertexSize;
+	UINT				m_iNumIndex=0;
+	UINT				m_iVertexSize=0;
 	CB_DATA				m_cbData;
 	ID3DBlob*			m_pVSBlob = nullptr;
 	ID3D11Buffer*		m_pVertexBuffer;
@@ -67,8 +67,8 @@ public:
 	ID3D11PixelShader*	m_pPS;
 	//PNCT가 기본형이다.
 
-	std::vector< PNCT_VERTEX> m_pVertexList;
-	std::vector< DWORD> m_IndexList;
+	std::vector< PNCT_VERTEX>		m_pVertexList;
+	std::vector< DWORD>				m_IndexList;
 public:
 	KMatrix		m_matWorld;
 public:

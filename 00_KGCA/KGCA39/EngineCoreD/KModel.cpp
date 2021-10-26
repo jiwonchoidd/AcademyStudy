@@ -50,12 +50,13 @@ bool  KModel::LoadObject(std::wstring filename)
 }
 KModel::KModel()
 {
-    m_pVertexBuffer = nullptr;
-    m_pVertexLayout = nullptr;
-    m_pIndexBuffer = nullptr;
-    m_pConstantBuffer = nullptr;
-    m_pVS = nullptr;
-    m_pPS = nullptr;
+    SAFE_ZERO(m_pVertexBuffer);
+    SAFE_ZERO(m_pIndexBuffer);
+    SAFE_ZERO(m_pVertexLayout);
+    SAFE_ZERO(m_pConstantBuffer);
+    SAFE_ZERO(m_pVS);
+    SAFE_ZERO(m_pPS);
+    m_iVertexSize = sizeof(PNCT_VERTEX);
     m_iNumIndex = 0;
 }
 HRESULT KModel::CreateConstantBuffer()
@@ -79,7 +80,7 @@ HRESULT KModel::CreateVertexBuffer()
     if (m_pVertexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-    bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pVertexList.size();
+    bd.ByteWidth = m_iVertexSize * m_pVertexList.size();
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     D3D11_SUBRESOURCE_DATA data;
@@ -200,23 +201,23 @@ bool KModel::Init()
 bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
 {
     //조건 변경
-    CreateConstantBuffer();
-
     if (CreateVertexData())
     {
         CreateVertexBuffer();
-    }
-    if (CreateIndexData())
-    {
-        CreateIndexBuffer();
-    }
-    if (SUCCEEDED(LoadShader(vsFile, psFile)))
-    {
-        if (SUCCEEDED(CreateVertexLayout()))
+        if (CreateIndexData())
         {
-            return true;
+            CreateIndexBuffer();
+        }
+        if (SUCCEEDED(LoadShader(vsFile, psFile)))
+        {
+            if (SUCCEEDED(CreateVertexLayout()))
+            {
+                CreateConstantBuffer();
+                return true;
+            }
         }
     }
+
     return false;
 }
 
@@ -243,7 +244,7 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
     pContext->VSSetShader(m_pVS, NULL, 0);
     pContext->PSSetShader(m_pPS, NULL, 0);
     pContext->IASetInputLayout(m_pVertexLayout);
-    UINT pStrides = sizeof(PNCT_VERTEX);
+    UINT pStrides = m_iVertexSize;
     UINT pOffsets = 0;
     pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer,
         &pStrides, &pOffsets);
@@ -253,7 +254,7 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
 }
 bool KModel::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 {
-    if (m_IndexList.size() > 0)
+    if (iNumIndex > 0)
     {
         pContext->DrawIndexed(iNumIndex, 0, 0);
     }

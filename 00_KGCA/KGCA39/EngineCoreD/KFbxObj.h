@@ -11,6 +11,7 @@ class KFbxObj
 	FbxImporter* m_pFbxImporter;
 	FbxScene* m_pFbxScene;
 public:
+	KMatrix			m_matWorld;
 	KAnimMatrix     m_matAnimMatrix;
 	// todo:게임 오브젝트로 옮겨야함
 	bool	m_bAnimPlay = false;
@@ -23,10 +24,9 @@ public:
 	std::vector<FbxNode*>	m_pFbxNodeList;
 	std::vector<KMtrl*>		m_pFbxMaterialList;
 	std::vector<KMesh*>		m_pMeshList;
-	std::vector<KMatrix>	m_matBindPoseList;
 	CB_DATA					m_cbData;
 public:
-	int			GetFindIndex(FbxNode* pNode);
+	KMesh*		GetFindIndex(FbxNode* pNode);
 	bool		LoadObject(string filename, string shadername);
 	KMatrix     DxConvertMatrix(KMatrix m);
 	KMatrix     ConvertMatrix(FbxMatrix& m);
@@ -47,7 +47,7 @@ public:
 public:
 	void	ParseAnimStack(FbxString* szData);
 	void	ParseAnimation();
-	void	ParseAnimationNode(FbxNode* pNode, KMesh* pMesh);
+	void	ParseAnimationNode();
 	bool	ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSkindata);
 public:
 	FbxVector2  ReadTextureCoord(FbxMesh* pFbxMesh, DWORD dwVertexTextureCount, FbxLayerElementUV* pUVSet, int vertexIndex, int uvIndex);
