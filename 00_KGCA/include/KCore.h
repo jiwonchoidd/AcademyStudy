@@ -9,7 +9,6 @@
 #include "KFbxObj.h"
 #include "KTexture.h"
 #include "KRState.h"
-#include "KDepthStencil.h"
 class KCore : public KWindow
 {
 public:
@@ -20,7 +19,6 @@ public:
 	KRState			m_RState;
 	KFbxObj			m_KFbxObj;
 	KTexture		m_KTexture;
-	KDepthStencil	m_DepthSten;
 	bool			m_bDebugText = false;
 private:
 	bool	GameInit()	override;

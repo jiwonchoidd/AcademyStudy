@@ -2,6 +2,7 @@
 #include "KCore.h"
 class Sample : public KCore
 {
+	KVector3			m_MovePos;
 	KVector4			m_lightPos;
 	KPlane				m_Plane;
 	KFbxObj				m_FbxObjA;

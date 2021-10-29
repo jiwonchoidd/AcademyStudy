@@ -20,7 +20,6 @@ bool	KCore::GameInit()
     m_DebugCamera.Init();
 
     m_RState.Init();
-    m_DepthSten.Init(m_pImmediateContext, m_pRenderTargetView);
 
     m_DebugCamera.CreateViewMatrix(KVector3(0, 0, -30),KVector3(0, 0, 0));
     m_DebugCamera.CreateProjMatrix(1.0f,1000.0f, XM_PI * 0.5f,
@@ -42,7 +41,6 @@ bool	KCore::GameFrame()
     g_Input.Frame();
     m_Write.Frame();
     m_RState.Frame();
-    m_DepthSten.Frame();
     FrameCamera();
     if (g_Input.GetKey('1') == KEY_PUSH)
     {
@@ -96,7 +94,6 @@ bool	KCore::GameRelease()
     g_Input.Release();
     m_Write.Release();
     m_RState.Release();
-    m_DepthSten.Release();
     m_DebugCamera.Release();
     CleanupDevice();
     return true;
@@ -112,10 +109,14 @@ bool	KCore::Frame()
 }
 bool	KCore::PreRender() {
     float ClearColor[4] = { 0.1f, 0.15f, 0.15f, 1.0f }; //red,green,blue,alpha
-    m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+    m_pImmediateContext->ClearRenderTargetView(m_DefaultRT.m_pRenderTargetView,
+        ClearColor);
+    m_pImmediateContext->ClearDepthStencilView(m_DefaultDS.m_pDepthStenV,
+        D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
     m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    m_DepthSten.PreRender();
-
+    m_pImmediateContext->OMSetRenderTargets(1,&m_DefaultRT.m_pRenderTargetView,
+        m_DefaultDS.m_pDepthStenV);
+    m_pImmediateContext->OMSetDepthStencilState(m_DefaultDS.m_pDepthStenS, 0x01);
     return true;
 }
 bool	KCore::Render() 

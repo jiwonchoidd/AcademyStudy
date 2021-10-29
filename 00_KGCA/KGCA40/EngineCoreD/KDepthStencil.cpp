@@ -1,79 +1,69 @@
 #include "KDepthStencil.h"
 
-bool KDepthStencil::Init(ID3D11DeviceContext* context, ID3D11RenderTargetView* target)
+ID3D11Texture2D* KDepthStencil::CreateTexture(UINT Width, UINT Height)
 {
-	m_context = context;
-	m_target = target;
-	CreateDepthStenView();
-	CreateDepthStenState();
-	CreateBlendState();
-	return true;
-}
-
-bool KDepthStencil::Frame()
-{
-	return true;
-}
-
-bool KDepthStencil::PreRender()
-{
-	m_context->ClearDepthStencilView(
-		m_pDepthStenV,
-		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	return true;
-}
-
-bool KDepthStencil::Release()
-{
-	SAFE_RELEASE(m_pDepthStenV);
-	SAFE_RELEASE(m_pDepthStenS);
-	SAFE_RELEASE(m_pBlendState);
-	return true;
-}
-
-HRESULT KDepthStencil::CreateDepthStenView()
-{
-	//rc.right-rc.left,
-	//rc.bottom - rc.top,
 	HRESULT hr = S_OK;
-	//텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용 가상의 텍스쳐
-	ID3D11Texture2D* pTexture = nullptr;
-	D3D11_TEXTURE2D_DESC td;
-	td.Width = g_rtClient.right- g_rtClient.left;
-	td.Height = g_rtClient.bottom - g_rtClient.top;
-	td.MipLevels = 1;
-	td.ArraySize = 1;
-	td.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	td.Usage = D3D11_USAGE_DEFAULT;
-	td.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	td.CPUAccessFlags = 0;
-	td.MiscFlags = 0;
-	td.SampleDesc.Count = 1;
-	td.SampleDesc.Quality = 0;
-	hr = g_pd3dDevice->CreateTexture2D(&td, NULL, &pTexture);
+	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
+	ID3D11Texture2D* pDSTexture = nullptr;
+	D3D11_TEXTURE2D_DESC DescDepth;
+	DescDepth.Width = Width;
+	DescDepth.Height = Height;
+	DescDepth.MipLevels = 1;
+	DescDepth.ArraySize = 1;
+	DescDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+	DescDepth.SampleDesc.Count = 1;
+	DescDepth.SampleDesc.Quality = 0;
+	DescDepth.Usage = D3D11_USAGE_DEFAULT;
+
+	// 백 버퍼 깊이 및 스텐실 버퍼 생성
+	if (DescDepth.Format == DXGI_FORMAT_D24_UNORM_S8_UINT)
+		DescDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	else // 깊이맵 전용 깊이맵 생성
+		DescDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL | D3D11_BIND_SHADER_RESOURCE;
+	DescDepth.CPUAccessFlags = 0;
+	DescDepth.MiscFlags = 0;
+	if (FAILED(hr = g_pd3dDevice->CreateTexture2D(&DescDepth, NULL, &pDSTexture)))
+	{
+		return nullptr;
+	}
+	return pDSTexture;
+}
+
+HRESULT KDepthStencil::CreateDepthStencilView(UINT Width, UINT Height)
+{
+	HRESULT hr = S_OK;
+	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
+	m_pTexture = CreateTexture(Width, Height);
+	if (m_pTexture == nullptr)
+	{
+		return E_FAIL;
+	}
+	/*D3D11_SHADER_RESOURCE_VIEW_DESC Desc;
+	ZeroMemory(&Desc, sizeof(D3D11_SHADER_RESOURCE_VIEW_DESC));
+	Desc.Format = DXGI_FORMAT_R24_UNORM_X8_TYPELESS;
+	Desc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+	Desc.Texture2D.MipLevels = 1;
+	hr = g_pd3dDevice->CreateShaderResourceView(m_pTexture,
+		&Desc, &m_pTextureSRV);
 	if (FAILED(hr))
 	{
+		m_pTexture->Release();
 		return hr;
-	}
+	}*/
+
 	D3D11_DEPTH_STENCIL_VIEW_DESC svd;
 	ZeroMemory(&svd, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
 	svd.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	svd.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	svd.Texture2D.MipSlice = 0;
-	hr = g_pd3dDevice->CreateDepthStencilView(pTexture, &svd,
+	hr = g_pd3dDevice->CreateDepthStencilView(m_pTexture, &svd,
 		&m_pDepthStenV);
 	if (FAILED(hr))
 	{
 		return hr;
 	}
-	//바로 릴리즈
-	SAFE_RELEASE(pTexture);
-
-	m_context->OMSetRenderTargets(1,
-		&m_target, m_pDepthStenV);
 	return hr;
 }
-
 HRESULT KDepthStencil::CreateDepthStenState()
 {
 	HRESULT hr = S_OK;
@@ -101,7 +91,7 @@ HRESULT KDepthStencil::CreateDepthStenState()
 		return hr;
 	}
 	//깊이 스텐실 제일 마지막 결과 기반으로 렌더하는 것이기에 OM
-	m_context->OMSetDepthStencilState(m_pDepthStenS, 0x01);
+
 	return hr;
 }
 
@@ -121,8 +111,16 @@ HRESULT KDepthStencil::CreateBlendState()
 	}
     // 블렌드 스테이트 오브젝트
     float BlendFactor[] = { 0.0f,0.0f,0.0f,1.0f };
-	m_context->OMSetBlendState(m_pBlendState, BlendFactor, 0xffffff);
+	//m_context->OMSetBlendState(m_pBlendState, BlendFactor, 0xffffff);
 	return hr;
+}
+
+bool KDepthStencil::Release()
+{
+	SAFE_RELEASE(m_pTexture);
+	SAFE_RELEASE(m_pTextureSRV);
+	SAFE_RELEASE(m_pDepthStenV);
+	return true;
 }
 
 KDepthStencil::KDepthStencil()

@@ -2,21 +2,19 @@
 #include "KStd.h"
 class KDepthStencil
 {
+public:
+	ID3D11Texture2D*			m_pTexture;
+	ID3D11ShaderResourceView*	m_pTextureSRV;
 	ID3D11DepthStencilView*		m_pDepthStenV;
 	ID3D11DepthStencilState*	m_pDepthStenS;
 	ID3D11BlendState*			m_pBlendState;
-	ID3D11DeviceContext*		m_context;
-	ID3D11RenderTargetView*		m_target;
 public:
-	virtual bool		Init(ID3D11DeviceContext* context, ID3D11RenderTargetView* target);
-	virtual bool		Frame();
-	virtual bool		PreRender();
-	virtual bool		Release();
-public:
-	HRESULT CreateDepthStenView();
 	HRESULT CreateDepthStenState();
+public:
+	ID3D11Texture2D* CreateTexture(UINT Width, UINT Height);
+	HRESULT CreateDepthStencilView(UINT Width, UINT Height);
 	HRESULT CreateBlendState();
-
+	bool	Release();
 public:
 	KDepthStencil();
 	virtual ~KDepthStencil();

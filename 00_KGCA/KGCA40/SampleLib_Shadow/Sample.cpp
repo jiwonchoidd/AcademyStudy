@@ -55,19 +55,44 @@ bool		Sample::Frame()
 	}
 	m_FbxObjA.Frame();
 	m_FbxObjB.Frame();
-	
+
+	#pragma region 캐릭터 이동
+	if (g_Input.GetKey(VK_UP) >= KEY_PUSH)
+	{
+		m_MovePos.z += g_fSecPerFrame * 100.0f;
+		m_matShadow._43 += g_fSecPerFrame * 10000.0f;
+		m_FbxObjA.m_matWorld._41 = m_MovePos.x;
+		m_FbxObjA.m_matWorld._42 = m_MovePos.y;
+		m_FbxObjA.m_matWorld._43 = m_MovePos.z;
+		m_FbxObjA.SetMatrix(&m_matShadow, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+	}
+	if (g_Input.GetKey(VK_DOWN) >= KEY_PUSH)
+	{
+		m_MovePos.z -= g_fSecPerFrame * 100.0f;
+		m_matShadow._43 -= g_fSecPerFrame * 10000.0f;
+		m_FbxObjA.m_matWorld._41 = m_MovePos.x;
+		m_FbxObjA.m_matWorld._42 = m_MovePos.y;
+		m_FbxObjA.m_matWorld._43 = m_MovePos.z;
+		m_FbxObjA.SetMatrix(&m_matShadow, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+	}
+	#pragma endregion
+
 	#pragma region 캐릭터 회전
 	if (g_Input.GetKey(VK_LEFT) >= KEY_PUSH)
 	{
 		yRot -= 20.0f * g_fSecPerFrame;
 		D3DKMatrixRotationY(&m_FbxObjA.m_matWorld, yRot);
+		m_FbxObjA.SetMatrix(&m_matShadow, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+
 	}
 	if (g_Input.GetKey(VK_RIGHT) >= KEY_PUSH)
 	{
 		yRot += 20.0f * g_fSecPerFrame;
 		D3DKMatrixRotationY(&m_FbxObjA.m_matWorld, yRot);
+		m_FbxObjA.SetMatrix(&m_matShadow, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+
 	}
-#pragma endregion
+	#pragma endregion
 
 	return true;
 }

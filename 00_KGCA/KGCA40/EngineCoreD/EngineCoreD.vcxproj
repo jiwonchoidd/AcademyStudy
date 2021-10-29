@@ -167,6 +167,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClCompile Include="KModel.cpp" />
     <ClCompile Include="KNode.cpp" />
     <ClCompile Include="KQuadtree.cpp" />
+    <ClCompile Include="KRenderTarget.cpp" />
     <ClCompile Include="KRState.cpp" />
     <ClCompile Include="KShape.cpp" />
     <ClCompile Include="KTexture.cpp" />
@@ -188,6 +189,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <ClInclude Include="KModel.h" />
     <ClInclude Include="KNode.h" />
     <ClInclude Include="KQuadtree.h" />
+    <ClInclude Include="KRenderTarget.h" />
     <ClInclude Include="KRState.h" />
     <ClInclude Include="KShape.h" />
     <ClInclude Include="KTexture.h" />
