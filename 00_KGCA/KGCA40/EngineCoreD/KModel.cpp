@@ -16,6 +16,14 @@ void		KModel::SetMatrix(
         m_cbData.matProj = pMatProj->Transpose();
     }
 }
+bool KModel::LoadTexture(std::wstring szTextureName)
+{
+    if (!szTextureName.empty())
+    {
+        return m_Tex.LoadTexture(szTextureName);
+    }
+    return false;
+}
 bool  KModel::LoadObject(std::wstring filename)
 {
     FILE* fp = nullptr;
@@ -206,7 +214,7 @@ bool KModel::Init()
     return true;
 }
 
-bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
+bool KModel::CreateModel(wstring vsFile, wstring psFile,wstring szTextureName)
 {
     //조건 변경
     if (CreateVertexData())
@@ -216,6 +224,7 @@ bool KModel::CreateModel(std::wstring vsFile, std::wstring psFile)
         {
             CreateIndexBuffer();
         }
+        LoadTexture(szTextureName);
         if (SUCCEEDED(LoadShader(vsFile, psFile)))
         {
             if (SUCCEEDED(CreateVertexLayout()))
@@ -247,10 +256,9 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
 
     pContext->UpdateSubresource(
         m_pConstantBuffer, 0, NULL, &m_cbData, 0, 0);
-    pContext->VSSetConstantBuffers(
-        0, 1, &m_pConstantBuffer);
+    pContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+    pContext->PSSetShaderResources(0, 1, &m_Tex.m_pTextureSRV);
     pContext->VSSetShader(m_pVS, NULL, 0);
-    //픽셀 쉐이더를 유동적으로 바꾸기 위해서
     pContext->PSSetShader(m_pMainPS, NULL, 0);
     pContext->IASetInputLayout(m_pVertexLayout);
     UINT pStrides = m_iVertexSize;

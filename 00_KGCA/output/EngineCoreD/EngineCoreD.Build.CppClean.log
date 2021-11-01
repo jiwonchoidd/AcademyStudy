@@ -1,6 +1,5 @@
 e:\choijiwon\academystudy\00_kgca\output\enginecored\enginecored.pdb
 e:\choijiwon\academystudy\00_kgca\output\enginecored\enginecored.idb
-e:\choijiwon\academystudy\00_kgca\output\enginecored\kwindow.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\ktimer.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\ksound.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kinput.obj
@@ -9,6 +8,7 @@ e:\choijiwon\academystudy\00_kgca\output\enginecored\kcore.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\ktexture.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kshape.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\krstate.obj
+e:\choijiwon\academystudy\00_kgca\output\enginecored\krendertarget.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kquadtree.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\knode.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kmodel.obj
@@ -21,7 +21,7 @@ e:\choijiwon\academystudy\00_kgca\output\enginecored\kfbxanimation.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kdepthstencil.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kcamera.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\kwrite.obj
-e:\choijiwon\academystudy\00_kgca\output\enginecored\krendertarget.obj
+e:\choijiwon\academystudy\00_kgca\output\enginecored\kwindow.obj
 e:\choijiwon\academystudy\00_kgca\output\enginecored\enginecored.lib
 e:\choijiwon\academystudy\00_kgca\output\enginecored\../../output/enginecored\enginecored.pdb
 e:\choijiwon\academystudy\00_kgca\output\enginecored\enginecored.tlog\cl.command.1.tlog

@@ -1,6 +1,5 @@
 #pragma once
-#include "KStd.h"
-
+#include "KTexture.h"
 struct PC_VERTEX
 {
 	KVector3 pos;
@@ -55,6 +54,7 @@ struct CB_DATA
 class KModel 
 {
 public:
+	KTexture			m_Tex;
 	UINT				m_iNumIndex=0;
 	UINT				m_iVertexSize=0;
 	CB_DATA				m_cbData;
@@ -83,8 +83,9 @@ public:
 	virtual bool		LoadObject(std::wstring filename);
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 						KMatrix* pMatView, KMatrix* pMatProj);
+	virtual bool		LoadTexture(std::wstring szTextureName);
 public:
-	virtual bool	CreateModel(std::wstring vsFile, std::wstring psFile);
+	virtual bool	CreateModel(wstring vsFile, wstring psFile, wstring szTextureName);
 	virtual bool    Init();
 	virtual bool    Frame();
 	virtual bool    PreRender(ID3D11DeviceContext* pContext);

@@ -676,13 +676,13 @@ bool	KFbxObj::LoadObject(std::string filename, std::string shaderName)
 				KMesh* pSubMesh = m_pMeshList[iMesh]->m_pSubMesh[iSubMesh];
 				// todo : 쉐이더 등등 중복처리 미작업
 				pSubMesh->CreateModel(TBASIS::mtw(shaderName),
-					TBASIS::mtw(shaderName));
+					TBASIS::mtw(shaderName), L"");
 			}
 		}
 		else
 		{
 			pMesh->CreateModel(TBASIS::mtw(shaderName),
-				TBASIS::mtw(shaderName));
+				TBASIS::mtw(shaderName),L"");
 		}
 	}
 	m_pFbxScene->Destroy();

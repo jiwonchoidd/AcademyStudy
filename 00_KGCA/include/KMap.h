@@ -8,6 +8,7 @@ struct KMapInfo
     int m_iNumColCell;
     int m_iNumVertex;
     float m_fCellDistance;
+    wstring szDefaultTexture;
 };
 class KMap :public KModel
 {
