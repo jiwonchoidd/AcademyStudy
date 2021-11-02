@@ -20,6 +20,7 @@ public:
 	float	m_fStartTime;
 	float	m_fEndTime;
 	float	m_fSampleTime;
+	KVector3 m_vLook;
 	//
 	std::vector<FbxNode*>	m_pFbxNodeList;
 	std::vector<KMtrl*>		m_pFbxMaterialList;

@@ -60,7 +60,7 @@
     <ClCompile Include="KQuadtree.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KRState.cpp">
+    <ClCompile Include="KDXState.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="KShape.cpp">
@@ -131,7 +131,7 @@
     <ClInclude Include="KQuadtree.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="KRState.h">
+    <ClInclude Include="KDXState.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="KShape.h">

@@ -8,7 +8,7 @@
 #include "KCamera.h"
 #include "KFbxObj.h"
 #include "KTexture.h"
-#include "KRState.h"
+#include "KDXState.h"
 class KCore : public KWindow
 {
 public:
@@ -16,10 +16,8 @@ public:
 	KSound			m_Sound;
 	KWrite			m_Write;
 	KDebugCamera	m_DebugCamera;
-	KRState			m_RState;
-	KFbxObj			m_KFbxObj;
-	KTexture		m_KTexture;
 	bool			m_bDebugText = false;
+	bool			m_isChecked = false;
 private:
 	bool	GameInit()	override;
 	bool	GameRun()	override;

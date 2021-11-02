@@ -1,5 +1,4 @@
 #pragma once
-#include "KStd.h"
 #include "KDepthStencil.h"
 #include "KRenderTarget.h"
 class KDevice

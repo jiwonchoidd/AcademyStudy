@@ -65,63 +65,13 @@ HRESULT KDepthStencil::CreateDepthStencilView(UINT Width, UINT Height)
 	}
 	return hr;
 }
-HRESULT KDepthStencil::CreateDepthStenState()
-{
-	HRESULT hr = S_OK;
-    D3D11_DEPTH_STENCIL_DESC dsd;
-    ZeroMemory(&dsd, sizeof(D3D11_DEPTH_STENCIL_DESC));
-    dsd.DepthEnable = TRUE;
-    dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-    //1.0, 0.6과 0.5를 비교해서 크면 실패
-    //제일 앞에 있는 면이 뿌려지면 뒤에있는애들은 렌더 안됨
-    dsd.DepthFunc = D3D11_COMPARISON_LESS;
-    dsd.StencilEnable = TRUE;
-    dsd.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
-    dsd.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
-    dsd.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    dsd.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    dsd.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    dsd.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-    dsd.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
-    dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
-    dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
-    dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-    hr=g_pd3dDevice->CreateDepthStencilState(&dsd, &m_pDepthStenS);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-	//깊이 스텐실 제일 마지막 결과 기반으로 렌더하는 것이기에 OM
 
-	return hr;
-}
-
-HRESULT KDepthStencil::CreateBlendState()
-{
-	HRESULT hr = S_OK;
-    D3D11_BLEND_DESC bd;
-    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
-    bd.AlphaToCoverageEnable = false;
-    bd.IndependentBlendEnable = false;
-    bd.RenderTarget[0].BlendEnable = false;
-    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-    hr=g_pd3dDevice->CreateBlendState(&bd, &m_pBlendState);
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-    // 블렌드 스테이트 오브젝트
-    float BlendFactor[] = { 0.0f,0.0f,0.0f,1.0f };
-	//m_context->OMSetBlendState(m_pBlendState, BlendFactor, 0xffffff);
-	return hr;
-}
 
 bool KDepthStencil::Release()
 {
 	SAFE_RELEASE(m_pTexture);
 	SAFE_RELEASE(m_pTextureSRV);
 	SAFE_RELEASE(m_pDepthStenV);
-	SAFE_RELEASE(m_pDepthStenS);
 	return true;
 }
 

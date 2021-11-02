@@ -92,7 +92,7 @@ bool KRenderTarget::Begin(ID3D11DeviceContext* pContext)
 	pContext->RSGetViewports(&m_nViewPorts, m_vpOld);
 	pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
 
-	//배열로 리소스뷰 최대 32개? 배열로 값 초기화
+	////배열로 리소스뷰 최대 16개? 배열로 값 초기화
 	ID3D11RenderTargetView* pRTV = nullptr;
 	ID3D11DepthStencilView* pDSV = nullptr;
 	pContext->OMSetRenderTargets(1, &pRTV, pDSV);
@@ -121,7 +121,6 @@ bool KRenderTarget::End(ID3D11DeviceContext* pContext)
 	ID3D11ShaderResourceView* ppSRVNULL[2] = { NULL, NULL };
 	//0번 슬롯에 2개 리소스
 	pContext->PSSetShaderResources(0, 2, ppSRVNULL);
-
 	pContext->RSSetViewports(m_nViewPorts, m_vpOld);
 	pContext->OMSetRenderTargets(1, &m_pOldRTV, m_pOldDSV);
 	SAFE_RELEASE(m_pOldRTV);

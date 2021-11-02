@@ -295,7 +295,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 					m_pFbxMaterialList[pMesh->m_iMtrlRef]->m_pSubMtrl[iSub];
 				if (pSubMtrl->m_Texture.m_pTextureSRV != nullptr)
 				{
-					pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
+					//pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
 					pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
 				}
 
@@ -322,7 +322,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 			{
 				if (pMtrl->m_Texture.m_pTextureSRV != nullptr)
 				{
-					pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
+					//pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
 					pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
 				}
 			}

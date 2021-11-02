@@ -25,11 +25,6 @@ bool	KDevice::SetDevice()
 	{
 		return false;
 	}
-	if (FAILED(m_DefaultDS.CreateDepthStenState()))
-	{
-		return false;
-	}
-	//m_pImmediateContext->OMSetDepthStencilState(m_DefaultDS.m_pDepthStenS, 0x01);
 	if (FAILED(SetViewPort()))
 	{
 		return false;

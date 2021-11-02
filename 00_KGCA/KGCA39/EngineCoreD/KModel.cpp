@@ -15,6 +15,7 @@ void		KModel::SetMatrix(
     {
         m_cbData.matProj = pMatProj->Transpose();
     }
+    m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
 bool KModel::LoadTexture(std::wstring szTextureName)
 {

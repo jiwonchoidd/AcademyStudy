@@ -26,5 +26,6 @@
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="CharacterShader.hlsl" />
+    <FxCompile Include="ProjectionShadow.hlsl" />
   </ItemGroup>
 </Project>

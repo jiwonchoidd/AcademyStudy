@@ -49,6 +49,7 @@ struct CB_DATA
 	KMatrix  matWorld;
 	KMatrix  matView;
 	KMatrix  matProj;
+	KMatrix  matNormal;
 	KVector4 vValue;
 };
 class KModel 
