@@ -82,7 +82,6 @@ bool	KCore::GameRender()
             m_Write.DrawText(rt, m_Timer.m_szTimerString,
                 D2D1::ColorF(1, 1, 1, 1));
         }
-        m_Write.BlinkMessage(L"EngineCoreD");
     PostRender();
     return true;
 }

@@ -87,7 +87,7 @@ KMatrix     KCamera::CreateProjMatrix(
 KCamera::KCamera()
 {
     m_vCameraPos = { 0, 20, -20.0f };
-    m_vCameraTarget = { 0, 0, 1.0f };
+    m_vCameraTarget = { 0, 0, 0.0f };
     m_pSpeed = 20.0f;
     m_pMouseSensitivity = 50;
     m_pOriginSpeed = m_pSpeed;

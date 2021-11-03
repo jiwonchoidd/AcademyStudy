@@ -1,0 +1,7 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+  Sample.cpp
+C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\KGCA39\SampleLib_SkinningAnimation\Sample.cpp(81,62): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\KGCA39\SampleLib_SkinningAnimation\Sample.cpp(92,62): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  SampleLib_SkinningAnimation.vcxproj -> C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\SampleLib_SkinningAnimation\SampleLib_SkinningAnimation.exe

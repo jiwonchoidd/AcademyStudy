@@ -36,7 +36,7 @@ bool		Sample::Init()
 		PSBlob->Release();
 	}
 
-	m_FbxObjA.LoadObject("../../data/object/Man.fbx", "CharacterShader.hlsl");
+	m_FbxObjA.LoadObject("../../data/object/man.FBX", "CharacterShader.hlsl");
 
 	m_DebugCamera.CreateViewMatrix(KVector3(0, 50, -100), KVector3(0, 0, 0));
 	m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 2.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
@@ -80,7 +80,7 @@ bool		Sample::Frame()
 		//애니메이션
 		m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
 		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime+3.1f) * 30.0f;
-		if (m_FbxObjA.m_fElpaseTime > 0.8f)
+		if (m_FbxObjA.m_fElpaseTime > 0.75f)
 		{
 			m_FbxObjA.m_fElpaseTime = 0.0f;
 		}
@@ -90,7 +90,7 @@ bool		Sample::Frame()
 		m_MovePos += m_FbxObjA.m_vLook * g_fSecPerFrame * 120.0f;
 		//애니메이션
 		m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 3.1f) * 30.0f;
+		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 2.1f) * 30.0f;
 		if (m_FbxObjA.m_fElpaseTime > 0.8f)
 		{
 			m_FbxObjA.m_fElpaseTime = 0.0f;

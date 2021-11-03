@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "KFbxObj.h"
 #include <algorithm>
+#include "KInput.h"
 bool Compare(const pair<float, int>& a, const pair<float, int>& b)
 {
 	return a.first > b.first;
@@ -41,6 +42,8 @@ void KFbxObj::ChangePixelShader(ID3D11PixelShader* ps)
 }
 bool KFbxObj::Frame()
 {
+
+	#pragma region 캐릭터 이동 & 회전 & 애니메이션
 	if (m_bAnimPlay)
 	{
 		m_fElpaseTime += 1.0f * g_fSecPerFrame;
@@ -52,6 +55,7 @@ bool KFbxObj::Frame()
 			//m_bAnimPlay = false;
 		}
 	}
+	#pragma endregion
 
 	return true;
 }
@@ -271,9 +275,9 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 		KMesh* pMesh = m_pMeshList[iObj];
 		//본타입 같이 지오매트릭 타입이 아니라면 렌더 대상이 아니다.
 		if (pMesh->m_ClassType != CLASS_GEOM) continue;
-
+		//전치행렬
 		D3DKMatrixTranspose(&pMesh->m_matAnimMatrix.matAnimation[0],
-			&pMesh->m_AnimationTrack[m_iAnimIndex]);
+						&pMesh->m_AnimationTrack[m_iAnimIndex]);
 
 		for (int iBone = 0; iBone < pMesh->m_matBindPoseList.size(); iBone++)
 		{

@@ -14,12 +14,15 @@ public:
 	KMatrix			m_matWorld;
 	KAnimMatrix     m_matAnimMatrix;
 	// todo:게임 오브젝트로 옮겨야함
+	//KVector3 m_MovePos;
+	//float	m_fYRot = 0;
+	bool	m_bAnimControl = false;
 	bool	m_bAnimPlay = false;
 	float   m_fElpaseTime = 0.0f;
 	int		m_iAnimIndex = 0;
-	float	m_fStartTime;
-	float	m_fEndTime;
-	float	m_fSampleTime;
+	float	m_fStartTime = 0.0f;
+	float	m_fEndTime = 0.0f;
+	float	m_fSampleTime = 0.0f;
 	KVector3 m_vLook;
 	//
 	std::vector<FbxNode*>	m_pFbxNodeList;
