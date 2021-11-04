@@ -1,7 +1,7 @@
 #include "Sample.h"
 bool		Sample::Init()
 {
-	//텍스쳐 변환행렬 텍스쳐
+	//텍스쳐 변환행렬
 	m_matTex._11 = 0.5f; m_matTex._22 = -0.5f;
 	m_matTex._41 = 0.5f; m_matTex._42 = 0.5f;
 	//라이트 설정
@@ -9,8 +9,10 @@ bool		Sample::Init()
 
 	m_MiniMap.CreateModel(L"../../data/shader/PlaneVS.txt",
 		L"../../data/shader/PlanePS.txt", L"");
+
+
 	m_MapObj.CreateModel(L"ProjectionShadow.hlsl",
-		L"ProjectionShadow.hlsl", L"../../data/object/texture_grass.jpg");
+		L"ProjectionShadow.hlsl", L"../../data/object/wal156S.bmp");
 	KMatrix matWorld, matScale;
 
 	//맵크기를 키움
@@ -36,9 +38,10 @@ bool		Sample::Init()
 		PSBlob->Release();
 	}
 
-	m_FbxObjA.LoadObject("../../data/object/man.FBX", "CharacterShader.hlsl");
-
-	m_DebugCamera.CreateViewMatrix(KVector3(0, 50, -100), KVector3(0, 0, 0));
+	m_FbxObjA.LoadObject("../../data/object/Man.fbx", "CharacterShader.hlsl");
+	m_FbxObjB.LoadObject("../../data/object/Turret.FBX", "CharacterShader.hlsl");
+	D3DKMatrixTranslation(&m_FbxObjB.m_matWorld, -60.0f, 0.0f, 4.0f);
+	m_DebugCamera.CreateViewMatrix(KVector3(-50, 100, -100), KVector3(0, 0, 0));
 	m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 2.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
@@ -48,75 +51,73 @@ bool		Sample::Frame()
 	if (g_Input.GetKey(VK_F4) == KEY_PUSH)
 	{
 		(m_FbxObjA.m_bAnimPlay) ? m_FbxObjA.m_bAnimPlay = false : m_FbxObjA.m_bAnimPlay = true;
+		(m_FbxObjB.m_bAnimPlay) ? m_FbxObjB.m_bAnimPlay = false : m_FbxObjB.m_bAnimPlay = true;
 	}
+	if (m_FbxObjA.m_bAnimPlay == false)
+	{
+		if (g_Input.GetKey(VK_RIGHT))
+		{
+			m_fYRot += 3 * g_fSecPerFrame;
+		}
+		if (g_Input.GetKey(VK_LEFT))
+		{
+			m_fYRot -= 3 * g_fSecPerFrame;
+		}
+		m_FbxObjA.m_matWorld._11 = cos(m_fYRot);
+		m_FbxObjA.m_matWorld._13 = -sin(m_fYRot);
+		m_FbxObjA.m_matWorld._31 = sin(m_fYRot);
+		m_FbxObjA.m_matWorld._33 = cos(m_fYRot);
+		//look vector
+		//_31,_32,_33 월드행렬 하고 정규화
+		m_FbxObjA.m_vLook.x = m_FbxObjA.m_matWorld._31;
+		m_FbxObjA.m_vLook.y = m_FbxObjA.m_matWorld._32;
+		m_FbxObjA.m_vLook.z = m_FbxObjA.m_matWorld._33;
+
+		if (g_Input.GetKey(VK_UP) >= KEY_PUSH)
+		{
+			m_MovePos -= m_FbxObjA.m_vLook * g_fSecPerFrame * 120.0f;
+			//애니메이션
+			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
+			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 3.1f) * 30.0f;
+			if (m_FbxObjA.m_fElpaseTime > 0.75f)
+			{
+				m_FbxObjA.m_fElpaseTime = 0.0f;
+			}
+		}
+		else if (g_Input.GetKey(VK_DOWN) >= KEY_PUSH)
+		{
+			m_MovePos += m_FbxObjA.m_vLook * g_fSecPerFrame * 40.0f;
+			//애니메이션
+			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
+			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 2.1f) * 30.0f;
+			if (m_FbxObjA.m_fElpaseTime > 0.8f)
+			{
+				m_FbxObjA.m_fElpaseTime = 0.0f;
+			}
+		}
+		else
+		{
+			m_FbxObjA.m_iAnimIndex = 0;
+			m_FbxObjA.m_fElpaseTime = 0.0f;
+		}
+		m_FbxObjA.m_matWorld._41 = m_MovePos.x;
+		m_FbxObjA.m_matWorld._42 = m_MovePos.y;
+		m_FbxObjA.m_matWorld._43 = m_MovePos.z;
+	}
+
+
 	m_FbxObjA.Frame();
+	m_FbxObjB.Frame();
 	m_Light1.Frame();
 	//쉐도우 뷰행렬, 프로젝션 행렬, 텍스쳐행렬 곱한것
-	m_ShadowCB.g_matShadow1 =m_Light1.m_matView * m_Light1.m_matProj * m_matTex;
-
-	#pragma region 캐릭터 이동 & 회전 & 애니메이션
-
-	if (g_Input.GetKey(VK_RIGHT))
-	{
-		m_fYRot += 3 * g_fSecPerFrame;
-	}
-	if (g_Input.GetKey(VK_LEFT))
-	{
-		m_fYRot -= 3 * g_fSecPerFrame;
-	}
-	m_FbxObjA.m_matWorld._11 = cos(m_fYRot);
-	m_FbxObjA.m_matWorld._13 = -sin(m_fYRot);
-	m_FbxObjA.m_matWorld._31 = sin(m_fYRot);
-	m_FbxObjA.m_matWorld._33 = cos(m_fYRot);
-	//look vector
-	//_31,_32,_33 월드행렬 하고 정규화
-	m_FbxObjA.m_vLook.x = m_FbxObjA.m_matWorld._31;
-	m_FbxObjA.m_vLook.y = m_FbxObjA.m_matWorld._32;
-	m_FbxObjA.m_vLook.z = m_FbxObjA.m_matWorld._33;
-
-	if (g_Input.GetKey(VK_UP) >= KEY_PUSH)
-	{
-		m_MovePos -= m_FbxObjA.m_vLook *g_fSecPerFrame * 120.0f;
-		//애니메이션
-		m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime+3.1f) * 30.0f;
-		if (m_FbxObjA.m_fElpaseTime > 0.75f)
-		{
-			m_FbxObjA.m_fElpaseTime = 0.0f;
-		}
-	}
-	else if (g_Input.GetKey(VK_DOWN) >= KEY_PUSH)
-	{
-		m_MovePos += m_FbxObjA.m_vLook * g_fSecPerFrame * 120.0f;
-		//애니메이션
-		m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 2.1f) * 30.0f;
-		if (m_FbxObjA.m_fElpaseTime > 0.8f)
-		{
-			m_FbxObjA.m_fElpaseTime = 0.0f;
-		}
-	}
-	else
-	{
-		//Default 애니메이션
-		m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-		m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime) * 30.0f;
-		if (m_FbxObjA.m_fElpaseTime > 2.0f)
-		{
-			m_FbxObjA.m_fElpaseTime = 0.0f;
-		}
-	}
-	m_FbxObjA.m_matWorld._41 = m_MovePos.x;
-	m_FbxObjA.m_matWorld._42 = m_MovePos.y;
-	m_FbxObjA.m_matWorld._43 = m_MovePos.z;
-	#pragma endregion
+	m_ShadowCB.g_matShadow1 = m_Light1.m_matView * m_Light1.m_matProj * m_matTex;
 
 	return true;
 }
 bool		Sample::Render()
 {
 	//레스터라이즈 솔리드
-	//ApplyRS(m_pImmediateContext, KDXState::g_pRSSolid);
+	ApplyRS(m_pImmediateContext, KDXState::g_pRSSolid);
 
 	//렌더타겟 객체 저장해놓고 나중에 end로 복원
 	// 그림자
@@ -126,6 +127,11 @@ bool		Sample::Render()
 			&m_Light1.m_matView, &m_Light1.m_matProj);
 		m_FbxObjA.ChangePixelShader(m_pPSShadow);
 		m_FbxObjA.Render(m_pImmediateContext);
+
+		//m_FbxObjB.SetMatrix(&m_FbxObjB.m_matWorld,
+		//	&m_Light1.m_matView, &m_Light1.m_matProj);
+		//m_FbxObjB.ChangePixelShader(m_pPSShadow);
+		//m_FbxObjB.Render(m_pImmediateContext);
 		//복원 작업
 		m_Rt.End(m_pImmediateContext);
 	}
@@ -145,17 +151,23 @@ bool		Sample::Render()
 		0, 1, &m_Rt.m_pTextureSRV);
 	m_MiniMap.PostRender(m_pImmediateContext,
 		m_MiniMap.m_iNumIndex);
-	//
 
-	m_FbxObjA.SetMatrix(&m_FbxObjA.m_matWorld, 
+	m_FbxObjA.SetMatrix(&m_FbxObjA.m_matWorld,
 		&m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
 	m_FbxObjA.ChangePixelShader(nullptr);
 	m_FbxObjA.Render(m_pImmediateContext);
+
+	m_FbxObjB.SetMatrix(nullptr,
+		&m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+	m_FbxObjB.ChangePixelShader(nullptr);
+	m_FbxObjB.Render(m_pImmediateContext);
 
 	if (g_Input.GetKey(VK_F5) == KEY_PUSH)
 	{
 		m_Rt.Save(m_pImmediateContext, L"frame.jpg");
 	}
+	//사용자 설명
+	m_Write.BlinkMessage(L"F1 - 프레임,  F4 - 전체 애니메이션,  방향키 - 이동");
 	return true;
 }
 bool		Sample::Release()
@@ -174,4 +186,4 @@ Sample::Sample()
 Sample::~Sample()
 {
 }
-WinMain_OPT(FBX애니메이션, 1200, 675);
+WinMain_OPT(프로젝션 쉐도우, 1200, 675);

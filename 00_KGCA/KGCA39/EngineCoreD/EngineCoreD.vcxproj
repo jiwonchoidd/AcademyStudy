@@ -204,6 +204,7 @@ copy "*.h" ""..\\..\\include\\"</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\box.txt" />
@@ -211,6 +212,8 @@ copy "*.h" ""..\\..\\include\\"</Command>
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PC_VS.txt" />
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\PixelShader.txt" />
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\VertexShader.txt" />
+    <Text Include="..\..\data\shader\PlanePS.txt" />
+    <Text Include="..\..\data\shader\PlaneVS.txt" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\..\KGCA\KGCA40\data\shader\DefaultShader.hlsl">

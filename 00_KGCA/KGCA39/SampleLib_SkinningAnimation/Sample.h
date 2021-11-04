@@ -3,13 +3,13 @@
 #include "KShape.h"
 class KLight
 {
-    //카메라랑 직접 바꿔도되는데 카메라와 속성이 달라서
+    //라이트 클래스
 public:
-    KVector3 m_vPos;
-    KVector3 m_vTarget;
-    KVector3 m_vDir;
-    KMatrix m_matView;
-    KMatrix m_matProj;
+    KVector3    m_vPos;
+    KVector3    m_vTarget;
+    KVector3    m_vDir;
+    KMatrix     m_matView;
+    KMatrix     m_matProj;
     KMatrix     m_matWorld;
 public:
     void    SetLight(KVector3 vPos, KVector3 vTarget)
@@ -38,7 +38,6 @@ public:
         KVector3 vUp(0, 1, 0);
         D3DKMatrixLookAtLH(&m_matView, &m_vPos, &m_vTarget, &vUp);
         D3DKMatrixPerspectiveFovLH(&m_matProj, XM_PI * 0.25f, 1.0f, 1.0f, 1000.0f);
-
         return true;
     }
 };                    

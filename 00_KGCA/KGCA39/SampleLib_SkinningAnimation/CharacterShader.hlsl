@@ -2,7 +2,7 @@
 // 정해진 레지스터에서 정해진 레지스터로 저장한다.
 // 레지스터-> x,y,z,w  9.0 -> 65545/4
 #define MAX_BONE_MATRICES 255
-Texture2D g_txDiffuse : register(t1);
+Texture2D g_txDiffuse : register(t0);
 SamplerState g_Sampler : register(s0);
 
 cbuffer cbData: register(b0)

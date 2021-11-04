@@ -73,8 +73,7 @@ HRESULT KRenderTarget::CreateRenderTargetView(UINT Width, UINT Height)
 bool KRenderTarget::Create(UINT Width, UINT Height)
 {
 	SetViewPort(Width, Height);
-	CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.5f,
-		(float)Width / (float)Height);
+	//CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.5f,(float)Width / (float)Height);
 	if (FAILED(CreateRenderTargetView(Width, Height)))
 	{
 		return false;

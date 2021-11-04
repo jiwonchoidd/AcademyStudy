@@ -1,7 +1,7 @@
 #include "Sample.h"
 bool		Sample::Init()
 {
-	//텍스쳐 변환행렬 텍스쳐
+	//텍스쳐 변환행렬
 	m_matTex._11 = 0.5f; m_matTex._22 = -0.5f;
 	m_matTex._41 = 0.5f; m_matTex._42 = 0.5f;
 	//라이트 설정
@@ -20,7 +20,7 @@ bool		Sample::Init()
 	D3DKMatrixScaling(&matScale, 100.0f, 100.0f, 100.0f);
 	m_MapObj.m_matWorld = matScale * matWorld;
 	//그림자 렌더타겟 이미지 
-	m_Rt.Create(4096, 4096);
+	m_Rt.Create(2048, 2048);
 
 	//블랍 만듬
 	ID3DBlob* PSBlob = nullptr;
@@ -55,6 +55,9 @@ bool		Sample::Frame()
 	}
 	if (m_FbxObjA.m_bAnimPlay == false)
 	{
+		#pragma region  캐릭터 이동 & 애니메이션
+
+
 		if (g_Input.GetKey(VK_RIGHT))
 		{
 			m_fYRot += 3 * g_fSecPerFrame;
@@ -75,7 +78,7 @@ bool		Sample::Frame()
 
 		if (g_Input.GetKey(VK_UP) >= KEY_PUSH)
 		{
-			m_MovePos -= m_FbxObjA.m_vLook * g_fSecPerFrame * 120.0f;
+			m_MovePos -= m_FbxObjA.m_vLook * g_fSecPerFrame * 110.0f;
 			//애니메이션
 			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
 			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 3.1f) * 30.0f;
@@ -90,7 +93,7 @@ bool		Sample::Frame()
 			//애니메이션
 			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
 			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 2.1f) * 30.0f;
-			if (m_FbxObjA.m_fElpaseTime > 0.8f)
+			if (m_FbxObjA.m_fElpaseTime > 0.9f)
 			{
 				m_FbxObjA.m_fElpaseTime = 0.0f;
 			}
@@ -100,11 +103,12 @@ bool		Sample::Frame()
 			m_FbxObjA.m_iAnimIndex = 0;
 			m_FbxObjA.m_fElpaseTime = 0.0f;
 		}
+
 		m_FbxObjA.m_matWorld._41 = m_MovePos.x;
 		m_FbxObjA.m_matWorld._42 = m_MovePos.y;
 		m_FbxObjA.m_matWorld._43 = m_MovePos.z;
+		#pragma endregion
 	}
-	
 
 	m_FbxObjA.Frame();
 	m_FbxObjB.Frame();
@@ -128,11 +132,11 @@ bool		Sample::Render()
 		m_FbxObjA.ChangePixelShader(m_pPSShadow);
 		m_FbxObjA.Render(m_pImmediateContext);
 
-		//m_FbxObjB.SetMatrix(&m_FbxObjB.m_matWorld,
-		//	&m_Light1.m_matView, &m_Light1.m_matProj);
-		//m_FbxObjB.ChangePixelShader(m_pPSShadow);
-		//m_FbxObjB.Render(m_pImmediateContext);
-		//복원 작업
+		m_FbxObjB.SetMatrix(&m_FbxObjB.m_matWorld,
+			&m_Light1.m_matView, &m_Light1.m_matProj);
+		m_FbxObjB.ChangePixelShader(m_pPSShadow);
+		m_FbxObjB.Render(m_pImmediateContext);
+
 		m_Rt.End(m_pImmediateContext);
 	}
 	//샘플러 상태 : 클램프 -> 그림자용
@@ -164,7 +168,7 @@ bool		Sample::Render()
 
 	if (g_Input.GetKey(VK_F5) == KEY_PUSH)
 	{
-		m_Rt.Save(m_pImmediateContext, L"frame.jpg");
+		m_Rt.Save(m_pImmediateContext, L"frame.dds");
 	}
 	//사용자 설명
 	m_Write.BlinkMessage(L"F1 - 프레임,  F4 - 전체 애니메이션,  방향키 - 이동");

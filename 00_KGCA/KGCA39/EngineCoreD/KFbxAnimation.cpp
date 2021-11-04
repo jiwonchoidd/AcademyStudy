@@ -40,14 +40,17 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 			FbxCluster* pCluster = pSkin->GetCluster(iCluster);
 			int iNumVertex = pCluster->GetControlPointIndicesCount();
 
-			//Tpose 만드는 행렬
+			//Tpose 로 돌아가는 행렬
 			//초기 위치값 행렬
 			FbxAMatrix matXBindPose, matInitPostion;
 			pCluster->GetTransformLinkMatrix(matXBindPose);
 			pCluster->GetTransformMatrix(matInitPostion);
+			//정점당 서로 다른 행렬을 가지고 있기 때문에 본 좌표계로 바꿔줘야한다.
+
 			FbxAMatrix matBoneBindPos = matInitPostion.Inverse() * matXBindPose;
 			KMatrix matBinePos = DxConvertMatrix(ConvertAMatrix(matBoneBindPos));
 			// 영향을 미치는 행렬이 iClusterSize 정점에 영향을 미친다.
+			//역행렬을 넘긴다.
 			D3DKMatrixInverse(&matBinePos, NULL, &matBinePos);
 			//이것만 상수버퍼를 넘겨줘도 되는것..
 			pMesh->m_matBindPoseList[iCluster] = matBinePos;
@@ -70,7 +73,7 @@ bool KFbxObj::ParseMeshSkinning(FbxMesh* pFbxMesh, KMesh* pMesh, KSkinData* pSki
 }
 void    KFbxObj::ParseAnimStack(FbxString* szData)
 {
-	//설마 이거?
+	//애니메이션에 대한 데이터를 뽑아주는 getanimationevaluitator;
 	m_pFbxScene->GetAnimationEvaluator()->Reset();
 
 	FbxTakeInfo* pTakeInfo = m_pFbxScene->GetTakeInfo(*szData);

@@ -146,4 +146,4 @@ Sample::Sample()
 Sample::~Sample()
 {
 }
-WinMain_OPT(FBX애니메이션, 1200, 675);
+WinMain_OPT(평면 쉐도우, 1200, 675);

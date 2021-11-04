@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\box.txt">
@@ -170,6 +171,12 @@
       <Filter>Shader</Filter>
     </Text>
     <Text Include="..\..\..\..\KGCA\KGCA40\data\shader\VertexShader.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\PlanePS.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\PlaneVS.txt">
       <Filter>Shader</Filter>
     </Text>
   </ItemGroup>

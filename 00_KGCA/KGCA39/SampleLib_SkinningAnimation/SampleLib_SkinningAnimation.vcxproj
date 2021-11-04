@@ -24,6 +24,7 @@
     <ProjectGuid>{cd02c9bb-3b62-48cf-8475-5b1e4334a71a}</ProjectGuid>
     <RootNamespace>SampleLib_SkinningAnimation</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>SampleLib_SkinningAnimationEX</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -78,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output/SampleLib_SkinningAnimation</OutDir>
-    <IntDir>../../output/SampleLib_SkinningAnimation</IntDir>
+    <OutDir>../../output/SampleLib_SkinningAnimationEX</OutDir>
+    <IntDir>../../output/SampleLib_SkinningAnimationEX</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -161,6 +162,9 @@
     <FxCompile Include="ProjectionShadow.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

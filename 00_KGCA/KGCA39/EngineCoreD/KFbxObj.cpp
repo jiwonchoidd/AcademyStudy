@@ -281,6 +281,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 
 		for (int iBone = 0; iBone < pMesh->m_matBindPoseList.size(); iBone++)
 		{
+			//뼈의 위치 역행렬
 			KMatrix matAnim = pMesh->m_matBindPoseList[iBone] *
 				pMesh->m_pMeshLinkList[iBone]->m_AnimationTrack[m_iAnimIndex];
 			D3DKMatrixTranspose(&pMesh->m_matAnimMatrix.matAnimation[iBone],
@@ -300,7 +301,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				if (pSubMtrl->m_Texture.m_pTextureSRV != nullptr)
 				{
 					//pContext->PSSetSamplers(0, 1, &pSubMtrl->m_Texture.m_pSampler);
-					pContext->PSSetShaderResources(1, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
+					pContext->PSSetShaderResources(0, 1, &pSubMtrl->m_Texture.m_pTextureSRV);
 				}
 
 				// 캐릭터는 대부분 메터리얼 하나일것 스키닝도 서브메터리얼 사용 가능함. 
@@ -327,7 +328,7 @@ bool    KFbxObj::Render(ID3D11DeviceContext* pContext)
 				if (pMtrl->m_Texture.m_pTextureSRV != nullptr)
 				{
 					//pContext->PSSetSamplers(0, 1, &pMtrl->m_Texture.m_pSampler);
-					pContext->PSSetShaderResources(1, 1, &pMtrl->m_Texture.m_pTextureSRV);
+					pContext->PSSetShaderResources(0, 1, &pMtrl->m_Texture.m_pTextureSRV);
 				}
 			}
 			pMesh->SetMatrix(&m_cbData.matWorld, &m_cbData.matView, &m_cbData.matProj);

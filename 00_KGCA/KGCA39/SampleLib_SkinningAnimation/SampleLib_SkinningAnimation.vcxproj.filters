@@ -28,4 +28,7 @@
     <FxCompile Include="CharacterShader.hlsl" />
     <FxCompile Include="ProjectionShadow.hlsl" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>
