@@ -1,5 +1,15 @@
 #include "KFbxObj.h"
 
+void KFbxObj::SelectedAnim(float start, float end)
+{
+	m_fElpaseTime += 1.0f * g_fSecPerFrame;
+	m_iAnimIndex = (m_fElpaseTime + start) * 30.0f;
+	if (m_fElpaseTime > end)
+	{
+		m_fElpaseTime = 0.0f;
+	}
+}
+
 //값에 맞는 인덱스로 바꿔준다.
 KMesh* KFbxObj::GetFindIndex(FbxNode* pNode)
 {

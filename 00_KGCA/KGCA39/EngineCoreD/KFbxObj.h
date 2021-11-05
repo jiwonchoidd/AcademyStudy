@@ -24,6 +24,8 @@ public:
 	float	m_fEndTime = 0.0f;
 	float	m_fSampleTime = 0.0f;
 	KVector3 m_vLook;
+public:
+	void	SelectedAnim(float start, float end);
 	//
 	std::vector<FbxNode*>	m_pFbxNodeList;
 	std::vector<KMtrl*>		m_pFbxMaterialList;

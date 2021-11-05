@@ -266,7 +266,8 @@ bool KModel::PreRender(ID3D11DeviceContext* pContext)
     UINT pOffsets = 0;
     pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer,
         &pStrides, &pOffsets);
-    pContext->IASetIndexBuffer(m_pIndexBuffer,
+    pContext->IASetIndexBuffer(
+        m_pIndexBuffer,
         DXGI_FORMAT_R32_UINT, 0);
     return true;
 }

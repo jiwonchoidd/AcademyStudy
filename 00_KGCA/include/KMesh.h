@@ -74,7 +74,7 @@ public:
 	ID3D11Buffer*			m_pIWVertrexBuffer=nullptr;
 	//정점당 가중치 인덱스 4개씩 쉐이더에 넣기 위함 
 	vector<PNCTIW_VERTEX>	m_iwList;
-	FbxNode* m_pFbxNode = nullptr;
+	FbxNode*				m_pFbxNode = nullptr;
 
 	KMesh* m_pParent = nullptr; // 부모
 	wstring				m_szName;

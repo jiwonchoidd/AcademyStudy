@@ -57,7 +57,6 @@ bool		Sample::Frame()
 	{
 		#pragma region  캐릭터 이동 & 애니메이션
 
-
 		if (g_Input.GetKey(VK_RIGHT))
 		{
 			m_fYRot += 3 * g_fSecPerFrame;
@@ -75,28 +74,20 @@ bool		Sample::Frame()
 		m_FbxObjA.m_vLook.x = m_FbxObjA.m_matWorld._31;
 		m_FbxObjA.m_vLook.y = m_FbxObjA.m_matWorld._32;
 		m_FbxObjA.m_vLook.z = m_FbxObjA.m_matWorld._33;
+		m_FbxObjA.m_vLook.Normalize();
 
 		if (g_Input.GetKey(VK_UP) >= KEY_PUSH)
 		{
 			m_MovePos -= m_FbxObjA.m_vLook * g_fSecPerFrame * 110.0f;
 			//애니메이션
-			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 3.1f) * 30.0f;
-			if (m_FbxObjA.m_fElpaseTime > 0.75f)
-			{
-				m_FbxObjA.m_fElpaseTime = 0.0f;
-			}
+			m_FbxObjA.SelectedAnim(3.1f, 0.75f);
 		}
 		else if (g_Input.GetKey(VK_DOWN) >= KEY_PUSH)
 		{
 			m_MovePos += m_FbxObjA.m_vLook * g_fSecPerFrame * 40.0f;
 			//애니메이션
-			m_FbxObjA.m_fElpaseTime += 1.0f * g_fSecPerFrame;
-			m_FbxObjA.m_iAnimIndex = (m_FbxObjA.m_fElpaseTime + 2.1f) * 30.0f;
-			if (m_FbxObjA.m_fElpaseTime > 0.9f)
-			{
-				m_FbxObjA.m_fElpaseTime = 0.0f;
-			}
+			m_FbxObjA.SelectedAnim(2.1f, 0.9f);
+
 		}
 		else
 		{

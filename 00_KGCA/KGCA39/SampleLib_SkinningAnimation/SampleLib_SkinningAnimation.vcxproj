@@ -79,7 +79,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../output/SampleLib_SkinningAnimationEX</OutDir>
+    <OutDir>../../output/SampleLib_SkinningAnimationEX/exe</OutDir>
     <IntDir>../../output/SampleLib_SkinningAnimationEX</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
