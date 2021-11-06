@@ -35,7 +35,7 @@ struct VS_OUT
 VS_OUT VS(VS_IN vIn)
 {
 	VS_OUT output = (VS_OUT)0;
-	float4 vLocal = float4(vIn.p, 1.0f);
+	float4 vLocal = float4(vIn.p, 1.0f);//xyz
 
 	float4 vAnim = 0;
 	for (int i = 0; i < 4; i++)

@@ -254,16 +254,19 @@ bool KModel::Render(ID3D11DeviceContext* pContext)
 bool KModel::PreRender(ID3D11DeviceContext* pContext)
 {
     if (m_pVertexList.size() <= 0) return true;
-
+    //리소스 업데이트 데이터와 리소스 버퍼의 저장
     pContext->UpdateSubresource(
         m_pConstantBuffer, 0, NULL, &m_cbData, 0, 0);
     pContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
     pContext->PSSetShaderResources(0, 1, &m_Tex.m_pTextureSRV);
+    //쉐이더
     pContext->VSSetShader(m_pVS, NULL, 0);
     pContext->PSSetShader(m_pMainPS, NULL, 0);
+
     pContext->IASetInputLayout(m_pVertexLayout);
     UINT pStrides = m_iVertexSize;
     UINT pOffsets = 0;
+    //정점버퍼 바인딩 인덱스버퍼 바인딩 
     pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer,
         &pStrides, &pOffsets);
     pContext->IASetIndexBuffer(
