@@ -1,6 +1,25 @@
 #include "Sample.h"
+HRESULT Sample::CreateConstantBuffer()
+{
+	HRESULT hr = S_OK;
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+	bd.ByteWidth = sizeof(cbDataShadow);
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	D3D11_SUBRESOURCE_DATA data;
+	ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
+	data.pSysMem = &m_ShadowCB;
+	hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pShadowCB);
+	if (FAILED(hr)) return hr;
+	return hr;
+}
 bool		Sample::Init()
 {
+	CreateConstantBuffer();
+	m_DebugCamera.CreateViewMatrix(KVector3(-50, 100, -100), KVector3(0, 0, 0));
+	m_DebugCamera.CreateProjMatrix(1.0f, 500.0f, XM_PI * 2.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	
 	//텍스쳐 변환행렬
 	m_matTex._11 = 0.5f; m_matTex._22 = -0.5f;
 	m_matTex._41 = 0.5f; m_matTex._42 = 0.5f;
@@ -49,10 +68,6 @@ bool		Sample::Init()
 	}
 
 	m_FbxObjA.LoadObject("../../data/object/Man.fbx", "CharacterShader.hlsl");
-	m_FbxObjB.LoadObject("../../data/object/Turret.FBX", "CharacterShader.hlsl");
-	D3DKMatrixTranslation(&m_FbxObjB.m_matWorld, -60.0f, 0.0f, 4.0f);
-	m_DebugCamera.CreateViewMatrix(KVector3(-50, 100, -100), KVector3(0, 0, 0));
-	m_DebugCamera.CreateProjMatrix(1.0f, 500.0f, XM_PI * 2.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 
@@ -61,7 +76,6 @@ bool		Sample::Frame()
 	if (g_Input.GetKey(VK_F4) == KEY_PUSH)
 	{
 		(m_FbxObjA.m_bAnimPlay) ? m_FbxObjA.m_bAnimPlay = false : m_FbxObjA.m_bAnimPlay = true;
-		(m_FbxObjB.m_bAnimPlay) ? m_FbxObjB.m_bAnimPlay = false : m_FbxObjB.m_bAnimPlay = true;
 	}
 	if (m_FbxObjA.m_bAnimPlay == false)
 	{
@@ -119,18 +133,15 @@ bool		Sample::Frame()
 
 
 	m_FbxObjA.Frame();
-	m_FbxObjB.Frame();
 	m_Light1.Frame();
 	//쉐도우 뷰행렬, 프로젝션 행렬, 텍스쳐행렬 곱한것
 	m_ShadowCB.g_matShadow1 = m_Light1.m_matView * m_Light1.m_matProj * m_matTex;
-
 	return true;
 }
 bool		Sample::Render()
 {
 	//레스터라이즈 솔리드
 	ApplyRS(m_pImmediateContext, KDXState::g_pRSSolid);
-
 	//렌더타겟 객체 저장해놓고 나중에 end로 복원
 	// 그림자 라이트에서 카메라로 촬영한 텍스쳐
 	if (m_Rt.Begin(m_pImmediateContext))
@@ -141,49 +152,48 @@ bool		Sample::Render()
 		m_pImmediateContext->PSSetShader(m_pPSShadowMap, NULL, 0);
 		m_MapObj.PostRender(m_pImmediateContext,
 			m_MapObj.m_iNumIndex);//
-
 		m_FbxObjA.SetMatrix(&m_FbxObjA.m_matWorld,
 			&m_Light1.m_matView, &m_Light1.m_matProj);
 		m_FbxObjA.ChangePixelShader(m_pPSShadow);
 		m_FbxObjA.Render(m_pImmediateContext);
-
-		//m_FbxObjB.SetMatrix(&m_FbxObjB.m_matWorld,
-		//	&m_Light1.m_matView, &m_Light1.m_matProj);
-		//m_FbxObjB.ChangePixelShader(m_pPSShadow);
-		//m_FbxObjB.Render(m_pImmediateContext);
 		//복원 작업
 		m_Rt.End(m_pImmediateContext);
 	}
+	m_ShadowCB.g_matShadow1 = m_ShadowCB.g_matShadow1.Transpose();
+	m_pImmediateContext->UpdateSubresource(
+		m_pShadowCB, 0, NULL, &m_ShadowCB, 0, 0);
+	m_pImmediateContext->VSSetConstantBuffers(2, 1, &m_pShadowCB);
+
 	//샘플러 상태 : 클램프 -> 그림자용
+	//ApplyRS(m_pImmediateContext,KDXState::g_pRSSolid);
 	ApplySS(m_pImmediateContext, KDXState::g_pClampSS, 1);
-	m_MapObj.m_cbData.matNormal = m_ShadowCB.g_matShadow1;
+
+	D3DKMatrixInverse(&m_MapObj.m_cbData.matNormal, NULL,
+		&m_MapObj.m_matWorld);
+	m_MapObj.m_cbData.vLightDir.x = m_Light1.m_vDir.x;
+	m_MapObj.m_cbData.vLightDir.y = m_Light1.m_vDir.y;
+	m_MapObj.m_cbData.vLightDir.z = m_Light1.m_vDir.z;
 	m_MapObj.SetMatrix(&m_MapObj.m_matWorld, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
-	//1번슬롯 : 그림자용 텍스쳐 리소스 
 	m_pImmediateContext->PSSetShaderResources(1, 1, &m_Rt.m_pTextureSRV);
 	m_MapObj.Render(m_pImmediateContext);
 
-	//디버그용 미니맵 없어도된다.
 	m_MiniMap.SetMatrix(nullptr, nullptr, nullptr);
 	m_MiniMap.PreRender(m_pImmediateContext);
-	//0번슬롯 : 디폴트 텍스쳐 리소스 
-	m_pImmediateContext->PSSetShaderResources(
-		0, 1, &m_Rt.m_pTextureSRV);
+	m_pImmediateContext->PSSetShaderResources(0, 1, &m_Rt.m_pTextureSRV);
 	m_MiniMap.PostRender(m_pImmediateContext, m_MiniMap.m_iNumIndex);
 
-	m_FbxObjA.SetMatrix(&m_FbxObjA.m_matWorld,
-		&m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
-	m_FbxObjA.ChangePixelShader(nullptr);
+	D3DKMatrixInverse(&m_FbxObjA.m_cbData.matNormal,
+		NULL, &m_FbxObjA.m_matWorld);
+	m_FbxObjA.SetMatrix(&m_FbxObjA.m_matWorld, &m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
+	m_FbxObjA.ChangePixelShader(nullptr,&m_FbxObjA.m_cbData.matNormal, m_Light1.m_vDir);
+	m_pImmediateContext->PSSetShaderResources(1, 1, &m_Rt.m_pTextureSRV);
 	m_FbxObjA.Render(m_pImmediateContext);
-
-	m_FbxObjB.SetMatrix(nullptr,
-		&m_DebugCamera.m_matView, &m_DebugCamera.m_matProj);
-	m_FbxObjB.ChangePixelShader(nullptr);
-	m_FbxObjB.Render(m_pImmediateContext);
 
 	if (g_Input.GetKey(VK_F5) == KEY_PUSH)
 	{
-		m_Rt.Save(m_pImmediateContext, L"frame.jpg");
+		m_Rt.Save(m_pImmediateContext, L"frame.dds");
 	}
+	return true;
 	//사용자 설명
 	m_Write.BlinkMessage(L"F1 - 프레임,  F4 - 전체 애니메이션,  방향키 - 이동");
 	return true;
@@ -194,7 +204,6 @@ bool		Sample::Release()
 	m_MiniMap.Release();
 	m_Rt.Release();
 	m_FbxObjA.Release();
-	//m_FbxObjB.Release();
 	SAFE_RELEASE(m_pPSShadow);
 	return true;
 }

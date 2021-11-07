@@ -64,6 +64,7 @@ public:
 	FbxVector4	ReadTangent(const FbxMesh* pFbxMesh,
 		DWORD dwVertexTangentCount, FbxGeometryElementTangent* VertexTangentSets,
 		DWORD dwDCCIndex, DWORD dwVertexIndex);
-	void  ChangePixelShader(ID3D11PixelShader* ps = nullptr);
+	void  ChangePixelShader(ID3D11PixelShader* ps = nullptr,
+		KMatrix* matNormal = nullptr, KVector3 vLight = KVector3(0, 0, 1));
 };
 

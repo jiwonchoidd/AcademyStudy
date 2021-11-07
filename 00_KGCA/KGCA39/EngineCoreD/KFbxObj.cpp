@@ -7,7 +7,9 @@ bool Compare(const pair<float, int>& a, const pair<float, int>& b)
 	return a.first > b.first;
 }
 //nullptr를 넣으면 MainPS 아닐 경우에는 인자로 받아온 PS
-void KFbxObj::ChangePixelShader(ID3D11PixelShader* ps)
+void KFbxObj::ChangePixelShader(ID3D11PixelShader* ps,
+	KMatrix* matNormal,
+	KVector3 vLight)
 {
 	for (int iMesh = 0; iMesh < m_pMeshList.size(); iMesh++)
 	{
@@ -25,6 +27,13 @@ void KFbxObj::ChangePixelShader(ID3D11PixelShader* ps)
 				{
 					pSubMesh->m_pMainPS = ps;
 				}
+				if (matNormal != nullptr)
+				{
+					pSubMesh->m_cbData.matNormal = *matNormal;
+				}
+				pSubMesh->m_cbData.vLightDir.x = vLight.x;
+				pSubMesh->m_cbData.vLightDir.y = vLight.y;
+				pSubMesh->m_cbData.vLightDir.z = vLight.z;
 			}
 		}
 		else
@@ -37,6 +46,13 @@ void KFbxObj::ChangePixelShader(ID3D11PixelShader* ps)
 			{
 				pMesh->m_pMainPS = ps;
 			}
+			if (matNormal != nullptr)
+			{
+				pMesh->m_cbData.matNormal = *matNormal;
+			}
+			pMesh->m_cbData.vLightDir.x = vLight.x;
+			pMesh->m_cbData.vLightDir.y = vLight.y;
+			pMesh->m_cbData.vLightDir.z = vLight.z;
 		}
 	}
 }

@@ -96,7 +96,9 @@ class Sample : public KCore
 	KMatrix				m_matShadow;
     ID3D11PixelShader* m_pPSShadow = nullptr;
     ID3D11PixelShader*	m_pPSShadowMap = nullptr;
+    ID3D11Buffer*       m_pShadowCB = nullptr;
 public:
+    HRESULT     CreateConstantBuffer();
 	bool		Init()override;
 	bool		Frame()override;
 	bool		Render()override;

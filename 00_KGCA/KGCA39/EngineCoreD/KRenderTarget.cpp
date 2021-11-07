@@ -73,7 +73,7 @@ HRESULT KRenderTarget::CreateRenderTargetView(UINT Width, UINT Height)
 bool KRenderTarget::Create(UINT Width, UINT Height)
 {
 	SetViewPort(Width, Height);
-	//CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.5f,(float)Width / (float)Height);
+	CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.5f,(float)Width / (float)Height);
 	if (FAILED(CreateRenderTargetView(Width, Height)))
 	{
 		return false;
@@ -97,8 +97,8 @@ bool KRenderTarget::Begin(ID3D11DeviceContext* pContext)
 	pContext->OMSetRenderTargets(1, &pRTV, pDSV);
 	ID3D11ShaderResourceView* ppSRVNULL[2] = { NULL, NULL };
 	pContext->PSSetShaderResources(0, 2, ppSRVNULL);
-	//배경화면 검은색
-	float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
+	//배경화면 검은색 d
+	float ClearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
 	pContext->ClearRenderTargetView(
 		this->m_pRenderTargetView, ClearColor);
 	pContext->ClearDepthStencilView(

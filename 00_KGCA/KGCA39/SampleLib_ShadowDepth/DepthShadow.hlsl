@@ -1,15 +1,18 @@
-// 정해진 출력 양식(반드시 정점 위치는 SV_POSITION에 저장해야 한다.)
-// 정해진 레지스터에서 정해진 레지스터로 저장한다.
-// 레지스터-> x,y,z,w  9.0 -> 65545/4
-cbuffer cbData
+
+cbuffer cbData: register(b0)
 {
 	matrix g_matWorld	: packoffset(c0);
 	matrix g_matView	: packoffset(c4);
 	matrix g_matProj	: packoffset(c8);
 	matrix g_matNormal	: packoffset(c12);
-	float  g_fTimer : packoffset(c16.z);
+	float4 g_vLightDir : packoffset(c16);
+	float  g_fTimer : packoffset(c17.z);
 };
 
+cbuffer cbDataShadow: register(b2)
+{
+	matrix g_matShadow	: packoffset(c0);
+};
 struct VS_OUT
 {
 	float4 p : SV_POSITION;
@@ -28,16 +31,14 @@ VS_OUT VS(float3 p: POSITION,
 	float4 vLocal = float4(p, 1.0f);
 	float4 vWorld = mul(vLocal, g_matWorld);
 	float4 vView = mul(vWorld, g_matView);
-	// 라이트에서 바라본 투영 좌표
 	float4 vProj = mul(vView, g_matProj);
-	// 라이트 뷰 행렬
-	float4 vShadowProj = mul(vWorld, g_matNormal);
 
-	output.s = vShadowProj;
+	output.s = mul(vWorld, g_matShadow);
 	output.p = vProj;
-	output.n = n;
-	float depth = output.p.z / 500.0f;
-	output.c = float4(depth, depth, depth, vShadowProj.z/500.0f); //알파값에 Z
+	matrix matNormal = transpose(g_matNormal);
+	output.n = normalize(mul(n, (float3x3)matNormal));
+	float depth1 = vProj.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+	output.c = float4(depth1, depth1, depth1, 1);
 	output.t = t;
 	return output;
 }
@@ -46,17 +47,22 @@ Texture2D g_txDiffuse : register(t0);
 Texture2D g_txShadow  : register(t1);
 SamplerState g_Sampler : register(s0);
 SamplerState g_SamplerClamp : register(s1);
+
 float4 PS(VS_OUT v) : SV_TARGET
 {
-	float4 shadow = g_txShadow.Sample(g_SamplerClamp,
-									v.s.xy / v.s.w);
+	float3 vLight = float3(g_vLightDir.x, g_vLightDir.y, g_vLightDir.z);
+	float fDot = max(0, dot(v.n, -vLight));
+
+	float3 vShadowProj;
+	vShadowProj.xy = v.s.xy / v.s.w;
+	float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
 	float4 color = g_txDiffuse.Sample(g_Sampler, v.t);
-	//조건 바이어스를 임의로 적용
-	if (shadow.r+0.005f < v.c.a)
+	float depth = v.s.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+	if (shadow + 0.01f <= depth)
 	{
 		color = color * float4(0.5f,0.5f,0.5f,1);
 	}
-	return color;
+	return color * fDot;
 }
 float4 PSDepth(VS_OUT v) : SV_TARGET
 {

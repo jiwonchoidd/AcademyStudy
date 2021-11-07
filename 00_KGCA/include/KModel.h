@@ -50,6 +50,7 @@ struct CB_DATA
 	KMatrix  matView;
 	KMatrix  matProj;
 	KMatrix  matNormal;
+	KVector4 vLightDir;
 	KVector4 vValue;
 };
 class KModel 
