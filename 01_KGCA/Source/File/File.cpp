@@ -8,25 +8,26 @@ struct User
 	int		iAge;
 };
 int main()
+//r 읽기 r+ 읽기 쓰기 w 쓰기 w+ 읽기쓰기 a 덧붙이기 a+ 읽기 덧붙이기
 {
-	std::vector<User> vUser;
-	vUser.push_back({ 1,2 });
-	vUser.push_back({ 3,4 });
-	vUser.push_back({ 5,6 });
+	User	name;
+	name.iIndex = 1;
+	name.iAge = 2;
 	//	파일 생성 저장
-	FILE* fpWrite = fopen("test.txt", "w");
-	fclose(fpWrite);
-	fprintf(fpWrite, "%s\n", vUser);
-	if ((fpWrite = fopen("test.txt", "wt")) == NULL)
-	{
-		printf("파일열기 실패");
-		return 1;
-	}
-	fprintf(fpWrite,"", vUser);
+	FILE*	fpWrite = fopen("test.txt", "w");
+
+	fprintf(fpWrite, "%d %d", name.iIndex, name.iAge);
 	fclose(fpWrite);
 
-	FILE* fpRead = fopen("test.txt", "r");
-	char szRead[10] = { 0, };
-	fclose(fpWrite);
+
+	// 파일 읽기
+	//char	buffer[256] = { 0, };
+	int		tempIndex = 0;
+	int		tempiAge = 0;
+	FILE*	fpRead = fopen("test.txt", "r");
+	//fgets(buffer, 256, fpRead);
+	fscanf(fpRead, "%d %d", &tempIndex, &tempiAge);
+	printf("%d %d",tempIndex, tempiAge);
+	fclose(fpRead);
 	return 0;
 }
