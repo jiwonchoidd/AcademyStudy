@@ -3,10 +3,15 @@
 class Person
 {
 public:
-	int		m_Value;
+	char	m_Name[256] = { 0, };
+	int		m_KorScore;
+	int		m_MathScore;
+	int		m_EngScore;
 	Person()
 	{
-		m_Value = 0;
+		m_KorScore	=0;
+		m_MathScore	=0;
+		m_EngScore	=0;
 	}
 };
 class Sample

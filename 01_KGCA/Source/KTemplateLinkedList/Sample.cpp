@@ -1,4 +1,5 @@
 #include "Sample.h"
+#include <stdlib.h>
 int main()
 {
 	Sample sample;
@@ -14,16 +15,19 @@ int main()
 			int input = 0;
 			std::cout << "숫자 입력하세요" << std::endl;
 			std::cin >> input;
+			system("cls");
 			Person* a= new Person;
 			a->m_Value = input;
 			sample.m_LL.AddLink(a);
+			sample.m_LL.PrintAll();
 		}break;
 		case 1: {
-			//system("cls");
+			system("cls");
 			sample.m_LL.DeletePop();
+			sample.m_LL.PrintAll();
 		}break;
 		case 2: {
-			//system("cls");
+			system("cls");
 			sample.m_LL.PrintAll();
 		}break;
 		case 3: {

@@ -1,10 +1,12 @@
-#include <string>
+#pragma once
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 class FileIO
 {
 public :
-	void	FileCreate(std::string fname);
+	void	FileCreate();
 	void	FileDeleteAll();
-	void	FileLoad();
+	bool	FileLoad();
 	void	FileSave();
 	void	FileDraw();
 };

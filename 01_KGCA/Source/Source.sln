@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FileIO", "FileIO\FileIO.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KTemplateLinkedList", "KTemplateLinkedList\KTemplateLinkedList.vcxproj", "{68AFF1EA-170E-4458-B1CA-956284B35AD8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ScoreManager", "Manager\Manager.vcxproj", "{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -57,6 +59,14 @@ Global
 		{68AFF1EA-170E-4458-B1CA-956284B35AD8}.Release|x64.Build.0 = Release|x64
 		{68AFF1EA-170E-4458-B1CA-956284B35AD8}.Release|x86.ActiveCfg = Release|Win32
 		{68AFF1EA-170E-4458-B1CA-956284B35AD8}.Release|x86.Build.0 = Release|Win32
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Debug|x64.ActiveCfg = Debug|x64
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Debug|x64.Build.0 = Debug|x64
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Debug|x86.ActiveCfg = Debug|Win32
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Debug|x86.Build.0 = Debug|Win32
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Release|x64.ActiveCfg = Release|x64
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Release|x64.Build.0 = Release|x64
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Release|x86.ActiveCfg = Release|Win32
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +76,7 @@ Global
 		{A8FC49B0-73F8-4252-908F-C29F2E479DA6} = {DF8BE603-0D22-4120-B2A4-44F7FD14406F}
 		{7EA4AEA7-C3B9-459D-A384-C3ED9252FD3E} = {F47B01B5-C04E-4D7B-AF2E-367F0F745179}
 		{68AFF1EA-170E-4458-B1CA-956284B35AD8} = {F47B01B5-C04E-4D7B-AF2E-367F0F745179}
+		{26DB6EF7-D3C5-4811-A474-8B127FA1DDFD} = {F47B01B5-C04E-4D7B-AF2E-367F0F745179}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58215DE5-80B4-44F7-AAD1-C52FB203E1A1}

@@ -113,7 +113,7 @@ void KTemplateLinkedList<Type>::PrintAll()
 		pNode != m_pTail;
 		pNode = pNode->m_pNext)
 	{
-		std::cout << pNode->m_pValue->m_Value << "\n";
+		std::cout << pNode->m_pValue->m_Name<< "\n";
 	}
 }
 
