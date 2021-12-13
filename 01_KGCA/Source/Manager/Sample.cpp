@@ -1,10 +1,9 @@
 #include "Sample.h"
 #include <stdlib.h>
+bool isRun = true;
+Sample sample;
 int main()
 {
-	Sample sample;
-	bool isRun = true;
-	
 	if (!sample.m_FileIO.FileLoad())
 	{
 		sample.m_FileIO.FileLoad();
@@ -15,6 +14,10 @@ int main()
 		std::cout << "\n::::::::::저장된 파일을 불러왔습니다.::::::::::\n" << std::endl;
 		sample.m_FileIO.m_List.PrintAll(); 
 	}
+	sample.ActManage();
+}
+void Sample::ActManage()
+{
 	while (isRun)
 	{
 		int act = 0;
@@ -22,8 +25,8 @@ int main()
 		std::cin >> act;
 		switch (act)
 		{
-		case 0: 
-			#pragma region 0번은 추가
+		case 0:
+		#pragma region 0번은 추가
 		{
 			std::string name = "";
 			int korScore = 0, mathScore = 0, engScore = 0;
@@ -50,32 +53,32 @@ int main()
 			sample.m_FileIO.m_List.AddLink(a);
 			sample.m_FileIO.FileSave();
 			sample.m_FileIO.m_List.PrintAll();
-		break;
+			break;
 		}
 #pragma endregion
 		case 1:
-			#pragma region 1번은 삭제
+		#pragma region 1번은 삭제
 			system("cls");
 			sample.m_FileIO.m_List.DeletePop();
 			sample.m_FileIO.m_List.PrintAll();
 			break;
 #pragma endregion
 		case 2:
-			#pragma region 2번은 출력
+		#pragma region 2번은 출력
 			system("cls");
 			sample.m_FileIO.m_List.PrintAll();
 			break;
 #pragma endregion
-		case 3: 
-			#pragma region 3번은 종료
+		case 3:
+		#pragma region 3번은 종료
 			if (sample.m_FileIO.FileSave())
 			{
-			std::cout << "\n:::::::::::::저장완료:::::::::::::\n" << std::endl;
+				std::cout << "\n:::::::::::::저장완료:::::::::::::\n" << std::endl;
 			}
 			isRun = false;
 			break;
 #pragma endregion
-		default: 
+		default:
 			if (sample.m_FileIO.FileSave())
 			{
 				std::cout << "\n:::::::::::::저장완료:::::::::::::\n" << std::endl;
@@ -85,3 +88,4 @@ int main()
 		}
 	}
 }
+

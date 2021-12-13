@@ -4,4 +4,6 @@ class Sample
 {
 public:
 	KFileIO m_FileIO;
+public:
+	void ActManage();
 };
