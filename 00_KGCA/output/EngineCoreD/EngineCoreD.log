@@ -1,22 +1,6 @@
-﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-  KMesh.cpp
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMesh.cpp(28,56): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KModel.cpp
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(40,24): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(40,24): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(92,56): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(109,54): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(118,37): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KModel.cpp(287,47): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KRenderTarget.cpp
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KRenderTarget.cpp(140,21): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\00_KGCA\KGCA39\EngineCoreD\KRenderTarget.cpp(141,22): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
-  EngineCoreD.vcxproj -> E:\github\AcademyStudy\00_KGCA\output\EngineCoreD\EngineCoreD.lib
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(499,5): warning MSB8004: Output 디렉터리가 슬래시로 끝나지 않습니다. Output 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
+  EngineCoreD.vcxproj -> E:\Choijiwon\AcademyStudy\00_KGCA\output\EngineCoreD\EngineCoreD.lib
           1개 파일이 복사되었습니다.
   KCamera.h
   KCore.h
