@@ -9,16 +9,17 @@ public:
 	int		m_iWidth;
 	int		m_iHeight;
 	std::queue<KNode*> m_Queue;
-	KObject Tobj;
+	KObject	 m_Movableobj;
+	KVector3 m_Mp;
 public:
 	bool Init(int iWidth, int iHeight);
 	void Buildtree(KNode* t);
 	void Frame(float time);
-	void Move(KNode* pNode, KVector pos);
+	void Move(KNode* pNode, KVector3 pos);
 	KNode* CreateNode(KNode* p, float x, float y, float z, float w, float h);
-	KNode* FindNode(KNode* pNode, KVector pos);
-	KNode* FindPlayerNode(KVector pos);
-	bool    AddObject(KVector pos);
+	KNode* FindNode(KNode* pNode, KVector3 pos);
+	KNode* FindPlayerNode(KVector3 pos);
+	bool    AddObject(KVector3 pos);
 	void    Release();
 public:
 	KOctree();

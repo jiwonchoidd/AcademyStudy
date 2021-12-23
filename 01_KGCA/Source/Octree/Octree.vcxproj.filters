@@ -27,10 +27,7 @@
     <ClCompile Include="KObject.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KVector.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="KTimer.cpp">
+    <ClCompile Include="KVector3.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,10 +44,7 @@
     <ClInclude Include="KRect.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="KVector.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="KTimer.h">
+    <ClInclude Include="KVector3.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

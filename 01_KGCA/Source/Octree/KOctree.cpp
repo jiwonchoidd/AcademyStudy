@@ -1,19 +1,60 @@
 ﻿#include "KOctree.h"
+
+bool KOctree::Init(int iWidth, int iHeight)
+{
+	m_iWidth = iWidth;
+	m_iHeight = iHeight;
+	m_pRootNode = CreateNode(nullptr, 0, 0, 0, iWidth, iHeight);
+	Buildtree(m_pRootNode);
+	return true;
+}
 void	KOctree::Frame(float time)
 {
-	Tobj.Velocity.x = 10.0f;
-	Tobj.Velocity.y = 10.0f;
-	Tobj.Velocity.z = 10.0f;
-	Tobj.pos += Tobj.Velocity * time;
+	m_Movableobj.Velocity.x = 10.0f;
+	m_Movableobj.Velocity.y = 10.0f;
+	m_Movableobj.Velocity.z = 10.0f;
 
-	KNode* pFind = FindPlayerNode(Tobj.pos);
-	if (pFind != nullptr)
+	//옥트리 영역 나갔을때 방향 재설정하기
+	if (m_Movableobj.pos.x >= 100 || m_Movableobj.pos.y >= 100 || m_Movableobj.pos.z >= 100)
 	{
-		std::cout << " [ index- " << pFind->m_iIndex<<" x : "<< pFind->m_KRect.p0.x << " y : "<<
-			pFind->m_KRect.p0.y<<" z : " << pFind->m_KRect.p0.z << " ] \n";
+		m_Movableobj.dir = -1.0f;
+		std::cout << "\n<-방향 재설정(↙)\n";
+	}
+	else if(m_Movableobj.pos.x <= 0 || m_Movableobj.pos.y <= 0 || m_Movableobj.pos.z <= 0)
+	{
+		m_Movableobj.dir = +1.0f;
+		std::cout << "\n->방향 재설정(↗)\n";
+	}
+	//움직임 연산
+	m_Movableobj.pos += m_Movableobj.Velocity* m_Movableobj.dir * time;
+	
+	//해당 위치 노드를 찾아준다.
+	KNode* pFind = FindPlayerNode(m_Movableobj.pos);
+
+	if (pFind != nullptr && m_Movableobj.pos.x<100)
+	{
+		KVector3 k;
+		//p0, p1의 중앙 지점을 찾아준다.(x1+x2)/2, (y1+y2)/2
+		k= k.MiddleVector(pFind->m_KRect.p0, pFind->m_KRect.p1);
+		
+		//이전과 같은 노드 안에 있을때 출력 안함
+		if (m_Mp.x != k.x)
+		{
+		std::cout << "\n [ Current Node - " << pFind->m_iIndex<<", X : "<< k.x << ", Y : "<<
+			k.y<<", Z : " << k.y<< " ]\n" <<std::endl;
+		}
+		else
+		{
+			std::string sdir = (m_Movableobj.dir > 0) ? "↗" : "↙";
+			std::cout <<sdir;
+		}
+		m_Mp = k;
 	}
 }
-KNode* KOctree::FindPlayerNode(KVector pos)
+void KOctree::Move(KNode* pNode, KVector3 pos)
+{
+}
+KNode* KOctree::FindPlayerNode(KVector3 pos)
 {
 	KNode* pFindNode = FindNode(m_pRootNode, pos);
 	if (pFindNode != nullptr)
@@ -22,7 +63,7 @@ KNode* KOctree::FindPlayerNode(KVector pos)
 	}
 	return nullptr;
 }
-KNode* KOctree::FindNode(KNode* pNode, KVector pos)
+KNode* KOctree::FindNode(KNode* pNode, KVector3 pos)
 {
 	do {
 		for (int iNode = 0; iNode < 8; iNode++)
@@ -39,14 +80,6 @@ KNode* KOctree::FindNode(KNode* pNode, KVector pos)
 		m_Queue.pop();
 	} while (pNode);
 	return pNode;
-}
-bool KOctree::Init(int iWidth, int iHeight)
-{
-	m_iWidth = iWidth;
-	m_iHeight = iHeight;
-	m_pRootNode = CreateNode(nullptr, 0, 0, 0, iWidth, iHeight);
-	Buildtree(m_pRootNode);
-	return true;
 }
 
 void KOctree::Buildtree(KNode* pNode)
@@ -126,7 +159,7 @@ KNode* KOctree::CreateNode(KNode* pParent, float x, float y, float z, float w, f
 	return pNode;
 }
 
-bool KOctree::AddObject(KVector pos)
+bool KOctree::AddObject(KVector3 pos)
 {
 	KNode* pFindNode = FindNode(m_pRootNode, pos);
 	if (pFindNode != nullptr)

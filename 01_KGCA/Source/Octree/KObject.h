@@ -1,15 +1,15 @@
-#include "KVector.h"
+#include "KVector3.h"
 #include "KRect.h"
 class KObject
 {
 public:
 	int      iNodeIndex;
-	KVector pos;
+	KVector3 pos;
 	float   mass;
-	KVector Velocity; //속도
-	KVector Acceleration; //가속도
-	KVector sumForces; //모든 힘 합산
-
+	KVector3 Velocity; //속도
+	KVector3 Acceleration; //가속도
+	KVector3 sumForces; //모든 힘 합산
+	float	dir;
 	Rect    rect;
 public:
 	KObject();

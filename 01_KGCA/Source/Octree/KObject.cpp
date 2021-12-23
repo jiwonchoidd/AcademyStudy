@@ -6,4 +6,5 @@ KObject::KObject()
 	Acceleration.x = 1.0f;
 	Acceleration.y = 1.0f;
 	Acceleration.z = 1.0f;
+	dir = 1.0f;
 }

@@ -142,19 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="KOctree.cpp" />
-    <ClCompile Include="KTimer.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="KNode.cpp" />
     <ClCompile Include="KObject.cpp" />
-    <ClCompile Include="KVector.cpp" />
+    <ClCompile Include="KVector3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KOctree.h" />
     <ClInclude Include="KNode.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="KRect.h" />
-    <ClInclude Include="KTimer.h" />
-    <ClInclude Include="KVector.h" />
+    <ClInclude Include="KVector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

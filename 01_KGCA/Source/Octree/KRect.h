@@ -1,12 +1,12 @@
 #pragma once
-#include "KVector.h"
+#include "KVector3.h"
 struct Rect
 {
 	float  x, y, z, w, h;
 };
 struct KRect
 {
-	KVector p0;
-	KVector p1;
-	KVector wh;
+	KVector3 p0;
+	KVector3 p1;
+	KVector3 wh;
 };
