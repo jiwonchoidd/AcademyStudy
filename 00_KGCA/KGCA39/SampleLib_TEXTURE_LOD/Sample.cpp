@@ -52,7 +52,6 @@ bool Sample::Render()
     //m_Map.Render(m_pImmediateContext);
     m_Quadtree.Render(m_pImmediateContext, m_DebugCamera.GetCameraPos());
     //ÅØ½ºÃÄ ·»´õ
-    m_pImmediateContext->PSSetSamplers(0, 1, &m_KTexture.m_pSampler);
     m_pImmediateContext->PSSetShaderResources(1, 1, &m_KTexture.m_pTextureSRV);
 
     return false;
