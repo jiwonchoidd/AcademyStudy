@@ -1,0 +1,11 @@
+﻿  Sample.cpp
+  TCore.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateTimer\TCore.cpp(10,13): warning C4101: 'hr' :참조되지 않은 지역 변수입니다.
+  TDevice.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateTimer\TDevice.cpp(63,1): warning C4002: 함수 같은 매크로 호출 'FAILED'에 대해 인수가 너무 많습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateTimer\TDevice.cpp(89,36): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateTimer\TDevice.cpp(90,37): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TTimer.cpp
+  TWindow.cpp
+  코드를 생성하고 있습니다...
+  CreateTimer.vcxproj -> E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\x64\Debug\CreateTimer.exe

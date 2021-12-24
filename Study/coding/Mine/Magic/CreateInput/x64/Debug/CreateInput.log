@@ -1,0 +1,9 @@
+﻿  Tinput.cpp
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateInput\Tinput.h(14,33): error C2504: 'TSingleton': 기본 클래스를 정의하지 않았습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateInput\Tinput.h(14,33): error C2143: 구문 오류: ','이(가) '<' 앞에 없습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateInput\Tinput.h(16,25): error C3856: 'TSingleton': 기호가 클래스 템플릿이(가) 아닙니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateInput\Tinput.h(16,32): error C2098: 데이터 멤버 'Tinput' 뒤에 예기치 않은 토큰이 있습니다.
+E:\Choijiwon\AcademyStudy\Study\coding\Mine\Magic\CreateInput\Tinput.h(16,32): error C2059: 구문 오류: '>'
+  TTimer.cpp
+  TWindow.cpp
+  코드를 생성하고 있습니다...
