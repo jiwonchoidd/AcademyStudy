@@ -1,2 +1,2 @@
-E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib_Texture\SampleLib_TEXTURE_LOD.exe
 C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\SampleLib_Texture\SampleLib_TEXTURE_LOD.exe
+E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib_Texture\SampleLib_TEXTURE_LOD.exe
