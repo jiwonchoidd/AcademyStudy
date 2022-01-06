@@ -78,7 +78,6 @@ void main()
 		}
 		else
 		{
-			// Recv
 			UPACKET packet;
 			int iRet = RecvPacketHeader(sock, packet);
 			if (iRet < 0) break;
@@ -88,7 +87,15 @@ void main()
 				if (iRet < 0) break;
 				if (iRet == 0) continue;
 				// 메세지 처리
-				std::cout << "\n" << packet.msg;
+				KPacket data;
+				data.m_uPacket = packet;
+				KChatting recvdata;
+				ZeroMemory(&recvdata, sizeof(recvdata));
+				data >> recvdata.index >> recvdata.name
+					>> recvdata.damage >> recvdata.message;
+				std::cout << "\n" <<
+					"[" << recvdata.name << "]"
+					<< recvdata.message<<"\n";
 			}
 		}
 	}
