@@ -19,3 +19,5 @@
 00_KGCA/KGCA39/.vs/KGCA39/v16/ipch/AutoPCH/fffdc835d1a57c23/KFBXANIMATION.ipch
 *.ipch
 Study/coding/Mine/Magic/.vs/Mine/v16/ipch/AutoPCH/c740aad8bb856bd8/TWINDOW.ipch
+01_KGCA/fbx/lib/vs2017/x64/debug/libfbxsdk-mt.lib
+01_KGCA/fbx/lib/vs2017/x64/debug/libfbxsdk-md.lib
