@@ -43,7 +43,7 @@ bool Sample::Init()
 	SendMessageA(m_hListBox, LB_ADDSTRING, 0, (LPARAM)" -> 채팅이 표시 됩니다.");
 
 	m_Net.InitNetwork();
-	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.0.56");
+	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.31.236");
     return true;
 }
 bool Sample::Frame()

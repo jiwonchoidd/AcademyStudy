@@ -13,7 +13,7 @@
 #include <d3dcompiler.h>
 #include <DirectXmath.h>
 #include "KMath.h"
-
+#include <iostream>
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 #pragma comment	(lib, "d3d11.lib")
