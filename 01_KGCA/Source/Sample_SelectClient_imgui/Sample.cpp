@@ -1,5 +1,6 @@
 #define IP_KGCA "192.168.0.56"
 #define IP_KGCA2 "192.168.0.12"
+#define IP_1	"192.168.31.236"
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sample.h"
 LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -12,7 +13,7 @@ bool Sample::Init()
     m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	m_Net.InitNetwork();
-	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_KGCA);
+	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_1);
     return true;
 }
 static char chatItems[2048] = {0,};
@@ -37,7 +38,7 @@ bool Sample::Frame()
 		{
 			char clear[MAX_PATH] = { 0, };
 			KPacket kPacket(PACKET_CHAT_MSG);
-			kPacket << 123 << "Jiwon" << (short)12 << buffer;
+			kPacket << 123 << "Test" << (short)12 << buffer;
 			m_Net.SendMsg(m_Net.m_Sock, kPacket.m_uPacket);
 			strcpy(buffer, clear);
 		}

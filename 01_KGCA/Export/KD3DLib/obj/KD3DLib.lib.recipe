@@ -3,10 +3,10 @@
   <ProjectOutputs />
   <ContentFiles>
     <ContentFile>
-      <FullPath>E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\PixelShader.cso</FullPath>
+      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\KD3DLib\PixelShader.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\VertexShader.cso</FullPath>
+      <FullPath>C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\KD3DLib\VertexShader.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
