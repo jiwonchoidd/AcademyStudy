@@ -1,114 +1,100 @@
-#define _WINSOCK_DEPRECATED_NO_WARNINGS
-#include <iostream>
-#include <winsock2.h>
-#include <list>
-#include <string>
-#include "KPacket.h"
-#pragma comment	(lib, "ws2_32.lib")
+#include "Sample.h"
 
 //서버
-struct User
+CRITICAL_SECTION		g_CS;
+HANDLE					g_hMutex;
+std::list<KNetworkUser> g_UserList;
+KNetwork				g_Net;
+
+int BroadCast(KNetworkUser& user)
 {
-	SOCKET		m_Sock;
-	SOCKADDR_IN m_Addr;
-	std::string m_csName;
-	short       m_iPort;
-	void set(SOCKET sock, SOCKADDR_IN addr)
+	if (user.m_lPacketPool.size() > 0)
 	{
-		m_Sock = sock;
-		m_Addr = addr;
-		//네트워크 주소 변환 함수 빅엔디안(32bit) ->  
-		m_csName = inet_ntoa(addr.sin_addr);
-		//엔디안은 메모리 연속된 대상을 배열하는 방법으로 
-		// Network Byte 순서를 To Host의 Byte 순서로 바꿈
-		m_iPort = ntohs(addr.sin_port);
+		std::list<KPacket>::iterator iter;
+		for (iter = user.m_lPacketPool.begin();
+			iter != user.m_lPacketPool.end();)
+		{
+			for (KNetworkUser& senduser : g_UserList)
+			{
+				int iRet = g_Net.SendMsg(senduser.m_Sock, (*iter).m_uPacket);
+				if (iRet <= 0)
+				{
+					senduser.m_bConnect = false;
+				}
+			}
+			iter = user.m_lPacketPool.erase(iter);
+		}
 	}
-};
-
-int SendMsg(SOCKET sock, char* msg, WORD type)
-{
-	//1. 패킷을 객체 생성
-	UPACKET packet;
-	ZeroMemory(&packet, sizeof(packet));
-	//패킷의 길이는 헤더 사이즈 + 메세지 사이즈
-	packet.ph.len = strlen(msg) + PACKET_HEADER_SIZE;
-	packet.ph.type = type;
-	//메세지 받은걸로 memcpy로 패킷 만듬
-	memcpy(packet.msg, msg, strlen(msg));
-
-	// 2번 패킷 전송 : 운영체제 sendbuffer(short바이트)
-	char* pMsg = (char*)&packet;
-	int iSize = 0;
-
-	do {
-		//TCP는 연속적이지만 바이트 단위로 나눠져 보내질도 있음
-		int iSendByte = send(sock, &pMsg[iSize],
-			packet.ph.len - iSize, 0);
-
-		if (iSendByte == SOCKET_ERROR)
-		{
-			if (WSAGetLastError() != WSAEWOULDBLOCK)
-			{
-				return -1;
-			}
-		}
-
-		iSize += iSendByte;
-	} while (iSize < packet.ph.len);
-	return iSize;
+	return 1;
 }
-//패킷을 받았을때.
-int SendMsg(SOCKET sock, UPACKET& packet)
-{
-	char* pMsg = (char*)&packet;
-	int iSize = 0;
-	do {
-		int iSendByte = send(sock, &pMsg[iSize],
-			packet.ph.len - iSize, 0);
-
-		if (iSendByte == SOCKET_ERROR)
-		{
-			if (WSAGetLastError() != WSAEWOULDBLOCK)
-			{
-				return -1;
-			}
-		}
-
-		iSize += iSendByte;
-	} while (iSize < packet.ph.len);
-	return iSize;
-}
-//READ SEND
-// Main에서는 RECV
-DWORD WINAPI WorkThread(LPVOID param)
+DWORD WINAPI RecvThread(LPVOID param)
 {
 	SOCKET sock = (SOCKET)param;
-	std::list<User>::iterator iter;
 	while (1)
 	{
+		//스레드가 특정 시그널이 발생할때까지 기다림
+		WaitForSingleObject(g_hMutex, INFINITE);
 
+		std::list<KNetworkUser>::iterator iter;
+		for (iter = g_UserList.begin();
+			iter != g_UserList.end();)
+		{
+			int iRet = g_Net.RecvUser(*iter);
+			//0보다 작거나 같음, 받아온 데이터가 없거나, 에러일 경우 
+			if (iRet <= 0)
+			{
+				iter = g_UserList.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+		//운영체제한테 제어권 넘겨줌
+		ReleaseMutex(g_hMutex);
+		//의도적으로 Context Switching
+		Sleep(1);
 	}
 }
+
+DWORD WINAPI SendThread(LPVOID param)
+{
+	SOCKET sock = (SOCKET)param;
+	while (1)
+	{
+		//스레드가 특정 시그널이 발생할때까지 기다림
+		WaitForSingleObject(g_hMutex, INFINITE);
+
+		std::list<KNetworkUser>::iterator iter;
+		for (iter = g_UserList.begin();
+			iter != g_UserList.end();)
+		{
+			//전체에게 보내줌
+			int iRet = BroadCast(*iter);
+			//0보다 작거나 같음, 받아온 데이터가 없거나, 에러일 경우 
+			if (iRet <= 0)
+			{
+				iter = g_UserList.erase(iter);
+			}
+			else
+			{
+				iter++;
+			}
+		}
+		//운영체제한테 제어권 넘겨줌
+		ReleaseMutex(g_hMutex);
+		//의도적으로 Context Switching
+		Sleep(1);
+	}
+}
+
 void main()
 {
-	WSADATA wsa;
-	//2.2 버젼 WSA 
-	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
-	{
-		return;
-	}
-	SOCKET ListenSock = socket(AF_INET, SOCK_STREAM, 0);
-	SOCKADDR_IN sa;
-	ZeroMemory(&sa, sizeof(sa));
-	sa.sin_family = AF_INET;
-	sa.sin_port = htons(10000);
-	sa.sin_addr.s_addr = htonl(INADDR_ANY);
-	//소켓에 주소 할당
-	int iRet = bind(ListenSock, (sockaddr*)&sa, sizeof(sa));
-	if (iRet == SOCKET_ERROR)  return;
-	//클라이언트로 부터 연결 요청을 처리할수있는 상태를 만듬 
-	iRet = listen(ListenSock, SOMAXCONN);
-	if (iRet == SOCKET_ERROR)  return;
+	//유저모드 동기화 모드 크리티컬섹션
+	//InitializeCriticalSection(&g_CS);
+	g_hMutex = CreateMutex(NULL, FALSE, NULL);
+	g_Net.InitNetwork();
+	g_Net.InitServer(SOCK_STREAM,10000, nullptr);
 
 	SOCKADDR_IN clientAddr;
 	int iLen = sizeof(clientAddr);
@@ -117,13 +103,35 @@ void main()
 
 	//non blocking socket 0이면 블락킹 소켓
 	u_long on = 1;
-	ioctlsocket(ListenSock, FIONBIO, &on);
+	ioctlsocket(g_Net.m_Sock, FIONBIO, &on);
 
-	std::list<User> userlist;
+	DWORD ThreadID_Recv;
+	//데이터 받는 스레드
+	HANDLE hThreadRecv = ::CreateThread(
+		0,
+		0,
+		RecvThread, // 시작함수를 지정
+		(LPVOID)g_Net.m_Sock, // 시작함수 인자값
+		0, // 바로 시작할것인지 플래그
+		&ThreadID_Recv // 스레드 아이디 반환
+	);
+	CloseHandle(hThreadRecv);
+	
+	DWORD ThreadID_Send;
+	HANDLE hThreadSend = ::CreateThread(
+		0,
+		0,
+		SendThread,
+		(LPVOID)g_Net.m_Sock,
+		0,
+		&ThreadID_Send
+	);
+	CloseHandle(hThreadSend);
 
+	//메인 스레드
 	while (1)
 	{
-		SOCKET clientSock = accept(ListenSock,
+		SOCKET clientSock = accept(g_Net.m_Sock,
 			(sockaddr*)&clientAddr, &iLen);
 
 		if (clientSock == SOCKET_ERROR)
@@ -138,130 +146,25 @@ void main()
 		//클라이언트가 접속 시 시작함
 		else
 		{
-			User user;
+			KNetworkUser user;
 			user.set(clientSock, clientAddr);
-			userlist.push_back(user);
+			//메인 스레드가 특정 시그널이 발생할때까지 기다림
+			WaitForSingleObject(g_hMutex, INFINITE);
+			//들어온 유저 전역 리스트에 추가
+			g_UserList.push_back(user);
+			ReleaseMutex(g_hMutex);
 			std::cout
 				<< "ip =" << inet_ntoa(clientAddr.sin_addr)
 				<< "port =" << ntohs(clientAddr.sin_port)
 				<< "  " << std::endl;
 			u_long on = 1;
 			ioctlsocket(clientSock, FIONBIO, &on);
-			std::cout << userlist.size() << " 명 접속중." << std::endl;
+			std::cout << std::to_string(g_UserList.size())<< " 명 접속중." << std::endl;
 		}
-
-		if (userlist.size() > 0)
-		{
-			std::list<User>::iterator iter;
-			for (iter = userlist.begin(); iter != userlist.end(); )
-			{
-				User user = *iter;
-				char szRecvBuffer[256] = { 0, };
-				//패킷헤더 받기
-				UPACKET recvPacket;
-				ZeroMemory(&recvPacket, sizeof(recvPacket));
-				int iRecvSize = 0;
-				do {
-					int iRecvByte = recv(user.m_Sock, szRecvBuffer,
-						PACKET_HEADER_SIZE, 0);
-					iRecvSize += iRecvByte;
-					if (iRecvByte == 0)
-					{
-						closesocket(user.m_Sock);
-						iter = userlist.erase(iter);
-						std::cout << user.m_csName << " 접속종료됨." << std::endl;
-						break;
-					}
-					if (iRecvByte == SOCKET_ERROR)
-					{
-						int iError = WSAGetLastError();
-						if (iError != WSAEWOULDBLOCK)
-						{
-							iter = userlist.erase(iter);
-							std::cout << user.m_csName << " 비정상 접속종료됨." << std::endl;
-							break;
-						}
-						else
-						{
-							break;
-						}
-					}
-				} while (iRecvSize < PACKET_HEADER_SIZE);
-
-				if (iRecvSize == SOCKET_ERROR)
-				{
-					if (iter != userlist.end())
-					{
-						iter++;
-					}
-					continue;
-				}
-
-				memcpy(&recvPacket.ph, szRecvBuffer, PACKET_HEADER_SIZE);
-				// 데이터 받기
-				iRecvSize = 0;
-				do {
-					int iRecvByte = recv(user.m_Sock, recvPacket.msg,
-						recvPacket.ph.len - PACKET_HEADER_SIZE - iRecvSize, 0);
-					iRecvSize += iRecvByte;
-					if (iRecvByte == 0)
-					{
-						closesocket(user.m_Sock);
-						iter = userlist.erase(iter);
-						std::cout << user.m_csName << " 접속종료됨." << std::endl;
-						continue;
-					}
-					if (iRecvByte == SOCKET_ERROR)
-					{
-						int iError = WSAGetLastError();
-						if (iError != WSAEWOULDBLOCK)
-						{
-							iter = userlist.erase(iter);
-							std::cout << user.m_csName << " 비정상 접속종료됨." << std::endl;
-						}
-						else
-						{
-							iter++;
-						}
-					}
-				} while (iRecvSize < recvPacket.ph.len - PACKET_HEADER_SIZE);
-
-				KPacket data;
-				data.m_uPacket = recvPacket;
-				KChatting recvdata;
-				ZeroMemory(&recvdata, sizeof(recvdata));
-				data >> recvdata.index >> recvdata.name
-					>> recvdata.damage >> recvdata.message;
-
-				std::cout << "\n" <<
-					"[" << recvdata.name << "]"
-					<< recvdata.message;
-
-				// 패킷 완성		
-				std::list<User>::iterator iterSend;
-				for (iterSend = userlist.begin();
-					iterSend != userlist.end(); )
-				{
-					User user = *iterSend;
-					int iSendMsgSize = SendMsg(user.m_Sock, recvPacket);
-					if (iSendMsgSize < 0)
-					{
-						closesocket(user.m_Sock);
-						iterSend = userlist.erase(iterSend);
-						std::cout << user.m_csName << " 비정상 접속종료됨." << std::endl;
-					}
-					else
-					{
-						iterSend++;
-					}
-				}
-				if (iter != userlist.end())
-				{
-					iter++;
-				}
-			}
-		}
+		Sleep(1);
 	}
-	closesocket(ListenSock);
+	closesocket(g_Net.m_Sock);
 	WSACleanup();
+
+	CloseHandle(g_hMutex);
 }

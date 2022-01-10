@@ -8,7 +8,7 @@ LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 bool Sample::Init()
 {
-    m_Camera.CreateViewMatrix(KVector3(0, 0, -20), KVector3(0, 0, 0));
+    m_Camera.CreateViewMatrix(KVector3(0, 0, -10), KVector3(0, 0, 0));
     m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	m_Net.InitNetwork();
@@ -23,7 +23,7 @@ bool Sample::Frame()
 	// 프레임 함수
 	//패킷 풀을 사이즈로 대화 카운트를 한다.
 	int iChatCnt = m_Net.m_User.m_lPacketPool.size();
-	(m_Net.m_bConnect)? isConnect = "Connected" : isConnect = "DisConnected";
+	(!m_Net.m_bConnect)? isConnect = "Online" : isConnect = "Offline";
 	if (ImGui::Begin("Chatting Box"))
 	{
 		ImGui::Text(isConnect.c_str());

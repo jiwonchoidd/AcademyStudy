@@ -1,5 +1,5 @@
 #pragma once
-#include <windows.h>
+#include "KNetStd.h"
 /*
 * 패킷 앞에 길이와 타입을 정한 정보를 전송
 * TCP의 패킷 분할되는 특성을 이용해

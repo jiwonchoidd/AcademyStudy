@@ -1,6 +1,5 @@
 #pragma once
 #include "KProtocol.h"
-#include <string>
 // data<<header<<index<<name<<damage<<message
 // data>>header>>index>>name>>damage>>message
 class KPacket
