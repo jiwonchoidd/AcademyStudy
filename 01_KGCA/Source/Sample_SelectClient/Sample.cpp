@@ -1,3 +1,5 @@
+#define IP_KGCA "192.168.0.56"
+#define IP_TKGCA "192.168.0.12"
 #include "Sample.h"
 LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -13,7 +15,7 @@ LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 			char buffer[MAX_PATH] = { 0, };
 			SendMessageA(m_hEditBox, WM_GETTEXT, MAX_PATH, (LPARAM)buffer);
 			KPacket tPacket(PACKET_CHAT_MSG);
-			tPacket << 123 << "Test" << (short)12 << buffer;
+			tPacket << 123 << "최지원" << (short)12 << buffer;
 			m_Net.SendMsg(m_Net.m_Sock, tPacket.m_uPacket);
 
 			SendMessageA(m_hEditBox, WM_SETTEXT, 0, (LPARAM)"");
@@ -43,7 +45,7 @@ bool Sample::Init()
 	SendMessageA(m_hListBox, LB_ADDSTRING, 0, (LPARAM)" -> 채팅이 표시 됩니다.");
 
 	m_Net.InitNetwork();
-	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, "192.168.31.236");
+	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_TKGCA);
     return true;
 }
 bool Sample::Frame()

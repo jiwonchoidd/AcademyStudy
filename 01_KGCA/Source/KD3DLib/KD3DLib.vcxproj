@@ -177,7 +177,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\fbx\\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\fbx\\include;..\\.\\Graphics</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

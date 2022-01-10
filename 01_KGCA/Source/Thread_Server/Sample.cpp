@@ -78,7 +78,17 @@ int SendMsg(SOCKET sock, UPACKET& packet)
 	} while (iSize < packet.ph.len);
 	return iSize;
 }
+//READ SEND
+// Main¿¡¼­´Â RECV
+DWORD WINAPI WorkThread(LPVOID param)
+{
+	SOCKET sock = (SOCKET)param;
+	std::list<User>::iterator iter;
+	while (1)
+	{
 
+	}
+}
 void main()
 {
 	WSADATA wsa;

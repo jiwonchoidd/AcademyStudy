@@ -61,6 +61,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_SelectClient", "Samp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KD3DLib", "KD3DLib\KD3DLib.vcxproj", "{05E37C1F-188E-4374-969E-60582876A434}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample_SelectClient_imgui", "Sample_SelectClient_imgui\Sample_SelectClient_imgui.vcxproj", "{40F5C6E7-E272-4899-A5EB-13107408CE4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -221,6 +223,14 @@ Global
 		{05E37C1F-188E-4374-969E-60582876A434}.Release|x64.Build.0 = Release|x64
 		{05E37C1F-188E-4374-969E-60582876A434}.Release|x86.ActiveCfg = Release|Win32
 		{05E37C1F-188E-4374-969E-60582876A434}.Release|x86.Build.0 = Release|Win32
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Debug|x64.ActiveCfg = Debug|x64
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Debug|x64.Build.0 = Debug|x64
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Debug|x86.ActiveCfg = Debug|Win32
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Debug|x86.Build.0 = Debug|Win32
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Release|x64.ActiveCfg = Release|x64
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Release|x64.Build.0 = Release|x64
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Release|x86.ActiveCfg = Release|Win32
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -250,6 +260,7 @@ Global
 		{53DC8E9A-79DE-444D-9764-8A869F4E25AE} = {41232E1E-8E03-4E9D-87A6-3DA1B83E9A38}
 		{9A216FB9-7C4A-4CA7-946B-6BF77E4CB39D} = {41232E1E-8E03-4E9D-87A6-3DA1B83E9A38}
 		{BDFAD3C1-62AD-4454-9629-CFD2F14249E3} = {9A216FB9-7C4A-4CA7-946B-6BF77E4CB39D}
+		{40F5C6E7-E272-4899-A5EB-13107408CE4B} = {9A216FB9-7C4A-4CA7-946B-6BF77E4CB39D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {58215DE5-80B4-44F7-AAD1-C52FB203E1A1}

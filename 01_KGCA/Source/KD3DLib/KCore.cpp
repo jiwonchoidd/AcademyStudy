@@ -1,6 +1,4 @@
 #include "KCore.h"
-#include "ImGui/imgui.h"
-
 bool	KCore::GameRun()
 {
     if (!GameFrame()) return false;
@@ -53,20 +51,13 @@ bool	KCore::GameFrame()
     }
     ImGui::End();
 
-    if (ImGui::Begin("Input Checker"))
-    {
-        ImGui::Text(" W : %d,\n A : %d,\n S : %d,\n D : %d,\n LShift : %d,\n Mouse: %d,%d,%d",
-            g_InputData.bWKey,g_InputData.bAKey, g_InputData.bSKey,
-            g_InputData.bDKey, g_InputData.bLShift, g_InputData.bLeftHold, g_InputData.bRightHold, g_InputData.bMiddleHold);
-    }
-    ImGui::End();
 
     Frame();
     return true;
 }
 bool	KCore::GameRender() 
 {
-    //PreRender();
+    PreRender();
         
         // TODO : Render Timer
         m_Timer.Render();
@@ -81,7 +72,7 @@ bool	KCore::GameRender()
         
         Render();
         m_ImGuiManager.Render();
-    //PostRender();
+    PostRender();
     return true;
 }
 bool	KCore::PreRender() {
