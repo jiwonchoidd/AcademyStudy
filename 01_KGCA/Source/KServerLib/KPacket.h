@@ -14,6 +14,7 @@ public:
 	}
 	void PutData(const char* pData, int iSize);
 	void GetData(const char* pData, int iSize);
+	void Reset();
 public:
 	KPacket& operator << (int data);
 	KPacket& operator << (long data);

@@ -40,6 +40,7 @@ int KNetworkUser::DispatchRead(char* sRecvBuffer, int iRecvByte)
 				}
 				pPacket = (UPACKET*)&m_szRecvBuffer[m_iPacketPos];
 			} while (pPacket->ph.len <= m_iReadPos);
+
 		}
 	}
 	return 1;

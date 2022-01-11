@@ -40,7 +40,7 @@ DWORD WINAPI SendThread(LPVOID lparam)
 		//스레드가 특정 시그널이 발생할때까지 기다림
 		WaitForSingleObject(pServer->m_hMutex, INFINITE);
 
-		//임계구역
+		//임계구역 논시그널 상태가 되어 다른 뮤텍스는 기다림
 		std::list<KNetworkUser>::iterator iter;
 		for (iter = pServer->m_UserList.begin();
 			iter != pServer->m_UserList.end();)

@@ -14,7 +14,10 @@ bool Sample::Init()
 
 	m_Net.InitNetwork();
 	//타입 포트 아이피
-	m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_KGCA);
+	if(m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_KGCA))
+	{
+		m_bConnect = true;
+	}
     return true;
 }
 static char chatItems[2048] = {0,};
@@ -24,6 +27,7 @@ std::string	isConnect = "DisConnected";
 // 프레임 함수
 bool Sample::Frame()
 {
+	
 	// 패킷 풀 사이즈로 채팅 수량 체크
 	int iChatCnt = m_Net.m_User.m_lPacketPool.size();
 	(!m_Net.m_bConnect)? isConnect = "Online" : isConnect = "Offline";

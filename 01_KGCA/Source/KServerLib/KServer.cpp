@@ -61,6 +61,7 @@ bool KServer::Run()
 				break;
 			}
 		}
+		//유저가 들어왔음
 		else
 		{
 			KNetworkUser user;
@@ -79,6 +80,7 @@ bool KServer::Run()
 			std::cout << m_UserList.size() << " 명 접속중 " << std::endl;
 		}
 		Sleep(1);
+		
 	}
 	return true;
 }

@@ -5,6 +5,7 @@ class Sample : public KCore
 {
 public:
 	KAsyncSelect		m_Net;
+	bool				m_bConnect = false;
 	int					m_iChatCount;
 	bool		Init()override;
 	bool		Frame()override;

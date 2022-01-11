@@ -1,5 +1,6 @@
 #include "KNetwork.h"
 
+//네크워크 WSAStartup 초기화
 bool KNetwork::InitNetwork()
 {
 	WSADATA wsa;
@@ -9,7 +10,8 @@ bool KNetwork::InitNetwork()
 	}
 	return true;
 }
-//서버용 함수 바인드 리슨 
+
+//서버용 함수 바인드 리슨, 클라이언트 들어올 준비
 bool KNetwork::InitServer(int protocol, int iport, const char* ip)
 {
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -35,6 +37,7 @@ bool KNetwork::InitServer(int protocol, int iport, const char* ip)
 	if (iRet == SOCKET_ERROR)  return false;
 	return true;
 }
+
 int KNetwork::SendMsg(SOCKET sock, char* msg, WORD type)
 {
 	//패킷 생성

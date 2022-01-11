@@ -30,7 +30,11 @@ KPacket::KPacket(WORD iType)
 	m_uPacket.ph.type = iType;
 	m_pOffset = m_uPacket.msg;
 }
-
+//읽고 나면 리셋
+void KPacket::Reset()
+{
+	m_pOffset = m_uPacket.msg;
+}
 KPacket::KPacket(const KPacket& packet)
 {
 	//패킷 자체를 받아오는 생성자
