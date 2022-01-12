@@ -9,7 +9,6 @@ bool	KCore::GameInit()
 {
     KDevice::SetDevice();
     KState::SetState();
-
     m_Timer.Init();
     g_Input.Init();
     m_Write.Init();
@@ -43,8 +42,9 @@ bool	KCore::GameFrame()
     }
 
     static char buffer[1024];
-    if (ImGui::Begin("Simulation Speed"))
+    if (ImGui::Begin(u8"한글테스트"))
     {
+        ImGui::Text(u8"한글 출력 성공!");
         ImGui::InputText("Input text",buffer,sizeof(buffer));
         ImGui::SliderFloat("Speed Factor", &m_Speed, 0.0f, 10.0f);
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

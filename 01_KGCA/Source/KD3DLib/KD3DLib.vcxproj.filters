@@ -19,6 +19,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{88333611-30c1-4cc4-a88b-6dc047e53af8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Font">
+      <UniqueIdentifier>{f02a54a3-52ad-49de-a30f-0675a8d88406}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KCore.cpp">

@@ -97,7 +97,7 @@ bool   KWindow::InitWindows(
     // SW_SHOW, nCmdShow
     
     ShowWindow(m_hWnd, SW_SHOW);
-
+    
     ImGui_ImplWin32_Init(m_hWnd);
 
 	return true;

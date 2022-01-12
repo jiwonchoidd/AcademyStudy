@@ -1,1 +1,2 @@
 E:\Choijiwon\AcademyStudy\01_KGCA\Export\KNetworkLib\KNetworkLib.lib
+C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Export\KNetworkLib\KNetworkLib.lib
