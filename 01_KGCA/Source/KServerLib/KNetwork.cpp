@@ -111,7 +111,7 @@ int KNetwork::RecvUser(KNetworkUser& user)
 	ZeroMemory(&recvdata, sizeof(recvdata));
 	*(user.m_lPacketPool.begin()) >> recvdata.index >> recvdata.name
 		>> recvdata.damage >> recvdata.message;
-	std::cout << recvdata.name<<" : "<< recvdata.message << std::endl;
+	std::wcout << recvdata.name<<" : "<< recvdata.message << std::endl;
 
 	return 1;
 }

@@ -66,6 +66,7 @@ DWORD WINAPI SendThread(LPVOID lparam)
 
 void main()
 {
+	setlocale(LC_ALL, ""); // Korean해도 되지만 공백은 시스템 지역설정으로 따르게 한다.
 	KServer server;
 	server.Init(10000);
 	
