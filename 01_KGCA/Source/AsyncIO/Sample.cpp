@@ -9,7 +9,7 @@
 //작업이 끝나면 알아서 알려줌.
 int main()
 {
-	#pragma region 동기 파일 입출력 1
+#pragma region 동기 파일 입출력 1
 	setlocale(LC_ALL, ""); // Korean해도 되지만 공백은 시스템 지역설정으로 따르게 한다.
 	HANDLE hFile = CreateFile(L"test.txt", GENERIC_WRITE
 		, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
@@ -45,7 +45,7 @@ int main()
 	}
 	CloseHandle(hFile_Read);
 #pragma endregion
-
+}
 //	#pragma region 동기 파일 입출력 2
 //	//한글 window 
 //	setlocale(LC_ALL, ""); // Korean해도 되지만 공백은 시스템 지역설정으로 따르게 한다.
