@@ -72,7 +72,7 @@ void main()
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_IO_PENDING)
 			{
-				std::wcout << L"ReadFile";
+				std::wcout << L"읽기 중" << std::endl;
 			}
 			else
 			{
@@ -82,7 +82,7 @@ void main()
 		BOOL bReturn = GetOverlappedResult(hFile, &ol_Read, &dwRead, FALSE);
 		if (bReturn == TRUE)
 		{
-			std::wcout << L"로드 완료";
+			std::wcout << L"읽기 완료" << std::endl;
 			bPending = FALSE;
 		}
 		else
@@ -90,11 +90,11 @@ void main()
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_IO_INCOMPLETE)
 			{
-				std::wcout << L".";
+				std::wcout << L".." << std::endl;
 			}
 			else
 			{
-				std::wcout << L"False";
+				std::wcout << L"읽기 완료2" << std::endl;
 				bPending = FALSE;
 			}
 		}
@@ -109,7 +109,7 @@ void main()
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_IO_PENDING)
 			{
-				std::wcout << L"출력 중";
+				std::wcout << L"쓰기 중" << std::endl;
 			}
 			else
 			{
@@ -119,7 +119,7 @@ void main()
 		bReturn = GetOverlappedResult(hFileCopy, &ol_Write, &dwWritten, FALSE);
 		if (bReturn == TRUE)
 		{
-			std::wcout << L"로드 완료";
+			std::wcout << L"쓰기 완료" << std::endl;
 			bPending = FALSE;
 		}
 		else
@@ -127,11 +127,11 @@ void main()
 			DWORD dwError = GetLastError();
 			if (dwError == ERROR_IO_INCOMPLETE)
 			{
-				std::wcout << L".";
+				std::wcout << L"..";
 			}
 			else
 			{
-				std::wcout << L"False";
+				std::wcout << L"쓰기 완료2" << std::endl;
 				bPending = FALSE;
 			}
 		}
@@ -141,6 +141,7 @@ void main()
 		{
 			break;
 		}
+		std::wcout << (fileSize.LowPart- dwTotalWrite) << std::endl;
 		i++;
 	}
 	CloseHandle(hFile);
