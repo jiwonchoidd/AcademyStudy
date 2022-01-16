@@ -79,9 +79,9 @@ bool KServer::Run()
 			ioctlsocket(clientSock, FIONBIO, &on);
 			std::cout << m_UserList.size() << " 명 접속중 " << std::endl;
 		}
-		Sleep(1);
-		
+		Sleep(1);	
 	}
+	//setevent
 	return true;
 }
 

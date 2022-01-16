@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../Export/AsyncIOBlock/</OutDir>
-    <IntDir>../../Export/AsyncIOBlock/obj</IntDir>
+    <OutDir>../../Export/IOCP/</OutDir>
+    <IntDir>../../Export/IOCP/obj</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

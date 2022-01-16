@@ -1,6 +1,6 @@
 #pragma once
 #include "KNetwork.h"
-class KServer
+class KServer //: public KServerObj;
 {
 public:
 	std::list<KNetworkUser> m_UserList;

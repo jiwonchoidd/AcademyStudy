@@ -62,8 +62,10 @@ void main()
 		
 		//비동기 로드
 		//Overlapped 구조체 오프셋
-		ol_Read.Offset = i * BlockSizes;
-		ol_Read.OffsetHigh = 0;
+		LARGE_INTEGER offset;
+		offset.QuadPart = i * BlockSizes;
+		ol_Read.Offset = offset.LowPart;
+		ol_Read.OffsetHigh = offset.HighPart;
 
 		BOOL ret = ReadFile(hFile, pwbuffer, BlockSizes, &dwRead, &ol_Read);
 		BOOL bPending = FALSE;
