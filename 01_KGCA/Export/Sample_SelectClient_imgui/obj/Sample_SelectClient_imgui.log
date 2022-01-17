@@ -1,17 +1,18 @@
-﻿  KAsyncSelect.cpp
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(../../Export/Sample_SelectClient_imgui/obj/)에 다른 프로젝트(Sample_KNetwork.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  KAsyncSelect.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KNetwork.cpp
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KNetwork.cpp(43,50): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KNetwork.cpp(43,50): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KNetworkUser.cpp
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KPacket.cpp
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(83,32): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(94,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(127,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(138,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(83,32): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(94,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(127,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(138,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Sample.cpp
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\Sample.cpp(26,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\Sample.cpp(27,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
-  Sample_SelectClient_imgui.vcxproj -> C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Export\Sample_SelectClient_imgui\Sample_SelectClient_imgui.exe
+  Sample_SelectClient_imgui.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_SelectClient_imgui\Sample_SelectClient_imgui.exe

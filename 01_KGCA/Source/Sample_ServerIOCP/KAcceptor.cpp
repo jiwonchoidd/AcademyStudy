@@ -28,6 +28,7 @@ bool KAcceptor::Run()
 			//Acceptor는 받아드리는 작업만 한다.
 			char ip[INET_ADDRSTRLEN];
 			std::cout
+				<< "" << std::endl
 				<< "IP : " << inet_ntop(AF_INET, &(clientAddr.sin_addr), ip, INET_ADDRSTRLEN) << "\t"
 				<< "PORT : " << ntohs(clientAddr.sin_port) << std::endl;
 			std::cout << "Current : " << pServer->m_UserList.size() << " 명 접속중.." << std::endl;

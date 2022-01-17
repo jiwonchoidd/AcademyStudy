@@ -105,7 +105,7 @@ bool KLobbyServer::Run()
 				(*iter)->Disconnect();
 				delete (*iter);
 				iter = m_UserList.erase(iter);
-				std::cout <<"current : " << m_UserList.size() <<" 疙 立加吝.."<<std::endl;
+				std::cout <<"\nCurrent : " << m_UserList.size() <<" 疙 立加吝.."<<std::endl;
 			}
 			else
 			{

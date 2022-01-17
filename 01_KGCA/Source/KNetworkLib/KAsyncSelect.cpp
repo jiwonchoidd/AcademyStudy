@@ -11,7 +11,7 @@ LRESULT  KAsyncSelect::Select_MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		{
 		case FD_CONNECT:
 		{
-			m_bConnect = true;
+			//Ä¿³ØÆ® ½Ãµµ
 		}break;
 		case FD_CLOSE:
 		{
@@ -23,7 +23,8 @@ LRESULT  KAsyncSelect::Select_MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		}break;
 		case FD_WRITE:
 		{
-			m_bConnect = false;
+			m_bConnect = true;
+			//m_bConnect = false;
 		}break;
 		}
 	}break;

@@ -1,7 +1,6 @@
 #include "KLobbyServer.h"
 #include "KAcceptor.h"
-
-#pragma region lecagy
+#pragma region legacy
 ////DWORD WINAPI RecvThread(LPVOID lparam)
 //{
 //	KServer* server = (KServer*)lparam;
@@ -65,18 +64,17 @@
 //	}
 //}
 #pragma endregion
-
-
 int main()
 {
 	setlocale(LC_ALL, ""); // Korean해도 되지만 공백은 시스템 지역설정으로 따르게 한다.
 	KLobbyServer server;
 	server.Init(10000);
-
-
+	//유저 받아드리는 별도의 스레드
 	KAcceptor accept(&server);
+	//운영체제에 핸들 반환
 	accept.Detach();
-	//메인스레드는 서버의 런이 잡고있다.
+
+	//메인스레드에는 서버의 Run이 돈다.
 	server.Run();
 	server.Release();
 
