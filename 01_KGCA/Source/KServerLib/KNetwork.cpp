@@ -18,13 +18,14 @@ bool KNetwork::InitServer(int protocol, int iport, const char* ip)
 	ZeroMemory(&sa, sizeof(sa));
 	sa.sin_family = AF_INET;
 	sa.sin_port = htons(iport);
+
 	if (ip == nullptr)
 	{
 		sa.sin_addr.s_addr = htonl(INADDR_ANY);
 	}
 	else
 	{
-		sa.sin_addr.s_addr = inet_addr(ip);
+		sa.sin_addr.s_addr = inet_pton(AF_INET, ip, &sa);
 	}
 
 	//소켓에 주소 할당
@@ -86,11 +87,11 @@ int KNetwork::SendMsg(SOCKET sock, UPACKET& packet)
 
 //연결된 소켓으로부터 데이터를 수신함. 
 //성공하면 1
-int KNetwork::RecvUser(KNetworkUser& user)
+int KNetwork::RecvUser(KNetworkUser* user)
 {
 	char szRecvBuffer[1024] = { 0, };
 	//recv 받기
-	int iRecvByte = recv(user.m_ListenSocket, szRecvBuffer, 1024, 0);
+	int iRecvByte = recv(user->m_Sock, szRecvBuffer, 1024, 0);
 	if (iRecvByte == 0)
 	{
 		return 0;
@@ -104,12 +105,12 @@ int KNetwork::RecvUser(KNetworkUser& user)
 		}
 		return 2;
 	}
-	user.DispatchRead(szRecvBuffer, iRecvByte);
+	user->DispatchRead(szRecvBuffer, iRecvByte);
 
 	// 서버 텍스트 받은거 출력
 	KChatting recvdata;
 	ZeroMemory(&recvdata, sizeof(recvdata));
-	*(user.m_lPacketPool.begin()) >> recvdata.index >> recvdata.name
+	*(user->m_lPacketPool.begin()) >> recvdata.index >> recvdata.name
 		>> recvdata.damage >> recvdata.message;
 	std::wcout << recvdata.name<<" : "<< recvdata.message << std::endl;
 

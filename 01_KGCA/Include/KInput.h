@@ -25,6 +25,7 @@ public:
 	POINT	m_pPrevMouse;
 	bool	m_bMouseEnabled=true;
 	bool	m_bDrag = false;
+	bool	m_bInputAvailable = true;
 public:
 	LPDIRECTINPUT8		  m_pDI;
 	LPDIRECTINPUTDEVICE8  m_pKeyDevice; // Å°º¸µå

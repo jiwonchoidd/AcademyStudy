@@ -64,13 +64,13 @@ OVERLAPPED g_ReadOVArray[100];
 OVERLAPPED g_WriteOVArray[100];
 
 
-HANDLE g_hFileRead;
-HANDLE g_hFileWrite;
-HANDLE g_hWorkThread[MAX_WORKER_THREAD];
+HANDLE			g_hFileRead;
+HANDLE			g_hFileWrite;
+HANDLE			g_hWorkThread[MAX_WORKER_THREAD];
 /*완료포트 관리 객체*/
-HANDLE g_hIOCP;
-LARGE_INTEGER g_LargeRead;
-LARGE_INTEGER g_LargeWrite;
+HANDLE			g_hIOCP;
+LARGE_INTEGER	g_LargeRead;
+LARGE_INTEGER	g_LargeWrite;
 //이벤트 핸들
 HANDLE g_hKillEvent;
 bool DispatchRead(DWORD dwTransfer, OVERLAPPED* ov)
@@ -210,6 +210,7 @@ int main()
 		INVALID_HANDLE_VALUE, 0, 0, 0);
 	//번호
 	//입출력 작업이 끝나면 알려줄껍니다. 1000번 1001번 키값을 가짐
+	//read write 파일입출력이 소켓으로 바뀌면 끝남
 	CreateIoCompletionPort(g_hFileRead, g_hIOCP, 1000, 0);
 	CreateIoCompletionPort(g_hFileWrite, g_hIOCP, 1001, 0);
 

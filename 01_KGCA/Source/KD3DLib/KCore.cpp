@@ -13,7 +13,7 @@ bool	KCore::GameInit()
     g_Input.Init();
     m_Write.Init();
     m_Camera.Init();
-
+    g_Input.m_bInputAvailable = false;
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
         __uuidof(IDXGISurface),
@@ -41,11 +41,8 @@ bool	KCore::GameFrame()
         m_ImGuiManager.OnOffImgui();   
     }
 
-    static char buffer[1024];
-    if (ImGui::Begin(u8"한글테스트"))
+    if (ImGui::Begin(u8"성능 디스플레이"))
     {
-        ImGui::Text(u8"한글 출력 성공!");
-        ImGui::InputText("Input text",buffer,sizeof(buffer));
         ImGui::SliderFloat("Speed Factor", &m_Speed, 0.0f, 10.0f);
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
     }

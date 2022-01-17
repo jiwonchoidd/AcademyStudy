@@ -18,30 +18,18 @@
     <ClCompile Include="Sample.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KThread.cpp">
+    <ClCompile Include="KAcceptor.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KServerObj.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="KThreadRecv.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="KThreadSend.cpp">
+    <ClCompile Include="KLobbyServer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KThread.h">
+    <ClInclude Include="KAcceptor.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="KServerObj.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="KThreadRecv.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="KThreadSend.h">
+    <ClInclude Include="KLobbyServer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

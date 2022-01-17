@@ -6,8 +6,8 @@ bool KThreadSend::Run()
 	SOCKET sock = pServer->m_Net.m_ListenSocket;
 	while (1)
 	{
-		WaitForSingleObject(pServer->m_hMutex, INFINITE);
-		std::list<KNetworkUser>::iterator userIter;
+		EnterCriticalSection(&m_cs);
+		std::list<KNetworkUser*>::iterator userIter;
 		for (userIter = pServer->m_UserList.begin();
 			userIter != pServer->m_UserList.end();)
 		{
@@ -21,7 +21,7 @@ bool KThreadSend::Run()
 				userIter++;
 			}
 		}
-		ReleaseMutex(pServer->m_hMutex);
+		LeaveCriticalSection(&m_cs);
 		Sleep(1);
 	}
 	return true;

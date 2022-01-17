@@ -155,12 +155,16 @@ copy "*.h" ""..\\..\\Include\\KServerLib\\"</Command>
     <ClInclude Include="KPacket.h" />
     <ClInclude Include="KProtocol.h" />
     <ClInclude Include="KServer.h" />
+    <ClInclude Include="KServerObj.h" />
+    <ClInclude Include="KThread.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KNetwork.cpp" />
     <ClCompile Include="KNetworkUser.cpp" />
     <ClCompile Include="KPacket.cpp" />
     <ClCompile Include="KServer.cpp" />
+    <ClCompile Include="KServerObj.cpp" />
+    <ClCompile Include="KThread.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

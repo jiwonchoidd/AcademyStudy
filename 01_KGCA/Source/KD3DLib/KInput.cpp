@@ -98,63 +98,66 @@ bool KInput::Frame()
         while (m_pMouseDevice->Acquire() == DIERR_INPUTLOST);
     }
     #pragma endregion
-
-    #pragma region  마우스 상태
-    for (int iButton = 0; iButton < 3; iButton++)
+    if (m_bInputAvailable)
     {
-        m_BeforeMouseState[iButton] = m_DIMouseState.rgbButtons[iButton];
-    }
-    for (int iButton = 0; iButton < 3; iButton++)
-    {
-        if (m_BeforeMouseState[iButton] & 0x80)
+        #pragma region  마우스 상태
+        for (int iButton = 0; iButton < 3; iButton++)
         {
-            if (m_MouseState[iButton] == KEY_FREE)
-                m_MouseState[iButton] = KEY_PUSH;
-            else
-                m_MouseState[iButton] = KEY_HOLD;
+            m_BeforeMouseState[iButton] = m_DIMouseState.rgbButtons[iButton];
         }
-        else
+        for (int iButton = 0; iButton < 3; iButton++)
         {
-            if (m_MouseState[iButton] == KEY_PUSH ||
-                m_MouseState[iButton] == KEY_HOLD)
-                m_MouseState[iButton] = KEY_UP;
+            if (m_BeforeMouseState[iButton] & 0x80)
+            {
+                if (m_MouseState[iButton] == KEY_FREE)
+                    m_MouseState[iButton] = KEY_PUSH;
+                else
+                    m_MouseState[iButton] = KEY_HOLD;
+            }
             else
-                m_MouseState[iButton] = KEY_FREE;
+            {
+                if (m_MouseState[iButton] == KEY_PUSH ||
+                    m_MouseState[iButton] == KEY_HOLD)
+                    m_MouseState[iButton] = KEY_UP;
+                else
+                    m_MouseState[iButton] = KEY_FREE;
+            }
         }
+
+        ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
+
+        if (m_MouseState[0] == KEY_PUSH) 	g_InputData.bLeftClick = true;
+        if (m_MouseState[1] == KEY_PUSH) 	g_InputData.bRightClick = true;
+        if (m_MouseState[2] == KEY_PUSH) 	g_InputData.bMiddleClick = true;
+
+        if (m_MouseState[0] >= KEY_PUSH) 	g_InputData.bLeftHold = true;
+        if (m_MouseState[1] >= KEY_PUSH) 	g_InputData.bRightHold = true;
+        if (m_MouseState[2] >= KEY_PUSH) 	g_InputData.bMiddleHold = true;
+
+        g_InputData.iMouseValue[0] = m_DIMouseState.lX;
+        g_InputData.iMouseValue[1] = m_DIMouseState.lY;
+        g_InputData.iMouseValue[2] = m_DIMouseState.lZ;
+#pragma endregion
+
+        g_InputData.bWKey = GetKey(DIK_W);
+        g_InputData.bAKey = GetKey(DIK_A);
+        g_InputData.bSKey = GetKey(DIK_S);
+        g_InputData.bDKey = GetKey(DIK_D);
+
+        g_InputData.bLShift = GetKey(DIK_LSHIFT);
+
+        g_InputData.bLeftKey = GetKey(DIK_LEFT);
+        g_InputData.bRightKey = GetKey(DIK_RIGHT);
+        g_InputData.bUpKey = GetKey(DIK_UP);
+        g_InputData.bDownKey = GetKey(DIK_DOWN);
+        g_InputData.bExit = GetKey(DIK_ESCAPE);
+        g_InputData.bSpace = GetKey(DIK_SPACE);
+        g_InputData.bExit = GetKey(DIK_ESCAPE);
+
+        if (GetKey(DIK_F5) == KEY_HOLD)
+            g_InputData.bChangeFillMode = true;
     }
-
-    ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
-
-    if (m_MouseState[0] == KEY_PUSH) 	g_InputData.bLeftClick = true;
-    if (m_MouseState[1] == KEY_PUSH) 	g_InputData.bRightClick = true;
-    if (m_MouseState[2] == KEY_PUSH) 	g_InputData.bMiddleClick = true;
-
-    if (m_MouseState[0] >= KEY_PUSH) 	g_InputData.bLeftHold = true;
-    if (m_MouseState[1] >= KEY_PUSH) 	g_InputData.bRightHold = true;
-    if (m_MouseState[2] >= KEY_PUSH) 	g_InputData.bMiddleHold = true;
-
-    g_InputData.iMouseValue[0] = m_DIMouseState.lX;
-    g_InputData.iMouseValue[1] = m_DIMouseState.lY;
-    g_InputData.iMouseValue[2] = m_DIMouseState.lZ;
-    #pragma endregion
   
-    g_InputData.bWKey = GetKey(DIK_W);
-    g_InputData.bAKey = GetKey(DIK_A);
-    g_InputData.bSKey = GetKey(DIK_S);
-    g_InputData.bDKey = GetKey(DIK_D);
-
-    g_InputData.bLShift = GetKey(DIK_LSHIFT);
-
-    g_InputData.bLeftKey = GetKey(DIK_LEFT);
-    g_InputData.bRightKey = GetKey(DIK_RIGHT);
-    g_InputData.bUpKey = GetKey(DIK_UP);
-    g_InputData.bDownKey = GetKey(DIK_DOWN);
-    g_InputData.bExit = GetKey(DIK_ESCAPE);
-    g_InputData.bSpace = GetKey(DIK_SPACE);
-    g_InputData.bExit = GetKey(DIK_ESCAPE);
-
-    if (GetKey(DIK_F5) == KEY_HOLD) 	
-    g_InputData.bChangeFillMode = true;
 
     return true;
 }

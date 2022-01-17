@@ -9,7 +9,7 @@ LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 bool Sample::Init()
 {
-    m_Camera.CreateViewMatrix(KVector3(0, 0, -10), KVector3(0, 0, 0));
+    m_Camera.CreateViewMatrix(KVector3(0, 0, -5), KVector3(0, 0, 0));
     m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	m_Net.InitNetwork();
@@ -47,14 +47,19 @@ bool Sample::Frame()
 			char clear[MAX_PATH] = { 0, };
 			KPacket kPacket(PACKET_CHAT_MSG);
 			kPacket << 123 << "Test" << (short)12 << buffer;
-			m_Net.SendMsg(m_Net.m_Sock, kPacket.m_uPacket);
+
+			//리턴 값이 0보다 작으면 전송되지 않았음
+			if (m_Net.SendMsg(m_Net.m_Sock, kPacket.m_uPacket)<0)
+			{
+				strcat(chatItems, "Error\n");
+			}
+
 			strcpy(buffer, clear);
 		}
 	}
 	ImGui::End();
 #pragma endregion
 
-	
 	if (iChatCnt > 0 && m_iChatCount != iChatCnt)
 	{
 		m_iChatCount = iChatCnt;

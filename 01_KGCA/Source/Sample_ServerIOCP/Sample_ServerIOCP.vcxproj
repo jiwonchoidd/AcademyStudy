@@ -80,7 +80,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <OutDir>../../Export/Sample_KServerIOCP/</OutDir>
-    <IntDir>../../Export/Sample_KServerIOCP/obj</IntDir>
+    <IntDir>../../Export/Sample_KServerIOCP/obj/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -149,17 +149,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KServerObj.cpp" />
-    <ClCompile Include="KThread.cpp" />
-    <ClCompile Include="KThreadRecv.cpp" />
-    <ClCompile Include="KThreadSend.cpp" />
+    <ClCompile Include="KAcceptor.cpp" />
+    <ClCompile Include="KLobbyServer.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KServerObj.h" />
-    <ClInclude Include="KThread.h" />
-    <ClInclude Include="KThreadRecv.h" />
-    <ClInclude Include="KThreadSend.h" />
+    <ClInclude Include="KAcceptor.h" />
+    <ClInclude Include="KLobbyServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

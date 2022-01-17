@@ -16,7 +16,7 @@ bool KThreadRecv::Run()
 
 		WaitForSingleObject(pServer->m_hMutex, INFINITE);
 
-		std::list<KNetworkUser>::iterator userIter;
+		std::list<KNetworkUser*>::iterator userIter;
 		for (userIter = pServer->m_UserList.begin();
 			userIter != pServer->m_UserList.end();)
 		{
