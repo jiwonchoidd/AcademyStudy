@@ -124,7 +124,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\\..\\lib;..\\..\\fbx\\lib\\vs2017\\x64\\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\\..\\Lib;..\\..\\fbx\\lib\\vs2017\\x64\\debug</AdditionalLibraryDirectories>
       <AdditionalDependencies>libfbxsdk-md.lib;libxml2-md.lib;zlib-md.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>

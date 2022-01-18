@@ -1,7 +1,7 @@
 #pragma once
-#include "KPacket.h"
-#include "KNetStd.h"
 #include "KServerObj.h"
+#include "KPacket.h"
+
 struct KOV 
 {
 	//상단에 있으면 캐스팅이 가능하다.
@@ -40,6 +40,10 @@ public:
 	int		Dispatch(DWORD dwTransfer, KOV* tov);
 	void	Set(SOCKET sock, SOCKADDR_IN addr);
 	int		Recv();
+	int		SendMsg(char* msg, WORD type);
 	bool	Disconnect();
+public:
+	KNetworkUser();
+	virtual ~KNetworkUser();
 };
 

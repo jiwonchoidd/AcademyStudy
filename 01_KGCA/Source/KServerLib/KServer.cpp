@@ -52,16 +52,14 @@ bool KServer::Init(int port)
 
 bool KServer::Run()
 {
-	
 	return true;
 }
 
 bool KServer::Release()
 {
-	//closesocket(m_Net.m_ListenSocket);
-	//WSACleanup();
+	closesocket(m_Net.m_ListenSocket);
+	WSACleanup();
 
-	//CloseHandle(m_hMutex);
 	return true;
 }
 

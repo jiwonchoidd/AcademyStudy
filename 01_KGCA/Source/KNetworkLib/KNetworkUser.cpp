@@ -45,7 +45,7 @@ int KNetworkUser::DispatchRead(char* sRecvBuffer, int iRecvByte)
 	return 1;
 }
 
-void KNetworkUser::set(SOCKET sock, SOCKADDR_IN addr)
+void KNetworkUser::Set(SOCKET sock, SOCKADDR_IN addr)
 {
 	m_bConnect = true;
 	ZeroMemory(m_szRecvBuffer, sizeof(char) * 2048);

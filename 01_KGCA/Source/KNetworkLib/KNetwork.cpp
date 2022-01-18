@@ -99,13 +99,13 @@ int KNetwork::AddUser(SOCKET sock)
 	else
 	{
 		KNetworkUser user;
-		user.set(clientSock, clientAddr);
-		userlist.push_back(user);
+		user.Set(clientSock, clientAddr);
+		m_userlist.push_back(user);
 		std::cout
 			<< "ip =" << inet_ntoa(clientAddr.sin_addr)
 			<< "port =" << ntohs(clientAddr.sin_port)
 			<< "  " << std::endl;
-		std::cout << userlist.size() << " 疙 立加吝.." << std::endl;
+		std::cout << m_userlist.size() << " 疙 立加吝.." << std::endl;
 	}
 	return 1;
 }

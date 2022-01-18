@@ -7,7 +7,7 @@ class KServer : public KServerObj
 public:
 	std::list<KNetworkUser*> m_UserList;
 	KNetwork				 m_Net;
-	std::list<KPacket> m_lPacketPool;
+	std::list<KPacket>		 m_lPacketPool;
 
 public:
 	int Broadcast(KNetworkUser* user);

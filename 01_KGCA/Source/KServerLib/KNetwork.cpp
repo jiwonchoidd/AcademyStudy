@@ -51,6 +51,7 @@ int KNetwork::SendMsg(SOCKET sock, char* msg, WORD type)
 	do {
 		//send함수
 		int iSendByte = 0;
+		//WSASend IOCP쓰고있음 수정해야함
 			iSendByte= send(sock, &pMsg[iSize],
 			packet.ph.len - iSendByte, 0);
 
@@ -70,6 +71,7 @@ int KNetwork::SendMsg(SOCKET sock, UPACKET& packet)
 	char* pMsg = (char*)&packet;
 	int iSize = 0;
 	do {
+		//WSASend IOCP쓰고있음 수정해야함
 		int iSendByte = send(sock, &pMsg[iSize],
 			packet.ph.len - iSize, 0);
 		if (iSendByte == SOCKET_ERROR)
@@ -110,21 +112,24 @@ int KNetwork::RecvUser(KNetworkUser* user)
 	// 서버 텍스트 받은거 출력
 	KChatting recvdata;
 	ZeroMemory(&recvdata, sizeof(recvdata));
-	*(user->m_lPacketPool.begin()) >> recvdata.index >> recvdata.name
-		>> recvdata.damage >> recvdata.message;
+	*(user->m_lPacketPool.begin()) >> recvdata.index 
+		>> recvdata.name >> recvdata.message;
 	std::wcout << recvdata.name<<" : "<< recvdata.message << std::endl;
 
 	return 1;
 }
 KNetwork::KNetwork()
 {
+	m_ListenSocket=NULL;
+	m_User = nullptr;
 }
-KNetwork::~KNetwork()
-{
-}
+
 bool KNetwork::CloseNetwork()
 {
 	closesocket(m_ListenSocket);
 	WSACleanup();
 	return true;
+}
+KNetwork::~KNetwork()
+{
 }

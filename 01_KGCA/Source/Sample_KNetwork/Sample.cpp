@@ -23,21 +23,20 @@ bool Sample::Init()
 static char chatItems[2048] = {0,};
 static char buffer[MAX_PATH];
 std::string	isConnect = "DisConnected";
-ImVec4 color = ImVec4(1.0f,1.0f,1.0f,1.0f);
+ImVec4 login_text_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
 // 프레임 함수
 bool Sample::Frame()
 {
 	
-	// 패킷 풀 사이즈로 채팅 수량 체크
-	int iChatCnt = m_Net.m_User.m_lPacketPool.size();
 	(m_Net.m_bConnect)? isConnect = "Online" : isConnect = "Offline";
-	(m_Net.m_bConnect)? color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f) : color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
+	(m_Net.m_bConnect)? login_text_color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f) :
+						login_text_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	#pragma region IMGUI INTERFACE
 	if (ImGui::Begin("Chatting Box"))
 	{
 		
-		ImGui::TextColored(color,isConnect.c_str());
+		ImGui::TextColored(login_text_color,isConnect.c_str());
 		//연결이 안되어 있으면 연결 재 시도
 		if (!m_Net.m_bConnect)
 		{
@@ -60,11 +59,13 @@ bool Sample::Frame()
 			if (ImGui::Button("Send"))
 			{
 				char clear[MAX_PATH] = { 0, };
-				KPacket kPacket(PACKET_CHAT_MSG);
-				kPacket << 123 << "Test" << (short)12 << buffer;
+				KPacket kpacket(PACKET_CHAT_MSG);
+
+				//인덱스 이름 메시지
+				kpacket << 10 << "Test" << buffer;
 
 				//리턴 값이 0보다 작으면 전송되지 않았음
-				if (m_Net.SendMsg(m_Net.m_Sock, kPacket.m_uPacket) < 0)
+				if (m_Net.SendMsg(m_Net.m_Sock, kpacket.m_uPacket) < 0)
 				{
 					ZeroMemory(&chatItems, sizeof(char) * 2048);
 					strcat(chatItems, "Error\n");
@@ -78,6 +79,8 @@ bool Sample::Frame()
 	ImGui::End();
 #pragma endregion
 
+	// 패킷 풀 사이즈로 채팅 수량 체크
+	int iChatCnt = m_Net.m_User.m_lPacketPool.size();
 	if (iChatCnt > 0 && m_iChatCount != iChatCnt)
 	{
 		m_iChatCount = iChatCnt;
@@ -94,13 +97,15 @@ bool Sample::Frame()
 			iter != m_Net.m_User.m_lPacketPool.end();
 			iter++)
 		{
-			KChatting recvdata;
-			ZeroMemory(&recvdata, sizeof(recvdata));
-			(*iter) >> recvdata.index >> recvdata.name
-				>> recvdata.damage >> recvdata.message;
-			strcat(chatItems, recvdata.name);
+			
+			KChatting recv_data;
+			ZeroMemory(&recv_data, sizeof(recv_data));
+			(*iter) >> recv_data.index >> recv_data.name
+					>> recv_data.message;
+			//strcat(chatItems, (char*)(*iter).m_uPacket.ph.time);
+			strcat(chatItems, recv_data.name);
 			strcat(chatItems, " : ");
-			strcat(chatItems, recvdata.message);
+			strcat(chatItems, recv_data.message);
 			strcat(chatItems, "\n");
 		
 			(*iter).Reset();

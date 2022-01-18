@@ -16,6 +16,6 @@ public:
 	int			m_iReadPos; // 패킷 시작 위치로 부터 받은 바이트
 	std::list<KPacket> m_lPacketPool;
 	int DispatchRead(char* sRecvBuffer, int iRecvByte);
-	void set(SOCKET sock, SOCKADDR_IN addr);
+	void Set(SOCKET sock, SOCKADDR_IN addr);
 };
 

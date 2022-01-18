@@ -4,7 +4,7 @@ class KNetwork
 {
 public:
 	SOCKET					m_Sock;
-	std::list<KNetworkUser> userlist;
+	std::list<KNetworkUser> m_userlist;
 	KNetworkUser			m_User;
 public:
 	bool	InitNetwork();

@@ -1,12 +1,18 @@
 #pragma once
 #include "KServer.h"
+#include "KAcceptor.h"
 #define MAX_WORKER_THREAD 3
+
+//로비 서버 싱글톤
+
 class KLobbyServer : public KServer
 {
 public:
 	HANDLE			m_hWorkThread[MAX_WORKER_THREAD];
 	/*완료포트 관리 객체*/
 	HANDLE			m_hIOCP;
+	//유저 받아드리는 별도의 스레드
+	KAcceptor		m_Acceptor;
 
 public:
 	virtual	bool		Init(int port);

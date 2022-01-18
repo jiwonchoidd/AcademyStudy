@@ -102,7 +102,17 @@ int KNetworkUser::DispatchRecv(char* szRecvBuffer, int iRecvByte)
 				memcpy(&kPacket.m_uPacket,
 					&m_szRecvBuffer[m_iPacketPos],
 					pPacket->ph.len);
-				m_lPacketPool.push_back(kPacket);
+
+				//채팅 메세지면 유저 패킷풀에 넣고 
+				//아니면 서버 패킷풀에 넣음
+				if (pPacket->ph.type == PACKET_CHAT_MSG)
+				{
+					m_lPacketPool.push_back(kPacket);
+				}
+				else
+				{
+					//->m_lPacketPool.push_back(kPacket);
+				}
 
 				// 다음패킷 처리
 				m_iPacketPos += pPacket->ph.len;
@@ -126,7 +136,6 @@ int KNetworkUser::DispatchSend(DWORD dwTransfer)
 
 void KNetworkUser::Set(SOCKET sock, SOCKADDR_IN addr)
 {
-	char ip[INET_ADDRSTRLEN];
 	m_bConnect = true;
 	ZeroMemory(m_szRecvBuffer, sizeof(char) * 2048);
 	m_iPacketPos = 0;
@@ -135,6 +144,7 @@ void KNetworkUser::Set(SOCKET sock, SOCKADDR_IN addr)
 
 	m_Sock = sock;
 	m_Addr = addr;
+	char ip[INET_ADDRSTRLEN];
 	//네트워크 주소 변환 함수 빅엔디안(32bit) ->  
 	m_csName = inet_ntop(AF_INET, &(addr.sin_addr), ip, INET_ADDRSTRLEN);
 	//엔디안은 메모리 연속된 대상을 배열하는 방법으로 
@@ -156,6 +166,40 @@ int KNetworkUser::Recv()
 	BOOL ret = WSARecv(m_Sock, &m_WsaRecvBuffer,
 		1, &dwRead, &lpflag,
 		(WSAOVERLAPPED*)&m_RecvOV, nullptr);
+	if (ret == SOCKET_ERROR)
+	{
+		if (WSAGetLastError() != WSA_IO_PENDING)
+		{
+			return false;
+		}
+	}
+	return 0;
+}
+
+int KNetworkUser::SendMsg(char* msg, WORD type)
+{
+	//패킷을 만들어서 보내야함
+	UPACKET uPacket;
+	uPacket.ph.len = strlen(msg)+PACKET_HEADER_SIZE;
+	uPacket.ph.type= type;
+
+	DWORD	dwRead;
+	DWORD	lpflag = 0;
+	m_WsaSendBuffer.len = uPacket.ph.len;
+	m_WsaSendBuffer.buf = (char*)&uPacket;
+	m_SendOV.type = 1001;
+
+	BOOL ret = WSASend(m_Sock, &m_WsaRecvBuffer,
+		1, &dwRead, lpflag,
+		(WSAOVERLAPPED*)&m_SendOV, nullptr);
+	//IOPending 처리 
+	if (ret == SOCKET_ERROR)
+	{
+		if (WSAGetLastError() != WSA_IO_PENDING)
+		{
+			return false;
+		}
+	}
 	return 0;
 }
 
@@ -163,4 +207,13 @@ bool KNetworkUser::Disconnect()
 {
 	closesocket(m_Sock);
 	return false;
+}
+
+KNetworkUser::KNetworkUser()
+{
+	
+}
+
+KNetworkUser::~KNetworkUser()
+{
 }
