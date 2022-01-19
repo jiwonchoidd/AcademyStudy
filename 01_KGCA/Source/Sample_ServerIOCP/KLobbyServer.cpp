@@ -51,8 +51,12 @@ bool KLobbyServer::Init(int port)
 	m_hIOCP = CreateIoCompletionPort(
 			INVALID_HANDLE_VALUE, 0, 0, 0);
 
+	SYSTEM_INFO system_info;
+
+	GetSystemInfo(&system_info);
+
 	//쓰레드 여러개 생성
-	for (int i = 0; i < MAX_WORKER_THREAD; i++)
+	for (int i = 0; i < system_info.dwNumberOfProcessors * 2; i++)
 	{
 		DWORD id;
 		//자기 자신의 서버 인자를 넘김. this 
@@ -80,6 +84,7 @@ bool KLobbyServer::AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr)
 	//비동기 작업을 해야하니까 유저가 접속이되면 리시브를 걸어놔라
 	//유저에 대한 포인터를 넘긴다.
 	::CreateIoCompletionPort((HANDLE)clientSock, m_hIOCP, (ULONG_PTR)user, 0);
+	
 	//WSARecv를 건다. 
 	user->Recv();
 
@@ -103,15 +108,14 @@ bool KLobbyServer::Run()
 			{
 				case PACKET_USER_POSITION:
 				{
-					
+					std::cout << "d";
 				}break;
 				case PACKET_CHAT_MSG:
 				{
-
+					std::cout << "d";
 				}break;
 			}
 		}
-
 
 		//주기적인 동기화
 		for (KNetworkUser* user : m_UserList)

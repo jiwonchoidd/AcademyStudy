@@ -111,7 +111,7 @@ int KNetworkUser::DispatchRecv(char* szRecvBuffer, int iRecvByte)
 				}
 				else
 				{
-					//->m_lPacketPool.push_back(kPacket);
+					//m_pServer->m_lPacketPool.push_back(kPacket);
 				}
 
 				// 다음패킷 처리

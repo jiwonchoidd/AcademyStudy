@@ -25,6 +25,8 @@ int KServer::Broadcast(KNetworkUser* user)
 
 bool KServer::AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr)
 {
+
+
 	return true;
 }
 

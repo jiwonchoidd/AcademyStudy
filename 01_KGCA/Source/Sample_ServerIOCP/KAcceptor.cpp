@@ -32,6 +32,7 @@ bool KAcceptor::Run()
 				<< "IP : " << inet_ntop(AF_INET, &(clientAddr.sin_addr), ip, INET_ADDRSTRLEN) << "\t"
 				<< "PORT : " << ntohs(clientAddr.sin_port) << std::endl;
 			std::cout << "Current : " << pServer->m_UserList.size() << " 명 접속중.." << std::endl;
+
 		}
 		Sleep(1);
 	}
