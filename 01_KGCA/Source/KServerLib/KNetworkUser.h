@@ -2,6 +2,7 @@
 #include "KServerObj.h"
 #include "KPacket.h"
 #include "KObjectPool.h"
+class KServer;
 //비동기 작업이 완료시점까지 OVERLAPPED 유지 되어 있어야함.
 //
 struct KOV : public KObjectPool<KOV>
@@ -29,6 +30,7 @@ struct KOV : public KObjectPool<KOV>
 class KNetworkUser : public KServerObj
 {
 public:
+	KServer*	m_pServer;
 	SOCKET		m_Sock;
 	SOCKADDR_IN m_Addr;
 	std::string m_csName;
@@ -51,7 +53,7 @@ public:
 	int		DispatchRecv(char* sRecvBuffer, int iRecvByte);
 	int		DispatchSend(DWORD dwTransfer);
 	int		Dispatch(DWORD dwTransfer, KOV* tov);
-	void	Set(SOCKET sock, SOCKADDR_IN addr);
+	void	Set(SOCKET sock, SOCKADDR_IN addr, KServer* pServer);
 	int		Recv();
 	int		SendMsg(char* msg, WORD type);
 	bool	Disconnect();

@@ -1,7 +1,7 @@
 #include "KServer.h"
 
 //받은 패킷풀 사이즈가 있을경우 전체 유저에게 보내줌. 브로드캐스트
-int KServer::Broadcast(KNetworkUser* user)
+int KServer::BroadcastUserPacket(KNetworkUser* user)
 {
 	if (user->m_lPacketPool.size() > 0)
 	{
@@ -42,8 +42,6 @@ bool KServer::DelUser(KNetworkUser* pUser)
 //서버의 기능에 맞게끔.
 bool KServer::Init(int port)
 {
-	//뮤텍스 생성
-	//m_hMutex = CreateMutex(NULL, FALSE, NULL);
 	//서버 소켓 초기화
 	if (!m_Net.InitNetwork())
 	{
@@ -58,7 +56,10 @@ bool KServer::Init(int port)
 	u_long on = 1;
 	ioctlsocket(m_Net.m_ListenSocket, FIONBIO, &on);
 
+	//유저 받아드리는 별도의 스레드
 	m_Acceptor.CreateKThread(this);
+	m_Acceptor.Detach();
+	m_Commander.CreateKThread(this);
 	m_Acceptor.Detach();
 
 	return true;

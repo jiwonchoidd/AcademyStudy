@@ -12,7 +12,6 @@ public:
 	HANDLE			m_hIOCP;
 	//유저 받아드리는 별도의 스레드
 
-
 public:
 	virtual	bool		Init(int port);
 	virtual	bool		Run();

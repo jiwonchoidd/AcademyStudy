@@ -1,5 +1,5 @@
 #include "KNetworkUser.h"
-
+#include "KServer.h"
 int KNetworkUser::DispatchRead(char* sRecvBuffer, int iRecvByte)
 {
 	//m_szRecvBuffer 2048을 넘으면 메모리 위치 바꿈, 초기화
@@ -109,10 +109,11 @@ int KNetworkUser::DispatchRecv(char* szRecvBuffer, int iRecvByte)
 				if (pPacket->ph.type == PACKET_CHAT_MSG)
 				{
 					m_lPacketPool.push_back(kPacket);
+					m_pServer->m_lPacketPool.push_back(kPacket);
 				}
 				else
 				{
-					//m_pServer->m_lPacketPool.push_back(kPacket);
+					m_pServer->m_lPacketPool.push_back(kPacket);
 				}
 
 				// 다음패킷 처리
@@ -135,8 +136,9 @@ int KNetworkUser::DispatchSend(DWORD dwTransfer)
 	return 0;
 }
 
-void KNetworkUser::Set(SOCKET sock, SOCKADDR_IN addr)
+void KNetworkUser::Set(SOCKET sock, SOCKADDR_IN addr, KServer* pServer)
 {
+	m_pServer = pServer;
 	m_bConnect = true;
 	ZeroMemory(m_szRecvBuffer, sizeof(char) * 2048);
 	m_iPacketPos = 0;

@@ -2,10 +2,12 @@
 #include "KNetwork.h"
 #include "KServerObj.h"
 #include "KAcceptor.h"
+#include "KCommandServer.h"
 //브로드캐스트는 서버에서 처리해줘야함
 class KServer : public KServerObj
 {
 	KAcceptor				 m_Acceptor;
+	KCommandServer			 m_Commander;
 public:
 	std::list<KNetworkUser*> m_UserList;
 	KNetwork				 m_Net;
@@ -16,7 +18,7 @@ public:
 	typedef std::map<int, CallFunction>::iterator FuncionIterator;
 	std::map<int, CallFunction> m_fnExecutePacket;
 public:
-	int Broadcast(KNetworkUser* user);
+	int BroadcastUserPacket(KNetworkUser* user);
 	virtual bool AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr);
 protected:
 	virtual bool DelUser(SOCKET clientSock);

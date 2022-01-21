@@ -1,6 +1,1 @@
-﻿  KChatUser.cpp
-  KLobbyServer.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ServerIOCP\KLobbyServer.cpp(27,15): warning C4553: '==': 식의 결과가 사용되지 않습니다. '='을(를) 의도했습니까?
-  Sample.cpp
-  코드를 생성하고 있습니다...
-  Sample_ServerIOCP.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_KServerIOCP\Sample_KServerIOCP.exe
+﻿  Sample_ServerIOCP.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_KServerIOCP\Sample_KServerIOCP.exe

@@ -64,20 +64,11 @@
 //	}
 //}
 #pragma endregion
-struct tUser : public KObjectPool<tUser>
-{
-public:
-	int m_Index = 0;
-};
 int main()
 {
-	tUser* tuser = new tUser;
 	setlocale(LC_ALL, ""); // Korean해도 되지만 공백은 시스템 지역설정으로 따르게 한다.
 	KLobbyServer server;
 	server.Init(10000);
-	//유저 받아드리는 별도의 스레드
-
-	//메인스레드에는 서버의 Run이 돈다.
 	server.Run();
 	server.Release();
 

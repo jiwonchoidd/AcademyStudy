@@ -66,6 +66,9 @@ bool KLobbyServer::Init(int port)
 		m_hWorkThread[i] = CreateThread(0, 0, WorkerThread, this, 0, &id);
 	}
 
+	//std::bind(함수주소, 옵션(인스턴스), 인자1, 인자2)
+	//std::placeholder::_1 첫번쨰 인자값은 대체할수있다.
+
 	return true;
 }
 
@@ -74,7 +77,7 @@ bool KLobbyServer::Init(int port)
 bool KLobbyServer::AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr)
 {
 	KNetworkUser* user = new KNetworkUser();
-	user->Set(clientSock, clientAddr);
+	user->Set(clientSock, clientAddr, this);
 
 	u_long on = 1;
 	ioctlsocket(clientSock, FIONBIO, &on);
@@ -116,20 +119,17 @@ bool KLobbyServer::Run()
 				}break;
 				case PACKET_CHAT_MSG:
 				{
-					std::cout << "";
+					for (KNetworkUser* user : m_UserList)
+					{
+						if (user->m_lPacketPool.size() > 0)
+						{
+							BroadcastUserPacket(user);
+						}
+					}
 				}break;
 			}
 		}
-
-		//주기적인 동기화
-		for (KNetworkUser* user : m_UserList)
-		{
-			if (user->m_lPacketPool.size() > 0)
-			{
-				Broadcast(user);
-			}
-		}
-		//커넥트가 false면 나가는 처리까지
+		//커넥트가 false면 유저가 나가는 처리까지
 		std::list<KNetworkUser*>::iterator user_iter;
 		for (user_iter = m_UserList.begin();
 			user_iter != m_UserList.end();)
