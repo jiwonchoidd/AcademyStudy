@@ -1,3 +1,2 @@
 ﻿  KLobbyServer.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ServerIOCP\KLobbyServer.cpp(59,20): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   Sample_ServerIOCP.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_KServerIOCP\Sample_KServerIOCP.exe
