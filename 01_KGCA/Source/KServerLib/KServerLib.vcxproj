@@ -149,6 +149,7 @@ copy "*.h" ""..\\..\\Include\\KServerLib\\"</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KAcceptor.h" />
     <ClInclude Include="KNetStd.h" />
     <ClInclude Include="KNetwork.h" />
     <ClInclude Include="KNetworkUser.h" />
@@ -157,8 +158,10 @@ copy "*.h" ""..\\..\\Include\\KServerLib\\"</Command>
     <ClInclude Include="KServer.h" />
     <ClInclude Include="KServerObj.h" />
     <ClInclude Include="KThread.h" />
+    <ClInclude Include="KObjectPool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KAcceptor.cpp" />
     <ClCompile Include="KNetwork.cpp" />
     <ClCompile Include="KNetworkUser.cpp" />
     <ClCompile Include="KPacket.cpp" />

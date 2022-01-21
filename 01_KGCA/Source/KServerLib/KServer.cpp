@@ -25,8 +25,17 @@ int KServer::Broadcast(KNetworkUser* user)
 
 bool KServer::AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr)
 {
+	return true;
+}
 
+bool KServer::DelUser(SOCKET clientSock)
+{
+	return true;
+}
 
+bool KServer::DelUser(KNetworkUser* pUser)
+{
+	pUser->Disconnect();
 	return true;
 }
 
@@ -49,6 +58,9 @@ bool KServer::Init(int port)
 	u_long on = 1;
 	ioctlsocket(m_Net.m_ListenSocket, FIONBIO, &on);
 
+	m_Acceptor.CreateKThread(this);
+	m_Acceptor.Detach();
+
 	return true;
 }
 
@@ -59,6 +71,9 @@ bool KServer::Run()
 
 bool KServer::Release()
 {
+	KObjectPool<KNetworkUser>::AllFree();
+	KObjectPool<KOV>::AllFree();
+
 	closesocket(m_Net.m_ListenSocket);
 	WSACleanup();
 

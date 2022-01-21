@@ -1,13 +1,27 @@
-﻿  KNetworkUser.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KNetworkUser.cpp(183,49): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  KAcceptor.cpp
+  KNetwork.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KNetwork.cpp(45,50): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KNetworkUser.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KNetworkUser.cpp(185,49): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KPacket.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KPacket.cpp(81,32): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KPacket.cpp(92,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KPacket.cpp(125,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KServerLib\KPacket.cpp(136,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KServer.cpp
+  KServerObj.cpp
+  KThread.cpp
+  코드를 생성하고 있습니다...
   KServerLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KServerLib\KServerLib.lib
           1개 파일이 복사되었습니다.
+  KAcceptor.h
   KNetStd.h
   KNetwork.h
   KNetworkUser.h
+  KObjectPool.h
   KPacket.h
   KProtocol.h
   KServer.h
   KServerObj.h
   KThread.h
-          8개 파일이 복사되었습니다.
+         10개 파일이 복사되었습니다.

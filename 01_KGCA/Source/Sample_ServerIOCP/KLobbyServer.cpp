@@ -22,10 +22,13 @@ DWORD WINAPI WorkerThread(LPVOID param)
 		if (bRet == TRUE && pUser && pOV)
 		{
 			//작업
-			if (pOV->type == 1000 && dwTransfer == 0)
+			if (dwTransfer == 0)
 			{
+				pOV->type == KOV::MODE_EXIT;
 				if(pUser->m_bConnect == true)
 				pUser->m_bConnect = false;
+				//입출력 끝 아닌데 큐를 반환할 수 있음
+				//PostQueued
 			}
 			else
 			{
@@ -108,11 +111,12 @@ bool KLobbyServer::Run()
 			{
 				case PACKET_USER_POSITION:
 				{
-					std::cout << "d";
+					std::cout << "";
+
 				}break;
 				case PACKET_CHAT_MSG:
 				{
-					std::cout << "d";
+					std::cout << "";
 				}break;
 			}
 		}
@@ -132,7 +136,7 @@ bool KLobbyServer::Run()
 		{
 			if ((*user_iter)->m_bConnect == false)
 			{
-				(*user_iter)->Disconnect();
+				DelUser((*user_iter));
 				delete (*user_iter);
 				user_iter = m_UserList.erase(user_iter);
 				std::cout <<"\nCurrent : " << m_UserList.size() <<" 명 접속중.."<<std::endl;

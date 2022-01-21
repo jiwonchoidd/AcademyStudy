@@ -18,18 +18,18 @@
     <ClCompile Include="Sample.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KAcceptor.cpp">
+    <ClCompile Include="KLobbyServer.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="KLobbyServer.cpp">
+    <ClCompile Include="KChatUser.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KAcceptor.h">
+    <ClInclude Include="KLobbyServer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="KLobbyServer.h">
+    <ClInclude Include="KChatUser.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

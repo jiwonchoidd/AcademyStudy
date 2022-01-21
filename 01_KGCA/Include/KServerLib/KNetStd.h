@@ -3,8 +3,10 @@
 #include <windows.h>
 #include <Ws2tcpip.h> // inet_ntop
 #include <iostream>
+#include <functional>
 #include <list>
 #include <string>
+#include <map>
 #pragma comment	(lib, "ws2_32.lib")
 
 #ifdef DEBUG

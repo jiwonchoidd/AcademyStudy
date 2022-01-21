@@ -149,12 +149,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="KAcceptor.cpp" />
+    <ClCompile Include="KChatUser.cpp" />
     <ClCompile Include="KLobbyServer.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="KAcceptor.h" />
+    <ClInclude Include="KChatUser.h" />
     <ClInclude Include="KLobbyServer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -47,21 +47,22 @@ int KNetworkUser::DispatchRead(char* sRecvBuffer, int iRecvByte)
 }
 
 
-int KNetworkUser::Dispatch(DWORD dwTransfer, KOV* tov)
+int KNetworkUser::Dispatch(DWORD dwTransfer, KOV* ov)
 {
 	//작업
+	delete ov;
 	if (this->m_bConnect == false)
 	{
 		return 0;
 	}
-	if (tov->type == 1000)
+	if (ov->type == KOV::MODE_RECV)
 	{
 		if (!DispatchRecv(m_szRecv,dwTransfer))
 		{
 		}
 		Recv();
 	}
-	if (tov->type == 1001)
+	if (ov->type == KOV::MODE_SEND)
 	{
 		//작업중이 아니라면 킬이벤트 발동
 		if (!DispatchSend(dwTransfer))
@@ -69,7 +70,7 @@ int KNetworkUser::Dispatch(DWORD dwTransfer, KOV* tov)
 			
 		}
 	}
-	return 0;
+	return 1;
 }
 //받은걸 발송한다. 
 
@@ -157,15 +158,15 @@ int KNetworkUser::Recv()
 	// 비동기 로드 Readfile, writefile이랑 똑같은 WSARecv
 	//패킷을 모아서 한버에 보낼수도 있음
 	//실제 데이터는 m_szRecv로 들어옴
+	KOV* ov = new KOV(KOV::MODE_RECV);
 	DWORD	dwRead;
 	DWORD	lpflag=0;
 	m_WsaRecvBuffer.len = sizeof(char)*256;
 	m_WsaRecvBuffer.buf = m_szRecv;
-	m_RecvOV.type = 1000;
 	//비동기 처리니까 io pending 예외처리해줘야함
 	BOOL ret = WSARecv(m_Sock, &m_WsaRecvBuffer,
 		1, &dwRead, &lpflag,
-		(WSAOVERLAPPED*)&m_RecvOV, nullptr);
+		(WSAOVERLAPPED*)ov, nullptr);
 	if (ret == SOCKET_ERROR)
 	{
 		if (WSAGetLastError() != WSA_IO_PENDING)
@@ -178,6 +179,7 @@ int KNetworkUser::Recv()
 
 int KNetworkUser::SendMsg(char* msg, WORD type)
 {
+	KOV* ov = new KOV(KOV::MODE_SEND);
 	//패킷을 만들어서 보내야함
 	UPACKET uPacket;
 	uPacket.ph.len = strlen(msg)+PACKET_HEADER_SIZE;
@@ -187,11 +189,10 @@ int KNetworkUser::SendMsg(char* msg, WORD type)
 	DWORD	lpflag = 0;
 	m_WsaSendBuffer.len = uPacket.ph.len;
 	m_WsaSendBuffer.buf = (char*)&uPacket;
-	m_SendOV.type = 1001;
 
 	BOOL ret = WSASend(m_Sock, &m_WsaRecvBuffer,
 		1, &dwRead, lpflag,
-		(WSAOVERLAPPED*)&m_SendOV, nullptr);
+		(WSAOVERLAPPED*)ov, nullptr);
 	//IOPending 처리 
 	if (ret == SOCKET_ERROR)
 	{
