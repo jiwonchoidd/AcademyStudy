@@ -9,6 +9,13 @@ bool KAcceptor::Run()
 
 	while (1)
 	{
+
+		//지정된 킬이벤트가 신호를 받았다면 break
+		if (WaitForSingleObject(pServer->m_hKillEvent, 1) == WAIT_OBJECT_0)
+		{
+			break;
+		}
+
 		SOCKET clientSock = accept(pServer->m_Net.m_ListenSocket,
 			(sockaddr*)&clientAddr, &iLen);
 		if (clientSock == SOCKET_ERROR)

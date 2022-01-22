@@ -60,7 +60,7 @@ bool KServer::Init(int port)
 	m_Acceptor.CreateKThread(this);
 	m_Acceptor.Detach();
 	m_Commander.CreateKThread(this);
-	m_Acceptor.Detach();
+	m_Commander.Detach();
 
 	return true;
 }

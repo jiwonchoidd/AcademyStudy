@@ -15,7 +15,9 @@ private:
     std::map<std::string, int>  m_CommandMap = { {"/help",1} ,{"/exit",2},{"/kick",3}};
     std::map<std::string,int>
         ::iterator              m_iter_map;
- 
+private:
+    void        HelpMode();
+    void        ExitMode();
 public:
     bool        Run() override;
 public:
