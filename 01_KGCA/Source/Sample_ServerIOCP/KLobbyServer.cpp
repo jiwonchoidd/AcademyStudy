@@ -102,6 +102,11 @@ bool KLobbyServer::Run()
 {
 	while (1)
 	{
+		//지정된 킬이벤트가 신호를 받았다면 break
+		if (WaitForSingleObject(this->m_hKillEvent, 1) == WAIT_OBJECT_0)
+		{
+			break;
+		}
 		//임계구역
 		EnterCriticalSection(&m_cs);
 
@@ -153,7 +158,7 @@ bool KLobbyServer::Run()
 
 bool KLobbyServer::Release()
 {
-	CloseHandle(m_hIOCP);
+	//CloseHandle(m_hIOCP);
 	KServer::Release();
 	return true;
 }
