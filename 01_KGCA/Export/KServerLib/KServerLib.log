@@ -1,5 +1,5 @@
-﻿  KThread.cpp
-  KServerLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KServerLib\KServerLib.lib
+﻿  KCommandServer.cpp
+  KServerLib.vcxproj -> C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Export\KServerLib\KServerLib.lib
           1개 파일이 복사되었습니다.
   KAcceptor.h
   KCommandServer.h

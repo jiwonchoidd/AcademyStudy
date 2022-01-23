@@ -32,6 +32,7 @@ void KThread::Join()
 void KThread::Detach()
 {
 	CloseHandle((HANDLE)m_hThread);
+	m_hThread = 0;
 }
 
 bool KThread::Run()
@@ -70,6 +71,6 @@ KThread::KThread(LPVOID pValue)
 
 KThread::~KThread()
 {
-	if((HANDLE)m_hThread!=0)
+	if(m_hThread!=0)
 	CloseHandle((HANDLE)m_hThread);
 }

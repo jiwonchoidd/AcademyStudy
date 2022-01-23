@@ -14,7 +14,7 @@ bool Sample::Init()
 
 	m_Net.InitNetwork();
 	//타입 포트 아이피
-	if(m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_DD))
+	if(m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_1))
 	{
 		m_bConnect = true;
 	}
@@ -42,7 +42,7 @@ bool Sample::Frame()
 		{
 			if (ImGui::Button(u8"연결 재시도"))
 			{
-				if (m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_DD))
+				if (m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_1))
 				{
 					m_bConnect = true;
 				}
@@ -55,8 +55,10 @@ bool Sample::Frame()
 			ImGui::EndChild();
 			ImGui::Dummy(ImVec2(0.0f, 5));
 			ImGui::InputText("", buffer, sizeof(buffer));
+			
 			ImGui::SameLine();
-			if (ImGui::Button("Send"))
+
+			if (ImGui::Button("Send") || g_InputData.bEnter)
 			{
 				char clear[MAX_PATH] = { 0, };
 				KPacket kpacket(PACKET_CHAT_MSG);
@@ -71,7 +73,7 @@ bool Sample::Frame()
 					strcat(chatItems, "Error\n");
 					m_Net.m_bConnect = false;
 				}
-
+				ImGui::SetKeyboardFocusHere(0);
 				strcpy(buffer, clear);
 			}
 		}

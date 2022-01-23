@@ -13,7 +13,7 @@ bool	KCore::GameInit()
     g_Input.Init();
     m_Write.Init();
     m_Camera.Init();
-    g_Input.m_bInputAvailable = false;
+    //g_Input.m_bInputAvailable = false;
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
         __uuidof(IDXGISurface),

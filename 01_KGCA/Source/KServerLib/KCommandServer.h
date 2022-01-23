@@ -18,6 +18,7 @@ private:
 private:
     void        HelpMode();
     void        ExitMode();
+    void        KickMode();
 public:
     bool        Run() override;
 public:

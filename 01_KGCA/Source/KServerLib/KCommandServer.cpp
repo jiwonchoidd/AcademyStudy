@@ -6,26 +6,38 @@ void KCommandServer::HelpMode()
 	for (m_iter_map = m_CommandMap.begin();
 		m_iter_map != m_CommandMap.end();)
 	{
-		std::cout << m_iter_map->first << ", \n";
+		std::cout << m_iter_map->first << " \n";
 		m_iter_map++;
 	}
-
 }
 void KCommandServer::ExitMode()
 {
-	std::cout << "서버를 종료합니다." << std::endl;
 	KServer* pServer = (KServer*)m_pObject;
+	std::cout << "서버를 종료합니다." << std::endl;
 	::SetEvent(pServer->m_hKillEvent);
 	pServer->Release();
 }
+void KCommandServer::KickMode()
+{
+	std::cout << "유저 추방 미구현." << std::endl;
+}
 /*Command Line Interface
- q*/
+ */
 bool KCommandServer::Run()
 {
+	KServer* pServer = (KServer*)m_pObject;
+
 	while (1)
 	{
-		std::cin >> m_Input;
+		//지정된 킬이벤트가 신호를 받았다면 break
+		if (WaitForSingleObject(pServer->m_hKillEvent, 1) == WAIT_OBJECT_0)
+		{
+			break;
+		}
 
+		std::cout << "->";
+		std::cin >> m_Input;
+		std::cout << "\n";
 		for (m_iter_map = m_CommandMap.begin();
 			m_iter_map != m_CommandMap.end();)
 		{
@@ -38,7 +50,7 @@ bool KCommandServer::Run()
 			{
 				m_iter_map++;
 				if(m_iter_map== m_CommandMap.end())
-				std::cout << "해당 명령어 없음" << std::endl;
+				std::cout << "해당 명령어 없음 '/help' for more information" << std::endl;
 			}
 		}
 
@@ -57,6 +69,10 @@ bool KCommandServer::Run()
 			case COMMAND_EXIT:
 			{
 				ExitMode();
+			}break;
+			case COMMAND_KICK:
+			{
+				KickMode();
 			}break;
 			default:
 				break;

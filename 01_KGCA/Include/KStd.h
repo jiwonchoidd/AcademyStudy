@@ -64,7 +64,8 @@ struct INPUT_MAP
 
 	bool bLShift;
 	bool bExit;
-	bool bSpace; 
+	bool bSpace;
+	bool bEnter;
 
 	int  iMouseValue[3];
 
