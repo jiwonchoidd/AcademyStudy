@@ -113,6 +113,7 @@ int KNetworkUser::DispatchRecv(char* szRecvBuffer, int iRecvByte)
 				}
 				else
 				{
+					m_lPacketPool.push_back(kPacket);
 					m_pServer->m_lPacketPool.push_back(kPacket);
 				}
 
