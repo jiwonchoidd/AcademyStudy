@@ -52,7 +52,9 @@ bool KServer::Init(int port)
 		return false;
 	}
 
-	std::cout << "\n::::::::::::::::Server Start.::::::::::::::::" << std::endl;
+	std::cout << "\n::::::::::::::::Server Start.::::::::::::::::\n" << std::endl;
+	std::cout << "-> type '/help' to get help\n" << std::endl;
+
 	u_long on = 1;
 	ioctlsocket(m_Net.m_ListenSocket, FIONBIO, &on);
 

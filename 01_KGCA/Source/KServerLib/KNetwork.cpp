@@ -108,14 +108,6 @@ int KNetwork::RecvUser(KNetworkUser* user)
 		return 2;
 	}
 	user->DispatchRead(szRecvBuffer, iRecvByte);
-
-	// 서버 텍스트 받은거 출력
-	KChatting recvdata;
-	ZeroMemory(&recvdata, sizeof(recvdata));
-	*(user->m_lPacketPool.begin()) >> recvdata.index 
-		>> recvdata.name >> recvdata.message;
-	std::wcout << recvdata.name<<" : "<< recvdata.message << std::endl;
-
 	return 1;
 }
 KNetwork::KNetwork()

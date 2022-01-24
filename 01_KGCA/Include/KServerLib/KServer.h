@@ -12,11 +12,7 @@ public:
 	std::list<KNetworkUser*> m_UserList;
 	KNetwork				 m_Net;
 	std::list<KPacket>		 m_lPacketPool;
-public:
-	// #include <functional>
-	using CallFunction = std::function<void(KPacket& t, KNetworkUser* user)>;
-	typedef std::map<int, CallFunction>::iterator FuncionIterator;
-	std::map<int, CallFunction> m_fnExecutePacket;
+	typedef std::list<KNetworkUser*>::iterator m_UserIter;
 public:
 	int BroadcastUserPacket(KNetworkUser* user);
 	virtual bool AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr);

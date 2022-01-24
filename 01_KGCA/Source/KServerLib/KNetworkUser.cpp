@@ -127,6 +127,13 @@ int KNetworkUser::DispatchRecv(char* szRecvBuffer, int iRecvByte)
 				pPacket = (UPACKET*)&m_szRecvBuffer[m_iPacketPos];
 			} while (pPacket->ph.len <= m_iReadPos);
 
+			// 서버 텍스트 받은거 출력
+			KChatting recvdata;
+			ZeroMemory(&recvdata, sizeof(recvdata));
+			*(m_lPacketPool.begin()) >> recvdata.index
+				>> recvdata.name >> recvdata.message;
+			
+			std::wcout << recvdata.name << L" Dispatch Recv" << std::endl;
 		}
 	}
 	return 1;

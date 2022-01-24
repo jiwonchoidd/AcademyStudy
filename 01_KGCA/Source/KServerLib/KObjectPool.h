@@ -2,7 +2,7 @@
 
 #pragma once
 #include	<iostream>
-#define		POOL_MAX_SIZE 2024
+#define		POOL_MAX_SIZE 1024
 #define		POOL_SIZE_MASK (POOL_MAX_SIZE - 1)
 template <class type>
 class KObjectPool

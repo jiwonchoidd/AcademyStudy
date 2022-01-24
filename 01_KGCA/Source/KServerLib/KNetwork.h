@@ -3,9 +3,9 @@
 class KNetwork
 {
 public:
-	SOCKET					m_ListenSocket;
-	std::list<KNetworkUser*> m_Userlist;
-	KNetworkUser*			m_User;
+	SOCKET						m_ListenSocket;
+	std::list<KNetworkUser*>	m_Userlist;
+	KNetworkUser*				m_User;
 public:
 	bool	InitNetwork();
 	bool	CloseNetwork();

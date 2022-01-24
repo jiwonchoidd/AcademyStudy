@@ -1,5 +1,6 @@
 #pragma once
 #include "KServer.h"
+#include "KChatUser.h"
 #define MAX_WORKER_THREAD 3
 
 //·Îºñ ¼­¹ö ½Ì±ÛÅæ

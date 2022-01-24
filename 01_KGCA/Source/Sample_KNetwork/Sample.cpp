@@ -3,27 +3,36 @@
 #define IP_1		"192.168.31.236"
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sample.h"
+
+static char chatItems[2048] = {0,};
+static char buffer[MAX_PATH];
+static char ip_Address[30] = IP_DD;
+char computer_name[24] = { 0, };
+std::string	isConnect = "DisConnected";
+ImVec4 login_text_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
+
 LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return m_Net.Select_MsgProc(hWnd, msg, wParam, lParam);
 }
 bool Sample::Init()
 {
+	auto size = static_cast<DWORD>((sizeof(char)*24)+ 1);
+	if (!GetComputerNameA(computer_name, &size))
+	{
+		strcat(computer_name, "NoName");
+	}
     m_Camera.CreateViewMatrix(KVector3(0, 0, -5), KVector3(0, 0, 0));
     m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	m_Net.InitNetwork();
 	//타입 포트 아이피
-	if(m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_1))
+	if(m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, ip_Address))
 	{
 		m_bConnect = true;
 	}
     return true;
 }
-static char chatItems[2048] = {0,};
-static char buffer[MAX_PATH];
-std::string	isConnect = "DisConnected";
-ImVec4 login_text_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
 // 프레임 함수
 bool Sample::Frame()
 {
@@ -33,16 +42,18 @@ bool Sample::Frame()
 						login_text_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	#pragma region IMGUI INTERFACE
-	if (ImGui::Begin("Chatting Box"))
+	if (ImGui::Begin("Chat"))
 	{
 		
 		ImGui::TextColored(login_text_color,isConnect.c_str());
 		//연결이 안되어 있으면 연결 재 시도
 		if (!m_Net.m_bConnect)
 		{
+			ImGui::InputText("아이피 입력", ip_Address, sizeof(char) * 30);
+			ImGui::SameLine();
 			if (ImGui::Button(u8"연결 재시도"))
 			{
-				if (m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, IP_1))
+				if (m_Net.Connect(g_hWnd, SOCK_STREAM, 10000, ip_Address))
 				{
 					m_bConnect = true;
 				}
@@ -64,7 +75,7 @@ bool Sample::Frame()
 				KPacket kpacket(PACKET_CHAT_MSG);
 
 				//인덱스 이름 메시지
-				kpacket << 10 << "Test" << buffer;
+				kpacket << 10 << computer_name << buffer;
 
 				//리턴 값이 0보다 작으면 전송되지 않았음
 				if (m_Net.SendMsg(m_Net.m_Sock, kpacket.m_uPacket) < 0)

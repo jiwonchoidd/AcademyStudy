@@ -16,7 +16,7 @@ DWORD WINAPI WorkerThread(LPVOID param)
 		BOOL bRet = ::GetQueuedCompletionStatus(
 			pServer->m_hIOCP, &dwTransfer, &KeyValue, &pOverlapped, 1);
 
-		KNetworkUser* pUser = (KNetworkUser*)KeyValue;
+		KChatUser* pUser = (KChatUser*)KeyValue;
 		KOV* pOV = (KOV*)pOverlapped;
 
 		if (bRet == TRUE && pUser && pOV)
@@ -24,7 +24,7 @@ DWORD WINAPI WorkerThread(LPVOID param)
 			//작업
 			if (dwTransfer == 0)
 			{
-				pOV->type == KOV::MODE_EXIT;
+				pOV->type = KOV::MODE_EXIT;
 				if(pUser->m_bConnect == true)
 				pUser->m_bConnect = false;
 				//입출력 끝 아닌데 큐를 반환할 수 있음
@@ -65,10 +65,6 @@ bool KLobbyServer::Init(int port)
 		//자기 자신의 서버 인자를 넘김. this 
 		m_hWorkThread[i] = CreateThread(0, 0, WorkerThread, this, 0, &id);
 	}
-
-	//std::bind(함수주소, 옵션(인스턴스), 인자1, 인자2)
-	//std::placeholder::_1 첫번쨰 인자값은 대체할수있다.
-
 	return true;
 }
 
@@ -76,7 +72,7 @@ bool KLobbyServer::Init(int port)
 //동적할당을 미리 메모리 메니져로 만들어서 해야함
 bool KLobbyServer::AddUser(SOCKET clientSock, SOCKADDR_IN clientAddr)
 {
-	KNetworkUser* user = new KNetworkUser();
+	KChatUser* user = new KChatUser();
 	user->Set(clientSock, clientAddr, this);
 
 	u_long on = 1;
@@ -113,7 +109,7 @@ bool KLobbyServer::Run()
 		//패킷 타입을 판별해서 해당 맞는 작업을 하면 됨
 		std::list<KPacket>::iterator iter_packet;
 		for (iter_packet = m_lPacketPool.begin();
-			iter_packet != m_lPacketPool.end();)
+			iter_packet != m_lPacketPool.end(); iter_packet++)
 		{
 			switch ((*iter_packet).m_uPacket.ph.type)
 			{
@@ -126,6 +122,7 @@ bool KLobbyServer::Run()
 				{
 					for (KNetworkUser* user : m_UserList)
 					{
+						KChatUser* pChat = (KChatUser*)user;
 						if (user->m_lPacketPool.size() > 0)
 						{
 							BroadcastUserPacket(user);
@@ -135,20 +132,19 @@ bool KLobbyServer::Run()
 			}
 		}
 		//커넥트가 false면 유저가 나가는 처리까지
-		std::list<KNetworkUser*>::iterator user_iter;
-		for (user_iter = m_UserList.begin();
-			user_iter != m_UserList.end();)
+		for (m_UserIter iter = m_UserList.begin();
+			iter != m_UserList.end();)
 		{
-			if ((*user_iter)->m_bConnect == false)
+			if ((*iter)->m_bConnect == false)
 			{
-				DelUser((*user_iter));
-				delete (*user_iter);
-				user_iter = m_UserList.erase(user_iter);
+				DelUser((*iter));
+				delete (*iter);
+				iter = m_UserList.erase(iter);
 				std::cout <<"\nCurrent : " << m_UserList.size() <<" 명 접속중.."<<std::endl;
 			}
 			else
 			{
-				user_iter++;
+				iter++;
 			}
 		}
 		LeaveCriticalSection(&m_cs);
