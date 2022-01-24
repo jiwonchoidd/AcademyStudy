@@ -14,7 +14,7 @@ DWORD WINAPI WorkerThread(LPVOID param)
 		}
 		//완료큐에 데이터가 있으면 작업시작
 		BOOL bRet = ::GetQueuedCompletionStatus(
-			pServer->m_hIOCP, &dwTransfer, &KeyValue, &pOverlapped, 1);
+			pServer->m_hIOCP, &dwTransfer, &KeyValue, &pOverlapped, INFINITE);
 
 		KChatUser* pUser = (KChatUser*)KeyValue;
 		KOV* pOV = (KOV*)pOverlapped;

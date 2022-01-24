@@ -1,14 +1,7 @@
-#define IP_DD		"192.168.0.56"
-#define IP_KGCA2	"192.168.0.12"
-#define IP_1		"192.168.31.236"
+
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sample.h"
 
-static char chatItems[2048] = {0,};
-static char buffer[MAX_PATH];
-static char ip_Address[30] = IP_DD;
-char computer_name[24] = { 0, };
-std::string	isConnect = "DisConnected";
 ImVec4 login_text_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
 
 LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -37,15 +30,15 @@ bool Sample::Init()
 bool Sample::Frame()
 {
 	
-	(m_Net.m_bConnect)? isConnect = "Online" : isConnect = "Offline";
+	#pragma region IMGUI INTERFACE
+	(m_Net.m_bConnect)? str_isConnect = "Online" : str_isConnect = "Offline";
 	(m_Net.m_bConnect)? login_text_color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f) :
 						login_text_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 
-	#pragma region IMGUI INTERFACE
 	if (ImGui::Begin("Chat"))
 	{
 		
-		ImGui::TextColored(login_text_color,isConnect.c_str());
+		ImGui::TextColored(login_text_color,str_isConnect.c_str());
 		//연결이 안되어 있으면 연결 재 시도
 		if (!m_Net.m_bConnect)
 		{
@@ -62,10 +55,10 @@ bool Sample::Frame()
 		else
 		{
 			ImGui::BeginChild(u8"채팅창", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing() - 15));
-			ImGui::Text(chatItems);
+			ImGui::Text(m_chatItems);
 			ImGui::EndChild();
 			ImGui::Dummy(ImVec2(0.0f, 5));
-			ImGui::InputText("", buffer, sizeof(buffer));
+			ImGui::InputText("", m_buffer, sizeof(m_buffer));
 			
 			ImGui::SameLine();
 
@@ -75,17 +68,17 @@ bool Sample::Frame()
 				KPacket kpacket(PACKET_CHAT_MSG);
 
 				//인덱스 이름 메시지
-				kpacket << 10 << computer_name << buffer;
+				kpacket << 10 << computer_name << m_buffer;
 
 				//리턴 값이 0보다 작으면 전송되지 않았음
 				if (m_Net.SendMsg(m_Net.m_Sock, kpacket.m_uPacket) < 0)
 				{
-					ZeroMemory(&chatItems, sizeof(char) * 2048);
-					strcat(chatItems, "Error\n");
+					ZeroMemory(&m_chatItems, sizeof(char) * 2048);
+					strcat(m_chatItems, "Error\n");
 					m_Net.m_bConnect = false;
 				}
 				ImGui::SetKeyboardFocusHere(0);
-				strcpy(buffer, clear);
+				strcpy(m_buffer, clear);
 			}
 		}
 	}
@@ -98,7 +91,7 @@ bool Sample::Frame()
 	{
 		m_iChatCount = iChatCnt;
 		char clear[2048] = { 0, };
-		strcpy(chatItems, clear);
+		strcpy(m_chatItems, clear);
 
 		std::list<KPacket>::iterator iter;
 		//대화양이 제한량을 넘으면 지워줌
@@ -115,11 +108,11 @@ bool Sample::Frame()
 			ZeroMemory(&recv_data, sizeof(recv_data));
 			(*iter) >> recv_data.index >> recv_data.name
 					>> recv_data.message;
-			//strcat(chatItems, (char*)(*iter).m_uPacket.ph.time);
-			strcat(chatItems, recv_data.name);
-			strcat(chatItems, " : ");
-			strcat(chatItems, recv_data.message);
-			strcat(chatItems, "\n");
+			//strcat(m_chatItems, (char*)(*iter).m_uPacket.ph.time);
+			strcat(m_chatItems, recv_data.name);
+			strcat(m_chatItems, " : ");
+			strcat(m_chatItems, recv_data.message);
+			strcat(m_chatItems, "\n");
 		
 			(*iter).Reset();
 		}
