@@ -50,6 +50,7 @@ bool KODBC::Connect(const TCHAR* dsn_dir)
 	//연결에 성공한 후에 명령 핸들
 	if (SQLAllocHandle(SQL_HANDLE_STMT, handle_dbc, &handle_stmt) != SQL_SUCCESS)
 	{
+		Check();
 		return false;
 	}
 	return true;
@@ -97,32 +98,32 @@ bool KODBC::Execute_TableSet(const TCHAR* tablename)
 		//행 수 
 		column.col_num = icol;
 		//열 이름 만큼 사이즈
-		int iSize = _countof(column.col_name);
+		int col_size = _countof(column.col_name);
 
 		/*SQLDescribeCol 결과 집합의 한 열에 대해 결과 설명자-
 		열 이름, 형식, 열 크기, 10 진수 숫자 및 null 허용 여부를 반환 합니다. */
 		SQLDescribeCol(handle_stmt,
 			icol,
 			column.col_name,
-			iSize,
-			&column.NameLengthPtr,
-			&column.pfSqlType,// 데이터형
-			&column.ColumnSizePtr,
-			&column.DecimalDigitsPtr, // 10진수 자리수
-			&column.pfNullable);// NULL 허용여부
+			col_size,
+			&column.col_name_ptr,
+			&column.col_data_type,// 데이터형
+			&column.col_size_ptr,
+			&column.col_decimal_ptr, // 10진수 자리수
+			&column.col_nullable);// NULL 허용여부
 		table.table_data.push_back(column);
 	}
 		//변수 타입 바인딩
-		SQLLEN lTemp;
+		SQLLEN lTemp = 0;
 		TCHAR szData[100][21] = { 0, };
 		int   iData[100];
 		Table_Record record_data;
 		//모든 열만큼 돌면서 변수 바인딩
 		for (int iBind = 0; iBind < table.table_data.size(); iBind++)
 		{
-			switch (table.table_data[iBind].pfSqlType)
+			switch (table.table_data[iBind].col_data_type)
 			{
-			case SQL_WCHAR:
+			case SQL_WCHAR://문자열 타입일때,
 			case SQL_WVARCHAR: {
 				Table_Field data;
 				data.field_data_type = SQL_UNICODE;
@@ -153,11 +154,11 @@ bool KODBC::Execute_TableSet(const TCHAR* tablename)
 				}
 				record_data.record.push_back(data);
 			}break;
-			case -7: {
+			case SQL_REAL: {
 				Table_Field data;
-				data.field_data_type = SQL_C_ULONG;
+				data.field_data_type = SQL_C_FLOAT;
 				ret = SQLBindCol(handle_stmt, iBind + 1,
-					SQL_C_ULONG,
+					SQL_C_FLOAT,
 					&iData[iBind],
 					0,
 					&lTemp);
@@ -170,7 +171,8 @@ bool KODBC::Execute_TableSet(const TCHAR* tablename)
 			};
 			}
 		
-	}
+		}
+		std::cout << "" << std::endl;
 }
 
 bool KODBC::Execute_Select(const TCHAR* statement)
@@ -226,10 +228,25 @@ bool KODBC::Execute(const TCHAR* statement)
 
 bool KODBC::Release()
 {
-	SQLFreeHandle(SQL_HANDLE_STMT, handle_stmt);
-	SQLDisconnect(handle_dbc);
-	SQLFreeHandle(SQL_HANDLE_DBC, handle_dbc);
-	SQLFreeHandle(SQL_HANDLE_ENV, handle_env);
-	
+	if (SQLFreeHandle(SQL_HANDLE_STMT, handle_stmt) != SQL_SUCCESS)
+	{
+		Check();
+		return false;
+	}
+	if (SQLDisconnect(handle_dbc) != SQL_SUCCESS)
+	{
+		Check();
+		return false;
+	}
+	if (SQLFreeHandle(SQL_HANDLE_DBC, handle_dbc)!= SQL_SUCCESS)
+	{
+		Check();
+		return false;
+	}
+	if (SQLFreeHandle(SQL_HANDLE_ENV, handle_env)!= SQL_SUCCESS)
+	{
+		Check();
+		return false;
+	}
 	return true;
 }

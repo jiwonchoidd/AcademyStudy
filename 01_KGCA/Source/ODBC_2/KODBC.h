@@ -11,12 +11,12 @@ struct Table_ColumnInfo
 {
 	SQLUSMALLINT        col_num;
 	SQLWCHAR			col_name[20];
-	SQLSMALLINT         buffer_length;
-	SQLSMALLINT			NameLengthPtr;
-	SQLSMALLINT			pfSqlType;
-	SQLULEN				ColumnSizePtr;
-	SQLSMALLINT			DecimalDigitsPtr;
-	SQLSMALLINT			pfNullable;
+	SQLSMALLINT         col_name_length;
+	SQLSMALLINT			col_name_ptr;
+	SQLSMALLINT			col_data_type;
+	SQLULEN				col_size_ptr;
+	SQLSMALLINT			col_decimal_ptr;
+	SQLSMALLINT			col_nullable;
 };
 struct Table_Info
 {

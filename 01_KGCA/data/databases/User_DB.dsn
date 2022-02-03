@@ -9,5 +9,5 @@ MaxScanRows=8
 MaxBufferSize=2048
 FIL=MS Access
 DriverId=25
-DefaultDir=E:\Choijiwon\AcademyStudy\01_KGCA\data\databases
-DBQ=E:\Choijiwon\AcademyStudy\01_KGCA\data\databases\User_DB.accdb
+DefaultDir=C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\data\databases
+DBQ=C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\data\databases\User_DB.accdb
