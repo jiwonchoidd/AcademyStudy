@@ -44,7 +44,7 @@ public:
 
 public:
 	bool Init();
-	bool Connect(const TCHAR* dsn_dir);
+	bool Connect(int type, const TCHAR* dsn_dir);
 	bool Check();
 	bool Execute_TableSet(const TCHAR* tablename);
 	bool Execute_Select(const TCHAR* statement);

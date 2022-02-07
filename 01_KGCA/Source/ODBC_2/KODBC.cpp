@@ -19,28 +19,64 @@ bool KODBC::Init()
 
 	return true;
 }
-
-bool KODBC::Connect(const TCHAR* dsn_dir)
+//커넥팅 타입에 따라 접속하는 방법이 달라진다.
+bool KODBC::Connect(int type, const TCHAR* dsn_dir)
 {
-	//접속을 해야함 유니코드 버젼으로 하겠다. 버젼선택 mdb, accdb 파일을 읽어온다.
-	//파일 경로 스트링
-	SQLWCHAR dir[MAX_PATH] = { 0, };
-	GetCurrentDirectory(MAX_PATH, dir);
-	std::wstring dbpath = dir;
-	dbpath += dsn_dir;
-
 	TCHAR inCon[256] = { 0, };
 	TCHAR outCon[256] = { 0, };
-
-	//연결 Connect. _countof 문자열의 길이
-	//원래는 .dsn 파일의 규격의 텍스트 파일을 읽어서 연결해야한다. 
-	_stprintf(inCon, _T("FileDsn=%s"), dbpath.c_str());
-
 	SQLSMALLINT cbOut_Len;
-	SQLRETURN ret = SQLDriverConnect(handle_dbc, NULL, inCon, _countof(inCon),
-		outCon, _countof(outCon), &cbOut_Len, SQL_DRIVER_NOPROMPT);
+	SQLRETURN ret = 0;
+	switch (type)
+	{
+		//다이렉트로 접속
+		case 0:
+		{
+			_stprintf(inCon, _T("%s"),
+				_T("Driver={SQL Server};Address=121.137.252.85,1433;Network=dbmssocn;Database=USERTBL;Uid=sa;Pwd=1q2w3e4r!;"));
+			ret = SQLDriverConnect(handle_dbc, NULL,
+				inCon, _countof(inCon),
+				outCon, _countof(outCon),
+				&cbOut_Len, SQL_DRIVER_NOPROMPT);
+		}break;
+		//파일 dsn
+		case 1:
+		{
+			_stprintf(inCon, _T("Dsn=%s"), dsn_dir);
+			ret = SQLConnect(handle_dbc,
+				(SQLTCHAR*)dsn_dir, SQL_NTS,
+				(SQLTCHAR*)L"sa", SQL_NTS,
+				(SQLTCHAR*)L"1q2w3e4r!", SQL_NTS);
+		}break;
+		//시스템 dsn
+		case 2:
+		{
+			_stprintf(inCon, _T("FileDsn=%s"), dsn_dir);
+			ret = SQLDriverConnect(handle_dbc, NULL,
+				inCon, _countof(inCon),
+				outCon, _countof(outCon),
+				&cbOut_Len, SQL_DRIVER_NOPROMPT);
+		}break;
+		case 3://ms access 대화상자 버젼
+		{
+			HWND hWnd = GetDesktopWindow();
+			SQLSMALLINT len;
+			ret = SQLDriverConnect(handle_dbc, hWnd,
+				(SQLWCHAR*)L"Driver={Microsoft Access Driver (*.mdb, *.accdb)}", SQL_NTS,
+				(SQLWCHAR*)inCon, _countof(inCon),
+				&len, SQL_DRIVER_PROMPT);
+		}break;
+		//공통 대화상자
+		case 4: // //SQL Sever 대화상자 버젼
+		{
+			HWND hWnd = GetDesktopWindow();
+			SQLSMALLINT len;
+			ret = SQLDriverConnect(handle_dbc, hWnd,
+				(SQLWCHAR*)L"Driver={SQL Server Native Client 11.0}", SQL_NTS,
+				(SQLWCHAR*)inCon, _countof(inCon),
+				&len, SQL_DRIVER_PROMPT);
+		}break;
+	}
 
-	//접속이 성공하면 success가 뜨는데 완벽한 성공, 두번째는 부족한대 성공 
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
 		Check();
@@ -123,6 +159,22 @@ bool KODBC::Execute_TableSet(const TCHAR* tablename)
 		{
 			switch (table.table_data[iBind].col_data_type)
 			{
+			case SQL_TYPE_TIMESTAMP://시간 타입일때
+			{
+				Table_Field data;
+				data.field_data_type = SQL_UNICODE;
+				ret = SQLBindCol(handle_stmt, iBind + 1,
+					SQL_TYPE_TIMESTAMP,
+					&szData[iBind],
+					0,
+					&lTemp);
+				if (ret != SQL_SUCCESS)
+				{
+					Check();
+					return false;
+				}
+				record_data.record.push_back(data);
+			}break;
 			case SQL_WCHAR://문자열 타입일때,
 			case SQL_WVARCHAR: {
 				Table_Field data;
@@ -170,9 +222,28 @@ bool KODBC::Execute_TableSet(const TCHAR* tablename)
 				record_data.record.push_back(data);
 			};
 			}
-		
 		}
-		std::cout << "" << std::endl;
+		//스트링으로 모두 저장?
+		while (SQLFetch(handle_stmt) != SQL_NO_DATA)
+		{
+			for (int iCol = 0; iCol < table.table_data.size(); iCol++)
+			{
+				record_data.record[iCol].field_data_type =
+					record_data.record[iCol].field_data_type;
+				if (record_data.record[iCol].field_data_type == SQL_UNICODE)
+				{
+					record_data.record[iCol].field_data = szData[iCol];
+				}
+				else
+				{
+					record_data.record[iCol].field_data = std::to_wstring(iData[iCol]);
+				}
+			}
+			table_string_data.push_back(record_data);
+		}
+		SQLCloseCursor(handle_stmt);
+		table_list.push_back(table);
+		return true;
 }
 
 bool KODBC::Execute_Select(const TCHAR* statement)
