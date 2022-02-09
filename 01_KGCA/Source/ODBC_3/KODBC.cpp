@@ -347,13 +347,13 @@ bool KODBC::Execute_CheckPW()
 	if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
 	{
 		Check();
-		return;
+		return false;
 	}
 	while (SQLMoreResults(handle_stmt) != SQL_NO_DATA);
 	SQLFreeStmt(handle_stmt, SQL_UNBIND);
 	SQLFreeStmt(handle_stmt, SQL_RESET_PARAMS);
 	SQLCloseCursor(handle_stmt);
-	return;
+	return true;
 }
 
 bool KODBC::Execute(const TCHAR* statement)

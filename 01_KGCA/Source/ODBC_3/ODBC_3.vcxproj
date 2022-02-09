@@ -86,8 +86,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>../../Export/ODBC_3/</OutDir>
-    <IntDir>../../Export/ODBC_3/obj/</IntDir>
+    <OutDir>../../Export/ODBC_PROC/</OutDir>
+    <IntDir>../../Export/ODBC_PROC/obj/</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
