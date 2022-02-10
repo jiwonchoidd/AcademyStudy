@@ -10,12 +10,7 @@ void main()
 
 	odbc.Init();
 
-	SQLWCHAR dir[MAX_PATH] = { 0, };
-	GetCurrentDirectory(MAX_PATH, dir);
-
-	std::wstring dbpath = dir;
-	dbpath += L"\\GameDB.dsn";
-	if (odbc.Connect(4, dbpath.c_str()))
+	if (odbc.Connect(1,L"GameDB"))
 	{
 		odbc.Execute_TableSet(L"usertbl");
 	}

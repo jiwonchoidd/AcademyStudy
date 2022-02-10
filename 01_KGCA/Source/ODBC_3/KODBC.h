@@ -39,13 +39,15 @@ public:
 	SQLHENV						handle_env; // 환경핸들
 	SQLHDBC						handle_dbc; // 접속핸들
 	SQLHSTMT					handle_stmt; // 명령핸들
+	SQLHSTMT					handle_stmt_Account; // 명령핸들
 	std::vector<Table_Info>		table_list; // 테이블 정보를 담은 테이블 리스트
 	std::vector<Table_Record>	table_string_data; // 테이블 스트링 정보
-
+	SQLWCHAR					id[10] = L"test";
+	SQLWCHAR					pw[10] = L"1234";
 public:
 	bool Init();
 	bool Connect(int type, const TCHAR* dsn_dir);
-	bool Check();
+	bool Check(SQLHSTMT stmthandle=NULL);
 	bool Execute_TableSet(const TCHAR* tablename);
 	bool Execute_Select(const TCHAR* statement);
 	bool Execute_Delete(const TCHAR* statement);
@@ -54,6 +56,8 @@ public:
 	bool Execute_CreateAccount();
 	bool Execute_CheckPW();
 	bool Execute(const TCHAR* statement);
+	bool CreatePrepare();
+	bool ExecutePrepare(const TCHAR* id, const TCHAR* pw);
 	bool Release();
 };
 

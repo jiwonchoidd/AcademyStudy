@@ -1,13 +1,14 @@
 #include "KODBC.h"
 
-bool KODBC::Check()
+bool KODBC::Check(SQLHSTMT stmthandle)
 {
+	if(stmthandle == NULL) stmthandle = handle_stmt;
 	SQLTCHAR szSQLState[SQL_SQLSTATE_SIZE + 1];
 	SQLTCHAR errorBuffer[SQL_MAX_MESSAGE_LENGTH + 1];
 	SQLINTEGER iSQLCode;
 	SQLSMALLINT length;
 	SQLError(handle_env, handle_dbc,
-		handle_stmt,
+		stmthandle,
 		szSQLState,
 		&iSQLCode,
 		errorBuffer,
@@ -54,25 +55,30 @@ bool KODBC::Connect(int type, const TCHAR* dsn_dir)
 				outCon, _countof(outCon),
 				&cbOut_Len, SQL_DRIVER_NOPROMPT);
 		}break;
-		//파일 dsn
+		//사용자 dsn
 		case 1:
 		{
-			_stprintf(inCon, _T("Dsn=%s"), dsn_dir);
 			ret = SQLConnect(handle_dbc,
 				(SQLTCHAR*)dsn_dir, SQL_NTS,
 				(SQLTCHAR*)L"sa", SQL_NTS,
 				(SQLTCHAR*)L"1q2w3e4r!", SQL_NTS);
 		}break;
-		//시스템 dsn
+		//파일 dsn
 		case 2:
 		{
+			SQLWCHAR dir[MAX_PATH] = { 0, };
+			GetCurrentDirectory(MAX_PATH, dir);
+			std::wstring dbpath = dir;
+			dbpath += L"\\";
+			dbpath += dsn_dir;
 			_stprintf(inCon, _T("FileDsn=%s"), dsn_dir);
 			ret = SQLDriverConnect(handle_dbc, NULL,
 				inCon, _countof(inCon),
 				outCon, _countof(outCon),
 				&cbOut_Len, SQL_DRIVER_NOPROMPT);
 		}break;
-		case 3://ms access 대화상자 버젼
+		//접속 대화상자
+		case 3://ms access 대화상자
 		{
 			HWND hWnd = GetDesktopWindow();
 			SQLSMALLINT len;
@@ -81,8 +87,7 @@ bool KODBC::Connect(int type, const TCHAR* dsn_dir)
 				(SQLWCHAR*)inCon, _countof(inCon),
 				&len, SQL_DRIVER_PROMPT);
 		}break;
-		//공통 대화상자
-		case 4: // //SQL Sever 대화상자 버젼
+		case 4: // //SQL Sever 대화상자
 		{
 			HWND hWnd = GetDesktopWindow();
 			SQLSMALLINT len;
@@ -92,14 +97,26 @@ bool KODBC::Connect(int type, const TCHAR* dsn_dir)
 				&len, SQL_DRIVER_PROMPT);
 		}break;
 	}
-
+	
 	if (ret != SQL_SUCCESS && ret != SQL_SUCCESS_WITH_INFO)
 	{
 		Check();
 		return false;
 	}
 
-	//연결에 성공한 후에 명령 핸들
+	// 드라이버 확인작업
+	WCHAR version[20] = { 0, };
+	SQLSMALLINT cch = 0;
+	ret = SQLGetInfo(handle_dbc, SQL_DRIVER_ODBC_VER, version,
+		_countof(version), &cch);
+	//int iOdbcMajor;
+	//int IOdbcMinor;
+	if (SQL_SUCCEEDED(ret))
+	{
+		std::wcout <<L" odbc version "<<version <<L".."<< std::endl;
+	}
+
+	//연결에 성공한 후에 기본 명령 핸들
 	if (SQLAllocHandle(SQL_HANDLE_STMT, handle_dbc, &handle_stmt) != SQL_SUCCESS)
 	{
 		Check();
@@ -107,7 +124,6 @@ bool KODBC::Connect(int type, const TCHAR* dsn_dir)
 	}
 	return true;
 }
-
 
 //초기에 테이블을 모두 조회한 후 변수를 바인딩하는 작업
 bool KODBC::Execute_TableSet(const TCHAR* tablename)
@@ -289,40 +305,69 @@ bool KODBC::Execute_Insert(const TCHAR* statement)
 
 bool KODBC::Execute_Update(const TCHAR* statement)
 {
-	return false;
-}
-
-bool KODBC::Execute_CreateAccount()
-{
-	SQLRETURN retcode;
-	SWORD sReturn = 0;
-	SQLLEN cbRetParam = SQL_NTS;
-	retcode = SQLBindParameter(handle_stmt, 1, SQL_PARAM_OUTPUT,
-		SQL_C_SSHORT, SQL_INTEGER, 0, 0, &sReturn, 0, &cbRetParam);
-
-	SQLWCHAR id[10] = L"test";
-	retcode = SQLBindParameter(handle_stmt, 2, SQL_PARAM_INPUT,
-		SQL_C_WCHAR, SQL_WVARCHAR, sizeof(id), 0, id, sizeof(id), NULL);
-	SQLWCHAR ps[10] = L"11111";
-	retcode = SQLBindParameter(handle_stmt, 3, SQL_PARAM_INPUT,
-		SQL_C_WCHAR, SQL_WVARCHAR, sizeof(ps), 0, ps, sizeof(ps), NULL);
-
-	TCHAR callsp[] = L"{?=call AccountCreate(?,?)}";
-	retcode = SQLPrepare(handle_stmt, callsp, SQL_NTS);
-	//retcode = SQLExecDirect(hstmt,callsp, SQL_NTS);
-	retcode = SQLExecute(handle_stmt);
-	if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
+	TCHAR sql4[MAX_PATH] = { 0, };// L"select szData,price,korean from tblCigar='%s'";
+	wsprintf(sql4, L"update tblCigar set szData='%s' where szData='%s'",
+		L"코로나", L"88 Light");
+	SQLRETURN ret = SQLExecDirect(handle_stmt, (SQLTCHAR*)&sql4, SQL_NTS);
+	if (ret != SQL_SUCCESS && ret != SQL_NO_DATA)
 	{
 		Check();
 		return false;
 	}
-	/*while (SQLFetch(hstmt) != SQL_NO_DATA)
+	SQLLEN len;
+	SQLSMALLINT Cols;
+	// select문 제외
+	SQLRowCount(m_hStmt, &len);
+	SQLNumResultCols(m_hStmt, &Cols);
+
+	SQLCloseCursor(m_hStmt);
+	return true;
+}
+
+
+bool KODBC::Execute_CreateAccount()
+{
+	SQLRETURN retcode;
+	CreatePrepare();
+	ExecutePrepare(L"dd",L"1234");
+	
+	return true;
+}
+
+bool KODBC::CreatePrepare()
+{
+	SQLRETURN retcode;
+	retcode = SQLAllocHandle(SQL_HANDLE_STMT, handle_dbc, &handle_stmt_Account);
+	SWORD sReturn = 0;
+	SQLLEN cbRetParam = SQL_NTS;
+	retcode = SQLBindParameter(handle_stmt_Account, 1, SQL_PARAM_OUTPUT,
+		SQL_C_SSHORT, SQL_INTEGER, 0, 0, &sReturn, 0, &cbRetParam);
+
+	retcode = SQLBindParameter(handle_stmt_Account, 2, SQL_PARAM_INPUT,
+		SQL_C_WCHAR, SQL_WVARCHAR, sizeof(id), 0, id, sizeof(id), NULL);
+	retcode = SQLBindParameter(handle_stmt_Account, 3, SQL_PARAM_INPUT,
+		SQL_C_WCHAR, SQL_WVARCHAR, sizeof(pw), 0, pw, sizeof(pw), NULL);
+
+	TCHAR callsp[] = L"{?=call AccountCreate(?,?)}";
+	//재사용할수있게 prepare 함수
+	retcode = SQLPrepare(handle_stmt_Account, callsp, SQL_NTS);
+	//retcode = SQLExecDirect(hstmt,callsp, SQL_NTS);
+	return true;
+}
+
+bool KODBC::ExecutePrepare(const TCHAR* inputid, const TCHAR* inputpw)
+{
+	memcpy(id, inputid, sizeof(id));
+	memcpy(pw, inputpw, sizeof(pw));
+	SQLRETURN retcode = SQLExecute(handle_stmt_Account);
+	if (retcode != SQL_SUCCESS && retcode != SQL_SUCCESS_WITH_INFO)
 	{
-	}*/
-	while (SQLMoreResults(handle_stmt) != SQL_NO_DATA);
-	SQLFreeStmt(handle_stmt, SQL_UNBIND);
-	SQLFreeStmt(handle_stmt, SQL_RESET_PARAMS);
-	SQLCloseCursor(handle_stmt);
+		Check(handle_stmt_Account);
+		return false;
+	}
+	while (SQLMoreResults(handle_stmt_Account) != SQL_NO_DATA);
+	SQLFreeStmt(handle_stmt_Account, SQL_CLOSE);
+	SQLCloseCursor(handle_stmt_Account);
 	return true;
 }
 
@@ -360,28 +405,27 @@ bool KODBC::Execute(const TCHAR* statement)
 {
 	return false;
 }
-
 bool KODBC::Release()
 {
 	if (SQLFreeHandle(SQL_HANDLE_STMT, handle_stmt) != SQL_SUCCESS)
 	{
-		Check();
-		return false;
+		std::wcout << "실패"<<std::endl;
+	}
+	if (SQLFreeHandle(SQL_HANDLE_STMT, handle_stmt_Account) != SQL_SUCCESS)
+	{
+		std::wcout << "실패" << std::endl;
 	}
 	if (SQLDisconnect(handle_dbc) != SQL_SUCCESS)
 	{
-		Check();
-		return false;
+		std::wcout << "실패" << std::endl;
 	}
 	if (SQLFreeHandle(SQL_HANDLE_DBC, handle_dbc)!= SQL_SUCCESS)
 	{
-		Check();
-		return false;
+		std::wcout << "실패" << std::endl;
 	}
 	if (SQLFreeHandle(SQL_HANDLE_ENV, handle_env)!= SQL_SUCCESS)
 	{
-		Check();
-		return false;
+		std::wcout << "실패" << std::endl;
 	}
 	return true;
 }
