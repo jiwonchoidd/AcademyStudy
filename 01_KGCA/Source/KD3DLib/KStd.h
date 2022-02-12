@@ -14,10 +14,13 @@
 #include <DirectXmath.h>
 #include "KMath.h"
 #include <iostream>
+#include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment	(lib, "dxgi.lib")
+#pragma comment	(lib, "DirectXTK.lib")
 #pragma comment (lib, "D3DCompiler.lib")
 #pragma comment	(lib, "ws2_32.lib")
 extern float g_fSecPerFrame;

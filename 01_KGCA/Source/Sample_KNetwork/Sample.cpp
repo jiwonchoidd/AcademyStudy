@@ -10,7 +10,7 @@ LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 bool Sample::Init()
 {
-	auto size = static_cast<DWORD>((sizeof(char)*24)+ 1);
+	auto size = static_cast<DWORD>((sizeof(char)*24)+1);
 	if (!GetComputerNameA(computer_name, &size))
 	{
 		strcat(computer_name, "NoName");
