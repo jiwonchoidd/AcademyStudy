@@ -1,4 +1,3 @@
-
 #define _CRT_SECURE_NO_WARNINGS
 #include "Sample.h"
 
@@ -24,6 +23,11 @@ bool Sample::Init()
 	{
 		m_bConnect = true;
 	}
+
+	plane.Init(L"../../data/shader/VS_0.txt",
+		L"../../data/shader/PS_0.txt",
+		L"../../data/frog.png");
+
     return true;
 }
 // 프레임 함수
@@ -117,17 +121,19 @@ bool Sample::Frame()
 			(*iter).Reset();
 		}
 	}
+
+	plane.Frame();
     return true;
 }
 bool Sample::Render()
 {
-    DrawTestBox(g_fSecTimer * m_Speed,
-        0.0f, 0.0f, 0.0f, nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-
+	plane.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	plane.Render(m_pImmediateContext);
     return true;
 }
 bool Sample::Release()
 {
+	plane.Release();
     m_Camera.Release();
 	m_Net.CloseNetwork();
     return true;
@@ -141,4 +147,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(채팅창 클라이언트, 800, 600);
+WinMain_OPT(투명 텍스쳐, 800, 600);

@@ -1,7 +1,15 @@
 #include "KState.h"
-ID3D11DepthStencilState* KState::g_pDSState = nullptr;
 ID3D11DepthStencilState* KState::g_pCurrentDSS = nullptr;
+ID3D11SamplerState* KState::g_pCurrentSS[3] = { nullptr,nullptr,nullptr };
+ID3D11RasterizerState* KState::g_pCurrentRS = nullptr;
+ID3D11BlendState* KState::g_pCurrentBS = nullptr;
 
+ID3D11BlendState* KState::g_pBlendState = nullptr;
+ID3D11DepthStencilState* KState::g_pDSS = nullptr;
+ID3D11SamplerState* KState::g_pClampSS = nullptr;
+ID3D11SamplerState* KState::g_pWrapSS = nullptr;
+ID3D11RasterizerState* KState::g_pRSSolid = nullptr;
+ID3D11RasterizerState* KState::g_pRSWireFrame = nullptr;
 HRESULT KState::CreateDepthStenState()
 {
     HRESULT hr = S_OK;
@@ -23,7 +31,7 @@ HRESULT KState::CreateDepthStenState()
     dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
     dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
     dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
-    hr = g_pd3dDevice->CreateDepthStencilState(&dsd, &g_pDSState);
+    hr = g_pd3dDevice->CreateDepthStencilState(&dsd, &g_pDSS);
     if (FAILED(hr))
     {
         return hr;
@@ -32,15 +40,82 @@ HRESULT KState::CreateDepthStenState()
     return hr;
 }
 
+HRESULT KState::CreateBlendState()
+{
+    HRESULT hr = S_OK;
+    D3D11_BLEND_DESC bd;
+    ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
+
+    //bd.AlphaToCoverageEnable = false;
+    //bd.IndependentBlendEnable = false;
+    bd.RenderTarget[0].BlendEnable = TRUE;
+    bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+    bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+    bd.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+    //// A 연산 저장
+    bd.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+    bd.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+    bd.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+    bd.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+    hr = g_pd3dDevice->CreateBlendState(&bd, &g_pBlendState);
+    if (FAILED(hr))
+    {
+        return hr;
+    }
+}
+
+HRESULT KState::CreateRasterizeState()
+{
+    HRESULT hr = S_OK;
+    D3D11_RASTERIZER_DESC rd;
+    ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
+    rd.FillMode = D3D11_FILL_WIREFRAME;
+    rd.CullMode = D3D11_CULL_BACK;
+    hr = g_pd3dDevice->CreateRasterizerState(&rd, &g_pRSWireFrame);
+    ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
+    rd.FillMode = D3D11_FILL_SOLID;
+    rd.CullMode = D3D11_CULL_BACK;
+    rd.DepthClipEnable = TRUE; // Clipping 효과 기본이 False임
+    hr = g_pd3dDevice->CreateRasterizerState(&rd, &g_pRSSolid);
+    return hr;
+}
+
+HRESULT KState::CreateSamplerState()
+{
+    D3D11_SAMPLER_DESC sd;
+    ZeroMemory(&sd, sizeof(D3D11_SAMPLER_DESC));
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    HRESULT hr = g_pd3dDevice->CreateSamplerState(&sd,
+        &g_pClampSS);
+
+    ZeroMemory(&sd, sizeof(D3D11_SAMPLER_DESC));
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    hr = g_pd3dDevice->CreateSamplerState(&sd, &g_pWrapSS);
+    return hr;
+}
+
 bool KState::SetState()
 {
     CreateDepthStenState();
+    CreateSamplerState();
+    CreateRasterizeState();
+    CreateBlendState();
 	return true;
 }
 
 bool KState::ReleaseState()
 {
-    if(g_pDSState)
-    g_pDSState->Release();
-	return true;
-}
+    g_pRSSolid->Release();
+    g_pRSWireFrame->Release();
+    g_pDSS->Release();
+    g_pBlendState->Release();
+    g_pClampSS->Release();
+    g_pWrapSS->Release();
+    return true;
+} 

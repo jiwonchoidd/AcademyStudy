@@ -23,7 +23,7 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-    m_cbData.vValue.z = g_fSecTimer;
+    //m_cbData.vValue.z = g_fSecTimer;
     return true;
 }
 
@@ -33,10 +33,11 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     //리소스 업데이트 데이터와 리소스 버퍼의 저장
     pContext->UpdateSubresource(
         m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
-    pContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
-    pContext->PSSetConstantBuffers(0, 1, &m_pConstantBuffer);
+    pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+    pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
-    pContext->PSSetShaderResources(0, 1, &m_Texture.m_pSRVTexture);
+    //텍스쳐 리소스를 0번 슬롯에 하나를 넣겠다는 뜻
+    pContext->PSSetShaderResources(0, 1, m_Texture.m_pSRVTexture.GetAddressOf());
     //쉐이더
     pContext->VSSetShader(m_pVS.Get(), NULL, 0);
     pContext->PSSetShader(m_pPS.Get(), NULL, 0);
@@ -45,7 +46,7 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     UINT pStrides = m_iVertexSize;
     UINT pOffsets = 0;
     //정점버퍼 바인딩 인덱스버퍼 바인딩 
-    pContext->IASetVertexBuffers(0, 1, &m_pVertexBuffer,
+    pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
         &pStrides, &pOffsets);
     pContext->IASetIndexBuffer(
         m_pIndexBuffer.Get(),
@@ -107,7 +108,6 @@ bool KObject::LoadTexture(std::wstring filename)
 {
     if (!filename.empty())
     {
-
         HRESULT hr = m_Texture.LoadTexture(filename);
         if (FAILED(hr))
         {
@@ -157,7 +157,7 @@ HRESULT KObject::CreateVertexBuffer()
     if (m_VertexList.size() <= 0) return hr;
     D3D11_BUFFER_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-    bd.ByteWidth = m_iVertexSize * m_VertexList.size();
+    bd.ByteWidth = sizeof(PNCT_VERTEX) * m_VertexList.size();
     bd.Usage = D3D11_USAGE_DEFAULT;
     bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
     D3D11_SUBRESOURCE_DATA data;
@@ -266,4 +266,10 @@ bool KObject::Release()
     m_pVertexLayout.Reset();
     m_pVSBlob.Reset();
     return true;
+}
+
+KObject::KObject()
+{
+    m_iVertexSize = sizeof(PNCT_VERTEX);
+    m_iNumIndex = 0;
 }

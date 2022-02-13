@@ -82,7 +82,11 @@ bool	KCore::PreRender() {
     m_pImmediateContext->OMSetRenderTargets(1,
         &m_pRenderTargetView, m_DepthStencilView);
 
-    ApplyDSS(m_pImmediateContext, KState::g_pDSState);
+    m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    ApplyDSS(m_pImmediateContext, KState::g_pDSS);
+    ApplySS(m_pImmediateContext, KState::g_pWrapSS, 0);
+    ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
+    ApplyBS(m_pImmediateContext, KState::g_pBlendState);
 
     return true;
 }

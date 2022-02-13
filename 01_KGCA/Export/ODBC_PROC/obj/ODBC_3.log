@@ -1,3 +1,4 @@
 ﻿  KODBC.cpp
-E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(316,12): warning C4101: 'retcode' :참조되지 않은 지역 변수입니다.
-  ODBC_3.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\ODBC_PROC\ODBC_PROCEDURE.exe
+E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(320,14): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.
+E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(321,19): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.
+E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(323,17): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.

@@ -5,18 +5,18 @@ HRESULT KTexture::LoadTexture(std::wstring texfile)
     HRESULT hr = DirectX::CreateWICTextureFromFile(
         g_pd3dDevice,
         texfile.c_str(),
-        &m_pResourceTexture,
-        &m_pSRVTexture);
+        m_pResourceTexture.GetAddressOf(),
+        m_pSRVTexture.GetAddressOf());
     if (FAILED(hr))
     {
         hr = DirectX::CreateDDSTextureFromFile(
             g_pd3dDevice,
             texfile.c_str(),
-            &m_pResourceTexture,
-            &m_pSRVTexture);
+            m_pResourceTexture.GetAddressOf(),
+            m_pSRVTexture.GetAddressOf());
     }
-    if (FAILED(hr)) return false;
-    return true;
+    if (FAILED(hr)) return hr;
+    return hr;
 }
 
 void KTexture::Frame()

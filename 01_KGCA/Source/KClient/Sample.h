@@ -4,6 +4,7 @@
 #define IP_1		"192.168.31.236"
 #include "KCore.h"
 #include "KAsyncSelect.h"
+#include "KPlaneObj.h"
 class Sample : public KCore
 {
 public:
@@ -15,6 +16,7 @@ public:
 	char				ip_Address[30] = IP_DD;
 	char				computer_name[24] = { 0, };
 	std::string			str_isConnect = "DisConnected";
+	KPlaneObj			plane;
 	bool		Init()override;
 	bool		Frame()override;
 	bool		Render()override;

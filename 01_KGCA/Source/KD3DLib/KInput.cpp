@@ -139,12 +139,12 @@ bool KInput::Frame()
         g_InputData.iMouseValue[2] = m_DIMouseState.lZ;
 #pragma endregion
 
-        //g_InputData.bWKey = GetKey(DIK_W);
-        //g_InputData.bAKey = GetKey(DIK_A);
-        //g_InputData.bSKey = GetKey(DIK_S);
-        //g_InputData.bDKey = GetKey(DIK_D);
+        g_InputData.bWKey = GetKey(DIK_W);
+        g_InputData.bAKey = GetKey(DIK_A);
+        g_InputData.bSKey = GetKey(DIK_S);
+        g_InputData.bDKey = GetKey(DIK_D);
 
-        //g_InputData.bLShift = GetKey(DIK_LSHIFT);
+        g_InputData.bLShift = GetKey(DIK_LSHIFT);
 
         g_InputData.bLeftKey = GetKey(DIK_LEFT);
         g_InputData.bRightKey = GetKey(DIK_RIGHT);

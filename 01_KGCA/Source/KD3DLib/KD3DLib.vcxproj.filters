@@ -22,6 +22,12 @@
     <Filter Include="Font">
       <UniqueIdentifier>{f02a54a3-52ad-49de-a30f-0675a8d88406}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Obj">
+      <UniqueIdentifier>{c1087d2f-43d5-4cca-b43c-7c295b275e29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\Obj">
+      <UniqueIdentifier>{50e0e513-c73e-4e79-bfc5-963b4facbaeb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KCore.cpp">
@@ -78,11 +84,14 @@
     <ClCompile Include="KTexture.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="KPlaneObj.cpp">
+      <Filter>Source\Obj</Filter>
+    </ClCompile>
     <ClCompile Include="KBoxObj.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KObject.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Obj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -153,10 +162,13 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="KBoxObj.h">
-      <Filter>Header</Filter>
+      <Filter>Header\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="KPlaneObj.h">
+      <Filter>Header\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KObject.h">
-      <Filter>Header</Filter>
+      <Filter>Header\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -176,5 +188,13 @@
     <Image Include="C:\Users\kgca4021\OneDrive - nsu.ac.kr\DD_ICON.ico">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\..\data\shader\PS_0.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\VS_0.txt">
+      <Filter>Shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

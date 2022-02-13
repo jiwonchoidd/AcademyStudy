@@ -6,14 +6,8 @@ E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'doub
 E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KNetwork.cpp(43,50): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KNetworkUser.cpp
 E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KPacket.cpp
-E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(83,32): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(94,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(127,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\KPacket.cpp(138,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Sample.cpp
 E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 E:\github\AcademyStudy\01_KGCA\Source\Sample_SelectClient_imgui\Sample.cpp(27,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
-  LINK : ..\..\Export\Sample_SelectClient_imgui\Sample_SelectClient_imgui.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
 LINK : fatal error LNK1104: 'libfbxsdk-md.lib' 파일을 열 수 없습니다.

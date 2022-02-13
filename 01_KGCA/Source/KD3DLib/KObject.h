@@ -69,5 +69,6 @@ public:
 	virtual bool		Release();
 	static ID3DBlob* LoadShaderBlob(std::wstring vs,
 		std::string function, std::string version);
+	KObject();
 };
 
