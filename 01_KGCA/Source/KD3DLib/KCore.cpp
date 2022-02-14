@@ -30,7 +30,7 @@ bool	KCore::GameFrame()
     m_Timer.Frame();
     g_Input.Frame();
     m_Write.Frame();
-    m_Camera.Frame();
+    //m_Camera.Frame();
     m_ImGuiManager.Frame();
     if (g_Input.GetKey(DIK_F1) == KEY_PUSH)
     {
@@ -84,7 +84,7 @@ bool	KCore::PreRender() {
 
     m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     ApplyDSS(m_pImmediateContext, KState::g_pDSS);
-    ApplySS(m_pImmediateContext, KState::g_pWrapSS, 0);
+    ApplySS(m_pImmediateContext, KState::g_pMirrorSS, 0);
     ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
     ApplyBS(m_pImmediateContext, KState::g_pBlendState);
 

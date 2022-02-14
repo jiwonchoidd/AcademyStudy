@@ -14,10 +14,13 @@ public:
 	//RS
 	static	ID3D11RasterizerState*		g_pRSSolid;
 	static	ID3D11RasterizerState*		g_pRSWireFrame;
+	static	ID3D11RasterizerState*		g_pRSBackface;
 	//DSS
 	static	ID3D11DepthStencilState*	g_pDSS;
+	static	ID3D11DepthStencilState*	g_pDSS_Disabled;
 	//BS
 	static	ID3D11BlendState*			g_pBlendState;
+	static	ID3D11SamplerState*			g_pMirrorSS;
 	static	ID3D11SamplerState*			g_pClampSS;
 	static	ID3D11SamplerState*			g_pWrapSS;
 public:

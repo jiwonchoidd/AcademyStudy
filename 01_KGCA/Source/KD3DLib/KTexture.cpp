@@ -15,6 +15,7 @@ HRESULT KTexture::LoadTexture(std::wstring texfile)
             m_pResourceTexture.GetAddressOf(),
             m_pSRVTexture.GetAddressOf());
     }
+    static_cast<ID3D11Texture2D*>(m_pResourceTexture.Get())->GetDesc(&m_TextureDesc);
     if (FAILED(hr)) return hr;
     return hr;
 }

@@ -2,20 +2,19 @@
 #include "Sample.h"
 
 ImVec4 login_text_color = ImVec4(1.0f,1.0f,1.0f,1.0f);
-
+//WSAAsyncSelect
 LRESULT  Sample::ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	return m_Net.Select_MsgProc(hWnd, msg, wParam, lParam);
 }
 bool Sample::Init()
 {
+	#pragma region 네트워크 초기화
 	auto size = static_cast<DWORD>((sizeof(char)*24)+1);
 	if (!GetComputerNameA(computer_name, &size))
 	{
 		strcat(computer_name, "NoName");
 	}
-    m_Camera.CreateViewMatrix(KVector3(0, 0, -5), KVector3(0, 0, 0));
-    m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	m_Net.InitNetwork();
 	//타입 포트 아이피
@@ -23,17 +22,30 @@ bool Sample::Init()
 	{
 		m_bConnect = true;
 	}
+#pragma endregion
 
-	plane.Init(L"../../data/shader/VS_0.txt",
+    m_Camera.CreateViewMatrix(KVector3(0, 0, -3), KVector3(0, 0, 0));
+    m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+
+	sky.Init(L"../../data/shader/Skybox.txt",
+		L"../../data/texture/Skybox_dd.dds");
+
+	m_PlayerObj.Init(m_pImmediateContext);
+	m_PlayerObj.SetRectSource({ 91,1,42,56 }); //소스 
+	m_PlayerObj.SetRectDraw({0,0,42*2,56*2});
+	m_PlayerObj.SetPosition(KVector2(400, 300));
+	if(!m_PlayerObj.CreateObject(L"../../data/shader/VS_0.txt",
 		L"../../data/shader/PS_0.txt",
-		L"../../data/frog.png");
+		L"../../data/texture/bitmap1.bmp"));
+	{
+		return false;
+	}
 
     return true;
 }
 // 프레임 함수
 bool Sample::Frame()
 {
-	
 	#pragma region IMGUI INTERFACE
 	(m_Net.m_bConnect)? str_isConnect = "Online" : str_isConnect = "Offline";
 	(m_Net.m_bConnect)? login_text_color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f) :
@@ -121,19 +133,30 @@ bool Sample::Frame()
 			(*iter).Reset();
 		}
 	}
+	sky.Frame();
 
-	plane.Frame();
+	m_PlayerObj.Frame();
     return true;
 }
 bool Sample::Render()
 {
-	plane.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-	plane.Render(m_pImmediateContext);
+	//환경 텍스쳐
+	ApplyRS(m_pImmediateContext, KState::g_pRSBackface);
+	ApplyDSS(m_pImmediateContext, KState::g_pDSS_Disabled);
+	sky.SetMatrix(&m_Camera.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+	sky.Render(m_pImmediateContext);
+	ApplyRS(m_pImmediateContext, KState::g_pRSSolid);
+	ApplyDSS(m_pImmediateContext, KState::g_pDSS);
+
+	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	m_PlayerObj.Render(m_pImmediateContext);
+
     return true;
 }
 bool Sample::Release()
 {
 	plane.Release();
+	box.Release();
     m_Camera.Release();
 	m_Net.CloseNetwork();
     return true;
@@ -147,4 +170,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(투명 텍스쳐, 800, 600);
+WinMain_OPT(투명 텍스쳐, 960, 540);

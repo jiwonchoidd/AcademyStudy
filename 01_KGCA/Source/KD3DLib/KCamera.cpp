@@ -28,6 +28,9 @@ KMatrix     KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 
 {
     m_vCameraPos = vPos;
     m_vCameraTarget = vTarget;
+    m_matWorld._41 = m_vCameraPos.x;
+    m_matWorld._42 = m_vCameraPos.y;
+    m_matWorld._43 = m_vCameraPos.z;
     D3DKMatrixLookAtLH(&m_matView, &m_vCameraPos, &m_vCameraTarget, &vUp);
     m_vSide.x = m_matView._11;
     m_vSide.y = m_matView._21;
@@ -50,10 +53,11 @@ KMatrix     KCamera::CreateProjMatrix(
 }
 KCamera::KCamera()
 {
+    D3DKMatrixIdentity(&m_matWorld);
     m_vCameraPos = { 0, 20, -20.0f };
     m_vCameraTarget = { 0, 0, 0.0f };
     m_fSpeed = 15.0f;
-    m_fMouseSensitivity = 50;
+    m_fMouseSensitivity = 200;
     m_fOriginSpeed = m_fSpeed;
 }
 KCamera::~KCamera()
@@ -96,15 +100,17 @@ bool KDebugCamera::Frame()
     {
         m_fSpeed = m_fOriginSpeed;
     }
-
+    m_matWorld._41 = m_vCameraPos.x;
+    m_matWorld._42 = m_vCameraPos.y;
+    m_matWorld._43 = m_vCameraPos.z;
     return true;
 }
 KMatrix KDebugCamera::OnMouseRotation()
 {
     if (g_Input.m_DIMouseState.rgbButtons[1])
     {
-        m_fYaw += XMConvertToRadians(g_InputData.iMouseValue[0] * 90.0f * g_fSecPerFrame);
-        m_fPitch += XMConvertToRadians(g_InputData.iMouseValue[1] * 90.0f * g_fSecPerFrame);
+        m_fYaw += XMConvertToRadians(g_InputData.iMouseValue[0] * m_fMouseSensitivity * g_fSecPerFrame);
+        m_fPitch += XMConvertToRadians(g_InputData.iMouseValue[1] * m_fMouseSensitivity * g_fSecPerFrame);
     }
     m_fRoll += 0;
     m_fRadius += 0;

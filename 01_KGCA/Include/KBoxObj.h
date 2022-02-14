@@ -3,9 +3,9 @@
 class KBoxObj : public KObject
 {
 public:
-	bool Init();
+	bool Init(std::wstring vsfile, std::wstring psfile, std::wstring texturefile=nullptr);
 	bool Frame();
-	bool Render();
+	bool Render(ID3D11DeviceContext* pContext);
 	bool Release();
 public:
 	KBoxObj();

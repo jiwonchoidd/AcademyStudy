@@ -93,6 +93,12 @@
     <ClCompile Include="KObject.cpp">
       <Filter>Source\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="KSkyBox.cpp">
+      <Filter>Source\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="K2DAsset.cpp">
+      <Filter>Source\Obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KCore.h">
@@ -158,9 +164,6 @@
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="KTexture.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="KBoxObj.h">
       <Filter>Header\Obj</Filter>
     </ClInclude>
@@ -170,14 +173,15 @@
     <ClInclude Include="KObject.h">
       <Filter>Header\Obj</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShader.hlsl">
-      <Filter>Shader</Filter>
-    </FxCompile>
+    <ClInclude Include="KTexture.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="KSkyBox.h">
+      <Filter>Header\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="K2DAsset.h">
+      <Filter>Header\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="KD3DLib.rc">
@@ -194,6 +198,9 @@
       <Filter>Shader</Filter>
     </Text>
     <Text Include="..\..\data\shader\VS_0.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\Skybox.txt">
       <Filter>Shader</Filter>
     </Text>
   </ItemGroup>

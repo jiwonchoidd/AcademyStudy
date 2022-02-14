@@ -1,1 +1,38 @@
-﻿  CallFuction.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\CallFuction\CallFuction.exe
+﻿  CallFuction.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\CallFuction\CallFuction.cpp(5,13): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\type_traits(1595,98): warning C4244: '인수': '_Ty'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty=int
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\functional(762): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::invoke<void(__cdecl *&)(int,float,bool),_Ty,int,_Ty>(_Callable,_Ty1 &&,int &&,_Ty &&) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty=float,
+              _Callable=void (__cdecl *&)(int,float,bool),
+              _Ty1=float
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\functional(1412): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::_Invoker_ret<std::_Unforced,false>::_Call<void(__cdecl *&)(int,float,bool),_Ty,int,_Ty>(_Fx,_Ty &&,int &&,_Ty &&) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty=float,
+              _Fx=void (__cdecl *&)(int,float,bool)
+          ]
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\functional(1451): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::_Call_binder<std::_Unforced,0,1,2,void(__cdecl *)(int,float,bool),_Ty2,std::tuple<_Ty &&,int &&>>(std::_Invoker_ret<std::_Unforced,false>,std::integer_sequence<size_t,0,1,2>,_Cv_FD &,_Cv_tuple_TiD &,_Untuple &&) noexcept(false)'에 대한 참조를 확인하세요.
+          with
+          [
+              _Ty2=std::tuple<std::_Ph<1>,std::_Ph<2>,std::_Ph<1>>,
+              _Ty=float,
+              _Cv_FD=void (__cdecl *)(int,float,bool),
+              _Cv_tuple_TiD=std::tuple<std::_Ph<1>,std::_Ph<2>,std::_Ph<1>>,
+              _Untuple=std::tuple<float &&,int &&>
+          ]
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\CallFuction\CallFuction.cpp(12): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::_Binder<std::_Unforced,void (__cdecl &)(int,float,bool),const std::_Ph<1> &,const std::_Ph<2> &,const std::_Ph<1> &>::operator ()<float,int>(float &&,int &&) noexcept(false)'에 대한 참조를 확인하세요.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\CallFuction\CallFuction.cpp(12): message : 컴파일되는 함수 템플릿 인스턴스화 'void std::_Binder<std::_Unforced,void (__cdecl &)(int,float,bool),const std::_Ph<1> &,const std::_Ph<2> &,const std::_Ph<1> &>::operator ()<float,int>(float &&,int &&) noexcept(false)'에 대한 참조를 확인하세요.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\type_traits(1595,67): warning C4244: '인수': '_Ty1'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+          with
+          [
+              _Ty1=float
+          ]
+  LINK : ..\..\Export\CallFuction\CallFuction.exe을(를) 찾을 수 없거나 마지막 증분 링크에 의해 빌드되지 않았습니다. 전체 링크를 수행하고 있습니다.
+  CallFuction.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\CallFuction\CallFuction.exe

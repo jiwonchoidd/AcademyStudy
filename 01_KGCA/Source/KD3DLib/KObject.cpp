@@ -23,7 +23,7 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-    //m_cbData.vValue.z = g_fSecTimer;
+    m_cbData.vValue.z = g_fSecTimer;
     return true;
 }
 
@@ -66,10 +66,12 @@ bool KObject::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
     if (iNumIndex > 0)
     {
         pContext->DrawIndexed(iNumIndex, 0, 0);
+        return true;
     }
     else
     {
         pContext->Draw(m_VertexList.size(), 0);
+        return true;
     }
     return false;
 }

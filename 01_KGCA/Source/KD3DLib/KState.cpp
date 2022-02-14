@@ -6,10 +6,13 @@ ID3D11BlendState* KState::g_pCurrentBS = nullptr;
 
 ID3D11BlendState* KState::g_pBlendState = nullptr;
 ID3D11DepthStencilState* KState::g_pDSS = nullptr;
+ID3D11DepthStencilState* KState::g_pDSS_Disabled = nullptr;
 ID3D11SamplerState* KState::g_pClampSS = nullptr;
 ID3D11SamplerState* KState::g_pWrapSS = nullptr;
+ID3D11SamplerState* KState::g_pMirrorSS = nullptr;
 ID3D11RasterizerState* KState::g_pRSSolid = nullptr;
 ID3D11RasterizerState* KState::g_pRSWireFrame = nullptr;
+ID3D11RasterizerState* KState::g_pRSBackface =nullptr; 
 HRESULT KState::CreateDepthStenState()
 {
     HRESULT hr = S_OK;
@@ -32,6 +35,26 @@ HRESULT KState::CreateDepthStenState()
     dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
     dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
     hr = g_pd3dDevice->CreateDepthStencilState(&dsd, &g_pDSS);
+
+    ZeroMemory(&dsd, sizeof(D3D11_DEPTH_STENCIL_DESC));
+    dsd.DepthEnable = FALSE;
+    dsd.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+    //1.0, 0.6과 0.5를 비교해서 크면 실패
+    //제일 앞에 있는 면이 뿌려지면 뒤에있는애들은 렌더 안됨
+    dsd.DepthFunc = D3D11_COMPARISON_ALWAYS;
+    dsd.StencilEnable = TRUE;
+    dsd.StencilReadMask = D3D11_DEFAULT_STENCIL_READ_MASK;
+    dsd.StencilWriteMask = D3D11_DEFAULT_STENCIL_WRITE_MASK;
+    dsd.FrontFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsd.FrontFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    dsd.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsd.FrontFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    dsd.BackFace.StencilFailOp = D3D11_STENCIL_OP_KEEP;
+    dsd.BackFace.StencilDepthFailOp = D3D11_STENCIL_OP_KEEP;
+    dsd.BackFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+    dsd.BackFace.StencilFunc = D3D11_COMPARISON_ALWAYS;
+    hr = g_pd3dDevice->CreateDepthStencilState(&dsd, &g_pDSS_Disabled);
+
     if (FAILED(hr))
     {
         return hr;
@@ -77,6 +100,12 @@ HRESULT KState::CreateRasterizeState()
     rd.CullMode = D3D11_CULL_BACK;
     rd.DepthClipEnable = TRUE; // Clipping 효과 기본이 False임
     hr = g_pd3dDevice->CreateRasterizerState(&rd, &g_pRSSolid);
+
+    ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
+    rd.FillMode = D3D11_FILL_SOLID;
+    rd.CullMode = D3D11_CULL_FRONT;
+    rd.DepthClipEnable = TRUE; // Clipping 효과 기본이 False임
+    hr = g_pd3dDevice->CreateRasterizerState(&rd, &g_pRSBackface);
     return hr;
 }
 
@@ -97,6 +126,15 @@ HRESULT KState::CreateSamplerState()
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     hr = g_pd3dDevice->CreateSamplerState(&sd, &g_pWrapSS);
+
+    ZeroMemory(&sd, sizeof(D3D11_SAMPLER_DESC));
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+    hr = g_pd3dDevice->CreateSamplerState(&sd,
+        &g_pMirrorSS);
+
     return hr;
 }
 
@@ -117,5 +155,6 @@ bool KState::ReleaseState()
     g_pBlendState->Release();
     g_pClampSS->Release();
     g_pWrapSS->Release();
+    g_pMirrorSS->Release();
     return true;
 } 

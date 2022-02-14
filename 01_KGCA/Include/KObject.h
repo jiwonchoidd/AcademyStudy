@@ -26,7 +26,7 @@ struct CB_DATA
 	KMatrix  matProj;
 	KMatrix  matNormal;
 	KVector4 vLightDir;
-	KVector4 vValue;
+	KVector4 vValue; // ½Ã°£ °ª xyzw
 };
 namespace wrl = Microsoft::WRL;
 class KObject

@@ -2,17 +2,10 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\github\AcademyStudy\01_KGCA\Export\Sample_KNetwork\Sample_KNetwork.exe</FullPath>
+      <FullPath>E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_KNetwork\Sample_KNetwork.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
-  <ContentFiles>
-    <ContentFile>
-      <FullPath>E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\PixelShader.cso</FullPath>
-    </ContentFile>
-    <ContentFile>
-      <FullPath>E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\VertexShader.cso</FullPath>
-    </ContentFile>
-  </ContentFiles>
+  <ContentFiles />
   <SatelliteDlls />
   <NonRecipeFileRefs />
 </Project>

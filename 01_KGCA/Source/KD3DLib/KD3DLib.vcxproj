@@ -26,6 +26,7 @@
     <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="K2DAsset.cpp" />
     <ClCompile Include="KBoxObj.cpp" />
     <ClCompile Include="KCamera.cpp" />
     <ClCompile Include="KCore.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="KPlaneObj.cpp" />
+    <ClCompile Include="KSkyBox.cpp" />
     <ClCompile Include="KSound.cpp" />
     <ClCompile Include="KState.cpp" />
     <ClCompile Include="KTexture.cpp" />
@@ -51,6 +53,7 @@
     <ClInclude Include="ImGui\imstb_rectpack.h" />
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
+    <ClInclude Include="K2DAsset.h" />
     <ClInclude Include="KBoxObj.h" />
     <ClInclude Include="KCamera.h" />
     <ClInclude Include="KCore.h" />
@@ -58,6 +61,7 @@
     <ClInclude Include="KInput.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="KPlaneObj.h" />
+    <ClInclude Include="KSkyBox.h" />
     <ClInclude Include="KSound.h" />
     <ClInclude Include="KState.h" />
     <ClInclude Include="KStd.h" />
@@ -69,17 +73,6 @@
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PixelShader.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="VertexShader.hlsl">
-      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-    </FxCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="KD3DLib.rc" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\data\shader\PS_0.txt" />
+    <Text Include="..\..\data\shader\Skybox.txt" />
     <Text Include="..\..\data\shader\VS_0.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
