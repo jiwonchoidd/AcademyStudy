@@ -17,6 +17,13 @@ void K2DAsset::UpdateRectDraw(RECT rt)
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
 }
+bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
+{
+	//마스킹 이미지도
+	CreateObject(vsFile, psFile, tex, mask);
+	return true;
+}
+
 void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 {
 	m_pos += vPos;
@@ -29,10 +36,6 @@ void K2DAsset::SetPosition(KVector2 vPos)
 {
 	// 현재위치
 	m_pos = vPos;
-	if (!SetVertexData())
-	{
-		MessageBoxW(g_hWnd,L"캐릭터 생성 실패", L"경고",0);
-	}
 }
 
 //현재 위치, 크기, 
@@ -82,6 +85,11 @@ void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 bool K2DAsset::SetVertexData()
 {
 	Convert(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
+	return true;
+}
 
+bool K2DAsset::CheckVertexData()
+{
+	SetVertexData();
 	return true;
 }

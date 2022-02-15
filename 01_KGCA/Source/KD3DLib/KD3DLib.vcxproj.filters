@@ -39,9 +39,6 @@
     <ClCompile Include="KInput.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="KSound.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="KTimer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -97,6 +94,15 @@
       <Filter>Source\Obj</Filter>
     </ClCompile>
     <ClCompile Include="K2DAsset.cpp">
+      <Filter>Source\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="KObjectManager.cpp">
+      <Filter>Source\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="KSound.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="KCollision.cpp">
       <Filter>Source\Obj</Filter>
     </ClCompile>
   </ItemGroup>
@@ -182,6 +188,12 @@
     <ClInclude Include="K2DAsset.h">
       <Filter>Header\Obj</Filter>
     </ClInclude>
+    <ClInclude Include="KObjectManager.h">
+      <Filter>Header\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="KCollision.h">
+      <Filter>Header\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="KD3DLib.rc">
@@ -201,6 +213,12 @@
       <Filter>Shader</Filter>
     </Text>
     <Text Include="..\..\data\shader\Skybox.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\PS_2D.txt">
+      <Filter>Shader</Filter>
+    </Text>
+    <Text Include="..\..\data\shader\VS_2D.txt">
       <Filter>Shader</Filter>
     </Text>
   </ItemGroup>

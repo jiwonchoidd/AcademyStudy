@@ -1,5 +1,6 @@
 #pragma once
 #include "KObject.h"
+#include "KObjectManager.h"
 class KBoxObj : public KObject
 {
 public:

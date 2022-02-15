@@ -1,22 +1,17 @@
-﻿  K2DAsset.cpp
+﻿  KCore.cpp
 E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(11,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(12,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(17,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(18,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KCore.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
   KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h
   KBoxObj.h
   KCamera.h
+  KCollision.h
   KCore.h
   KDevice.h
   KInput.h
   KObject.h
+  KObjectManager.h
   KPlaneObj.h
   KSkyBox.h
   KSound.h
@@ -27,4 +22,4 @@ E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'd
   KWindow.h
   KWrite.h
   resource.h
-         18개 파일이 복사되었습니다.
+         20개 파일이 복사되었습니다.

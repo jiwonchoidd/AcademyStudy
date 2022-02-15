@@ -24,10 +24,15 @@ KVector3*   KCamera::GetCameraPos()
 {
     return &m_vCameraPos;
 }
-KMatrix     KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp)
+KVector3* KCamera::GetCameraTarget()
+{
+    return &m_vCameraTarget;
+}
+KMatrix   KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp)
 {
     m_vCameraPos = vPos;
     m_vCameraTarget = vTarget;
+    D3DKMatrixIdentity(&m_matWorld);
     m_matWorld._41 = m_vCameraPos.x;
     m_matWorld._42 = m_vCameraPos.y;
     m_matWorld._43 = m_vCameraPos.z;

@@ -28,10 +28,11 @@ bool KPlayer2D::Frame()
 	return true;
 }
 
-bool KPlayer2D::Init(ID3D11DeviceContext* context)
+bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	speed = 100.0f;
 	m_pContext = context;
+	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }
 

@@ -85,10 +85,9 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		m_IndexList.push_back(indices[num]);
 	}
 
-
 	if (CreateObject(vsfile,
 		psfile,
-		texturefile));
+		texturefile, L""))
 	{
 		return true;
 	}

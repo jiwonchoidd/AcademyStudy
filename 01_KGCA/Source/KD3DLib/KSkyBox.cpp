@@ -22,9 +22,6 @@ void KSkyBox::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
 bool KSkyBox::Init(std::wstring shader, std::wstring tex)
 {
     KBoxObj::Init(shader, shader,tex);
-
-    HRESULT hr = S_OK;
-    
     return true;
 }
 

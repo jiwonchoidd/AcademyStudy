@@ -20,6 +20,27 @@ HRESULT KTexture::LoadTexture(std::wstring texfile)
     return hr;
 }
 
+HRESULT KTexture::LoadTextureWithMask(std::wstring texfile, std::wstring mask)
+{
+    LoadTexture(texfile);
+    HRESULT hr = DirectX::CreateWICTextureFromFile(
+        g_pd3dDevice,
+        mask.c_str(),
+        m_pMaskTexture.GetAddressOf(),
+        m_pSRVMask.GetAddressOf());
+    if (FAILED(hr))
+    {
+        hr = DirectX::CreateDDSTextureFromFile(
+            g_pd3dDevice,
+            mask.c_str(),
+            m_pMaskTexture.GetAddressOf(),
+            m_pSRVMask.GetAddressOf());
+    }
+    //static_cast<ID3D11Texture2D*>(m_pResourceTexture.Get())->GetDesc(&m_TextureDesc);
+    if (FAILED(hr)) return hr;
+    return hr;
+}
+
 void KTexture::Frame()
 {
 }
@@ -33,16 +54,20 @@ void KTexture::Release()
 {
     m_pResourceTexture.Reset();
 	m_pSRVTexture.Reset();
+    m_pMaskTexture.Reset();
+    m_pSRVMask.Reset();
 }
 
 KTexture::KTexture()
 {
     m_pResourceTexture = nullptr;
 	m_pSRVTexture = nullptr;
+    m_pMaskTexture=nullptr;
+    m_pSRVMask = nullptr;
 }
 
 KTexture::~KTexture()
 {
     m_pResourceTexture.Reset();
-		m_pSRVTexture.Reset();
+	m_pSRVTexture.Reset();
 }

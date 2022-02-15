@@ -13,6 +13,8 @@ bool	KCore::GameInit()
     g_Input.Init();
     m_Write.Init();
     m_Camera.Init();
+    m_Skybox.Init(L"../../data/shader/Skybox.txt",
+        L"../../data/texture/Skybox_dd.dds");
     //g_Input.m_bInputAvailable = false;
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
@@ -30,7 +32,8 @@ bool	KCore::GameFrame()
     m_Timer.Frame();
     g_Input.Frame();
     m_Write.Frame();
-    //m_Camera.Frame();
+    if(m_bFreeCamera)m_Camera.Frame();
+    m_Skybox.Frame();
     m_ImGuiManager.Frame();
     if (g_Input.GetKey(DIK_F1) == KEY_PUSH)
     {
@@ -48,6 +51,13 @@ bool	KCore::GameFrame()
     }
     ImGui::End();
 
+    if (ImGui::Begin(u8"디버깅"))
+    {
+        ImGui::Checkbox(u8"자유 카메라", &m_bFreeCamera);
+ 
+    }
+    ImGui::End();
+
 
     Frame();
     return true;
@@ -55,7 +65,11 @@ bool	KCore::GameFrame()
 bool	KCore::GameRender() 
 {
     PreRender();
-        
+    //환경 텍스쳐
+    ApplyRS(m_pImmediateContext, KState::g_pRSBackface);
+    m_Skybox.SetMatrix(&m_Camera.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+    m_Skybox.Render(m_pImmediateContext);
+    ApplyRS(m_pImmediateContext, KState::g_pRSSolid);
         // TODO : Render Timer
         m_Timer.Render();
         g_Input.Render();
@@ -83,8 +97,8 @@ bool	KCore::PreRender() {
         &m_pRenderTargetView, m_DepthStencilView);
 
     m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    ApplyDSS(m_pImmediateContext, KState::g_pDSS);
-    ApplySS(m_pImmediateContext, KState::g_pMirrorSS, 0);
+    ApplyDSS(m_pImmediateContext, KState::g_pDSS_Disabled);
+    ApplySS(m_pImmediateContext, KState::g_pClampSS, 0);
     ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
     ApplyBS(m_pImmediateContext, KState::g_pBlendState);
 
@@ -107,6 +121,7 @@ bool	KCore::GameRelease()
     g_Input.Release();
     m_Write.Release();
     m_Camera.Release();
+    m_Skybox.Release();
     CleanupDevice();
     return true;
 }

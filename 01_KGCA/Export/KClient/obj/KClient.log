@@ -1,5 +1,1 @@
-﻿  Sample.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KClient\Sample.cpp(39,38): warning C4390: ';': 제어된 빈 문이 있습니다. 이 문이 필요합니까?
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KClient\Sample.cpp(105,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KClient.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KClient\KClient.exe
+﻿  KClient.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KClient\KClient.exe

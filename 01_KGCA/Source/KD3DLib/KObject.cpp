@@ -37,7 +37,13 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
     //텍스쳐 리소스를 0번 슬롯에 하나를 넣겠다는 뜻
+ 
+    if(m_Texture.m_pSRVTexture!=nullptr)
     pContext->PSSetShaderResources(0, 1, m_Texture.m_pSRVTexture.GetAddressOf());
+
+    if (m_Texture.m_pSRVMask != nullptr)
+    pContext->PSSetShaderResources(1, 1, m_Texture.m_pSRVMask.GetAddressOf());
+
     //쉐이더
     pContext->VSSetShader(m_pVS.Get(), NULL, 0);
     pContext->PSSetShader(m_pPS.Get(), NULL, 0);
@@ -106,9 +112,17 @@ HRESULT KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
     return hr;
 }
 
-bool KObject::LoadTexture(std::wstring filename)
+bool KObject::LoadTexture(std::wstring filename, std::wstring mask)
 {
-    if (!filename.empty())
+    if (!mask.empty())
+    {
+        HRESULT hr = m_Texture.LoadTextureWithMask(filename, mask);
+        if (FAILED(hr))
+        {
+            return false;
+        }
+    }
+    else
     {
         HRESULT hr = m_Texture.LoadTexture(filename);
         if (FAILED(hr))
@@ -210,9 +224,12 @@ HRESULT KObject::CreateVertexLayout()
 }
 
 bool KObject::CreateObject(std::wstring vsFile,
-    std::wstring psFile, std::wstring szTextureName)
+    std::wstring psFile, std::wstring tex1, std::wstring tex2)
 {
     //버텍스 데이터 생성
+
+    LoadTexture(tex1, tex2);
+ 
     if (CheckVertexData())
     {
         CreateVertexBuffer();
@@ -220,7 +237,6 @@ bool KObject::CreateObject(std::wstring vsFile,
         {
             CreateIndexBuffer();
         }
-        LoadTexture(szTextureName);
         if (SUCCEEDED(LoadShader(vsFile, psFile)))
         {
             if (SUCCEEDED(CreateVertexLayout()))

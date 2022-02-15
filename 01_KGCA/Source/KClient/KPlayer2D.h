@@ -7,8 +7,9 @@ private:
     float speed;
     ID3D11DeviceContext* m_pContext;
 public:
-    bool Init(ID3D11DeviceContext* context);
-    bool Frame();
+    bool Init(ID3D11DeviceContext* context, std::wstring vs, 
+        std::wstring ps, std::wstring tex = nullptr, std::wstring mask= nullptr);
+    bool Frame()override;
 public:
     KPlayer2D();
     ~KPlayer2D();

@@ -10,15 +10,15 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{322e654d-a33f-4bcb-9e44-4031acf305db}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shader">
-      <UniqueIdentifier>{8d05ff31-5630-4567-b3bb-3823d922b644}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="KPlayer2D.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KNpc2D.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,6 +32,9 @@
     <ClInclude Include="KPlayer2D.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="KNpc2D.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Sample_Input.rc">
@@ -42,13 +45,5 @@
     <Image Include="..\..\data\DD_ICON.ico">
       <Filter>Resource</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="VertexShader.cso">
-      <Filter>Shader</Filter>
-    </None>
-    <None Include="PixelShader.cso">
-      <Filter>Shader</Filter>
-    </None>
   </ItemGroup>
 </Project>

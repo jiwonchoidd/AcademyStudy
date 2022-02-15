@@ -5,9 +5,8 @@
 #include "KCore.h"
 #include "KAsyncSelect.h"
 #include "KPlaneObj.h"
-#include "KBoxObj.h"
-#include "KSkyBox.h"
 #include "KPlayer2D.h"
+#include "KNpc2D.h"
 class Sample : public KCore
 {
 public:
@@ -19,10 +18,10 @@ public:
 	char				ip_Address[30] = IP_DD;
 	char				computer_name[24] = { 0, };
 	std::string			str_isConnect = "DisConnected";
+	KPlayer2D			m_PlayerObj;
+	std::vector<KNpc2D> m_NpcLlist;
 	KPlaneObj			plane;
 	KBoxObj				box;
-	KSkyBox				sky;
-	KPlayer2D			m_PlayerObj;
 	bool		Init()override;
 	bool		Frame()override;
 	bool		Render()override;

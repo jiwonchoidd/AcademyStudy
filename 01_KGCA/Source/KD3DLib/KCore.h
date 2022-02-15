@@ -8,6 +8,7 @@
 #include "KState.h"
 #include "KCamera.h"
 #include "ImGuiManager.h"
+#include "KSkyBox.h"
 class KCore : public KWindow
 {
 public:
@@ -17,7 +18,9 @@ public:
 	KWrite			m_Write;
 	KDebugCamera	m_Camera;
 	ImGuiManager	m_ImGuiManager;
+	KSkyBox			m_Skybox;
 	bool		m_bDebugText = false;
+	bool		m_bFreeCamera = false;
 private:
 	bool	GameInit()	override;
 	bool	GameRun()	override;

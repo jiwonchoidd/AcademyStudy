@@ -32,10 +32,11 @@ namespace wrl = Microsoft::WRL;
 class KObject
 {
 public:
-	KTexture			m_Texture;
-	UINT				m_iNumIndex = 0;
-	UINT				m_iVertexSize = 0;
-	CB_DATA				m_cbData;
+	//텍스쳐 배열
+	KTexture				m_Texture;
+	UINT					m_iNumIndex = 0;
+	UINT					m_iVertexSize = 0;
+	CB_DATA					m_cbData;
 public:
 	std::vector <PNCT_VERTEX>		m_VertexList;
 	std::vector <DWORD>				m_IndexList;
@@ -51,7 +52,7 @@ public:
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
 	virtual HRESULT		LoadShader(std::wstring vsFile, std::wstring psFile);
-	virtual bool		LoadTexture(std::wstring filename);
+	virtual bool		LoadTexture(std::wstring filename, std::wstring mask = L"");
 public:
 	virtual bool		CheckVertexData();
 	virtual bool		CheckIndexData();
@@ -60,7 +61,8 @@ public:
 	virtual HRESULT		CreateIndexBuffer();
 	virtual HRESULT		CreateVertexLayout();
 public:
-	virtual bool		CreateObject(std::wstring vsFile, std::wstring psFile, std::wstring szTextureName);
+	virtual bool		CreateObject(std::wstring vsFile, std::wstring psFile,
+						std::wstring tex1= L"", std::wstring tex2=L"");
 	virtual bool		Init();
 	virtual bool		Frame();
 	virtual bool		PreRender(ID3D11DeviceContext* pContext);

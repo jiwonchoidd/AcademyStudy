@@ -149,11 +149,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KNpc2D.h" />
     <ClInclude Include="KPlayer2D.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sample.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KNpc2D.cpp" />
     <ClCompile Include="KPlayer2D.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
@@ -170,10 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="..\..\data\DD_ICON.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="PixelShader.cso" />
-    <None Include="VertexShader.cso" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
