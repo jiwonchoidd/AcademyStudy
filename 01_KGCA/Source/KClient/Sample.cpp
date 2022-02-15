@@ -183,14 +183,14 @@ bool Sample::Render()
 	box.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	box.Render(m_pImmediateContext);
 
-	//플레이어 렌더링
-	m_PlayerObj.Render(m_pImmediateContext);
 
 	//npc 렌더링
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
 		m_NpcLlist[iObj].Render(m_pImmediateContext);
 	}
+	//플레이어 렌더링
+	m_PlayerObj.Render(m_pImmediateContext);
 
     return true;
 }

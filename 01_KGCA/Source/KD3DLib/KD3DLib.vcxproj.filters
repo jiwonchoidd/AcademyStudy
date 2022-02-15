@@ -103,6 +103,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="KCollision.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="KCollider.cpp">
       <Filter>Source\Obj</Filter>
     </ClCompile>
   </ItemGroup>
@@ -192,6 +195,9 @@
       <Filter>Header\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KCollision.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="KCollider.h">
       <Filter>Header\Obj</Filter>
     </ClInclude>
   </ItemGroup>

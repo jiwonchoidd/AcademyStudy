@@ -29,6 +29,7 @@
     <ClCompile Include="K2DAsset.cpp" />
     <ClCompile Include="KBoxObj.cpp" />
     <ClCompile Include="KCamera.cpp" />
+    <ClCompile Include="KCollider.cpp" />
     <ClCompile Include="KCollision.cpp" />
     <ClCompile Include="KCore.cpp" />
     <ClCompile Include="KDevice.cpp" />
@@ -58,6 +59,7 @@
     <ClInclude Include="K2DAsset.h" />
     <ClInclude Include="KBoxObj.h" />
     <ClInclude Include="KCamera.h" />
+    <ClInclude Include="KCollider.h" />
     <ClInclude Include="KCollision.h" />
     <ClInclude Include="KCore.h" />
     <ClInclude Include="KDevice.h" />

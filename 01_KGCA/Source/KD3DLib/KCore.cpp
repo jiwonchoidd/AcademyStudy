@@ -31,6 +31,8 @@ bool	KCore::GameFrame()
     // TODO : Frame Timer
     m_Timer.Frame();
     g_Input.Frame();
+    //실시간 모든 콜라이더 충돌 프레임
+    g_ObjManager.Frame();
     m_Write.Frame();
     if(m_bFreeCamera)m_Camera.Frame();
     m_Skybox.Frame();

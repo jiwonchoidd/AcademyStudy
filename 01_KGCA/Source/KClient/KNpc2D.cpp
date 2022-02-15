@@ -15,7 +15,7 @@ bool KNpc2D::Frame()
 
 KNpc2D::KNpc2D()
 {
-	speed = 10.0f;
+	m_pContext = nullptr;
 }
 
 KNpc2D::~KNpc2D()

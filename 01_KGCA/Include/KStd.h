@@ -16,6 +16,8 @@
 #include <iostream>
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
+#include <functional>
+#include "KCollision.h"
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 #pragma comment	(lib, "d3d11.lib")

@@ -4,7 +4,6 @@ class KNpc2D :
     public K2DAsset
 {
 private:
-    float speed;
     ID3D11DeviceContext* m_pContext;
 public:
     bool Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps,

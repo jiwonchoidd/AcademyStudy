@@ -1,19 +1,15 @@
 #pragma once
 #include "KObject.h"
-struct Rt_Size
-{
-	float width;
-	float height;
-};
-class K2DAsset :
-    public KObject
+#include "KCollider.h"
+
+class K2DAsset : public KObject
 {
 public:
-	KVector2			m_pos;
+	KCollider*			m_coll;
+	float				m_speed;
+public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
-	Rt_Size				m_rtSize; //사이즈 구조체
-	KTexture			m_Masking;
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);
@@ -32,5 +28,17 @@ public:
 public:
 	virtual bool		SetVertexData();
 	virtual bool		CheckVertexData() override;
+public:
+	K2DAsset() 
+	{
+		m_speed=20.0f;
+		m_rtSource = {0,0};
+		m_rtDraw={ 0,0 };
+		
+	};
+	~K2DAsset()
+	{
+
+	};
 };
 

@@ -4,25 +4,25 @@ bool KPlayer2D::Frame()
 	if (g_InputData.bWKey)
 	{
 		KVector2 pos;
-		pos.y -= speed * g_fSecPerFrame;
+		pos.y -= m_speed * g_fSecPerFrame;
 		AddPosition(pos, m_pContext);
 	}
 	if (g_InputData.bAKey)
 	{
 		KVector2 pos;
-		pos.x -= speed * g_fSecPerFrame;
+		pos.x -= m_speed * g_fSecPerFrame;
 		AddPosition(pos, m_pContext);
 	}
 	if (g_InputData.bSKey)
 	{
 		KVector2 pos;
-		pos.y += speed * g_fSecPerFrame;
+		pos.y += m_speed * g_fSecPerFrame;
 		AddPosition(pos, m_pContext);
 	}
 	if (g_InputData.bDKey)
 	{
 		KVector2 pos;
-		pos.x += speed * g_fSecPerFrame;
+		pos.x += m_speed * g_fSecPerFrame;
 		AddPosition(pos, m_pContext);
 	}
 	return true;
@@ -30,7 +30,7 @@ bool KPlayer2D::Frame()
 
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
-	speed = 100.0f;
+	m_speed = 100.0f;
 	m_pContext = context;
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
@@ -38,7 +38,8 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 
 KPlayer2D::KPlayer2D()
 {
-	speed = 100.0f;
+	m_pContext = nullptr;
+	m_speed = 100.0f;
 }
 
 KPlayer2D::~KPlayer2D()

@@ -1,1 +1,1 @@
-﻿  KClient.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KClient\KClient.exe
+﻿LINK : fatal error LNK1104: 'E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib' 파일을 열 수 없습니다.
