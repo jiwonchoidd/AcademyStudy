@@ -1,24 +1,15 @@
 #pragma once
-#include "KObject.h"
 #include "KCollider.h"
-struct Rt_Size
+//KObject -> KCollider -> K2DAsset 상속
+class K2DAsset :  public KCollider
 {
-	float width;
-	float height;
-};
-class K2DAsset :
-    public KObject
-{
-public:
-	KCollider			m_collider;
 public:
 	float				m_speed;
-	KVector2			m_pos;
-	KVector2			m_dir;
-	Rt_Size				m_rtSize; //사이즈 구조체
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
+public:
+	virtual void		HitOverlap(KCollider* pObj, DWORD dwState);
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);
@@ -41,10 +32,9 @@ public:
 	K2DAsset() 
 	{
 		m_speed=20.0f;
-		m_pos = {0,0};
-		m_dir = { 0,0 };
-		m_rtSize.width= 0;
-		m_rtSize.height=0;
+		m_rtSource = {0,0};
+		m_rtDraw={ 0,0 };
+		
 	};
 	~K2DAsset()
 	{

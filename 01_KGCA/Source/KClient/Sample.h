@@ -19,7 +19,7 @@ public:
 	char				computer_name[24] = { 0, };
 	std::string			str_isConnect = "DisConnected";
 	KPlayer2D			m_PlayerObj;
-	std::vector<KNpc2D> m_NpcLlist;
+	std::vector<KNpc2D*> m_NpcLlist;
 	KPlaneObj			plane;
 	KBoxObj				box;
 	bool		Init()override;

@@ -1,5 +1,6 @@
 #pragma once
-#include "KStd.h"
+
+#include "KObject.h"
 enum KCollisionType
 {
 	Block = 0,
@@ -11,7 +12,7 @@ struct Rt_Size
 	float width;
 	float height;
 };
-class KCollider
+class KCollider : public KObject
 {
 public:
 	int					m_ID;

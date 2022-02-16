@@ -1,7 +1,5 @@
 #pragma once
-#include "Kstd.h"
 #include "K2DAsset.h"
-#include "KCollider.h"
 //충돌 났을때 어떤 함수 호출할지 결정 시스템
 using CollisionFunction = std::function<void(KCollider*, DWORD)>;
 
@@ -21,7 +19,7 @@ public:
 	typedef std::map<int, CollisionFunction>::iterator FuncionIterator;
 	std::map<int, CollisionFunction> m_fnCollisionExecute;
 	typedef std::map<int, SelectFunction>::iterator FuncionIterator;
-	std::map<int, SelectFunction> m_fnSelectExecute;
+	std::map<int, SelectFunction>	m_fnSelectExecute;
 
 public:
 	//충돌이 발생하면 어떤 함수를 호출할까 결정

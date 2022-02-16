@@ -28,6 +28,14 @@ bool KPlayer2D::Frame()
 	return true;
 }
 
+void KPlayer2D::HitOverlap(KCollider* pObj, DWORD dwState)
+{
+	if (dwState == KCollisionType::Overlap)
+	{
+		int kkk = 0;
+	}
+}
+
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_speed = 100.0f;

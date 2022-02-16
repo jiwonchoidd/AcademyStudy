@@ -1,15 +1,15 @@
 #pragma once
-#include "KObject.h"
 #include "KCollider.h"
-
-class K2DAsset : public KObject
+//KObject -> KCollider -> K2DAsset »ó¼Ó
+class K2DAsset :  public KCollider
 {
 public:
-	KCollider*			m_coll;
 	float				m_speed;
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
+public:
+	virtual void		HitOverlap(KCollider* pObj, DWORD dwState);
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);

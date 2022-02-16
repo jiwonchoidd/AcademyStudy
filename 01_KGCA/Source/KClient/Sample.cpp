@@ -43,19 +43,19 @@ bool Sample::Init()
 	//NPC 생성
 	for (int inpc = 0; inpc < 5; inpc++)
 	{
-		KNpc2D npc;
+		KNpc2D* npc = new KNpc2D;
 		if (inpc % 2 == 0)
 		{
-			npc.SetRectSource({ 46,63,69,79 });
-			npc.SetRectDraw({ 0,0, 69,79 });
+			npc->SetRectSource({ 46,63,69,79 });
+			npc->SetRectDraw({ 0,0, 69,79 });
 		}
 		else
 		{
-			npc.SetRectSource({ 1,63,42,76 });
-			npc.SetRectDraw({ 0,0, 42,76 });
+			npc->SetRectSource({ 1,63,42,76 });
+			npc->SetRectDraw({ 0,0, 42,76 });
 		}
-		npc.SetPosition(KVector2(50 + inpc * 150, 50));
-		if (!npc.Init(m_pImmediateContext,
+		npc->SetPosition(KVector2(50 + inpc * 150, 50));
+		if (!npc->Init(m_pImmediateContext,
 			L"../../data/shader/vs_2D.txt",
 			L"../../data/shader/ps_2D.txt",
 			L"../../data/texture/bitmap1.bmp",
@@ -168,11 +168,11 @@ bool Sample::Frame()
 	//npc 이동
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		RECT rt = m_NpcLlist[iObj].m_rtDraw;
+		RECT rt = m_NpcLlist[iObj]->m_rtDraw;
 		rt.right = rt.right + (cos(g_fSecTimer) * 0.5f + 0.5f) * 50.0f;
 		rt.bottom = rt.bottom + (cos(g_fSecTimer) * 0.5f + 0.5f) * 50.0f;
-		m_NpcLlist[iObj].UpdateRectDraw(rt);
-		m_NpcLlist[iObj].Frame();
+		m_NpcLlist[iObj]->UpdateRectDraw(rt);
+		m_NpcLlist[iObj]->Frame();
 	}
 
 	box.Frame();
@@ -187,7 +187,7 @@ bool Sample::Render()
 	//npc 렌더링
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		m_NpcLlist[iObj].Render(m_pImmediateContext);
+		m_NpcLlist[iObj]->Render(m_pImmediateContext);
 	}
 	//플레이어 렌더링
 	m_PlayerObj.Render(m_pImmediateContext);
@@ -199,7 +199,7 @@ bool Sample::Release()
 	m_PlayerObj.Release();
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
-		m_NpcLlist[iObj].Release();
+		m_NpcLlist[iObj]->Release();
 	}
 	box.Release();
 	plane.Release();

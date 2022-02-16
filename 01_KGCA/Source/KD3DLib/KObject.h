@@ -1,6 +1,5 @@
 #pragma once
 #include "KTexture.h"
-#include "KObjectManager.h"
 struct PNCT_VERTEX
 {
 	KVector3 pos;

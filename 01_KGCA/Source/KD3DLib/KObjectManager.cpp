@@ -2,9 +2,12 @@
 
 void KObjectManager::AddCollisionExecute(KCollider* owner, CollisionFunction func)
 {
-	owner->m_ID = m_iExcueteCollisionID++;
-	m_ObjectList.insert(std::make_pair(owner->m_ID, owner));
-	m_fnCollisionExecute.insert(std::make_pair(owner->m_ID, func));
+	KCollider* temp = (KCollider*)owner;
+	temp->m_ID = m_iExcueteCollisionID++;
+	//아이디 객체 
+	m_ObjectList.insert(std::make_pair(temp->m_ID, temp));
+	//아이디 함수
+	m_fnCollisionExecute.insert(std::make_pair(temp->m_ID, func));
 }
 
 void KObjectManager::DeleteExecute(KCollider* owner, CollisionFunction func)
@@ -28,7 +31,6 @@ bool KObjectManager::Frame()
 		{
 			KCollider* pObjDest = (KCollider*)dest.second;
 			if (pObjSrc == pObjDest) continue;
-
 			if (KCollision::ToRect(pObjSrc->m_rtColl,(pObjDest->m_rtColl)))
 			{
 				FuncionIterator colliter = m_fnCollisionExecute.find(pObjSrc->m_ID);

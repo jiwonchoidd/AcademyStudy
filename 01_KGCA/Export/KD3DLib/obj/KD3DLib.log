@@ -1,119 +1,39 @@
 ﻿  K2DAsset.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(11,29): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(12,30): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(17,29): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(18,30): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(16,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(17,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(22,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(23,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KBoxObj.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(6,1): error C2504: 'KObject': 기본 클래스를 정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,35): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(30,16): error C3668: 'K2DAsset::CheckVertexData': 재정의 지정자 'override'가 있는 메서드가 기본 클래스 메서드를 재정의하지 않았습니다.
-  KCamera.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KCore.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(6,1): error C2504: 'KObject': 기본 클래스를 정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,35): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(30,16): error C3668: 'K2DAsset::CheckVertexData': 재정의 지정자 'override'가 있는 메서드가 기본 클래스 메서드를 재정의하지 않았습니다.
-  KDevice.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(6,10): warning C4101: 'hr' :참조되지 않은 지역 변수입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(100,1): warning C4002: 함수 같은 매크로 호출 'FAILED'에 대해 인수가 너무 많습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(167,36): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(168,37): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KObject.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(6,1): error C2504: 'KObject': 기본 클래스를 정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,35): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(30,16): error C3668: 'K2DAsset::CheckVertexData': 재정의 지정자 'override'가 있는 메서드가 기본 클래스 메서드를 재정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KObject.cpp(79,46): warning C4267: '인수': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KObject.cpp(176,61): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KObject.cpp(193,54): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KObject.cpp(202,37): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KObjectManager.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KPlaneObj.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(6,1): error C2504: 'KObject': 기본 클래스를 정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,35): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(30,16): error C3668: 'K2DAsset::CheckVertexData': 재정의 지정자 'override'가 있는 메서드가 기본 클래스 메서드를 재정의하지 않았습니다.
+E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KSkyBox.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(6,1): error C2504: 'KObject': 기본 클래스를 정의하지 않았습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(24,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,35): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(26,28): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,15): error C2065: 'PNCT_VERTEX': 선언되지 않은 식별자입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2923: 'std::vector': 'PNCT_VERTEX'은(는) '_Ty' 매개 변수에 대한 올바른 템플릿 형식 인수가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27): message : 'PNCT_VERTEX' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(27,8): error C2976: 'std::vector': 템플릿 인수가 너무 적습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\vector(443): message : 'std::vector' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.h(30,16): error C3668: 'K2DAsset::CheckVertexData': 재정의 지정자 'override'가 있는 메서드가 기본 클래스 메서드를 재정의하지 않았습니다.
-  KSound.cpp
-  KMath.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\Math\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
+  KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+          1개 파일이 복사되었습니다.
+  ImGuiManager.h
+  K2DAsset.h
+  KBoxObj.h
+  KCamera.h
+  KCollider.h
+  KCollision.h
+  KCore.h
+  KDevice.h
+  KInput.h
+  KObject.h
+  KObjectManager.h
+  KPlaneObj.h
+  KSkyBox.h
+  KSound.h
+  KState.h
+  KStd.h
+  KTexture.h
+  KTimer.h
+  KWindow.h
+  KWrite.h
+  resource.h
+         21개 파일이 복사되었습니다.

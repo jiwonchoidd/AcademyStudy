@@ -1,4 +1,9 @@
 #include "K2DAsset.h"
+#include "KObjectManager.h"
+void K2DAsset::HitOverlap(KCollider* pObj, DWORD dwState)
+{
+	int kkk = 0;
+}
 
 void K2DAsset::SetRectSource(RECT rt)
 {
@@ -8,22 +13,23 @@ void K2DAsset::SetRectSource(RECT rt)
 void K2DAsset::SetRectDraw(RECT rt)
 {
 	m_rtDraw = rt;
-	m_coll->m_rtSize.width = rt.right;
-	m_coll->m_rtSize.height = rt.bottom;
+	m_rtSize.width = rt.right;
+	m_rtSize.height = rt.bottom;
 }
 
 void K2DAsset::UpdateRectDraw(RECT rt)
 {
-	m_coll->m_rtSize.width = rt.right;
-	m_coll->m_rtSize.height = rt.bottom;
+	m_rtSize.width = rt.right;
+	m_rtSize.height = rt.bottom;
 }
 //생성 함수 마스킹 텍스쳐까지 불러옴
 //마스킹 텍스쳐 없을 경우 하나의 텍스쳐만 불러옴
 bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
 {
-	m_coll->m_rtColl = KRect(m_coll->m_pos, m_coll->m_rtSize.width, m_coll->m_rtSize.height);
-	g_ObjManager.AddCollisionExecute(m_coll,
-		std::bind(&KCollider::HitOverlap, m_coll,
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+
+	g_ObjManager.AddCollisionExecute(this,
+		std::bind(&KCollider::HitOverlap, this,
 			std::placeholders::_1,
 			std::placeholders::_2));
 
@@ -33,10 +39,10 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 
 void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 {
-	m_coll->m_pos += vPos;
-	m_coll->m_rtColl = KRect(m_coll->m_pos, m_coll->m_rtSize.width, m_coll->m_rtSize.height);
+	m_pos += vPos;
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 
-	Convert(m_coll->m_pos, m_coll->m_rtSize.width, m_coll->m_rtSize.height, m_VertexList);
+	Convert(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
 	pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
 		&m_VertexList.at(0), 0, 0);
 }
@@ -44,7 +50,7 @@ void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 void K2DAsset::SetPosition(KVector2 vPos)
 {
 	// 현재위치
-	m_coll->m_pos = vPos;
+	m_pos = vPos;
 }
 
 //현재 위치, 크기, 
@@ -93,7 +99,7 @@ void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 
 bool K2DAsset::SetVertexData()
 {
-	Convert(m_coll->m_pos, m_coll->m_rtSize.width, m_coll->m_rtSize.height, m_VertexList);
+	Convert(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
 	return true;
 }
 
