@@ -117,6 +117,8 @@ HRESULT KState::CreateSamplerState()
     sd.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
+    sd.MinLOD = FLT_MAX;
+    sd.MaxLOD = FLT_MIN;
     HRESULT hr = g_pd3dDevice->CreateSamplerState(&sd,
         &g_pClampSS);
 
@@ -125,6 +127,8 @@ HRESULT KState::CreateSamplerState()
     sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.MinLOD = FLT_MAX;
+    sd.MaxLOD = FLT_MIN;
     hr = g_pd3dDevice->CreateSamplerState(&sd, &g_pWrapSS);
 
     ZeroMemory(&sd, sizeof(D3D11_SAMPLER_DESC));
@@ -132,6 +136,8 @@ HRESULT KState::CreateSamplerState()
     sd.AddressU = D3D11_TEXTURE_ADDRESS_MIRROR;
     sd.AddressV = D3D11_TEXTURE_ADDRESS_MIRROR;
     sd.AddressW = D3D11_TEXTURE_ADDRESS_MIRROR;
+    sd.MinLOD = FLT_MAX;
+    sd.MaxLOD = FLT_MIN;
     hr = g_pd3dDevice->CreateSamplerState(&sd,
         &g_pMirrorSS);
 

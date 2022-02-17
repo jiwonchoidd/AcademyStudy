@@ -38,6 +38,7 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 {
 	HRESULT hr = S_OK;
 	if (m_pGIFactory == NULL) return S_FALSE;
+	//D2DWrite 사용하려면 플래그해줘야함
 	UINT createDeviceFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifdef _DEBUG
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;

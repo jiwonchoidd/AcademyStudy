@@ -60,22 +60,16 @@ struct INPUT_MAP
 	bool bZKey;
 	bool bCKey;
 
-	//마우스 
-	bool bLeftClick;
-	bool bRightClick;
-	bool bMiddleClick;
-
-	bool bLeftHold;
-	bool bRightHold;
-	bool bMiddleHold;
 
 	bool bLShift;
 	bool bExit;
 	bool bSpace;
 	bool bEnter;
 
+	//마우스 
 	int  iMouseValue[3];
-
+	int  iMousePos[2];
+	BYTE bMouseState[3];
 	bool bFullScreen;
 	bool bChangeFillMode;
 	bool bChangePrimitive;

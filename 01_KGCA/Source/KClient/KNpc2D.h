@@ -9,6 +9,7 @@ public:
         std::wstring tex = nullptr, std::wstring mask = nullptr);
     bool Frame()override;
     void HitOverlap(KCollider* pObj, DWORD dwState);
+    void SelectOverlap(KCollider* pObj, DWORD dwState);
 public:
     KNpc2D();
     ~KNpc2D();

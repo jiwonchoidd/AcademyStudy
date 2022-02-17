@@ -1,5 +1,6 @@
 #pragma once
 #include "K2DAsset.h"
+
 //충돌 났을때 어떤 함수 호출할지 결정 시스템
 using CollisionFunction = std::function<void(KCollider*, DWORD)>;
 
@@ -10,6 +11,7 @@ class KObjectManager : public Singleton <KObjectManager>
 {
 private:
 	int							m_iExcueteCollisionID;
+	int							m_iExcueteSelectID;
 	std::map<int, KCollider*>  m_ObjectList;
 	std::map<int, KCollider*>  m_SelectList;
 public:
@@ -25,12 +27,19 @@ public:
 	//충돌이 발생하면 어떤 함수를 호출할까 결정
 	void AddCollisionExecute(KCollider* owner, CollisionFunction func);
 	void DeleteExecute(KCollider* owner, CollisionFunction func);
+
+	void AddSelectExecute(KCollider* owner, CollisionFunction func);
+	void DeleteSelectExecute(KCollider* owner, CollisionFunction func);
 public:
 	bool Init();
 	bool Frame();
 	bool Release();
 private:
-	KObjectManager() { m_iExcueteCollisionID = 0; };
+	KObjectManager() 
+	{
+		m_iExcueteCollisionID = 0;
+		m_iExcueteSelectID = 0;
+	};
 public:
 	virtual ~KObjectManager() {};
 };

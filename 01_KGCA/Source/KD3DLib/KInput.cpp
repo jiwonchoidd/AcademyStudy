@@ -126,17 +126,15 @@ bool KInput::Frame()
 
         ZeroMemory(&g_InputData, sizeof(INPUT_MAP));
 
-        if (m_MouseState[0] == KEY_PUSH) 	g_InputData.bLeftClick = true;
-        if (m_MouseState[1] == KEY_PUSH) 	g_InputData.bRightClick = true;
-        if (m_MouseState[2] == KEY_PUSH) 	g_InputData.bMiddleClick = true;
-
-        if (m_MouseState[0] >= KEY_PUSH) 	g_InputData.bLeftHold = true;
-        if (m_MouseState[1] >= KEY_PUSH) 	g_InputData.bRightHold = true;
-        if (m_MouseState[2] >= KEY_PUSH) 	g_InputData.bMiddleHold = true;
+        g_InputData.bMouseState[0] = m_MouseState[0];
+        g_InputData.bMouseState[1] = m_MouseState[1];
+        g_InputData.bMouseState[2] = m_MouseState[2];
 
         g_InputData.iMouseValue[0] = m_DIMouseState.lX;
         g_InputData.iMouseValue[1] = m_DIMouseState.lY;
         g_InputData.iMouseValue[2] = m_DIMouseState.lZ;
+        g_InputData.iMousePos[0] = m_ptPos.x;
+        g_InputData.iMousePos[1] = m_ptPos.y;
 #pragma endregion
 
         g_InputData.bWKey = GetKey(DIK_W);

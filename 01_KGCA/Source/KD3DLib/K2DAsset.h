@@ -9,7 +9,8 @@ public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
 public:
-	virtual void		HitOverlap(KCollider* pObj, DWORD dwState);
+	virtual void		ObjectOverlap(KCollider* pObj, DWORD dwState);
+	virtual void		SelectOverlap(KCollider* pObj, DWORD dwState);
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);

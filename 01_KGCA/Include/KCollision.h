@@ -6,6 +6,46 @@ enum KCollisionResult
 	RECT_IN,
 	RECT_OVERLAP,
 };
+//위치랑 w h
+//화면 좌표계를 이용하며, 왼쪽 상단이 원점인 KRedct2D
+struct KRect2D
+{
+	KVector2 min;
+	KVector2 max;
+	KVector2 middle;
+	KVector2 size;
+	bool operator == (const KRect2D& v)
+	{
+		if (fabs((min - v.min).Length()) < 0.0001f)
+		{
+			if (fabs((max - v.max).Length()) < 0.0001f)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	KRect2D() {};
+	KRect2D(KVector2 min, KVector2 max)
+	{
+		this->min = min;
+		this->max = max;
+		middle = (max + min);
+		middle /= 2.0f;
+		size.x = max.x - min.x;
+		size.y = max.y - min.y;
+	}
+	KRect2D(KVector2 v, float w, float h)
+	{
+		this->min = v;
+		this->max = min + KVector2(w, h);
+		middle = (max + min);
+		middle /= 2.0f;
+		this->size.x = w;
+		this->size.y = h;
+	}
+}; 
+//화면 좌표계 중앙이 원점이 KRect
 struct KRect
 {
 	KVector2 min;
@@ -35,10 +75,9 @@ struct KRect
 	}
 	KRect(KVector2 v, float w, float h)
 	{
-		this->min = v;
-		this->max = min + KVector2(w, h);
-		middle = (max + min);
-		middle /= 2.0f;
+		middle = v;
+		this->min = middle - KVector2(w / 2.0f, h / 2.0f);
+		this->max = middle + KVector2(w / 2.0f, h / 2.0f);
 		this->size.x = w;
 		this->size.y = h;
 	}

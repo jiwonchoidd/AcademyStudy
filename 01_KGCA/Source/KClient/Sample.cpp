@@ -162,6 +162,8 @@ bool Sample::Frame()
 		}
 	}
 	
+
+
 	//플레이어 이동
 	m_PlayerObj.Frame();
 

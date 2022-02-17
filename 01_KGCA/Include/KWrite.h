@@ -17,7 +17,7 @@ public:
 	ID2D1SolidColorBrush* m_pTextBrush;
 public:
 	HRESULT CreateDeviceResources(IDXGISurface1* pSurface);
-	bool	DrawText(RECT rt, const TCHAR* text, 
+	bool	RenderText(RECT rt, const TCHAR* text,
 		D2D1::ColorF color, IDWriteTextFormat* pTextFormat=nullptr);
 	bool	Init();
 	bool	Frame();

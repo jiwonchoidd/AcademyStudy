@@ -58,6 +58,15 @@ bool	KCore::GameFrame()
         ImGui::Checkbox(u8"자유 카메라", &m_bFreeCamera);
  
     }
+
+    if (ImGui::Begin(u8"인풋 디버거"))
+    {
+        ImGui::Text("iMouseValue %d , %d , %d", g_InputData.iMouseValue[0]
+            , g_InputData.iMouseValue[1], g_InputData.iMouseValue[2]);
+        ImGui::Text("iMousePos %d , %d", g_InputData.iMousePos[0]
+            , g_InputData.iMousePos[1]);
+    }
+    ImGui::End();
     ImGui::End();
 
 
@@ -79,8 +88,8 @@ bool	KCore::GameRender()
         if (m_bDebugText)
         {
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };
-            m_Write.DrawText(rt, m_Timer.m_szTimerString,
-                D2D1::ColorF(1, 1, 1, 1));
+            m_Write.RenderText(rt, m_Timer.m_szTimerString,
+                D2D1::ColorF(0, 0, 0, 1));
         }
         
         Render();
@@ -100,7 +109,7 @@ bool	KCore::PreRender() {
 
     m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     ApplyDSS(m_pImmediateContext, KState::g_pDSS_Disabled);
-    ApplySS(m_pImmediateContext, KState::g_pClampSS, 0);
+    ApplySS(m_pImmediateContext, KState::g_pWrapSS, 0);
     ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
     ApplyBS(m_pImmediateContext, KState::g_pBlendState);
 

@@ -6,7 +6,25 @@ void KNpc2D::HitOverlap(KCollider* pObj, DWORD dwState)
 		int kkk = 0;
 	}
 }
-
+void	KNpc2D::SelectOverlap(KCollider* pObj, DWORD dwState)
+{
+	if (m_SelectState & S_HOVER)
+	{
+		INT K = 0;
+	}
+	if (m_SelectState & S_FOCUS)
+	{
+		INT K = 0;
+	}
+	if (m_SelectState & S_ACTIVE)
+	{
+		INT K = 0;
+	}
+	if (m_SelectState & S_SELECTED)
+	{
+		m_bSelect = true;
+	}
+}
 bool KNpc2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;

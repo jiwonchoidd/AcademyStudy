@@ -1,8 +1,14 @@
 #include "K2DAsset.h"
 #include "KObjectManager.h"
-void K2DAsset::HitOverlap(KCollider* pObj, DWORD dwState)
+//오브젝트 충돌콜백
+void K2DAsset::ObjectOverlap(KCollider* pObj, DWORD dwState)
 {
-	int kkk = 0;
+	//int kkk = 0;
+}
+//마우스 선택콜백
+void K2DAsset::SelectOverlap(KCollider* pObj, DWORD dwState)
+{
+
 }
 
 void K2DAsset::SetRectSource(RECT rt)
@@ -29,7 +35,11 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 
 	g_ObjManager.AddCollisionExecute(this,
-		std::bind(&KCollider::HitOverlap, this,
+		std::bind(&KCollider::ObjectOverlap, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
+	g_ObjManager.AddSelectExecute(this,
+		std::bind(&KCollider::SelectOverlap, this,
 			std::placeholders::_1,
 			std::placeholders::_2));
 

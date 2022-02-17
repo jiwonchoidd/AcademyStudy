@@ -18,9 +18,9 @@ class KInput : public Singleton<KInput>
 {
 	friend class Singleton<KInput>;
 private:
-	POINT   m_ptPos;
 	int		m_iWheel = 0;
 public:
+	POINT   m_ptPos;
 	POINT	m_pMouseMove;
 	POINT	m_pPrevMouse;
 	bool	m_bMouseEnabled=true;

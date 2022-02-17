@@ -69,7 +69,7 @@ bool KWrite::Render()
 {
     return true;
 }
-bool KWrite::DrawText(RECT rt, 
+bool KWrite::RenderText(RECT rt, 
     const TCHAR* data, D2D1::ColorF color,
     IDWriteTextFormat* pTextFormat)
 {
