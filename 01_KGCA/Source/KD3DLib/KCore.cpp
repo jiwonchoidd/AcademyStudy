@@ -1,4 +1,5 @@
 #include "KCore.h"
+#include "KObjectManager.h"
 bool	KCore::GameRun()
 {
     if (!GameFrame()) return false;
@@ -12,9 +13,6 @@ bool	KCore::GameInit()
     m_Timer.Init();
     g_Input.Init();
     m_Write.Init();
-    m_Camera.Init();
-    m_Skybox.Init(L"../../data/shader/Skybox.txt",
-        L"../../data/texture/Skybox_dd.dds");
     //g_Input.m_bInputAvailable = false;
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
@@ -33,9 +31,8 @@ bool	KCore::GameFrame()
     g_Input.Frame();
     //실시간 모든 콜라이더 충돌 프레임
     g_ObjManager.Frame();
+    
     m_Write.Frame();
-    if(m_bFreeCamera)m_Camera.Frame();
-    m_Skybox.Frame();
     m_ImGuiManager.Frame();
     if (g_Input.GetKey(DIK_F1) == KEY_PUSH)
     {
@@ -58,7 +55,7 @@ bool	KCore::GameFrame()
         ImGui::Checkbox(u8"자유 카메라", &m_bFreeCamera);
  
     }
-
+    ImGui::End();
     if (ImGui::Begin(u8"인풋 디버거"))
     {
         ImGui::Text("iMouseValue %d , %d , %d", g_InputData.iMouseValue[0]
@@ -66,7 +63,6 @@ bool	KCore::GameFrame()
         ImGui::Text("iMousePos %d , %d", g_InputData.iMousePos[0]
             , g_InputData.iMousePos[1]);
     }
-    ImGui::End();
     ImGui::End();
 
 
@@ -76,11 +72,6 @@ bool	KCore::GameFrame()
 bool	KCore::GameRender() 
 {
     PreRender();
-    //환경 텍스쳐
-    ApplyRS(m_pImmediateContext, KState::g_pRSBackface);
-    m_Skybox.SetMatrix(&m_Camera.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-    m_Skybox.Render(m_pImmediateContext);
-    ApplyRS(m_pImmediateContext, KState::g_pRSSolid);
         // TODO : Render Timer
         m_Timer.Render();
         g_Input.Render();
@@ -131,8 +122,6 @@ bool	KCore::GameRelease()
     m_Timer.Release();
     g_Input.Release();
     m_Write.Release();
-    m_Camera.Release();
-    m_Skybox.Release();
     CleanupDevice();
     return true;
 }
@@ -145,4 +134,12 @@ bool	KCore::Frame() {
 }
 bool	KCore::Release() {
     return true;
+}
+
+KCore::KCore()
+{
+}
+
+KCore::~KCore()
+{
 }

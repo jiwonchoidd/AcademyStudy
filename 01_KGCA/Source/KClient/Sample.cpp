@@ -24,50 +24,15 @@ bool Sample::Init()
 	}
 #pragma endregion
 
-    m_Camera.CreateViewMatrix(KVector3(0, 0, -3), KVector3(0, 0, 0));
-    m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+    //사운드 초기화 
+	g_Sound.Init();
+	m_IntroScene.Init(g_pd3dDevice, m_pImmediateContext);
+	m_IntroScene.Load(L"test.txt");
 
-	//플레이어 생성
-	m_PlayerObj.SetRectSource({ 91,1,42,56 }); //소스 
-	m_PlayerObj.SetRectDraw({0,0,42*2,56*2});
-	m_PlayerObj.SetPosition(KVector2(400, 300));
+	m_GameScene_0.Init(g_pd3dDevice, m_pImmediateContext);
+	m_GameScene_0.Load(L"test.txt");
 
-	if(!m_PlayerObj.Init(m_pImmediateContext, 
-		L"../../data/shader/vs_2D.txt",
-		L"../../data/shader/ps_2D.txt",
-		L"../../data/texture/bitmap1.bmp",
-		L"../../data/texture/bitmap2.bmp"))
-	{
-		return false;
-	}
-	//NPC 생성
-	for (int inpc = 0; inpc < 5; inpc++)
-	{
-		KNpc2D* npc = new KNpc2D;
-		if (inpc % 2 == 0)
-		{
-			npc->SetRectSource({ 46,63,69,79 });
-			npc->SetRectDraw({ 0,0, 69,79 });
-		}
-		else
-		{
-			npc->SetRectSource({ 1,63,42,76 });
-			npc->SetRectDraw({ 0,0, 42,76 });
-		}
-		npc->SetPosition(KVector2(50 + inpc * 150, 50));
-		if (!npc->Init(m_pImmediateContext,
-			L"../../data/shader/vs_2D.txt",
-			L"../../data/shader/ps_2D.txt",
-			L"../../data/texture/bitmap1.bmp",
-			L"../../data/texture/bitmap2.bmp"))
-		{
-			return false;
-		}
-		m_NpcLlist.push_back(npc);
-	}
-
-	box.Init(L"../../data/shader/vs_0.txt", L"../../data/shader/ps_0.txt",
-		L"../../data/texture/uv.bmp");
+	KScene::m_pCurrentScene = &m_IntroScene;
 
     return true;
 }
@@ -129,6 +94,7 @@ bool Sample::Frame()
 	ImGui::End();
 #pragma endregion
 
+	#pragma region 네트워크 프레임
 	// 패킷 풀 사이즈로 채팅 수량 체크
 	int iChatCnt = m_Net.m_User.m_lPacketPool.size();
 	if (iChatCnt > 0 && m_iChatCount != iChatCnt)
@@ -147,65 +113,43 @@ bool Sample::Frame()
 			iter != m_Net.m_User.m_lPacketPool.end();
 			iter++)
 		{
-			
+
 			KChatting recv_data;
 			ZeroMemory(&recv_data, sizeof(recv_data));
 			(*iter) >> recv_data.index >> recv_data.name
-					>> recv_data.message;
+				>> recv_data.message;
 			//strcat(m_chatItems, (char*)(*iter).m_uPacket.ph.time);
 			strcat(m_chatItems, recv_data.name);
 			strcat(m_chatItems, " : ");
 			strcat(m_chatItems, recv_data.message);
 			strcat(m_chatItems, "\n");
-		
+
 			(*iter).Reset();
 		}
 	}
-	
+#pragma endregion
 
-
-	//플레이어 이동
-	m_PlayerObj.Frame();
-
-	//npc 이동
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
+	if (g_InputData.bSpace)
 	{
-		RECT rt = m_NpcLlist[iObj]->m_rtDraw;
-		rt.right = rt.right + (cos(g_fSecTimer) * 0.5f + 0.5f) * 50.0f;
-		rt.bottom = rt.bottom + (cos(g_fSecTimer) * 0.5f + 0.5f) * 50.0f;
-		m_NpcLlist[iObj]->UpdateRectDraw(rt);
-		m_NpcLlist[iObj]->Frame();
+		KScene::m_pCurrentScene = &m_GameScene_0;
+		
 	}
 
-	box.Frame();
+	//현재 씬의 프레임
+	KScene::m_pCurrentScene->Frame();
+
     return true;
 }
 bool Sample::Render()
 {
-	box.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-	box.Render(m_pImmediateContext);
-
-
-	//npc 렌더링
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
-	{
-		m_NpcLlist[iObj]->Render(m_pImmediateContext);
-	}
-	//플레이어 렌더링
-	m_PlayerObj.Render(m_pImmediateContext);
+	//현재 씬의 렌더
+	KScene::m_pCurrentScene->Render();
 
     return true;
 }
 bool Sample::Release()
 {
-	m_PlayerObj.Release();
-	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
-	{
-		m_NpcLlist[iObj]->Release();
-	}
-	box.Release();
-	plane.Release();
-    m_Camera.Release();
+
 	m_Net.CloseNetwork();
     return true;
 }

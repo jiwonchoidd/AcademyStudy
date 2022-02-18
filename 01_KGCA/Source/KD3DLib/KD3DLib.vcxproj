@@ -37,8 +37,10 @@
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="KObjectManager.cpp" />
     <ClCompile Include="KPlaneObj.cpp" />
+    <ClCompile Include="KScene.cpp" />
     <ClCompile Include="KSkyBox.cpp" />
     <ClCompile Include="KSound.cpp" />
+    <ClCompile Include="KSoundManager.cpp" />
     <ClCompile Include="KState.cpp" />
     <ClCompile Include="KTexture.cpp" />
     <ClCompile Include="KTimer.cpp" />
@@ -67,8 +69,10 @@
     <ClInclude Include="KObject.h" />
     <ClInclude Include="KObjectManager.h" />
     <ClInclude Include="KPlaneObj.h" />
+    <ClInclude Include="KScene.h" />
     <ClInclude Include="KSkyBox.h" />
     <ClInclude Include="KSound.h" />
+    <ClInclude Include="KSoundManager.h" />
     <ClInclude Include="KState.h" />
     <ClInclude Include="KStd.h" />
     <ClInclude Include="KTexture.h" />
@@ -191,7 +195,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\fbx\\include;..\\.\\Graphics</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\include\\fmod;..\\..\\Graphics</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -10,6 +10,12 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{322e654d-a33f-4bcb-9e44-4031acf305db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Scene">
+      <UniqueIdentifier>{775239b0-dd10-4fee-871c-19db47f4ecd7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Scene">
+      <UniqueIdentifier>{d16b056e-8347-4bfb-a8b7-686f7bd958d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp">
@@ -20,6 +26,12 @@
     </ClCompile>
     <ClCompile Include="KNpc2D.cpp">
       <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="KScene_Intro.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="KScene_Game_0.cpp">
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -34,6 +46,12 @@
     </ClInclude>
     <ClInclude Include="KNpc2D.h">
       <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="KScene_Intro.h">
+      <Filter>헤더 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="KScene_Game_0.h">
+      <Filter>헤더 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

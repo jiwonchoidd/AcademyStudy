@@ -12,18 +12,20 @@
 #include <wrl.h>
 #include <d3dcompiler.h>
 #include <DirectXmath.h>
-#include "KMath.h"
 #include <iostream>
 #include "DDSTextureLoader.h"
 #include "WICTextureLoader.h"
 #include <functional>
+#include "KMath.h"
 #include "KCollision.h"
+#include <atlconv.h> // A2W
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
+
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment	(lib, "dxgi.lib")
 #pragma comment	(lib, "DirectXTK.lib")
-#pragma comment (lib, "D3DCompiler.lib")
+#pragma comment (lib, "d3dcompiler.lib")
 #pragma comment	(lib, "ws2_32.lib")
 extern float g_fSecPerFrame;
 extern float g_fSecTimer;
@@ -77,7 +79,20 @@ struct INPUT_MAP
 	bool bChangeCameraType;
 	bool bDebugRender;
 };
+
 extern INPUT_MAP g_InputData;
+
+static std::wstring to_mw(const std::string& _src)
+{
+	USES_CONVERSION;
+	return std::wstring(A2W(_src.c_str()));
+};
+
+static std::string to_wm(const std::wstring& _src)
+{
+	USES_CONVERSION;
+	return std::string(W2A(_src.c_str()));
+};
 
 #pragma region wWinMain ∏≈≈©∑Œ
 

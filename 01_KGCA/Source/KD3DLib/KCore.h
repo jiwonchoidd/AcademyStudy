@@ -3,22 +3,19 @@
 #include "KDevice.h"
 #include "KTimer.h"
 #include "KInput.h"
-#include "KSound.h"
+#include "KSoundManager.h"
 #include "KWrite.h"
 #include "KState.h"
-#include "KCamera.h"
 #include "ImGuiManager.h"
-#include "KSkyBox.h"
 class KCore : public KWindow
 {
 public:
-	float			m_Speed=1.0f;
 	KTimer			m_Timer;
-	KSound			m_Sound;
+	KSoundManager	m_Sound;
 	KWrite			m_Write;
-	KDebugCamera	m_Camera;
 	ImGuiManager	m_ImGuiManager;
-	KSkyBox			m_Skybox;
+public:
+	float		m_Speed=1.0f;
 	bool		m_bDebugText = false;
 	bool		m_bFreeCamera = false;
 private:
@@ -34,5 +31,8 @@ public:
 	virtual bool	Render();
 	virtual bool	PostRender();
 	virtual bool	Release();
+public:
+	KCore();
+	virtual ~KCore();
 };
 

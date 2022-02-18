@@ -1,6 +1,7 @@
 ﻿  KCore.cpp
-E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+  KSoundManager.cpp
+  코드를 생성하고 있습니다...
+  KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h
@@ -14,8 +15,10 @@ E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'doub
   KObject.h
   KObjectManager.h
   KPlaneObj.h
+  KScene.h
   KSkyBox.h
   KSound.h
+  KSoundManager.h
   KState.h
   KStd.h
   KTexture.h
@@ -23,4 +26,4 @@ E:\github\AcademyStudy\01_KGCA\include\KMath.h(550,9): warning C4244: '=': 'doub
   KWindow.h
   KWrite.h
   resource.h
-         21개 파일이 복사되었습니다.
+         23개 파일이 복사되었습니다.

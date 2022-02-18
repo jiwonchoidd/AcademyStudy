@@ -108,6 +108,12 @@
     <ClCompile Include="KCollider.cpp">
       <Filter>Source\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="KSoundManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="KScene.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KCore.h">
@@ -199,6 +205,12 @@
     </ClInclude>
     <ClInclude Include="KCollider.h">
       <Filter>Header\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="KSoundManager.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="KScene.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

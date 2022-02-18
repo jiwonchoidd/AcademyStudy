@@ -119,12 +119,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\fbx\\include;..\\..\\Graphics;..\\..\\include\\KNetworkLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\include\\fmod;..\\..\\Graphics;..\\..\\include\\KNetworkLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\\..\\Lib;..\\..\\fbx\\lib\\vs2017\\x64\\debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\\..\\Lib;..\\..\\Lib\\fmod;..\\..\\Lib\\d3dtk</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -151,13 +151,17 @@
   <ItemGroup>
     <ClInclude Include="KNpc2D.h" />
     <ClInclude Include="KPlayer2D.h" />
+    <ClInclude Include="KScene_Game_0.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sample.h" />
+    <ClInclude Include="KScene_Intro.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KNpc2D.cpp" />
     <ClCompile Include="KPlayer2D.cpp" />
+    <ClCompile Include="KScene_Game_0.cpp" />
     <ClCompile Include="Sample.cpp" />
+    <ClCompile Include="KScene_Intro.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KD3DLib\KD3DLib.vcxproj">
