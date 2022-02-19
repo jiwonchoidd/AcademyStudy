@@ -1,5 +1,8 @@
 #pragma once
 #include "KTexture.h"
+#include <d3dcommon.h>
+#include <d3dcompiler.h>
+#pragma comment (lib, "d3dcompiler.lib")
 struct PNCT_VERTEX
 {
 	KVector3 pos;
@@ -69,7 +72,7 @@ public:
 	virtual bool		Render(ID3D11DeviceContext* pContext);
 	virtual bool		PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex = 0);
 	virtual bool		Release();
-	static ID3DBlob* LoadShaderBlob(std::wstring vs,
+	static ID3DBlob*    LoadShaderBlob(std::wstring vs,
 		std::string function, std::string version);
 	KObject();
 };

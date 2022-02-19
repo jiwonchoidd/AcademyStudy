@@ -1,23 +1,20 @@
 #include "KScene_Game_0.h"
-
+#include "KSceneManager.h"
 bool KScene_Game_0::Load(std::wstring file)
 {
-	m_BGM = g_Sound.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
-	//m_BGM->SoundPlay(true);
+	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
+	m_BGM->SoundPlay(true);
 	return true;
 }
 
-bool KScene_Game_0::Init(ID3D11Device* device, ID3D11DeviceContext* context)
+bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 {
 	m_SceneID = S_GAME;
-	m_pd3dDevice = device;
 	m_pContext = context;
 	m_Camera.Init();
 	m_Skybox.Init(L"../../data/shader/Skybox.txt",
 		L"../../data/texture/Skybox_dd.dds");
 	
-	
-
 	m_Camera.CreateViewMatrix(KVector3(0, 0, -3), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
@@ -82,6 +79,11 @@ bool KScene_Game_0::Frame()
 	m_Camera.Frame();
 	m_Skybox.Frame();
 	m_Box.Frame();
+	m_BGM->Frame();
+	if (g_InputData.bSpace)
+	{
+		g_SceneManager.SetScene(0);
+	}
 	return true;
 }
 
@@ -110,6 +112,8 @@ bool KScene_Game_0::Render()
 
 bool KScene_Game_0::Release()
 {
+	m_BGM->SoundStop();
+	m_BGM->Release();
 	m_PlayerObj.Release();
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{

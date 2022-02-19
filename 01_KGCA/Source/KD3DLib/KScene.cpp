@@ -1,10 +1,9 @@
 #include "KScene.h"
-KScene* KScene::m_pCurrentScene = nullptr;
 
 KScene::KScene()
 {
-	m_pd3dDevice = nullptr;
 	m_pContext = nullptr;
+	m_SceneID = -1;
 }
 
 KScene::~KScene()

@@ -10,11 +10,8 @@
 #include <dxgi.h>
 #include <assert.h>
 #include <wrl.h>
-#include <d3dcompiler.h>
 #include <DirectXmath.h>
 #include <iostream>
-#include "DDSTextureLoader.h"
-#include "WICTextureLoader.h"
 #include <functional>
 #include "KMath.h"
 #include "KCollision.h"
@@ -25,7 +22,12 @@ namespace dx = DirectX;
 #pragma comment	(lib, "d3d11.lib")
 #pragma comment	(lib, "dxgi.lib")
 #pragma comment	(lib, "DirectXTK.lib")
-#pragma comment (lib, "d3dcompiler.lib")
+
+#ifdef _DEBUG
+#pragma comment	(lib, "KD3DLib.lib")
+#else
+#pragma comment	(lib, "KD3DLib.lib")
+#endif
 #pragma comment	(lib, "ws2_32.lib")
 extern float g_fSecPerFrame;
 extern float g_fSecTimer;

@@ -1,11 +1,8 @@
 #pragma once
 #include "KScene.h"
-#include "K2DAsset.h"
-#include "KSound.h"
 #include "KPlayer2D.h"
 #include "KNpc2D.h"
 #include "KPlaneObj.h"
-#include "KBoxObj.h"
 #include "KCamera.h"
 #include "KSkyBox.h"
 #include "KState.h"
@@ -23,7 +20,7 @@ public:
 public:
     bool    Load(std::wstring file) override;
 public:
-    virtual bool	Init(ID3D11Device* device, ID3D11DeviceContext* context);
+    virtual bool	Init(ID3D11DeviceContext* context);
     virtual bool	Frame();
     virtual bool	Render();
     virtual bool	Release();

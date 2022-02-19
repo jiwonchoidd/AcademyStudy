@@ -24,4 +24,4 @@ public:
 	~KSoundManager();
 };
 
-#define g_Sound KSoundManager::Get()
+#define g_SoundManager KSoundManager::Get()

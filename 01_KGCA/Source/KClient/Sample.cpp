@@ -25,14 +25,8 @@ bool Sample::Init()
 #pragma endregion
 
     //사운드 초기화 
-	g_Sound.Init();
-	m_IntroScene.Init(g_pd3dDevice, m_pImmediateContext);
-	m_IntroScene.Load(L"test.txt");
-
-	m_GameScene_0.Init(g_pd3dDevice, m_pImmediateContext);
-	m_GameScene_0.Load(L"test.txt");
-
-	KScene::m_pCurrentScene = &m_IntroScene;
+	g_SoundManager.Init();
+	g_SceneManager.Init(m_pImmediateContext);
 
     return true;
 }
@@ -129,27 +123,19 @@ bool Sample::Frame()
 	}
 #pragma endregion
 
-	if (g_InputData.bSpace)
-	{
-		KScene::m_pCurrentScene = &m_GameScene_0;
-		
-	}
-
-	//현재 씬의 프레임
-	KScene::m_pCurrentScene->Frame();
+	g_SceneManager.Frame();
 
     return true;
 }
 bool Sample::Render()
 {
-	//현재 씬의 렌더
-	KScene::m_pCurrentScene->Render();
+	g_SceneManager.Render();
 
     return true;
 }
 bool Sample::Release()
 {
-
+	g_SceneManager.Release();
 	m_Net.CloseNetwork();
     return true;
 }

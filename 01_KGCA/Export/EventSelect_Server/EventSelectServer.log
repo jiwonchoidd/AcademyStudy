@@ -1,2 +1,13 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(../../Export/EventSelect_Server/)에 다른 프로젝트(SelectServer.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  KNetwork.cpp
+  KNetworkUser.cpp
+  KPacket.cpp
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\KPacket.cpp(77,32): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\KPacket.cpp(88,39): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\KPacket.cpp(121,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\KPacket.cpp(132,35): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Sample.cpp
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\Sample.cpp(11,50): warning C4267: '=': 'size_t'에서 'WORD'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\EventSelectServer\Sample.cpp(97,1): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+  코드를 생성하고 있습니다...
   EventSelectServer.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\EventSelect_Server\EventSelectServer.exe

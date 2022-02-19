@@ -3,8 +3,7 @@
 #define IP_KGCA2	"192.168.0.12"
 #include "KCore.h"
 #include "KAsyncSelect.h"
-#include "KScene_Game_0.h"
-#include "KScene_Intro.h"
+#include "KSceneManager.h"
 class Sample : public KCore
 {
 public:
@@ -16,9 +15,6 @@ public:
 	char				ip_Address[30] = IP_DD;
 	char				computer_name[24] = { 0, };
 	std::string			str_isConnect = "DisConnected";
-public:
-	KScene_Intro		m_IntroScene;
-	KScene_Game_0		m_GameScene_0;
 public:
 	bool		Init()override;
 	bool		Frame()override;

@@ -11,10 +11,7 @@ public:
 		S_RESULT,
 	};
 public:
-	static KScene* m_pCurrentScene;
-public:
 	BYTE				 m_SceneID;
-	ID3D11Device*		 m_pd3dDevice;	// 디바이스 객체
 	ID3D11DeviceContext* m_pContext;	// 다비이스 컨텍스트 객체
 	std::map<int, KObject*> m_UIobj;
 	std::map<int, KObject*> m_Map;
@@ -25,7 +22,7 @@ public:
 	//순수 가상 함수들
 	virtual bool	Load(std::wstring file) = 0;
 public:
-	virtual bool	Init(ID3D11Device* device, ID3D11DeviceContext* context) = 0;
+	virtual bool	Init(ID3D11DeviceContext* context) = 0;
 	virtual bool	Frame() = 0;
 	virtual bool	Render() = 0;
 	virtual bool	Release() = 0;

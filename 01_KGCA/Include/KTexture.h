@@ -1,5 +1,7 @@
 #pragma once
 #include "KStd.h"
+#include "DDSTextureLoader.h"
+#include "WICTextureLoader.h"
 class KTexture
 {
 public:
