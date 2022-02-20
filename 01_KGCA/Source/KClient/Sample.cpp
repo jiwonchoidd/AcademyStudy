@@ -26,6 +26,7 @@ bool Sample::Init()
 
     //사운드 초기화 
 	g_SoundManager.Init();
+	//씬 매니져
 	g_SceneManager.Init(m_pImmediateContext);
 
     return true;
@@ -124,13 +125,11 @@ bool Sample::Frame()
 #pragma endregion
 
 	g_SceneManager.Frame();
-
     return true;
 }
 bool Sample::Render()
 {
 	g_SceneManager.Render();
-
     return true;
 }
 bool Sample::Release()
@@ -148,4 +147,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(투명 텍스쳐, 960, 540);
+WinMain_OPT(스프라이트 애니메이션, 960, 540);

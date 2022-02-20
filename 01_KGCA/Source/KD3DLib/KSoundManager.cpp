@@ -5,7 +5,11 @@ KSound* KSoundManager::GetSound(int index)
 	auto iter = m_SoundList.find(index);
 	if (iter != m_SoundList.end())
 	{
-		return (*iter).second;
+		//사운드 포인터가 있어야만 리턴함
+		if ((*iter).second->m_pSound != nullptr)
+		{
+			return (*iter).second;
+		}
 	}
 	return nullptr;
 }

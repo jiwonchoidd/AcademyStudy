@@ -19,15 +19,15 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 
 	//플레이어 생성
-	m_PlayerObj.SetRectSource({ 91,1,42,56 }); //소스 
-	m_PlayerObj.SetRectDraw({ 0,0,42 * 2,56 * 2 });
+	//left,top,right,bottom
+	
 	m_PlayerObj.SetPosition(KVector2(400, 300));
 
 	if (!m_PlayerObj.Init(m_pContext,
 		L"../../data/shader/vs_2D.txt",
 		L"../../data/shader/ps_2D.txt",
-		L"../../data/texture/bitmap1.bmp",
-		L"../../data/texture/bitmap2.bmp"))
+		L"../../data/texture/player_lucas.png",
+		L"../../data/texture/player_lucas_mask.png"))
 	{
 		return false;
 	}
@@ -65,6 +65,7 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 bool KScene_Game_0::Frame()
 {
 	//플레이어 이동
+	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Frame();
 
 	//npc 이동
@@ -76,13 +77,14 @@ bool KScene_Game_0::Frame()
 		m_NpcLlist[iObj]->UpdateRectDraw(rt);
 		m_NpcLlist[iObj]->Frame();
 	}
-	m_Camera.Frame();
+	//m_Camera.Frame();
 	m_Skybox.Frame();
 	m_Box.Frame();
 	m_BGM->Frame();
-	if (g_InputData.bSpace)
+	if (g_InputData.bDownKey)
 	{
 		g_SceneManager.SetScene(0);
+		g_InputData.bSpace = false;
 	}
 	return true;
 }
@@ -113,7 +115,6 @@ bool KScene_Game_0::Render()
 bool KScene_Game_0::Release()
 {
 	m_BGM->SoundStop();
-	m_BGM->Release();
 	m_PlayerObj.Release();
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{

@@ -17,7 +17,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 bool KScene_Intro::Frame()
 {
 	m_BGM->Frame();
-	if (g_InputData.bSpace)
+	if (g_InputData.bUpKey)
 	{
 		g_SceneManager.SetScene(2);
 	}
@@ -32,6 +32,5 @@ bool KScene_Intro::Render()
 bool KScene_Intro::Release()
 {
 	m_BGM->SoundStop();
-	m_BGM->Release();
 	return true;
 }

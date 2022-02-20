@@ -1,13 +1,3 @@
-﻿  KSceneManager.cpp
-  KScene_Game_0.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KClient\KScene_Game_0.cpp(48,32): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\KClient\KScene_Game_0.cpp(74,23): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\KClient\KScene_Game_0.cpp(75,25): warning C4244: '=': 'float'에서 'LONG'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KScene_Intro.cpp
-  Sample.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KClient\Sample.cpp(98,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  코드를 생성하고 있습니다...
-DirectXTK.lib(DDSTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTK.lib(DDSTextureLoader.obj)' 또는 'E:\github\AcademyStudy\01_KGCA\Export\KClient\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTK.lib(pch.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTK.lib(pch.obj)' 또는 'E:\github\AcademyStudy\01_KGCA\Export\KClient\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
-DirectXTK.lib(WICTextureLoader.obj) : warning LNK4099: 'DirectXTK.pdb' PDB를 'DirectXTK.lib(WICTextureLoader.obj)' 또는 'E:\github\AcademyStudy\01_KGCA\Export\KClient\DirectXTK.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+﻿  Sample.cpp
+E:\github\AcademyStudy\01_KGCA\Source\KClient\Sample.cpp(94,50): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KClient.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KClient\KClient.exe

@@ -15,11 +15,12 @@ public:
 public:
 	friend class Singleton<KSceneManager>;
 public:
-	KScene*				 m_pCurrentScene;
-	BYTE				 m_CurrentScene_Index;
-	ID3D11DeviceContext* m_pContext;	// 디바이스 컨텍스트 객체
+	KScene*						m_pCurrentScene;
+	BYTE						m_CurrentScene_Index;
+	ID3D11DeviceContext*		m_pContext;	// 디바이스 컨텍스트 객체
 public:
 	bool	m_bChangeScene;
+	float	m_Timer;
 public:
 	KScene* GetScene();
 	bool	SetScene(BYTE index);

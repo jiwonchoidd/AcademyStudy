@@ -5,6 +5,8 @@ class K2DAsset :  public KCollider
 {
 public:
 	float				m_speed;
+	float				m_SequenceTimer;
+	int					m_AnimIndex;
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
@@ -12,6 +14,7 @@ public:
 	virtual void		ObjectOverlap(KCollider* pObj, DWORD dwState);
 	virtual void		SelectOverlap(KCollider* pObj, DWORD dwState);
 public:
+	virtual	void		RectSequence(float speed, int start, int end);
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);
 	virtual void		AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext);
@@ -35,7 +38,8 @@ public:
 		m_speed=20.0f;
 		m_rtSource = {0,0};
 		m_rtDraw={ 0,0 };
-		
+		m_SequenceTimer= 0.0f;
+		m_AnimIndex = 0;
 	};
 	~K2DAsset()
 	{

@@ -11,6 +11,21 @@ void K2DAsset::SelectOverlap(KCollider* pObj, DWORD dwState)
 
 }
 
+void K2DAsset::RectSequence(float speed, int start, int end)
+{
+	int betw = end - start;
+	m_SequenceTimer += betw * g_fSecPerFrame * speed;
+	float temp= m_SequenceTimer + start;
+	temp = max(temp, start);
+	temp = min(temp, end);
+	m_AnimIndex = temp;
+	
+	if (m_SequenceTimer > betw +1)
+	{
+		m_SequenceTimer = 0;
+	}
+}
+
 void K2DAsset::SetRectSource(RECT rt)
 {
 	m_rtSource = rt;
