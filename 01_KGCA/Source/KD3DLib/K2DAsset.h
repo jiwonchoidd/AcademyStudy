@@ -31,6 +31,7 @@ public:
 		std::vector<PNCT_VERTEX>& retList);
 public:
 	virtual bool		SetVertexData();
+	virtual bool		SetIndexData();
 	virtual bool		CheckVertexData() override;
 public:
 	K2DAsset() 

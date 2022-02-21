@@ -84,6 +84,7 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 	//
 	SetRectSource(m_rtWalking[3]); //¼Ò½º 
 	SetRectDraw({ 0,0,55,60 });
+	
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }
@@ -93,7 +94,6 @@ KPlayer2D::KPlayer2D()
 	m_pContext = nullptr;
 	m_speed = 100.0f;
 	m_rtWalking.clear();
-
 }
 
 KPlayer2D::~KPlayer2D()

@@ -47,6 +47,7 @@ bool	KCore::GameFrame()
     {
         ImGui::SliderFloat("Speed Factor", &m_Speed, 0.0f, 10.0f);
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
     }
     ImGui::End();
 
@@ -123,6 +124,37 @@ bool	KCore::GameRelease()
     g_Input.Release();
     m_Write.Release();
     CleanupDevice();
+    return true;
+}
+bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
+{
+    if (m_pd3dDevice == nullptr) return false;
+    DeleteResizeDevice(iWidth, iHeight);
+
+    m_Write.DeleteDeviceResize();
+
+    KDevice::ResizeDevice(iWidth, iHeight);
+    KWindow::ResizeDevice(iWidth, iHeight);
+
+    IDXGISurface1* pSurface = nullptr;
+    HRESULT hr = m_pSwapChain->GetBuffer(0,
+        __uuidof(IDXGISurface1),
+        (void**)&pSurface);
+    if (SUCCEEDED(hr))
+    {
+        m_Write.CreateDeviceResources(pSurface);
+    }
+    if (pSurface) pSurface->Release();
+
+    CreateResizeDevice(iWidth, iHeight);
+    return true;
+}
+bool    KCore::CreateResizeDevice(UINT iWidth, UINT iHeight)
+{
+    return true;
+}
+bool    KCore::DeleteResizeDevice(UINT iWidth, UINT iHeight)
+{
     return true;
 }
 bool	KCore::Init()

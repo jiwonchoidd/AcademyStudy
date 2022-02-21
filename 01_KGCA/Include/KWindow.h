@@ -17,6 +17,9 @@ public:
 	bool	Run();
 	LRESULT MsgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 	virtual LRESULT  ExternMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+public:
+	virtual	bool	ResizeDevice(UINT iWidth, UINT iHeight);
+public:
 	virtual bool	GameInit();
 	virtual bool	GameRun();
 	virtual bool	GameRelease();

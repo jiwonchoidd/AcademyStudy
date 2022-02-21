@@ -31,13 +31,16 @@ public:
 		std::vector<PNCT_VERTEX>& retList);
 public:
 	virtual bool		SetVertexData();
+	virtual bool		SetIndexData();
 	virtual bool		CheckVertexData() override;
 public:
 	K2DAsset() 
 	{
 		m_speed=20.0f;
-		m_rtSource = {0,0};
-		m_rtDraw={ 0,0 };
+		m_rtSource.left = 0; m_rtSource.right = 0;
+		m_rtSource.top = 0; m_rtSource.bottom = 0;
+		m_rtDraw.left = 0; m_rtDraw.right = g_rtClient.right;
+		m_rtDraw.top = 0; m_rtDraw.bottom = g_rtClient.bottom;
 		m_SequenceTimer= 0.0f;
 		m_AnimIndex = 0;
 	};

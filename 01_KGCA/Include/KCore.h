@@ -18,6 +18,10 @@ public:
 	float		m_Speed=1.0f;
 	bool		m_bDebugText = false;
 	bool		m_bFreeCamera = false;
+public:
+	virtual bool	CreateResizeDevice(UINT iWidth, UINT iHeight);
+	virtual bool	DeleteResizeDevice(UINT iWidth, UINT iHeight);
+	bool		ResizeDevice(UINT iWidth, UINT iHeight);
 private:
 	bool	GameInit()	override;
 	bool	GameRun()	override;

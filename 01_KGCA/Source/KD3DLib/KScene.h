@@ -25,7 +25,7 @@ public:
 	virtual bool	Init(ID3D11DeviceContext* context) = 0;
 	virtual bool	Frame() = 0;
 	virtual bool	Render() = 0;
-	virtual bool	Release() = 0;
+	virtual bool	Release();
 public:
 	KScene();
 	virtual ~KScene();

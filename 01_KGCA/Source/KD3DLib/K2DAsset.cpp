@@ -47,6 +47,7 @@ void K2DAsset::UpdateRectDraw(RECT rt)
 //마스킹 텍스쳐 없을 경우 하나의 텍스쳐만 불러옴
 bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
 {
+	SetIndexData();
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 
 	g_ObjManager.AddCollisionExecute(this,
@@ -125,6 +126,13 @@ void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 bool K2DAsset::SetVertexData()
 {
 	Convert(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
+	return true;
+}
+
+bool K2DAsset::SetIndexData()
+{
+	m_IndexList.push_back(0); m_IndexList.push_back(1); m_IndexList.push_back(2);
+	m_IndexList.push_back(3); m_IndexList.push_back(4); m_IndexList.push_back(5);
 	return true;
 }
 

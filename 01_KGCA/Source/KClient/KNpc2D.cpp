@@ -28,6 +28,7 @@ void	KNpc2D::SelectOverlap(KCollider* pObj, DWORD dwState)
 bool KNpc2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
+	SetIndexData();
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }

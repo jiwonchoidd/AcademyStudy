@@ -26,9 +26,16 @@ LRESULT  KWindow::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
     //WM_KEYDOWN, WM_KEYUP, WM_CHAR, WM_LBUTTONDOWN
     case WM_DESTROY:
+    {
         PostQuitMessage(0);
-        break;
-    break;
+    }break;
+    case WM_SIZE:
+    {
+        UINT iWidth = LOWORD(lParam);
+        UINT iHeight = HIWORD(lParam);
+
+        g_pWindow->ResizeDevice(iWidth, iHeight);
+    }break;
     default:
         return DefWindowProc(hWnd, msg, wParam, lParam);
     }
@@ -87,13 +94,12 @@ bool   KWindow::InitWindows(
     {
         return false;
     }
-   
     GetWindowRect(m_hWnd, &m_rtWindow);
     GetClientRect(m_hWnd, &m_rtClient);
-    
     g_hWnd = m_hWnd;
     g_rtClient = m_rtClient;
-    
+    m_hInstance = hInstance;
+    g_hInstance = m_hInstance;
     // SW_SHOW, nCmdShow
     
     ShowWindow(m_hWnd, SW_SHOW);
@@ -134,6 +140,15 @@ bool	KWindow::GameRun()
 {
     return true;
 }
+bool KWindow::ResizeDevice(UINT iWidth, UINT iHeight)
+{
+    GetWindowRect(m_hWnd, &m_rtWindow);
+    GetClientRect(m_hWnd, &m_rtClient);
+    g_hWnd = m_hWnd;
+    g_rtClient = m_rtClient;
+    g_hInstance = m_hInstance;
+    return true;
+}
 bool	KWindow::GameInit()
 {
     return true;
@@ -146,6 +161,7 @@ KWindow::KWindow() : m_bGameRun(true)
 {
     g_pWindow = this;
 }
+
 
 KWindow::~KWindow()
 {

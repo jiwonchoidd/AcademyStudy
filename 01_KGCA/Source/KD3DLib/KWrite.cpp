@@ -93,6 +93,11 @@ bool KWrite::RenderText(RECT rt,
     }
     return true;
 }
+void KWrite::DeleteDeviceResize()
+{
+    if (m_pTextBrush)m_pTextBrush->Release();
+    if (m_pRT)m_pRT->Release();
+}
 bool KWrite::Release()
 {
     if (m_pd2dFactory) m_pd2dFactory->Release();

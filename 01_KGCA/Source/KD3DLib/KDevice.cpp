@@ -57,22 +57,22 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 	UINT numFeatureLevels = sizeof(featureLevels) / sizeof(featureLevels[0]);
 	m_DriverType = driverTypes[0];
 
-	DXGI_SWAP_CHAIN_DESC sd;
-	ZeroMemory(&sd, sizeof(sd));
-	sd.BufferCount = 1;
-	sd.BufferDesc.Width = g_rtClient.right;
-	sd.BufferDesc.Height = g_rtClient.bottom;
-	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 60;
-	sd.BufferDesc.RefreshRate.Denominator = 1;
-	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.OutputWindow = g_hWnd;
+	ZeroMemory(&m_SwapChainDesc, sizeof(m_SwapChainDesc));
+	m_SwapChainDesc.BufferCount = 1;
+	m_SwapChainDesc.BufferDesc.Width = g_rtClient.right;
+	m_SwapChainDesc.BufferDesc.Height = g_rtClient.bottom;
+	m_SwapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	m_SwapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
+	m_SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+	m_SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	m_SwapChainDesc.OutputWindow = g_hWnd;
 	//뎁스스텐실 count랑 스왑체인 count랑 맞춰야함,
-	sd.SampleDesc.Count = 1;
-	sd.SampleDesc.Quality = 0;
-	sd.Windowed = true;
-	//sd.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	m_SwapChainDesc.SampleDesc.Count = 1;
+	m_SwapChainDesc.SampleDesc.Quality = 0;
+	m_SwapChainDesc.Windowed = true;
+	//m_SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+	//백버퍼에 가장 적합한 디스플레이 모드로 자동 전환함
+	//m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	hr = D3D11CreateDeviceAndSwapChain(
 		NULL,
@@ -82,14 +82,13 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 		featureLevels,
 		numFeatureLevels,
 		D3D11_SDK_VERSION,
-		&sd,
+		&m_SwapChainDesc,
 		&m_pSwapChain,
 		&m_pd3dDevice,
 		&m_FeatureLevel,
 		&m_pImmediateContext);
 
 	g_pd3dDevice = m_pd3dDevice;
-
 	return hr;
 }
 
@@ -119,12 +118,11 @@ HRESULT KDevice::SetDepthStencilView()
 {
 	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
 	HRESULT hr = S_OK;
-	DXGI_SWAP_CHAIN_DESC SDesc;
-	m_pSwapChain->GetDesc(&SDesc);
+	m_pSwapChain->GetDesc(&m_SwapChainDesc);
 	ID3D11Texture2D* pDSTexture = nullptr;
 	D3D11_TEXTURE2D_DESC DescDepth;
-	DescDepth.Width = SDesc.BufferDesc.Width;
-	DescDepth.Height = SDesc.BufferDesc.Height;
+	DescDepth.Width = m_SwapChainDesc.BufferDesc.Width;
+	DescDepth.Height = m_SwapChainDesc.BufferDesc.Height;
 	DescDepth.MipLevels = 1;
 	DescDepth.ArraySize = 1;
 	//RGB는 텍스쳐 리소스 D24는 뎁스
@@ -179,6 +177,30 @@ HRESULT KDevice::SetViewPort()
 	return hr;
 }
 
+bool KDevice::ResizeDevice(UINT width, UINT height)
+{
+	if (m_pd3dDevice==nullptr)return false;
+	//렌더타겟, 깊이 스텐실 버퍼 해제
+	m_pImmediateContext->OMSetRenderTargets(0, NULL, NULL);
+	if (m_pRenderTargetView)m_pRenderTargetView->Release();
+	if (m_DepthStencilView)m_DepthStencilView->Release();
+
+
+	HRESULT hr = m_pSwapChain->ResizeBuffers(m_SwapChainDesc.BufferCount,
+		width, height,
+		m_SwapChainDesc.BufferDesc.Format,
+		m_SwapChainDesc.Flags);
+	if (SUCCEEDED(hr))
+	{
+		m_pSwapChain->GetDesc(&m_SwapChainDesc);
+	}
+	SetRenderTargetView();
+	SetDepthStencilView();
+	SetViewPort();
+	GetClientRect(g_hWnd, &g_rtClient);
+	return true;
+}
+
 bool KDevice::CleanupDevice()
 {
 	//스마트 포인터 사용
@@ -204,4 +226,5 @@ KDevice::KDevice()
 	m_pRenderTargetView = nullptr;;
 	m_pGIFactory = nullptr;
 	m_pImmediateContext = nullptr;
+	m_DepthStencilView = nullptr;
 }

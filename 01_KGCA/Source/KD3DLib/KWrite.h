@@ -19,6 +19,7 @@ public:
 	HRESULT CreateDeviceResources(IDXGISurface1* pSurface);
 	bool	RenderText(RECT rt, const TCHAR* text,
 		D2D1::ColorF color, IDWriteTextFormat* pTextFormat=nullptr);
+	void	DeleteDeviceResize();
 	bool	Init();
 	bool	Frame();
 	bool	Render();

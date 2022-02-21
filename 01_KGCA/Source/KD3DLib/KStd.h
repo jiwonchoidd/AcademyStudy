@@ -35,7 +35,6 @@ extern HWND  g_hWnd;
 extern RECT  g_rtClient;
 extern ID3D11Device* g_pd3dDevice;
 extern HINSTANCE g_hInstance;
-
 //≈€«√∏¥ ΩÃ±€≈Ê
 template<class T>
 class Singleton
