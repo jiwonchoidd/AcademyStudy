@@ -29,6 +29,13 @@ public:
 	// 화면좌표계를 NDC 변환
 	virtual void	Convert(std::vector<PNCT_VERTEX>& list,
 		std::vector<PNCT_VERTEX>& retList);
+	// 화면좌표 위치를 중점으로 NDC 변환
+	virtual void	ConvertIndex(
+		KVector2 center, float fWidth, float fHeight,
+		std::vector<PNCT_VERTEX>& retList);
+	// 화면좌표계를 NDC 변환
+	virtual void	ConvertIndex(std::vector<PNCT_VERTEX>& list,
+		std::vector<PNCT_VERTEX>& retList);
 public:
 	virtual bool		SetVertexData();
 	virtual bool		SetIndexData();
@@ -37,8 +44,10 @@ public:
 	K2DAsset() 
 	{
 		m_speed=20.0f;
-		m_rtSource = {0,0};
-		m_rtDraw={ 0,0 };
+		m_rtSource.left = 0; m_rtSource.right = 0;
+		m_rtSource.top = 0; m_rtSource.bottom = 0;
+		m_rtDraw.left = 0; m_rtDraw.right = g_rtClient.right;
+		m_rtDraw.top = 0; m_rtDraw.bottom = g_rtClient.bottom;
 		m_SequenceTimer= 0.0f;
 		m_AnimIndex = 0;
 	};

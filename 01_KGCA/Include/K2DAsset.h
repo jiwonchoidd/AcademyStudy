@@ -29,6 +29,13 @@ public:
 	// 화면좌표계를 NDC 변환
 	virtual void	Convert(std::vector<PNCT_VERTEX>& list,
 		std::vector<PNCT_VERTEX>& retList);
+	// 화면좌표 위치를 중점으로 NDC 변환
+	virtual void	ConvertIndex(
+		KVector2 center, float fWidth, float fHeight,
+		std::vector<PNCT_VERTEX>& retList);
+	// 화면좌표계를 NDC 변환
+	virtual void	ConvertIndex(std::vector<PNCT_VERTEX>& list,
+		std::vector<PNCT_VERTEX>& retList);
 public:
 	virtual bool		SetVertexData();
 	virtual bool		SetIndexData();

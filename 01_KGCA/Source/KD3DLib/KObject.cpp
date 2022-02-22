@@ -23,7 +23,7 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-    m_cbData.vValue.z = g_fSecTimer;
+    //m_cbData.vValue.z = g_fSecTimer;
     return true;
 }
 
@@ -33,30 +33,30 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     //리소스 업데이트 데이터와 리소스 버퍼의 저장
     pContext->UpdateSubresource(
         m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
+
     pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
     pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
     //텍스쳐 리소스를 0번 슬롯에 하나를 넣겠다는 뜻
  
-    if(m_Texture.m_pSRVTexture!=nullptr)
-    pContext->PSSetShaderResources(0, 1, m_Texture.m_pSRVTexture.GetAddressOf());
+    if(m_pColorTex!=nullptr)
+    pContext->PSSetShaderResources(0, 1, m_pColorTex->m_pSRVTexture.GetAddressOf());
 
-    if (m_Texture.m_pSRVMask != nullptr)
-    pContext->PSSetShaderResources(1, 1, m_Texture.m_pSRVMask.GetAddressOf());
+    if (m_pMaskTex!= nullptr)
+    pContext->PSSetShaderResources(1, 1, m_pMaskTex->m_pSRVTexture.GetAddressOf());
 
     //쉐이더
-    pContext->VSSetShader(m_pVS.Get(), NULL, 0);
-    pContext->PSSetShader(m_pPS.Get(), NULL, 0);
+    pContext->VSSetShader(m_pVS->m_pVertexShader.Get(), NULL, 0);
+    pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
 
     pContext->IASetInputLayout(m_pVertexLayout.Get());
     UINT pStrides = m_iVertexSize;
     UINT pOffsets = 0;
+
     //정점버퍼 바인딩 인덱스버퍼 바인딩 
     pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
         &pStrides, &pOffsets);
-    pContext->IASetIndexBuffer(
-        m_pIndexBuffer.Get(),
-        DXGI_FORMAT_R32_UINT, 0);
+    pContext->IASetIndexBuffer(m_pIndexBuffer.Get(),DXGI_FORMAT_R32_UINT, 0);
     return true;
 }
 
@@ -82,54 +82,24 @@ bool KObject::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
     return false;
 }
 
-HRESULT KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
+//매니져를 사용해 쉐이더 로드
+bool KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
 {
-    HRESULT hr = S_OK;
-    ID3DBlob* error = nullptr;
-    m_pVSBlob = LoadShaderBlob(vsFile, "VS", "vs_5_0");
-    if (m_pVSBlob == nullptr)
-    {
-        return hr;
-    }
-    hr = g_pd3dDevice->CreateVertexShader(
-        m_pVSBlob->GetBufferPointer(),
-        m_pVSBlob->GetBufferSize(),
-        NULL, &m_pVS);
-    if (FAILED(hr)) return hr;
-
-    ID3DBlob* PSBlob = nullptr;
-    PSBlob = LoadShaderBlob(psFile, "PS", "ps_5_0");
-    if (PSBlob == nullptr)
-    {
-        return hr;
-    }
-    hr = g_pd3dDevice->CreatePixelShader(
-        PSBlob->GetBufferPointer(),
-        PSBlob->GetBufferSize(),
-        NULL, &m_pPS);
-    if (FAILED(hr)) return hr;
-    PSBlob->Release();
-    return hr;
+    m_pVS = g_ShaderManager.CreateVertexShader(vsFile, "VS");
+    m_pPS = g_ShaderManager.CreatePixelShader(psFile, "PS");
+    return true;
 }
 
+//매니져를 사용해 텍스쳐 로드
 bool KObject::LoadTexture(std::wstring filename, std::wstring mask)
 {
     if (!mask.empty())
     {
-        HRESULT hr = m_Texture.LoadTextureWithMask(filename, mask);
-        if (FAILED(hr))
-        {
-            return false;
-        }
+        m_pMaskTex = g_TextureMananger.Load(mask);
     }
-    else
-    {
-        HRESULT hr = m_Texture.LoadTexture(filename);
-        if (FAILED(hr))
-        {
-            return false;
-        }
-    }
+   
+    m_pColorTex = g_TextureMananger.Load(filename);
+    m_TextureDesc = m_pColorTex->m_TextureDesc;
     return true;
 }
 
@@ -214,12 +184,11 @@ HRESULT KObject::CreateVertexLayout()
         { "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     hr = g_pd3dDevice->CreateInputLayout(layout, _countof(layout),
-        m_pVSBlob->GetBufferPointer(),
-        m_pVSBlob->GetBufferSize(),
+        m_pVS->m_pVSCodeResult.Get()->GetBufferPointer(),
+        m_pVS->m_pVSCodeResult.Get()->GetBufferSize(),
         &m_pVertexLayout);
     if (FAILED(hr)) return hr;
 
-    m_pVSBlob->Release();
     return hr;
 }
 
@@ -237,7 +206,7 @@ bool KObject::CreateObject(std::wstring vsFile,
         {
             CreateIndexBuffer();
         }
-        if (SUCCEEDED(LoadShader(vsFile, psFile)))
+        if ((LoadShader(vsFile, psFile)))
         {
             if (SUCCEEDED(CreateVertexLayout()))
             {
@@ -249,40 +218,13 @@ bool KObject::CreateObject(std::wstring vsFile,
     return false;
 }
 
-ID3DBlob* KObject::LoadShaderBlob(std::wstring vs, std::string function, std::string version)
-{
-    HRESULT hr = S_OK;
-    ID3DBlob* ret = nullptr;
-    ID3DBlob* error = nullptr;
-    hr = D3DCompileFromFile(
-        vs.c_str(),
-        nullptr,
-        nullptr,
-        function.c_str(),
-        version.c_str(),
-        0,
-        0,
-        &ret,
-        &error);
-    if (FAILED(hr))
-    {
-        MessageBoxA(NULL,
-            (char*)error->GetBufferPointer(),
-            "error", MB_OK);
-        return ret;
-    }
-    return ret;
-}
 
 bool KObject::Release()
 {
-    m_pPS.Reset();
-    m_pVS.Reset();
     m_pVertexBuffer.Reset();
     m_pIndexBuffer.Reset();
     m_pConstantBuffer.Reset();
     m_pVertexLayout.Reset();
-    m_pVSBlob.Reset();
     return true;
 }
 

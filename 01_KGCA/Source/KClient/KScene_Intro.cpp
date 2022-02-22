@@ -6,7 +6,6 @@ bool KScene_Intro::Load(std::wstring file)
 	m_BGM->SoundPlay(true);
 	K2DAsset* obj = new K2DAsset;
 	obj->Init();
-	obj->SetRectSource({ 0,0,0,0 });
 	obj->SetRectDraw({ 0, 0, g_rtClient.right, g_rtClient.bottom });
 	obj->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
 	if (!obj->CreateObject_Mask(L"../../data/shader/VS_2D.txt", L"../../data/shader/PS_2D.txt",

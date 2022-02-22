@@ -1,8 +1,6 @@
 #pragma once
-#include "KTexture.h"
-#include <d3dcommon.h>
-#include <d3dcompiler.h>
-#pragma comment (lib, "d3dcompiler.lib")
+#include "KShaderManager.h"
+#include "KTextureManager.h"
 struct PNCT_VERTEX
 {
 	KVector3 pos;
@@ -35,8 +33,6 @@ namespace wrl = Microsoft::WRL;
 class KObject
 {
 public:
-	//텍스쳐 배열
-	KTexture				m_Texture;
 	UINT					m_iNumIndex = 0;
 	UINT					m_iVertexSize = 0;
 	CB_DATA					m_cbData;
@@ -44,17 +40,20 @@ public:
 	std::vector <PNCT_VERTEX>		m_VertexList;
 	std::vector <DWORD>				m_IndexList;
 public:
-	wrl::ComPtr <ID3D11PixelShader>	 m_pPS;
-	wrl::ComPtr <ID3D11VertexShader> m_pVS;
+	KShader*		m_pVS = nullptr;
+	KShader*		m_pPS = nullptr;
+	KTexture*		m_pColorTex = nullptr;
+	KTexture*		m_pMaskTex = nullptr;
+	D3D11_TEXTURE2D_DESC		m_TextureDesc;
+public:
 	wrl::ComPtr <ID3D11Buffer>	 	 m_pVertexBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pIndexBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pConstantBuffer;
 	wrl::ComPtr <ID3D11InputLayout>  m_pVertexLayout;
-	wrl::ComPtr <ID3DBlob>			 m_pVSBlob = nullptr;
 public:
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
-	virtual HRESULT		LoadShader(std::wstring vsFile, std::wstring psFile);
+	virtual bool		LoadShader(std::wstring vsFile, std::wstring psFile);
 	virtual bool		LoadTexture(std::wstring filename, std::wstring mask = L"");
 public:
 	virtual bool		CheckVertexData();
@@ -72,8 +71,6 @@ public:
 	virtual bool		Render(ID3D11DeviceContext* pContext);
 	virtual bool		PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex = 0);
 	virtual bool		Release();
-	static ID3DBlob*    LoadShaderBlob(std::wstring vs,
-		std::string function, std::string version);
 	KObject();
 };
 
