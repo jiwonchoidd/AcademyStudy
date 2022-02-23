@@ -64,8 +64,10 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 
 void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 {
-	m_pos += vPos;
-	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+	//m_pos += vPos;
+	m_matWorld._41 += vPos.x * 0.5f;
+	m_matWorld._42 -= vPos.y * 0.5f;
+	//m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 
 	ConvertIndex(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
 	pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
@@ -76,6 +78,8 @@ void K2DAsset::SetPosition(KVector2 vPos)
 {
 	// 현재위치
 	m_pos = vPos;
+	m_matWorld._41 = vPos.x;
+	m_matWorld._42 = vPos.y;
 }
 
 //현재 위치, 크기, 

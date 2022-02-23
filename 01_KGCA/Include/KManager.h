@@ -1,5 +1,7 @@
 #pragma once
 #include "KStd.h"
+//이 매니져는 기본으로 이름, 데이터 맵으로 저장한다.
+//이 매니져를 상속안한 매니져들은 인덱스로 저장함
 template <class T, class S>
 class KManager : public  Singleton<S>
 {

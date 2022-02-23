@@ -116,7 +116,10 @@ KShader::KShader()
 }
 KShader::~KShader()
 {
-
+	if (m_pVertexShader) m_pVertexShader.Reset();
+	if (m_pPixelShader) m_pPixelShader.Reset();
+	m_pVertexShader = nullptr;
+	m_pPixelShader = nullptr;
 }
 
 KShader* KShaderManager::CreateVertexShader(std::wstring filename, std::string entry)

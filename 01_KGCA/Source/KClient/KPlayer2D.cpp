@@ -9,7 +9,8 @@ bool KPlayer2D::Frame()
 		m_dir.y = 1;
 		pos.y -= m_speed * g_fSecPerFrame;
 		AddPosition(pos, m_pContext);
-		RectSequence(4.0f, 6, 8);
+		
+		RectSequence(3.0f, 8, 11);
 	}
 	else if (g_InputData.bSKey)
 	{
@@ -18,7 +19,7 @@ bool KPlayer2D::Frame()
 		pos.y += m_speed * g_fSecPerFrame;
 		m_dir.y = -1;
 		AddPosition(pos, m_pContext);
-		RectSequence(4.0f, 0, 2);
+		RectSequence(3.0f, 0, 3);
 	}
 	else if (g_InputData.bAKey)
 	{
@@ -27,7 +28,7 @@ bool KPlayer2D::Frame()
 		pos.x -= m_speed * g_fSecPerFrame;
 		m_dir.x = -1;
 		AddPosition(pos, m_pContext);
-		RectSequence(4.0f, 9, 11);
+		RectSequence(3.0f, 12, 15);
 	}
 	else if (g_InputData.bDKey)
 	{
@@ -36,7 +37,7 @@ bool KPlayer2D::Frame()
 		pos.x += m_speed * g_fSecPerFrame;
 		m_dir.x = 1;
 		AddPosition(pos, m_pContext);
-		RectSequence(4.0f, 3, 5);
+		RectSequence(3.0f, 4, 7);
 	}
 	return true;
 }
@@ -73,17 +74,23 @@ void KPlayer2D::SelectOverlap(KCollider* pObj, DWORD dwState)
 
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
-	m_speed = 100.0f;
+	m_speed = 2.0f;
 	m_pContext = context;
 	//걷는 애니메이션 한줄 잘라내기
 	for (int resource = 0; resource < 12; resource++)
 	{
 		RECT rc = { 15 + (resource * 35),30,35,35 };
 		m_rtWalking.push_back(rc);
+		//홀수면
+		if (resource == 1 || resource == 4 || resource == 7 || resource == 10 || resource == 13)
+		{
+			RECT rc = { 15 + ((resource-1) * 35),30,35,35 };
+			m_rtWalking.push_back(rc);
+		}
 	}
 	//
-	SetRectSource(m_rtWalking[3]); //소스 
-	SetRectDraw({ 0,0,55,60 });
+	SetRectSource(m_rtWalking[8]); //소스 
+	SetRectDraw({ 0, 0, 182, 98});
 	
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
@@ -92,7 +99,7 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 KPlayer2D::KPlayer2D()
 {
 	m_pContext = nullptr;
-	m_speed = 100.0f;
+	m_speed = 2.0f;
 	m_rtWalking.clear();
 }
 

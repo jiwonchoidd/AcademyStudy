@@ -1,22 +1,18 @@
 #pragma once
 #include "KScene.h"
 #include "KPlayer2D.h"
+#include "KMap.h"
 #include "KNpc2D.h"
-#include "KPlaneObj.h"
 #include "KCamera.h"
-#include "KSkyBox.h"
 #include "KState.h"
 #include "KSoundManager.h"
 class KScene_Game_0 : public KScene
 {
 public:
-    KSkyBox                 m_Skybox;
-    KDebugCamera            m_Camera;
-    KSound*                 m_BGM;
+    KCamera                 m_Camera;
     KPlayer2D			    m_PlayerObj;
+    KSound*                 m_BGM;
     std::vector<KNpc2D*>    m_NpcLlist;
-    KPlaneObj			    m_Plane;
-    KBoxObj				    m_Box;
 public:
     bool    Load(std::wstring file) override;
 public:

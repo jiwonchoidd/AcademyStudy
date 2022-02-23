@@ -33,6 +33,8 @@ namespace wrl = Microsoft::WRL;
 class KObject
 {
 public:
+	KMatrix		m_matWorld;
+public:
 	UINT					m_iNumIndex = 0;
 	UINT					m_iVertexSize = 0;
 	CB_DATA					m_cbData;

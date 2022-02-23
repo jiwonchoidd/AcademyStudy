@@ -8,6 +8,9 @@ cbuffer CBuf
 	matrix g_matWorld : packoffset(c0);
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
+	matrix g_matNormal : packoffset(c12);
+	float4 g_light : packoffset(c16);
+	float4 g_value : packoffset(c17); 
 };
 
 struct VS_OUTPUT
@@ -21,7 +24,11 @@ struct VS_OUTPUT
 VS_OUTPUT VS(float3 p: POSITION, float3 n : NORMAL, float4 c : COLOR, float2 t : TEXTURE) 
 {
 	VS_OUTPUT pOut = (VS_OUTPUT)0;
-	pOut.p = float4(p.x,p.y,0.0f,1.0f);
+	float4 vLocal = float4(p,1.0f);
+	float4 vWorld = mul(vLocal, g_matWorld);
+	float4 vView = mul(vWorld, g_matView);
+	float4 vProj = mul(vView, g_matProj);
+	pOut.p = vProj;
 	pOut.n = n;
 	pOut.c = c;
 	pOut.t = t;

@@ -6,7 +6,7 @@ bool KSceneManager::Init(ID3D11DeviceContext* context)
 
 	//첫번째 씬은 인트로 설정한다. 
 	m_pCurrentScene = new KScene_Intro;
-	m_CurrentScene_Index = S_LOAD;
+	m_CurrentScene_Index = S_MENU;
 	m_pCurrentScene->Init(m_pContext);
 	m_pCurrentScene->Load(L"test");
 	return true;
@@ -40,7 +40,7 @@ bool KSceneManager::SetScene(BYTE index)
 		case S_MENU:
 		{
 			m_pCurrentScene = new KScene_Intro;
-			m_CurrentScene_Index = S_LOAD;
+			m_CurrentScene_Index = S_MENU;
 			break;
 		}
 		case S_GAME:

@@ -2,12 +2,13 @@
 
 bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
+	m_pContext = context;
+	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }
 
 bool KUI::Frame()
 {
-	KObject::Frame();
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
 	m_cbData.vLightDir= KVector4(
@@ -19,6 +20,7 @@ bool KUI::Frame()
 		0,
 		0,
 		1.0f);
+	KObject::Frame();
 	return true;
 }
 
@@ -35,7 +37,7 @@ void KUI::SelectOverlap(KCollider* pObj, DWORD dwState)
 
 void KUI::FadeIn()
 {
-	m_fAlpha += g_fSecPerFrame * 0.5f;
+	m_fAlpha += g_fSecPerFrame * 0.3f;
 	m_fAlpha = min(m_fAlpha, 1.0f);
 	if (m_fAlpha >= 1.0f)
 	{
@@ -45,7 +47,7 @@ void KUI::FadeIn()
 
 void KUI::FadeOut()
 {
-	m_fAlpha = m_fAlpha - g_fSecPerFrame * 0.5f;
+	m_fAlpha = m_fAlpha - g_fSecPerFrame * 0.3f;
 	m_fAlpha = max(m_fAlpha, 0.0f);
 	if (m_fAlpha <= 0.0f)
 	{

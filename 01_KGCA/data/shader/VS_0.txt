@@ -8,6 +8,8 @@ cbuffer CBuf
 	matrix g_matWorld : packoffset(c0);
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
+	float4 vLightDir : packoffset(c12);
+	float4	vValue : packoffset(c13); 
 };
 
 struct VS_OUTPUT

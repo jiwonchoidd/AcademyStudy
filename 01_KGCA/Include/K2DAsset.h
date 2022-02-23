@@ -43,7 +43,7 @@ public:
 public:
 	K2DAsset() 
 	{
-		m_speed=20.0f;
+		m_speed=2.0f;
 		m_rtSource.left = 0; m_rtSource.right = 0;
 		m_rtSource.top = 0; m_rtSource.bottom = 0;
 		m_rtDraw.left = 0; m_rtDraw.right = g_rtClient.right;
