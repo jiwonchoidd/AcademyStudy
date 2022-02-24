@@ -72,7 +72,7 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 	m_SwapChainDesc.Windowed = true;
 	//m_SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	//백버퍼에 가장 적합한 디스플레이 모드로 자동 전환함
-	m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	//m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	hr = D3D11CreateDeviceAndSwapChain(
 		NULL,

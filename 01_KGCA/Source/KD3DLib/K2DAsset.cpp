@@ -27,6 +27,7 @@ void K2DAsset::SetRectDraw(RECT rt)
 	m_rtDraw = rt;
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
+	D3DKMatrixScaling(&m_matWorld, rt.right, rt.bottom, 1.0f);
 }
 
 void K2DAsset::UpdateRectDraw(RECT rt)
@@ -56,10 +57,11 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 
 void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 {
-	m_pos += vPos;
+	//m_pos += vPos;
+	m_matWorld._41 += vPos.x;
+	m_matWorld._42 += vPos.y;
+	m_pos = { m_matWorld._41, m_matWorld._42 };
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-	m_matWorld._41 = m_pos.x;
-	m_matWorld._42 = m_pos.y;
 	ConvertIndex(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
 	pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
 		&m_VertexList.at(0), 0, 0);
@@ -74,6 +76,7 @@ void K2DAsset::SetPosition(KVector2 vPos)
 }
 
 //현재 위치, 크기, 
+//구버젼, 화면 좌표계 기준임.
 void K2DAsset::Convert(KVector2 center, float fWidth, float fHeight,
 						std::vector<PNCT_VERTEX>& retList)
 {
@@ -89,7 +92,7 @@ void K2DAsset::Convert(KVector2 center, float fWidth, float fHeight,
 
 	Convert(list, retList);
 }
-
+//구버젼, 화면 좌표계 기준임.
 void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 						std::vector<PNCT_VERTEX>& retList)
 {
@@ -131,19 +134,19 @@ void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 		retList[5].tex.x = u + w; retList[5].tex.y = pos + h;
 	}
 }
-
+//화면좌표계-> 데카르트 좌표계로 변경했음
 void K2DAsset::ConvertIndex(KVector2 center, float fWidth, float fHeight, std::vector<PNCT_VERTEX>& retList)
 {
 	std::vector<PNCT_VERTEX> list(4);
 	float halfWidth = fWidth / 2.0f;
 	float halfHeight = fHeight / 2.0f;
-	list[0].pos = { center.x - halfWidth, center.y - halfHeight };
-	list[1].pos = { center.x + halfWidth, center.y - halfHeight };
-	list[2].pos = { center.x - halfWidth, center.y + halfHeight };
-	list[3].pos = { center.x + halfWidth, center.y + halfHeight };
+	list[0].pos = { center.x - halfWidth, center.y + halfHeight };
+	list[1].pos = { center.x + halfWidth, center.y + halfHeight };
+	list[2].pos = { center.x - halfWidth, center.y - halfHeight };
+	list[3].pos = { center.x + halfWidth, center.y - halfHeight };
 	ConvertIndex(list, retList);
 }
-
+//화면좌표계-> 데카르트 좌표계로 변경했음
 void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VERTEX>& retList)
 {
 	retList.resize(list.size());
@@ -154,12 +157,10 @@ void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VER
 		retList[i].pos.y = list[i].pos.y / g_rtClient.bottom;
 		// 0 ~ 1 -> -1 ~ +1 :::: -1 ~ +1 -> 0 ~ 1
 		// x = x * 2 + -1;  ::::  x= x * 0.5f + 0.5f;
-		retList[i].pos.x = retList[i].pos.x * 2.0f - 1.0f;
-		retList[i].pos.y = -1.0f * (retList[i].pos.y * 2.0f - 1.0f);
+		retList[i].pos.x = -1.0f +(retList[i].pos.x * 2.0f);
+		retList[i].pos.y = retList[i].pos.y * 2.0f - 1.0f;
 	}
-	// 91,1, 42, 56 => 0 ~ 1
-	/*m_rtSource.left = 0; m_rtSource.right = 0;
-	m_rtSource.top = 0; m_rtSource.bottom = 0;*/
+	// 91,1, 42, 56 => 0 ~ 1	
 	if (m_rtSource.left == 0 && m_rtSource.right == 0 &&
 		m_rtSource.top == 0 && m_rtSource.bottom == 0)
 	{

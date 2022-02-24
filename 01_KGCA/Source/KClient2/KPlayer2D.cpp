@@ -4,7 +4,7 @@
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_Speed = 200.0f;
+	m_Speed = 100.0f;
 	m_Name = L"Player0";
 	//걷는 애니메이션 한줄 잘라내기
 
@@ -39,13 +39,13 @@ bool KPlayer2D::Frame()
 	KVector2 pos;
 	if (g_InputData.bWKey)
 	{
-		pos.y -= m_Speed * g_fSecPerFrame;
+		pos.y += m_Speed * g_fSecPerFrame;
 		m_dir = {0,1};
 		walk->RunAnim(3.0f, 8, 11);
 	}
 	else if (g_InputData.bSKey)
 	{
-		pos.y += m_Speed * g_fSecPerFrame;
+		pos.y -= m_Speed * g_fSecPerFrame;
 		m_dir = { 0,-1 };
 		walk->RunAnim(3.0f, 0, 3);
 	}
@@ -91,9 +91,9 @@ bool KPlayer2D::Render(ID3D11DeviceContext* pContext)
 	//if(m_AnimIndex<m_rtWalking.size())
 	SetRectSource(walk->m_anim_array[walk->m_AnimIndex]);
 	//anim 디버거
-	if (ImGui::Begin(u8"anim 디버거"))
+	if (ImGui::Begin(u8"player anim"))
 	{
-		ImGui::Text("m_pos %d, ", walk->m_AnimIndex);
+		ImGui::Text("animation %d, ", walk->m_AnimIndex);
 	}
 	ImGui::End();
 

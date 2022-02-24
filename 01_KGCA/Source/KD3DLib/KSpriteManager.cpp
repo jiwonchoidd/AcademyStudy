@@ -78,7 +78,7 @@ KSprite* KSpriteManager::Load(std::wstring filename)
 	if (fp_src == NULL) return nullptr;
 
 	_fgetts(buffer, _countof(buffer), fp_src);
-	_stscanf_s(buffer, _T("%s%d%s"), temp, (unsigned int)_countof(temp),
+	_stscanf_s(buffer, _T("%s%d%d"), temp, (unsigned int)_countof(temp),
 		&num_sprite);
 
 	for (int iCnt = 0; iCnt < num_sprite; iCnt++)
@@ -87,7 +87,7 @@ KSprite* KSpriteManager::Load(std::wstring filename)
 		KSprite* pSprite = new KSprite;
 		int iNumFrame = 0;
 		_fgetts(buffer, _countof(buffer), fp_src);
-		_stscanf_s(buffer, _T("%s %d %f"), name, (unsigned int)_countof(name),
+		_stscanf_s(buffer, _T("%s %d %d %f"), name, (unsigned int)_countof(name),
 			&iNumFrame,
 			&pSprite->m_anim_time);
 

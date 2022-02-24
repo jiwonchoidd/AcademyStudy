@@ -82,7 +82,7 @@ bool KScene_Game_0::Frame()
 	m_PlayerObj.Frame();
 
 	//카메라 이동
-	m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
+	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
 	
 	//npc 이동
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
@@ -115,7 +115,7 @@ bool KScene_Game_0::Render()
 		m_NpcLlist[iObj]->Render(m_pContext);
 	}
 	//플레이어 렌더링
-	m_PlayerObj.SetMatrix(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
 
 	return true;
