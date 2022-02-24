@@ -3,13 +3,12 @@
 
 #pragma region Camera
 
-bool KCamera::Follow2DPos(KMatrix* vPos)
+bool KCamera::Follow2DPos(KVector2* vPos)
 {
-    //OnMouseRotation();
+ 
+    m_vCameraPos.x = vPos->x;
+    m_vCameraPos.y= vPos->y;
 
-
-    m_vCameraPos.x = vPos->_41;
-    m_vCameraPos.y = vPos->_42;
 
     m_matWorld._41 = m_vCameraPos.x;
     m_matWorld._42 = m_vCameraPos.y;
@@ -119,7 +118,7 @@ KCamera::KCamera()
     D3DKMatrixIdentity(&m_matWorld);
     m_vCameraPos = { 0, 0, -10.0f };
     m_vCameraTarget = { 0, 0, 0.0f };
-    m_fSpeed = 5.0f;
+    m_fSpeed = 1.0f;
     m_fMouseSensitivity = 200;
     m_fOriginSpeed = m_fSpeed;
 }

@@ -33,6 +33,7 @@ class KCollider : public KObject
 {
 public:
 	int					m_ID;
+	std::wstring		m_Name;
 	DWORD				m_CollisonType;
 
 public:
@@ -60,6 +61,7 @@ public:
 		m_CollisonType = Overlap;
 		m_SelectType = Select_Overlap;
 		m_SelectState= S_DEFAULT;
+		m_Name = L"Undefined";
 	}
 };
 

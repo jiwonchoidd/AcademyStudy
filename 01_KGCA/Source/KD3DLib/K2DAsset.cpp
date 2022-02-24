@@ -3,26 +3,17 @@
 //오브젝트 충돌콜백
 void K2DAsset::ObjectOverlap(KCollider* pObj, DWORD dwState)
 {
-	//int kkk = 0;
+	if (dwState == KCollisionType::Overlap)
+	{
+		int kkk = 0;
+	}
 }
 //마우스 선택콜백
 void K2DAsset::SelectOverlap(KCollider* pObj, DWORD dwState)
 {
-
-}
-
-void K2DAsset::RectSequence(float speed, int start, int end)
-{
-	int betw = end - start;
-	m_SequenceTimer += betw * g_fSecPerFrame * speed;
-	float temp= m_SequenceTimer + start;
-	temp = max(temp, start);
-	temp = min(temp, end);
-	m_AnimIndex = temp;
-	
-	if (m_SequenceTimer > betw +1)
+	if (dwState == KSelectType::Select_Overlap)
 	{
-		m_SequenceTimer = 0;
+		int kkk = 0;
 	}
 }
 
@@ -48,7 +39,8 @@ void K2DAsset::UpdateRectDraw(RECT rt)
 bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
 {
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-
+	m_matWorld._41 = m_pos.x;
+	m_matWorld._42 = m_pos.y;
 	g_ObjManager.AddCollisionExecute(this,
 		std::bind(&KCollider::ObjectOverlap, this,
 			std::placeholders::_1,
@@ -64,11 +56,10 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 
 void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
 {
-	//m_pos += vPos;
-	m_matWorld._41 += vPos.x * 0.5f;
-	m_matWorld._42 -= vPos.y * 0.5f;
-	//m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-
+	m_pos += vPos;
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+	m_matWorld._41 = m_pos.x;
+	m_matWorld._42 = m_pos.y;
 	ConvertIndex(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
 	pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
 		&m_VertexList.at(0), 0, 0);
@@ -78,8 +69,8 @@ void K2DAsset::SetPosition(KVector2 vPos)
 {
 	// 현재위치
 	m_pos = vPos;
-	m_matWorld._41 = vPos.x;
-	m_matWorld._42 = vPos.y;
+	m_matWorld._41 = m_pos.x;
+	m_matWorld._42 = m_pos.y;
 }
 
 //현재 위치, 크기, 
@@ -193,6 +184,8 @@ void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VER
 bool K2DAsset::SetVertexData()
 {
 	ConvertIndex(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
+	m_matWorld._41 = m_pos.x;
+	m_matWorld._42 = m_pos.y;
 	return true;
 }
 
@@ -208,4 +201,25 @@ bool K2DAsset::CheckVertexData()
 	SetVertexData();
 	SetIndexData();
 	return true;
+}
+
+K2DAsset::K2DAsset()
+{
+	m_Speed = 2.0f;
+	m_rtSource.left = 0; m_rtSource.right = 0;
+	m_rtSource.top = 0; m_rtSource.bottom = 0;
+	m_rtDraw.left = 0; m_rtDraw.right = g_rtClient.right;
+	m_rtDraw.top = 0; m_rtDraw.bottom = g_rtClient.bottom;
+}
+//소멸자에서 콜라이더 삭제
+K2DAsset::~K2DAsset()
+{
+	g_ObjManager.DeleteExecute(this,
+		std::bind(&KCollider::ObjectOverlap, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
+	g_ObjManager.DeleteSelectExecute(this,
+		std::bind(&KCollider::SelectOverlap, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
 }

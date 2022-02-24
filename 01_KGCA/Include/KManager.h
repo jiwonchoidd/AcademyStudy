@@ -13,7 +13,7 @@ public:
 public:
 	std::wstring Splitpath(std::wstring path, std::wstring entry);
 	T* CheckLoad(std::wstring name);
-	T* Load(std::wstring filename);
+	virtual T* Load(std::wstring filename);
 	T* GetPtr(std::wstring key);
 	bool	Init();
 	bool	Frame();

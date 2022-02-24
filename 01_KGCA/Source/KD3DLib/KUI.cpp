@@ -3,6 +3,8 @@
 bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
+	m_CollisonType = Ignore;
+	m_SelectType = Select_Ignore;
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }

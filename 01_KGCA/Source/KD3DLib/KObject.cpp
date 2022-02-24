@@ -232,5 +232,4 @@ KObject::KObject()
 {
     m_iVertexSize = sizeof(PNCT_VERTEX);
     m_iNumIndex = 0;
-    D3DKMatrixIdentity(&m_matWorld);
 }

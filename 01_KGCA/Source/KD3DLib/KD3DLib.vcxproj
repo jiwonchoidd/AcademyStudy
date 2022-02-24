@@ -43,6 +43,7 @@
     <ClCompile Include="KSkyBox.cpp" />
     <ClCompile Include="KSound.cpp" />
     <ClCompile Include="KSoundManager.cpp" />
+    <ClCompile Include="KSpriteManager.cpp" />
     <ClCompile Include="KState.cpp" />
     <ClCompile Include="KTextureManager.cpp" />
     <ClCompile Include="KTimer.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="KSkyBox.h" />
     <ClInclude Include="KSound.h" />
     <ClInclude Include="KSoundManager.h" />
+    <ClInclude Include="KSpriteManager.h" />
     <ClInclude Include="KState.h" />
     <ClInclude Include="KStd.h" />
     <ClInclude Include="KTextureManager.h" />

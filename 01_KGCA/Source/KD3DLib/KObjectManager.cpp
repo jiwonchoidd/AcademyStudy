@@ -119,5 +119,10 @@ bool KObjectManager::Frame()
 
 bool KObjectManager::Release()
 {
+	if(!m_ObjectList.empty())
+	m_ObjectList.clear();
+	if(!m_SelectList.empty())
+	m_SelectList.clear();
+
 	return true;
 }

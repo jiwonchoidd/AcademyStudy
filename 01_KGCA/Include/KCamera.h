@@ -27,7 +27,7 @@ public:
 	virtual KMatrix     CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp= KVector3(0,1,0));
 	virtual KMatrix  	CreateProjMatrix(float fNear, float fFar, float fFov, float fAspect);
 public:
-	virtual	bool		Follow2DPos(KMatrix* vPos);
+	virtual	bool		Follow2DPos(KVector2* vPos);
 	virtual bool		Init();
 	virtual bool		Frame();
 	virtual bool		Render();
