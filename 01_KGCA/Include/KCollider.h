@@ -41,6 +41,7 @@ public:
 	int					m_SelectID;
 	DWORD				m_SelectType;
 	DWORD				m_SelectState;
+	DWORD				m_PreSelectState;
 public:
 	KRect				m_rtColl;
 	KVector2			m_pos;

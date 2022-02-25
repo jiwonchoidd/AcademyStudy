@@ -72,7 +72,7 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 	m_SwapChainDesc.Windowed = true;
 	//m_SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	//백버퍼에 가장 적합한 디스플레이 모드로 자동 전환함
-	//m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	hr = D3D11CreateDeviceAndSwapChain(
 		NULL,
@@ -221,6 +221,12 @@ bool KDevice::CleanupDevice()
 KDevice::KDevice()
 {
 	ImGui_ImplDX11_Shutdown();
+
+	if (m_pImmediateContext) m_pImmediateContext->ClearState();
+	if (m_pSwapChain) m_pSwapChain->Release();
+	if (m_pImmediateContext) m_pImmediateContext->Release();
+	if (m_pd3dDevice) m_pd3dDevice->Release();
+	if (m_pGIFactory) m_pGIFactory->Release();
 	m_pd3dDevice = nullptr;
 	m_pSwapChain = nullptr;;
 	m_pRenderTargetView = nullptr;;

@@ -89,8 +89,11 @@ bool	KCore::GameRender()
     PostRender();
     return true;
 }
+
 bool	KCore::PreRender() {
-    float ClearColor[4] = { 0.5f, 0.5f, 0.5f, 1.0f }; //red,green,blue,alpha
+
+    //새 스왑체인 뷰포트
+    float ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f }; //red,green,blue,alpha
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
 
     m_pImmediateContext->ClearDepthStencilView(
@@ -107,14 +110,18 @@ bool	KCore::PreRender() {
 
     return true;
 }
+
 bool	KCore::Render() {
     return true;
 }
+
 bool	KCore::PostRender() {
+    //스왑체인 작업
     assert(m_pSwapChain);
     m_pSwapChain->Present(0, 0);
     return true;
 }
+
 bool	KCore::GameRelease() 
 {
     Release();

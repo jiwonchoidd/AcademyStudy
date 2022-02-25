@@ -147,3 +147,4 @@ Sample::~Sample()
 }
 
 WinMain_OPT(스프라이트 애니메이션, 960, 540);
+//WinMain_OPT(스프라이트 애니메이션, 800, 600);

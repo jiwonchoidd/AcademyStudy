@@ -8,7 +8,7 @@ bool KScene_Intro::Load(std::wstring file)
 	m_BGM->SoundPlay(true);
 
 	//UI »ý¼º
-	KUI* obj = new KUI;
+	KImage* obj = new KImage;
 	obj->SetRectDraw({ 0, 0, g_rtClient.right, g_rtClient.bottom });
 	obj->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
 	if (!obj->Init(m_pContext,L"../../data/shader/VSPS_UI_0.txt", L"../../data/shader/VSPS_UI_0.txt",
@@ -16,6 +16,7 @@ bool KScene_Intro::Load(std::wstring file)
 	{
 		return false;
 	}
+	obj->m_fAlpha = 0.0f;
 	obj->m_bFadeIn = true;
 	m_UIObj.insert(std::make_pair(0, obj));
 	return true;

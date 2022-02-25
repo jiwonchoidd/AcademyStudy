@@ -28,6 +28,9 @@
     <Filter Include="Code\Core">
       <UniqueIdentifier>{2edd2789-3908-471b-a48f-d288183369b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Obj\2D">
+      <UniqueIdentifier>{59beabdd-ddec-4d8f-824d-bec149491c53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -66,13 +69,7 @@
     <ClCompile Include="KTextureManager.cpp">
       <Filter>Code\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="K2DAsset.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="KBoxObj.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="KCollider.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KObject.cpp">
@@ -85,9 +82,6 @@
       <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KSkyBox.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="KUI.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KCamera.cpp">
@@ -125,6 +119,15 @@
     </ClCompile>
     <ClCompile Include="KSpriteManager.cpp">
       <Filter>Code\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="K2DAsset.cpp">
+      <Filter>Code\Obj\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="KCollider.cpp">
+      <Filter>Code\Obj\2D</Filter>
+    </ClCompile>
+    <ClCompile Include="KUI.cpp">
+      <Filter>Code\Obj\2D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,23 +191,14 @@
     <ClInclude Include="KSkyBox.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="K2DAsset.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="KObjectManager.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KCollision.h">
       <Filter>Code</Filter>
     </ClInclude>
-    <ClInclude Include="KCollider.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="KScene.h">
       <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="KUI.h">
-      <Filter>Code\Obj</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
       <Filter>Code\Manager</Filter>
@@ -235,6 +229,15 @@
     </ClInclude>
     <ClInclude Include="KSpriteManager.h">
       <Filter>Code\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="K2DAsset.h">
+      <Filter>Code\Obj\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="KCollider.h">
+      <Filter>Code\Obj\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="KUI.h">
+      <Filter>Code\Obj\2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

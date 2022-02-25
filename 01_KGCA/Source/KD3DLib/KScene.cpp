@@ -29,7 +29,7 @@ bool KScene::Frame()
 
 bool KScene::Render()
 {
-	for (auto obj : m_UIObj)
+	for (auto obj : m_MapObj)
 	{
 		KObject* pObj = obj.second;
 		if (pObj != nullptr)
@@ -37,7 +37,7 @@ bool KScene::Render()
 			pObj->Render(m_pContext);
 		}
 	}
-	for (auto obj : m_MapObj)
+	for (auto obj : m_UIObj)
 	{
 		KObject* pObj = obj.second;
 		if (pObj != nullptr)

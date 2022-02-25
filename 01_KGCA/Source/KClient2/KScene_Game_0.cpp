@@ -1,12 +1,14 @@
 #include "KScene_Game_0.h"
 #include "KSceneManager.h"
+#include "KUI.h"
 bool KScene_Game_0::Load(std::wstring file)
 {
 	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
 	m_BGM->SoundPlay(true);
 
 	// 캐릭터 로드
-	m_PlayerObj.SetPosition(KVector2(0, 0));
+	m_PlayerObj.SetPosition(KVector2(300, 300));
+	m_PlayerObj.SetRectDraw({ 0, 0, 180, 100 });
 	//캐릭터와 맵과 띄워 놓는다.
 	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -0.1f);
 	if (!m_PlayerObj.Init(m_pContext,
@@ -17,6 +19,47 @@ bool KScene_Game_0::Load(std::wstring file)
 	{
 		return false;
 	}
+
+	//UI 로드
+	KImage* menu_background = new KImage;
+
+	menu_background->m_image_ratio = 50.0f;
+	menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2});
+	menu_background->SetPosition(KVector2(g_rtClient.right/1.2f, g_rtClient.bottom/4));
+	if (!menu_background->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt", L"../../data/shader/VSPS_UI_0.txt",
+		L"../../data/texture/menu_background.png", L""))
+	{
+		return false;
+	}
+	m_UIObj.insert(std::make_pair(0, menu_background));
+
+	//for (int i = 0; i < 1; i++)
+	//{
+		KButton* btn = new KButton;
+		btn->m_image_ratio = 50.0f;
+		btn->SetRectDraw({ 0, 0, g_rtClient.right / 2, g_rtClient.bottom / 2});
+		btn->SetPosition(KVector2{ g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f});
+
+		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
+		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
+		// 가변인자를 통해서 생성자 직접 호출
+		btn->m_datalist.emplace_back(pTex, pSound);
+
+		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
+		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
+		btn->m_datalist.emplace_back(pTex, pSound);
+
+		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
+		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
+		btn->m_datalist.emplace_back(pTex, pSound);
+
+
+		btn->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
+			L"../../data/shader/VSPS_UI_0.txt",
+			L"../../data/texture/blank.bmp", L"");
+		m_UIObj.insert(std::make_pair(1, btn));
+	//}
+
 
 	//NPC 로드
 	for (int inpc = 0; inpc < 2; inpc++)
@@ -80,7 +123,6 @@ bool KScene_Game_0::Frame()
 
 	//플레이어 이동
 	m_PlayerObj.Frame();
-
 	//카메라 이동
 	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
 	
@@ -106,8 +148,8 @@ bool KScene_Game_0::Frame()
 
 bool KScene_Game_0::Render()
 {
-	m_MapObj.find(0)->second->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	KScene::Render();
+	m_MapObj.find(0)->second->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	//npc 렌더링
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
@@ -117,7 +159,6 @@ bool KScene_Game_0::Render()
 	//플레이어 렌더링
 	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
-
 	return true;
 }
 
