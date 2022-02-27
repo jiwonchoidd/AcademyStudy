@@ -22,8 +22,7 @@ bool KScene_Game_0::Load(std::wstring file)
 
 	//UI ·Îµå
 	KImage* menu_background = new KImage;
-
-	menu_background->m_image_ratio = 50.0f;
+	menu_background->m_rtOffset = { 50, 50, 50, 50 };
 	menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2});
 	menu_background->SetPosition(KVector2(g_rtClient.right/1.2f, g_rtClient.bottom/4));
 	if (!menu_background->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt", L"../../data/shader/VSPS_UI_0.txt",
@@ -36,8 +35,8 @@ bool KScene_Game_0::Load(std::wstring file)
 	//for (int i = 0; i < 1; i++)
 	//{
 		KButton* btn = new KButton;
-		btn->m_image_ratio = 50.0f;
-		btn->SetRectDraw({ 0, 0, g_rtClient.right / 2, g_rtClient.bottom / 2});
+		btn->m_rtOffset = { 0, 0, 0, 0 };
+		btn->SetRectDraw({ 0, 0, 300, 82});
 		btn->SetPosition(KVector2{ g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f});
 
 		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
@@ -53,10 +52,12 @@ bool KScene_Game_0::Load(std::wstring file)
 		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
 		btn->m_datalist.emplace_back(pTex, pSound);
 
-
-		btn->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
+		if (!btn->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
 			L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/texture/blank.bmp", L"");
+			L"../../data/texture/blank.bmp", L""))
+		{
+			return false;
+		}
 		m_UIObj.insert(std::make_pair(1, btn));
 	//}
 
@@ -148,8 +149,8 @@ bool KScene_Game_0::Frame()
 
 bool KScene_Game_0::Render()
 {
-	KScene::Render();
 	m_MapObj.find(0)->second->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	KScene::Render();
 	//npc ·»´õ¸µ
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{

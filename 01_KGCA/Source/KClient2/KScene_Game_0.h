@@ -12,7 +12,6 @@ class KScene_Game_0 : public KScene
 public:
     KCamera                 m_Camera;
     KPlayer2D			    m_PlayerObj;
-    KPlayerMenu             m_PlayerMenu;
     KSound*                 m_BGM;
     std::vector<KNpc2D*>    m_NpcLlist;
 public:

@@ -3,7 +3,6 @@
 bool KSpriteEffect::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_Visible = false;
 	m_Current_Index=0;
 	m_Timer=0.0f;
 	m_Color = { 1,1,1,1 };
@@ -12,7 +11,6 @@ bool KSpriteEffect::Init(ID3D11DeviceContext* context, std::wstring vs, std::wst
 
 bool KSpriteEffect::Frame()
 {
-	if (m_Visible) return true;
 	m_Change_Time = m_pSprite->m_anim_time / m_pSprite->m_anim_array.size();
 	m_Timer += g_fSecPerFrame;
 	if (m_Timer >= m_Change_Time)
@@ -21,7 +19,6 @@ bool KSpriteEffect::Frame()
 		if (m_Current_Index >= m_pSprite->m_anim_array.size())
 		{
 			m_Current_Index = 0;
-			m_Visible = true;
 		}
 		m_Timer -= m_Change_Time;
 		SetRectSource(m_pSprite->m_anim_array[m_Current_Index]);
@@ -38,7 +35,6 @@ bool KSpriteEffect::Frame()
 
 bool KSpriteEffect::Render(ID3D11DeviceContext* pContext)
 {
-	if (m_Visible) return true;
 	KObject::Render(pContext);
 	return true;
 }
@@ -51,7 +47,6 @@ bool KSpriteEffect::Release()
 
 void KSpriteEffect::Reset()
 {
-	m_Visible = false;
 	m_Current_Index = 0;
 	m_Timer = 0.0f;
 }

@@ -5,10 +5,13 @@ class K2DAsset :  public KCollider
 {
 public:
 	float				m_Speed;
-	bool				m_Visible;
+	float				m_fAlpha = 1.0f;
+	bool				m_bFadeIn = false;
+	bool				m_bFadeOut = false;
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
+
 	virtual void		ObjectOverlap(KCollider* pObj, DWORD dwState);
 	virtual void		SelectOverlap(KCollider* pObj, DWORD dwState);
 public:

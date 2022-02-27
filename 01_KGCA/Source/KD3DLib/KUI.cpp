@@ -13,6 +13,7 @@ bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, s
 bool KUI::Frame()
 {
 	KObject::Frame();
+
 	return true;
 }
 
@@ -24,29 +25,31 @@ bool KUI::Render(ID3D11DeviceContext* pContext)
 // 9등분, 한 이미지를 안깨지게 활용하기 위함
 bool KUI::SetVertexData()
 {
-	float value = m_image_ratio;
 
-	KVector2 left_top = { value, value };
-	KVector2 right_top = { value, value };
-	KVector2 left_bottom = { value, value };
-	KVector2 right_bottom = { value, value };
+	KVector2 left_top = { (float)m_rtOffset.left,  (float)m_rtOffset.top };
+	KVector2 right_top ={ (float)m_rtOffset.right, (float)m_rtOffset.top };
+	KVector2 left_bottom = { (float)m_rtOffset.left, (float)m_rtOffset.bottom };
+	KVector2 right_bottom = { (float)m_rtOffset.right, (float)m_rtOffset.bottom };
 
-	KVector2 tLT = { left_top.x / 196.0f, left_top.y / 124.0f };
-	KVector2 tRT = { right_top.x / 196.0f, right_top.y / 124.0f };
-	KVector2 tLB = { left_bottom.x / 196.0f, left_bottom.y / 124.0f };
-	KVector2 tRB = { right_top.x / 196.0f, right_top.y / 124.0f };
+	float width = m_pColorTex->m_TextureDesc.Width;
+	float height = m_pColorTex->m_TextureDesc.Height;
+	KVector2 tLT = { left_top.x / width, left_top.y / height };
+	KVector2 tRT = { right_top.x / width, right_top.y / height };
+	KVector2 tLB = { left_bottom.x / width, left_bottom.y / height };
+	KVector2 tRB = { right_top.x / width, right_top.y / height };
+
 
 	std::vector<PNCT_VERTEX> list(16);
 	float halfWidth = m_rtSize.width / 2.0f;
 	float halfHeight = m_rtSize.height / 2.0f;
 	list[0].pos = { m_pos.x - halfWidth, m_pos.y - halfHeight };
-	list[0].tex = { 0,0 };
+	list[0].tex = { (float)m_rtOffsetTex.left,(float)m_rtOffsetTex.top};
 	list[3].pos = { m_pos.x + halfWidth, m_pos.y - halfHeight };
-	list[3].tex = { 1,0 };
+	list[3].tex = { (float)m_rtOffsetTex.right,(float)m_rtOffsetTex.top };
 	list[12].pos = { m_pos.x - halfWidth, m_pos.y + halfHeight };
-	list[12].tex = { 0, 1 };
+	list[12].tex = { (float)m_rtOffsetTex.left,(float)m_rtOffsetTex.bottom };
 	list[15].pos = { m_pos.x + halfWidth, m_pos.y + halfHeight };
-	list[15].tex = { 1,1 };
+	list[15].tex = { (float)m_rtOffsetTex.right,(float)m_rtOffsetTex.bottom };
 	list[5].pos = { list[0].pos.x + left_top.x, list[0].pos.y + left_top.y };
 	list[5].tex = { list[0].tex.x + tLT.x, list[0].tex.y + tLT.y };
 	list[6].pos = { list[3].pos.x - right_top.x, list[3].pos.y + right_top.y };
@@ -78,8 +81,11 @@ bool KUI::SetVertexData()
 
 	for (int i = 0; i < list.size(); i++)
 	{
+		// 0 ~ 800 -> 0 ~ 1 -> -1 ~ +1
 		list[i].pos.x = list[i].pos.x / g_rtClient.right;
 		list[i].pos.y = list[i].pos.y / g_rtClient.bottom;
+		// 0 ~ 1 -> -1 ~ +1 :::: -1 ~ +1 -> 0 ~ 1
+		// x = x * 2 + -1;  ::::  x= x * 0.5f + 0.5f;
 		list[i].pos.x = list[i].pos.x * 2.0f - 1.0f;
 		list[i].pos.y = -1.0f * (list[i].pos.y * 2.0f - 1.0f);
 	}
@@ -116,7 +122,10 @@ bool KUI::SetIndexData()
 KUI::KUI()
 {
 	m_pContext = nullptr;
-	m_image_ratio = 0.0f;
+	m_rtOffsetTex.left = 0;
+	m_rtOffsetTex.top = 0;
+	m_rtOffsetTex.right = 1;
+	m_rtOffsetTex.bottom = 1;
 }
 
 KUI::~KUI()
@@ -129,15 +138,11 @@ bool KImage::Frame()
 {
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
-	m_cbData.vLightDir = KVector4(
-		m_fAlpha,
-		m_fAlpha,
-		m_fAlpha, 1.0f);
-	m_cbData.vValue = KVector4(
-		g_fSecTimer,
-		0,
-		0,
-		1.0f);
+	m_cbData.vLightDir.x = m_fAlpha;
+	m_cbData.vLightDir.y = m_fAlpha;
+	m_cbData.vLightDir.z = m_fAlpha;
+	m_cbData.vLightDir.w = 1.0f;
+
 	return true;
 }
 
@@ -210,80 +215,84 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 
 bool KButton::Frame()
 {
+	m_cbData.vLightDir.x = m_fAlpha;
+	m_cbData.vLightDir.y = m_fAlpha;
+	m_cbData.vLightDir.z = m_fAlpha;
+	m_cbData.vLightDir.w = 1.0f;
 	return true;
 }
 
-
-bool KPlayerMenu::Load(ID3D11DeviceContext* context)
-{
-	m_pContext = context;
-	img_background.m_image_ratio = 50.0f;
-	img_background.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
-	img_background.SetPosition(KVector2(g_rtClient.right, g_rtClient.top));
-	img_background.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
-		L"../../data/shader/VSPS_UI_0.txt",
-		L"../../data/texture/menu_background.png", L"");
-
-	for (int i = 0; i < 5; i++)
-	{
-		KButton btn;
-		btn.m_image_ratio = 50.0f;
-		btn.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
-		btn.SetPosition(KVector2{ img_background.m_pos.x, img_background.m_pos.y + i * 3 });
-
-		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
-		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
-		// 가변인자를 통해서 생성자 직접 호출
-		btn.m_datalist.emplace_back(pTex, pSound);
-
-		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
-		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
-		btn.m_datalist.emplace_back(pTex, pSound);
-
-		pTex = g_TextureMananger.Load(L"../../data/ui/menu_hover.png");
-		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
-		btn.m_datalist.emplace_back(pTex, pSound);
-
-
-		btn.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/texture/blank.bmp", L"");
-		btn_list.emplace_back(btn);
-	}
-	return true;
-}
-
-bool KPlayerMenu::Frame()
-{
-	return true;
-}
-
-bool KPlayerMenu::Render(ID3D11DeviceContext* context)
-{
-	img_background.Render(context);
-	for (auto src : btn_list)
-	{
-		src.Render(context);
-	}
-	for (auto src : img_list)
-	{
-		src.Render(context);
-	}
-	return true;
-}
-
-bool KPlayerMenu::Release()
-{
-	img_background.Release();
-	for (auto src : btn_list)
-	{
-		src.Release();
-	}
-	for (auto src : img_list)
-	{
-		src.Release();
-	}
-	btn_list.clear();
-	img_list.clear();
-	return true;
-}
+//
+//bool KPlayerMenu::Load(ID3D11DeviceContext* context)
+//{
+//	m_pContext = context;
+//	img_background.m_image_ratio = 50.0f;
+//	img_background.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
+//	img_background.SetPosition(KVector2(g_rtClient.right, g_rtClient.top));
+//	img_background.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
+//		L"../../data/shader/VSPS_UI_0.txt",
+//		L"../../data/texture/menu_background.png", L"");
+//
+//	for (int i = 0; i < 5; i++)
+//	{
+//		KButton btn;
+//		btn.m_image_ratio = 50.0f;
+//		btn.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
+//		btn.SetPosition(KVector2{ img_background.m_pos.x, img_background.m_pos.y + i * 3 });
+//
+//		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
+//		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
+//		// 가변인자를 통해서 생성자 직접 호출
+//		btn.m_datalist.emplace_back(pTex, pSound);
+//
+//		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
+//		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
+//		btn.m_datalist.emplace_back(pTex, pSound);
+//
+//		pTex = g_TextureMananger.Load(L"../../data/ui/menu_hover.png");
+//		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
+//		btn.m_datalist.emplace_back(pTex, pSound);
+//
+//
+//		btn.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
+//			L"../../data/shader/VSPS_UI_0.txt",
+//			L"../../data/texture/blank.bmp", L"");
+//		btn_list.emplace_back(btn);
+//	}
+//	return true;
+//}
+//
+//bool KPlayerMenu::Frame()
+//{
+//	return true;
+//}
+//
+//bool KPlayerMenu::Render(ID3D11DeviceContext* context)
+//{
+//	img_background.Render(context);
+//	for (auto src : btn_list)
+//	{
+//		src.Render(context);
+//	}
+//	for (auto src : img_list)
+//	{
+//		src.Render(context);
+//	}
+//	return true;
+//}
+//
+//bool KPlayerMenu::Release()
+//{
+//	img_background.Release();
+//	for (auto src : btn_list)
+//	{
+//		src.Release();
+//	}
+//	for (auto src : img_list)
+//	{
+//		src.Release();
+//	}
+//	btn_list.clear();
+//	img_list.clear();
+//	return true;
+//}
