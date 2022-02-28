@@ -1,2 +1,3 @@
 C:\Users\popo2\Documents\GitHub\AcademyStudy\00_KGCA\output\SampleLib_FBXAnimation\SampleLib_FBXAnimation.exe
 E:\Choijiwon\AcademyStudy\00_KGCA\output\SampleLib_FBXAnimation\SampleLib_FBXAnimation.exe
+E:\github\AcademyStudy\00_KGCA\output\SampleLib_FBXAnimation\SampleLib_FBXAnimation.exe

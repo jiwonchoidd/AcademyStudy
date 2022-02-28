@@ -129,6 +129,9 @@
     <ClCompile Include="KUI.cpp">
       <Filter>Code\Obj\2D</Filter>
     </ClCompile>
+    <ClCompile Include="KObjObject.cpp">
+      <Filter>Code\Obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KInput.h">
@@ -238,6 +241,9 @@
     </ClInclude>
     <ClInclude Include="KUI.h">
       <Filter>Code\Obj\2D</Filter>
+    </ClInclude>
+    <ClInclude Include="KObjObject.h">
+      <Filter>Code\Obj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

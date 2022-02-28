@@ -6,6 +6,7 @@ bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, s
 	m_pContext = context;
 	m_CollisonType = Ignore;
 	m_SelectType = Select_Overlap;
+	m_cbData.vLightDir = { 1,1,1,1};
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }
@@ -22,6 +23,7 @@ bool KUI::Render(ID3D11DeviceContext* pContext)
 	KObject::Render(pContext);
 	return true;
 }
+
 // 9등분, 한 이미지를 안깨지게 활용하기 위함
 bool KUI::SetVertexData()
 {
@@ -81,11 +83,8 @@ bool KUI::SetVertexData()
 
 	for (int i = 0; i < list.size(); i++)
 	{
-		// 0 ~ 800 -> 0 ~ 1 -> -1 ~ +1
 		list[i].pos.x = list[i].pos.x / g_rtClient.right;
 		list[i].pos.y = list[i].pos.y / g_rtClient.bottom;
-		// 0 ~ 1 -> -1 ~ +1 :::: -1 ~ +1 -> 0 ~ 1
-		// x = x * 2 + -1;  ::::  x= x * 0.5f + 0.5f;
 		list[i].pos.x = list[i].pos.x * 2.0f - 1.0f;
 		list[i].pos.y = -1.0f * (list[i].pos.y * 2.0f - 1.0f);
 	}
@@ -177,14 +176,19 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 
 	switch (m_SelectState)
 	{
+		case KSelectState::S_DEFAULT:
+		{
+			if (m_datalist[0].pTex != nullptr)
+				m_pColorTex = m_datalist[0].pTex;
+		}break;
 		case KSelectState::S_SELECTED:
 		{
 			//클릭 활성화
 			m_btn_active = true;
 			if(m_datalist[2].pSound!=nullptr)
 			m_datalist[2].pSound->SoundPlay_Once();
-			if (m_datalist[2].pTex != nullptr)
-			m_pColorTex = m_datalist[2].pTex;
+			if (m_datalist[0].pTex != nullptr)
+			m_pColorTex = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_HOVER:
 		{
@@ -195,10 +199,8 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 		}break;
 		case KSelectState::S_ACTIVE:
 		{
-			if (m_datalist[2].pSound != nullptr)
-			m_datalist[2].pSound->SoundPlay_Once();
-			if (m_datalist[2].pTex != nullptr)
-			m_pColorTex = m_datalist[2].pTex;
+			if (m_datalist[0].pTex != nullptr)
+			m_pColorTex = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_FOCUS:
 		{
@@ -219,6 +221,7 @@ bool KButton::Frame()
 	m_cbData.vLightDir.y = m_fAlpha;
 	m_cbData.vLightDir.z = m_fAlpha;
 	m_cbData.vLightDir.w = 1.0f;
+
 	return true;
 }
 

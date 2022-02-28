@@ -1,6 +1,6 @@
 ﻿  KUI.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(34,14): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(35,15): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(36,14): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(37,15): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
@@ -15,6 +15,7 @@ E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(35,15): warning C4244: '�
   KManager.h
   KObject.h
   KObjectManager.h
+  KObjObject.h
   KPlaneObj.h
   KScene.h
   KShaderManager.h
@@ -30,4 +31,4 @@ E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(35,15): warning C4244: '�
   KWindow.h
   KWrite.h
   resource.h
-         27개 파일이 복사되었습니다.
+         28개 파일이 복사되었습니다.

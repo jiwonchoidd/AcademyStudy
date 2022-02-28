@@ -53,17 +53,3 @@ public:
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
     virtual bool    Frame()override;
 };
-//
-//class KPlayerMenu : KImage
-//{
-//private:
-//    ID3D11DeviceContext* m_pContext;
-//public:
-//    KImage               img_background;
-//    std::vector<KButton> btn_list;
-//    std::vector<KImage>  img_list;
-//    bool Load(ID3D11DeviceContext* context);
-//    bool Frame();
-//    bool Render(ID3D11DeviceContext* context);
-//    bool Release();
-//};

@@ -35,7 +35,7 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 {	
 	float4 color = g_txColor.Sample(g_Sample, input.t);		
 	float4 final = color * input.c;
-	//final.a = color.a;
+	final.a = color.a;
 	final = final*g_color;
 	return final;
 }

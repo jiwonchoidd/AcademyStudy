@@ -32,14 +32,14 @@ bool KScene_Game_0::Load(std::wstring file)
 	}
 	m_UIObj.insert(std::make_pair(0, menu_background));
 
-	//for (int i = 0; i < 1; i++)
-	//{
+	for (int i = 0; i < 5; i++)
+	{
 		KButton* btn = new KButton;
-		btn->m_rtOffset = { 0, 0, 0, 0 };
-		btn->SetRectDraw({ 0, 0, 300, 82});
-		btn->SetPosition(KVector2{ g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f});
+		btn->m_rtOffset = { 50, 50, 50, 50 };
+		btn->SetRectDraw({ 0, 0, g_rtClient.right / 3, (g_rtClient.bottom / 2)/5});
+		btn->SetPosition(KVector2(g_rtClient.right / 1.2f, (g_rtClient.bottom / 20)+(i*55)));
 
-		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
+		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.png");
 		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
 		// 가변인자를 통해서 생성자 직접 호출
 		btn->m_datalist.emplace_back(pTex, pSound);
@@ -54,12 +54,12 @@ bool KScene_Game_0::Load(std::wstring file)
 
 		if (!btn->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
 			L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/texture/blank.bmp", L""))
+			L"../../data/texture/blank.png", L""))
 		{
 			return false;
 		}
-		m_UIObj.insert(std::make_pair(1, btn));
-	//}
+		m_UIObj.insert(std::make_pair(i+1, btn));
+	}
 
 
 	//NPC 로드
@@ -100,6 +100,13 @@ bool KScene_Game_0::Load(std::wstring file)
 		return false;
 	}
 	m_MapObj.insert(std::make_pair(0, map));
+
+	test = new KObjObject;
+	test->SetRectDraw({ 0,0, 42,76 });
+	test->Init(m_pContext, L"../../data/shader/VS_0.txt", L"../../data/shader/PS_0.txt",
+		L"../../data/texture/UV.bmp", L"../../data/model/test.obj");
+
+	
 	return true;
 }
 
@@ -121,12 +128,12 @@ bool KScene_Game_0::Frame()
 {
 	KScene::Frame();
 	m_BGM->Frame();
-
+	test->Frame();
 	//플레이어 이동
 	m_PlayerObj.Frame();
 	//카메라 이동
 	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
-	
+	m_Camera.Frame();
 	//npc 이동
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
@@ -160,6 +167,10 @@ bool KScene_Game_0::Render()
 	//플레이어 렌더링
 	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
+
+	test->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	test->Render(m_pContext);
+
 	return true;
 }
 

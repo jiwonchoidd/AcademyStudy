@@ -38,7 +38,7 @@ bool KSprite::Load(std::wstring filename)
 	if (fp_src == NULL) return false;
 
 	_fgetts(buffer, _countof(buffer), fp_src);
-	_stscanf_s(buffer, _T("%s%d"), temp, (unsigned int)_countof(temp));
+	_stscanf_s(buffer, _T("%s %d"), temp, (unsigned int)_countof(temp));
 
 	TCHAR name[256] = { 0 };
 	int iNumFrame = 0;
