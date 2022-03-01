@@ -51,12 +51,6 @@ bool	KCore::GameFrame()
     }
     ImGui::End();
 
-    if (ImGui::Begin(u8"디버깅"))
-    {
-        ImGui::Checkbox(u8"자유 카메라", &m_bFreeCamera);
- 
-    }
-    ImGui::End();
     if (ImGui::Begin(u8"인풋 디버거"))
     {
         ImGui::Text("iMouseValue %d , %d , %d", g_InputData.iMouseValue[0]

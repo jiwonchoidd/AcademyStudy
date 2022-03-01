@@ -5,9 +5,9 @@
 
 bool KCamera::Follow2DPos(KVector2* vPos)
 {
- 
-    m_vCameraPos.x = vPos->x;
-    m_vCameraPos.y= vPos->y;
+ // offset
+    m_vCameraPos.x = vPos->x + 1.0f;
+    m_vCameraPos.y = vPos->y + 1.0f;
 
 
     m_matWorld._41 = m_vCameraPos.x;

@@ -27,7 +27,7 @@ void K2DAsset::SetRectDraw(RECT rt)
 	m_rtDraw = rt;
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
-	//D3DKMatrixScaling(&m_matWorld, rt.right, rt.bottom, 1.0f);
+	D3DKMatrixScaling(&m_matWorld, 10.0f, 10.0f, 1.0f);
 }
 
 void K2DAsset::UpdateRectDraw(RECT rt)
@@ -153,15 +153,12 @@ void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VER
 	retList.resize(list.size());
 	for (int i = 0; i < list.size(); i++)
 	{
-		// 0 ~ 800 -> 0 ~ 1 -> -1 ~ +1
+
 		retList[i].pos.x = list[i].pos.x / g_rtClient.right;
 		retList[i].pos.y = list[i].pos.y / g_rtClient.bottom;
-		// 0 ~ 1 -> -1 ~ +1 :::: -1 ~ +1 -> 0 ~ 1
-		// x = x * 2 + -1;  ::::  x= x * 0.5f + 0.5f;
-		retList[i].pos.x = -1.0f + (retList[i].pos.x * 2.0f);
-		retList[i].pos.y = retList[i].pos.y * 2.0f - 1.0f;
+		retList[i].pos.x = retList[i].pos.x * 2.0f + 1.0f;
+		retList[i].pos.y = retList[i].pos.y * 2.0f + 1.0f;
 	}
-	// 91,1, 42, 56 => 0 ~ 1	
 	if (m_rtSource.left == 0 && m_rtSource.right == 0 &&
 		m_rtSource.top == 0 && m_rtSource.bottom == 0)
 	{

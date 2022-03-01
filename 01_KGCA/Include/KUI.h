@@ -29,9 +29,6 @@ private:
         copy->CreateIndexBuffer();
         copy->CreateConstantBuffer();
         copy->CreateVertexLayout();
-
-        
-        
         return copy;
     }
     void  UpdateData()
@@ -80,17 +77,6 @@ private:
         copy->CreateConstantBuffer();
         copy->CreateVertexLayout();
 
-        m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-        m_matWorld._41 = m_pos.x;
-        m_matWorld._42 = m_pos.y;
-        g_ObjManager.AddCollisionExecute(this,
-            std::bind(&KCollider::ObjectOverlap, this,
-                std::placeholders::_1,
-                std::placeholders::_2));
-        g_ObjManager.AddSelectExecute(this,
-            std::bind(&KCollider::SelectOverlap, this,
-                std::placeholders::_1,
-                std::placeholders::_2));
         return copy;
     }
     void  UpdateData()
@@ -124,17 +110,6 @@ private:
         copy->CreateConstantBuffer();
         copy->CreateVertexLayout();
 
-        m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-        m_matWorld._41 = m_pos.x;
-        m_matWorld._42 = m_pos.y;
-        g_ObjManager.AddCollisionExecute(this,
-            std::bind(&KCollider::ObjectOverlap, this,
-                std::placeholders::_1,
-                std::placeholders::_2));
-        g_ObjManager.AddSelectExecute(this,
-            std::bind(&KCollider::SelectOverlap, this,
-                std::placeholders::_1,
-                std::placeholders::_2));
         return copy;
     }
     void  UpdateData()

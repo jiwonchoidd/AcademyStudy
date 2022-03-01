@@ -4,7 +4,7 @@
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_Speed = 50.0f;
+	m_Speed = 10.0f;
 	m_Name = L"Player0";
 
 	//걷는 애니메이션 한줄 잘라내기
@@ -26,7 +26,6 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 	g_SpriteManager.Load(walk);
 	
 	SetRectSource(walk->m_anim_array[8]);
-	
 	
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
