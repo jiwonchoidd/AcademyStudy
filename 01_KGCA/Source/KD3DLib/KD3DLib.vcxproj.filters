@@ -75,9 +75,6 @@
     <ClCompile Include="KObject.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
-    <ClCompile Include="KObjectManager.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="KPlaneObj.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
@@ -131,6 +128,12 @@
     </ClCompile>
     <ClCompile Include="KObjObject.cpp">
       <Filter>Code\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="KObjectManager.cpp">
+      <Filter>Code\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="KUIModelManager.cpp">
+      <Filter>Code\Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +197,6 @@
     <ClInclude Include="KSkyBox.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>
-    <ClInclude Include="KObjectManager.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="KCollision.h">
       <Filter>Code</Filter>
     </ClInclude>
@@ -244,6 +244,12 @@
     </ClInclude>
     <ClInclude Include="KObjObject.h">
       <Filter>Code\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="KObjectManager.h">
+      <Filter>Code\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KUIModelManager.h">
+      <Filter>Code\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

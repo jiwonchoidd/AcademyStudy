@@ -1,6 +1,8 @@
-﻿  KUI.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(36,14): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(37,15): warning C4244: '초기화 중': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+﻿  K2DAsset.cpp
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(28,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(29,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(35,21): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\K2DAsset.cpp(36,22): warning C4244: '=': 'LONG'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
@@ -28,7 +30,8 @@ E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(37,15): warning C4244: '�
   KTextureManager.h
   KTimer.h
   KUI.h
+  KUIModelManager.h
   KWindow.h
   KWrite.h
   resource.h
-         28개 파일이 복사되었습니다.
+         29개 파일이 복사되었습니다.

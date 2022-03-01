@@ -3,7 +3,7 @@
 class KSprite
 {
 public:
-	std::wstring	   m_csName;
+	std::wstring	   m_Name;
 	float			   m_anim_time;
 	std::vector<RECT>  m_anim_array;
 	int				   m_AnimIndex;

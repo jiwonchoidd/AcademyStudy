@@ -1,14 +1,42 @@
 #include "KScene_Game_0.h"
 #include "KSceneManager.h"
 #include "KUI.h"
+#include "ImGuiManager.h"
 bool KScene_Game_0::Load(std::wstring file)
 {
+#pragma region 사용할 모델 생성
+
+	//메뉴 배경화면
+	KImage* menu_background = new KImage;
+	menu_background->m_Name = L"ui_menu_bk";
+	menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2 });
+	menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 4));
+	menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+	menu_background->m_rtOffset = { 50, 50, 50, 50 };
+	if (!menu_background->Init(m_pContext,
+		L"../../data/shader/VSPS_UI_0.txt",
+		L"../../data/shader/VSPS_UI_0.txt",
+		L"../../data/texture/menu_background.png",
+		L""))
+	{
+		return false;
+	}
+
+	g_UIModelManager.m_list.insert(std::make_pair(L"menu_background", menu_background));
+	//메뉴 버튼
+
+	KUIModel* background = g_UIModelManager.GetPtr(L"menu_background")->Clone();
+	background->m_Name = L"ui_menu_bk1";
+	background->UpdateData();
+	m_UIObj.push_back(background);
+#pragma endregion
+
 	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
 	m_BGM->SoundPlay(true);
 
 	// 캐릭터 로드
-	m_PlayerObj.SetPosition(KVector2(300, 300));
-	m_PlayerObj.SetRectDraw({ 0, 0, 180, 100 });
+	m_PlayerObj.SetPosition(KVector2(10, 10));
+	m_PlayerObj.SetRectDraw({ 0, 0, 900, 500});
 	//캐릭터와 맵과 띄워 놓는다.
 	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -0.1f);
 	if (!m_PlayerObj.Init(m_pContext,
@@ -19,18 +47,6 @@ bool KScene_Game_0::Load(std::wstring file)
 	{
 		return false;
 	}
-
-	//UI 로드
-	KImage* menu_background = new KImage;
-	menu_background->m_rtOffset = { 50, 50, 50, 50 };
-	menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2});
-	menu_background->SetPosition(KVector2(g_rtClient.right/1.2f, g_rtClient.bottom/4));
-	if (!menu_background->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt", L"../../data/shader/VSPS_UI_0.txt",
-		L"../../data/texture/menu_background.png", L""))
-	{
-		return false;
-	}
-	m_UIObj.insert(std::make_pair(0, menu_background));
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -58,9 +74,8 @@ bool KScene_Game_0::Load(std::wstring file)
 		{
 			return false;
 		}
-		m_UIObj.insert(std::make_pair(i+1, btn));
+		m_UIObj.push_back(btn);
 	}
-
 
 	//NPC 로드
 	for (int inpc = 0; inpc < 2; inpc++)
@@ -92,14 +107,14 @@ bool KScene_Game_0::Load(std::wstring file)
 	KMap* map = new KMap;
 	map->SetRectSource({ 255,2,255,186 });
 	map->SetRectDraw({ 0, 0, g_rtClient.right, g_rtClient.bottom });
-	map->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
+	map->SetPosition(KVector2(0, 0));
 	if (!map->Init(m_pContext,
 		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
 		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
 	{
 		return false;
 	}
-	m_MapObj.insert(std::make_pair(0, map));
+	m_MapObj.push_back(map);
 
 	test = new KObjObject;
 	test->SetRectDraw({ 0,0, 42,76 });
@@ -119,21 +134,19 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	KScene::Init(context);
 
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -2), KVector3(0, 0, 0));
-	m_Camera.CreateProjMatrix(1.0f, 500.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -10), KVector3(0, 0, 0));
+	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 
 bool KScene_Game_0::Frame()
 {
-	KScene::Frame();
 	m_BGM->Frame();
 	test->Frame();
 	//플레이어 이동
 	m_PlayerObj.Frame();
 	//카메라 이동
-	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
-	m_Camera.Frame();
+	m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
 	//npc 이동
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
@@ -151,13 +164,21 @@ bool KScene_Game_0::Frame()
 		g_InputData.bSpace = false;
 		return true;
 	}
+	KScene::Frame();
 	return true;
 }
 
 bool KScene_Game_0::Render()
 {
-	m_MapObj.find(0)->second->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-	KScene::Render();
+#ifdef DEBUG
+	if (ImGui::Begin("map debugger"))
+	{
+		ImGui::Text("map %d %d", m_MapObj[0]->m_matWorld._41, m_MapObj[0]->m_matWorld._42);
+	}
+	ImGui::End();
+#endif // DEBUG
+
+	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	//npc 렌더링
 	for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
@@ -165,12 +186,13 @@ bool KScene_Game_0::Render()
 		m_NpcLlist[iObj]->Render(m_pContext);
 	}
 	//플레이어 렌더링
-	m_PlayerObj.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	m_PlayerObj.SetMatrix(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
 
 	test->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	test->Render(m_pContext);
 
+	KScene::Render();
 	return true;
 }
 

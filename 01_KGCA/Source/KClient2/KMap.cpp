@@ -6,7 +6,7 @@ bool KMap::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, 
 
 	m_CollisonType = Ignore;
 	m_SelectType = Select_Ignore;
-	m_Name = L"Map0";
+	m_Name = L"Map";
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }

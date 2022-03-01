@@ -14,7 +14,6 @@ bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, s
 bool KUI::Frame()
 {
 	KObject::Frame();
-
 	return true;
 }
 
@@ -27,7 +26,6 @@ bool KUI::Render(ID3D11DeviceContext* pContext)
 // 9등분, 한 이미지를 안깨지게 활용하기 위함
 bool KUI::SetVertexData()
 {
-
 	KVector2 left_top = { (float)m_rtOffset.left,  (float)m_rtOffset.top };
 	KVector2 right_top ={ (float)m_rtOffset.right, (float)m_rtOffset.top };
 	KVector2 left_bottom = { (float)m_rtOffset.left, (float)m_rtOffset.bottom };

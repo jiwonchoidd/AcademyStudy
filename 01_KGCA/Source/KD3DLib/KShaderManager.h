@@ -5,7 +5,7 @@ class KShader
 {
 public:
 	int				m_iIndex;
-	std::wstring	m_csName;
+	std::wstring	m_Name;
 	std::wstring	m_szMsg;
 	TCHAR			m_szBuffer[256];
 	wrl::ComPtr<ID3D11VertexShader> m_pVertexShader;

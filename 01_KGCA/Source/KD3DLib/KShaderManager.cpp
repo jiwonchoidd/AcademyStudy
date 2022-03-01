@@ -137,8 +137,8 @@ KShader* KShaderManager::CreateVertexShader(std::wstring filename, std::string e
 		delete pData;
 		return nullptr;
 	}
-	pData->m_csName = name;
-	m_list.insert(make_pair(pData->m_csName, pData));
+	pData->m_Name = name;
+	m_list.insert(make_pair(pData->m_Name, pData));
 	m_iIndex++;
 	return pData;
 }
@@ -156,8 +156,8 @@ KShader* KShaderManager::CreatePixelShader(std::wstring filename, std::string en
 		delete pData;
 		return nullptr;
 	}
-	pData->m_csName = name;
-	m_list.insert(make_pair(pData->m_csName, pData));
+	pData->m_Name = name;
+	m_list.insert(make_pair(pData->m_Name, pData));
 	m_iIndex++;
 	return pData;
 }

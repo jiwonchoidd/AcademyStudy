@@ -20,6 +20,11 @@ void KObjectManager::DeleteExecute(KCollider* owner, CollisionFunction func)
 	{
 		m_ObjectList.erase(iter);
 	}
+	FuncionIterator colliter = m_fnCollisionExecute.find(owner->m_ID);
+	if (colliter != m_fnCollisionExecute.end())
+	{
+		m_fnCollisionExecute.erase(colliter);
+	}
 }
 
 //ui select
@@ -84,10 +89,11 @@ bool KObjectManager::Frame()
 	{
 		KCollider* pObjSrc = (KCollider*)src.second;
 		//ignore 형태의 콜라이더를 무시한다.
-		if (pObjSrc->m_SelectType == KCollisionType::Ignore) continue;
-		DWORD dwState = KCollisionType::Overlap;
+		if (pObjSrc->m_SelectType == KSelectType::Select_Ignore) continue;
+		DWORD dwState = KSelectState::S_DEFAULT;
 
-		if (KCollision::RectToPoint(pObjSrc->m_rtColl, g_InputData.iMousePos[0], g_InputData.iMousePos[1]))
+		if (KCollision::RectToPoint(pObjSrc->m_rtColl,
+			g_InputData.iMousePos[0], g_InputData.iMousePos[1]))
 		{
 			BYTE mouseState = g_InputData.bMouseState[0];
 			pObjSrc->m_SelectState = KSelectState::S_HOVER;
@@ -112,7 +118,19 @@ bool KObjectManager::Frame()
 				call(pObjSrc, dwState);
 			}
 		}
-		
+		else
+		{
+			if (pObjSrc->m_SelectState != KSelectState::S_DEFAULT)
+			{
+				pObjSrc->m_SelectState = KSelectState::S_DEFAULT;
+				FuncionIterator colliter = m_fnSelectExecute.find(pObjSrc->m_SelectID);
+				if (colliter != m_fnSelectExecute.end())
+				{
+					CollisionFunction call = colliter->second;
+					call(pObjSrc, dwState);
+				}
+			}
+		}
 	}
 	return true;
 }

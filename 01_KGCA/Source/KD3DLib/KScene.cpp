@@ -1,5 +1,5 @@
 #include "KScene.h"
-
+#include "KState.h"
 bool KScene::Init(ID3D11DeviceContext* context)
 {
 	m_pContext = context;
@@ -10,7 +10,7 @@ bool KScene::Frame()
 {
 	for (auto obj : m_UIObj)
 	{
-		KObject* pObj = obj.second;
+		KObject* pObj = obj;
 		if (pObj != nullptr)
 		{
 			pObj->Frame();
@@ -18,7 +18,7 @@ bool KScene::Frame()
 	}
 	for (auto obj : m_MapObj)
 	{
-		KObject* pObj = obj.second;
+		KObject* pObj = obj;
 		if (pObj != nullptr)
 		{
 			pObj->Frame();
@@ -31,20 +31,22 @@ bool KScene::Render()
 {
 	for (auto obj : m_MapObj)
 	{
-		KObject* pObj = obj.second;
+		KObject* pObj = obj;
 		if (pObj != nullptr)
 		{
 			pObj->Render(m_pContext);
 		}
 	}
+	ApplyDSS(m_pContext, KState::g_pDSS_Disabled);
 	for (auto obj : m_UIObj)
 	{
-		KObject* pObj = obj.second;
+		KObject* pObj = obj;
 		if (pObj != nullptr)
 		{
 			pObj->Render(m_pContext);
 		}
 	}
+	ApplyDSS(m_pContext, KState::g_pDSS);
 	return true;
 }
 
@@ -52,28 +54,39 @@ bool KScene::Release()
 {
 	for (auto obj : m_UIObj)
 	{
-		if(obj.second)
-		obj.second->Release();
-		delete obj.second;
+		if (obj!=nullptr)
+		{
+			obj->Release();
+			delete obj;
+			obj = nullptr;
+		}
 	}
 	for (auto obj : m_MapObj)
 	{
-		if (obj.second)
-		obj.second->Release();
-		delete obj.second;
+		if (obj != nullptr)
+		{
+			obj->Release();
+			delete obj;
+			obj = nullptr;
+		}
 	}
 	for (auto obj : m_ItemObj)
 	{
-		if (obj.second)
-
-		obj.second->Release();
-		delete obj.second;
+		if (obj != nullptr)
+		{
+			obj->Release();
+			delete obj;
+			obj = nullptr;
+		}
 	}
 	for (auto obj : m_CharaterObj)
 	{
-		if (obj.second)
-		obj.second->Release();
-		delete obj.second;
+		if (obj != nullptr)
+		{
+			obj->Release();
+			delete obj;
+			obj = nullptr;
+		}
 	}
 	m_UIObj.clear();
 	m_MapObj.clear();

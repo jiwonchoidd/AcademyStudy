@@ -54,7 +54,7 @@ bool KSprite::Load(std::wstring filename)
 			&rt.left, &rt.top, &rt.right, &rt.bottom);
 		m_anim_array.push_back(rt);
 	}
-	m_csName = name;
+	m_Name = name;
 	fclose(fp_src);
 	return true;
 }
@@ -100,8 +100,8 @@ KSprite* KSpriteManager::Load(std::wstring filename)
 			pSprite->m_anim_array.push_back(rt);
 		}
 
-		pSprite->m_csName = name;
-		m_list.insert(make_pair(pSprite->m_csName, pSprite));
+		pSprite->m_Name = name;
+		m_list.insert(make_pair(pSprite->m_Name, pSprite));
 		m_iIndex++;
 	}
 	fclose(fp_src);
@@ -111,14 +111,14 @@ KSprite* KSpriteManager::Load(std::wstring filename)
 KSprite* KSpriteManager::Load(KSprite* sprite)
 {
 	//중복 처리
-	std::wstring name = Splitpath(sprite->m_csName, L"");
+	std::wstring name = Splitpath(sprite->m_Name, L"");
 	KSprite* pData = CheckLoad(name);
 	//기존에 데이터가 있다면 return
 	if (pData != nullptr)
 	{
 		return pData;
 	}
-	m_list.insert(make_pair(sprite->m_csName, sprite));
+	m_list.insert(make_pair(sprite->m_Name, sprite));
 	return sprite;
 }
 

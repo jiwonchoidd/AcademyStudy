@@ -69,8 +69,8 @@ HRESULT KState::CreateBlendState()
     D3D11_BLEND_DESC bd;
     ZeroMemory(&bd, sizeof(D3D11_BLEND_DESC));
 
-    //bd.AlphaToCoverageEnable = false;
-    //bd.IndependentBlendEnable = false;
+    bd.AlphaToCoverageEnable = true;
+    //bd.IndependentBlendEnable = true;
     bd.RenderTarget[0].BlendEnable = TRUE;
     bd.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
     bd.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;

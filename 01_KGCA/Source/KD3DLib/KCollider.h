@@ -50,6 +50,11 @@ public:
 public:
 	virtual void	ObjectOverlap(KCollider* pObj, DWORD dwState);
 	virtual void	SelectOverlap(KCollider* pObj, DWORD dwState);
+	virtual void	SetCollisionType(DWORD colltype, DWORD selecttype)
+	{
+		m_CollisonType = colltype;
+		m_SelectType = selecttype;
+	}
 public:
 
 	KCollider()
@@ -59,8 +64,8 @@ public:
 		m_SelectID = -1;
 		m_pos = {0,0};
 		m_bSelect = false;
-		m_CollisonType = Overlap;
-		m_SelectType = Select_Overlap;
+		m_CollisonType = Ignore;
+		m_SelectType = Select_Ignore;
 		m_SelectState= S_DEFAULT;
 		m_Name = L"Undefined";
 	}

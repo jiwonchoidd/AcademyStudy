@@ -50,7 +50,7 @@ T* KManager<T, S>::CheckLoad(std::wstring name)
 {
 	for (auto data : m_list)
 	{
-		if (data.second->m_csName == name)
+		if (data.second->m_Name == name)
 		{
 			return data.second;
 		}
@@ -83,8 +83,8 @@ T* KManager<T, S>::Load(std::wstring filename)
 		delete pData;
 		return nullptr;
 	}
-	pData->m_csName = name;
-	m_list.insert(make_pair(pData->m_csName, pData));
+	pData->m_Name = name;
+	m_list.insert(make_pair(pData->m_Name, pData));
 	m_iIndex++;
 	return pData;
 }

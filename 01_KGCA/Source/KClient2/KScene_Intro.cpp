@@ -18,7 +18,7 @@ bool KScene_Intro::Load(std::wstring file)
 	}
 	obj->m_fAlpha = 0.0f;
 	obj->m_bFadeIn = true;
-	m_UIObj.insert(std::make_pair(0, obj));
+	m_UIObj.push_back(obj);
 	return true;
 }
 

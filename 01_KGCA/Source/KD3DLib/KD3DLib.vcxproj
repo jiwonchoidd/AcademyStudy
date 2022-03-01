@@ -49,6 +49,7 @@
     <ClCompile Include="KTextureManager.cpp" />
     <ClCompile Include="KTimer.cpp" />
     <ClCompile Include="KUI.cpp" />
+    <ClCompile Include="KUIModelManager.cpp" />
     <ClCompile Include="KWindow.cpp" />
     <ClCompile Include="KWrite.cpp" />
     <ClCompile Include="Math\KMath.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="KTextureManager.h" />
     <ClInclude Include="KTimer.h" />
     <ClInclude Include="KUI.h" />
+    <ClInclude Include="KUIModelManager.h" />
     <ClInclude Include="KWindow.h" />
     <ClInclude Include="KWrite.h" />
     <ClInclude Include="Math\KMath.h" />

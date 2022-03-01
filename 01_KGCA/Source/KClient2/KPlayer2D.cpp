@@ -4,12 +4,12 @@
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_Speed = 100.0f;
+	m_Speed = 50.0f;
 	m_Name = L"Player0";
-	//걷는 애니메이션 한줄 잘라내기
 
+	//걷는 애니메이션 한줄 잘라내기
 	KSprite* walk = new KSprite;
-	walk->m_csName = L"Player_Walk";
+	walk->m_Name = L"Player_Walk";
 	walk->m_anim_time = 0.0f;
 	for (int resource = 0; resource < 12; resource++)
 	{

@@ -27,7 +27,7 @@ void K2DAsset::SetRectDraw(RECT rt)
 	m_rtDraw = rt;
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
-	D3DKMatrixScaling(&m_matWorld, rt.right, rt.bottom, 1.0f);
+	//D3DKMatrixScaling(&m_matWorld, rt.right, rt.bottom, 1.0f);
 }
 
 void K2DAsset::UpdateRectDraw(RECT rt)
@@ -39,6 +39,7 @@ void K2DAsset::UpdateRectDraw(RECT rt)
 //마스킹 텍스쳐 없을 경우 하나의 텍스쳐만 불러옴
 bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
 {
+	//KUI Model에서 똑같은거 쓰고 있음 수정하면 거기도 수정해야함
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 	m_matWorld._41 = m_pos.x;
 	m_matWorld._42 = m_pos.y;
@@ -157,7 +158,7 @@ void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VER
 		retList[i].pos.y = list[i].pos.y / g_rtClient.bottom;
 		// 0 ~ 1 -> -1 ~ +1 :::: -1 ~ +1 -> 0 ~ 1
 		// x = x * 2 + -1;  ::::  x= x * 0.5f + 0.5f;
-		retList[i].pos.x = -1.0f +(retList[i].pos.x * 2.0f);
+		retList[i].pos.x = -1.0f + (retList[i].pos.x * 2.0f);
 		retList[i].pos.y = retList[i].pos.y * 2.0f - 1.0f;
 	}
 	// 91,1, 42, 56 => 0 ~ 1	
@@ -192,6 +193,7 @@ bool K2DAsset::SetVertexData()
 
 bool K2DAsset::SetIndexData()
 {
+	m_IndexList.clear();
 	m_IndexList.push_back(0); m_IndexList.push_back(1); m_IndexList.push_back(2);
 	m_IndexList.push_back(2); m_IndexList.push_back(1); m_IndexList.push_back(3);
 	return true;
