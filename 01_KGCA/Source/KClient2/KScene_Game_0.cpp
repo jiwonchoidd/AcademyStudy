@@ -124,7 +124,7 @@ bool KScene_Game_0::Load(std::wstring file)
 	test->SetPosition(KVector2(0, 0));
 	test->SetRectDraw({ 0,0, 42,76 });
 	test->Init(m_pContext, L"../../data/shader/VS_0.txt", L"../../data/shader/PS_0.txt",
-		L"../../data/texture/UV.bmp", L"../../data/model/test.obj");
+		L"../../data/model/house1tex.jpg", L"../../data/model/house1.obj");
 
 	return true;
 }
@@ -150,7 +150,8 @@ bool KScene_Game_0::Frame()
 	//플레이어 이동
 	m_PlayerObj.Frame();
 	//카메라 이동
-	m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
+	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
+	m_Camera.Frame();
 	//npc 이동
 	/*for (int iObj = 0; iObj < m_NpcLlist.size(); iObj++)
 	{
@@ -195,7 +196,7 @@ bool KScene_Game_0::Render()
 	m_PlayerObj.SetMatrix(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
 
-	test->SetMatrix(&test->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+	test->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	test->Render(m_pContext);
 
 	KScene::Render();

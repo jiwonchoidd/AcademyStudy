@@ -15,9 +15,6 @@ private:
     std::vector<int> m_normalindex;//f°ª ÀúÀå
 public:
     std::vector<int> m_UVindexlist;
-private:
-    bool    is_near(float v1, float v2);
-    KVector3    GetSimilarVertex(KVector2* vertex);
 public:
     virtual bool Init(ID3D11DeviceContext* context, std::wstring vs,
         std::wstring ps, std::wstring tex = nullptr, std::wstring obj = nullptr);

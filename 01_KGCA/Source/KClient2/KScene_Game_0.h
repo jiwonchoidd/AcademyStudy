@@ -11,11 +11,11 @@
 class KScene_Game_0 : public KScene
 {
 public:
-    KCamera                 m_Camera;
+    KDebugCamera            m_Camera;
     KPlayer2D			    m_PlayerObj;
     KSound*                 m_BGM;
     std::vector<KNpc2D*>    m_NpcLlist;
-    KObjObject* test;
+    KObjObject*             test;
 public:
     bool    Load(std::wstring file) override;
 public:

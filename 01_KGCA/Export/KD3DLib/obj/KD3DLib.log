@@ -1,4 +1,7 @@
-﻿  KCamera.cpp
+﻿  KObjObject.cpp
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KObjObject.cpp(81,37): warning C4473: 'swscanf_s': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KObjObject.cpp(81,37): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 14개 필요하지만 11개가 제공되었습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KObjObject.cpp(81,37): message : 누락된 variadic 인수 12이(가) 서식 문자열 '%d'에 필요합니다.
   KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h

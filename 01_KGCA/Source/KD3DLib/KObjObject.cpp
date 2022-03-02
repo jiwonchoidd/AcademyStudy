@@ -39,7 +39,7 @@ bool KObjObject::ObjParse(std::wstring	objfile)
 	_tfopen_s(&fp, objfile.c_str(), _T("rt"));
 	if (fp == NULL)
 	{
-		printf("Impossible to open the file !\n");
+		//파일이 없음
 		return false;
 	}
 	TCHAR buffer[256] = { 0, };
