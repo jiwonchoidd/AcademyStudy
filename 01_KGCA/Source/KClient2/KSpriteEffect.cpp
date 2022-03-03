@@ -29,7 +29,7 @@ bool KSpriteEffect::Frame()
 	m_cbData.vLightDir= m_Color;
 	m_cbData.vValue= KVector4(g_fSecTimer, 0, 0, 1.0f);
 
-	AddPosition({ 0,0 },m_pContext);
+	AddPosition({ 0,0 });
 	return true;
 }
 

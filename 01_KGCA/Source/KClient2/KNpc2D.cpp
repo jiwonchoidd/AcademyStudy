@@ -29,7 +29,7 @@ bool KNpc2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps
 
 bool KNpc2D::Frame()
 {
-	AddPosition(KVector2(0, 0), m_pContext);
+	AddPosition(KVector2(0, 0));
 
 
 	//플레이어 디버거
@@ -37,7 +37,7 @@ bool KNpc2D::Frame()
 	{
 		ImGui::Text("m_pos %d, %d", (int)m_pos.x, (int)m_pos.y);
 		ImGui::Text("rt_coll %d, %d", (int)m_rtColl.max.x, (int)m_rtColl.max.y);
-
+		ImGui::Text("rt_size %d, %d", (int)m_rtSize.width, (int)m_rtSize.height);
 	}
 	ImGui::End();
 	return true;
@@ -53,7 +53,6 @@ void KNpc2D::ObjectOverlap(KCollider* pObj, DWORD dwState)
 
 KNpc2D::KNpc2D()
 {
-	m_pContext = nullptr;
 }
 
 KNpc2D::~KNpc2D()

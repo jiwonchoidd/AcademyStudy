@@ -118,7 +118,6 @@ bool KUI::SetIndexData()
 
 KUI::KUI()
 {
-	m_pContext = nullptr;
 	m_rtOffsetTex.left = 0;
 	m_rtOffsetTex.top = 0;
 	m_rtOffsetTex.right = 1;
@@ -223,77 +222,39 @@ bool KButton::Frame()
 	return true;
 }
 
-//
-//bool KPlayerMenu::Load(ID3D11DeviceContext* context)
-//{
-//	m_pContext = context;
-//	img_background.m_image_ratio = 50.0f;
-//	img_background.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
-//	img_background.SetPosition(KVector2(g_rtClient.right, g_rtClient.top));
-//	img_background.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
-//		L"../../data/shader/VSPS_UI_0.txt",
-//		L"../../data/texture/menu_background.png", L"");
-//
-//	for (int i = 0; i < 5; i++)
-//	{
-//		KButton btn;
-//		btn.m_image_ratio = 50.0f;
-//		btn.SetRectDraw({ 0, 0, g_rtClient.right / (LONG)2.5f, g_rtClient.bottom / (LONG)1.2f });
-//		btn.SetPosition(KVector2{ img_background.m_pos.x, img_background.m_pos.y + i * 3 });
-//
-//		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.bmp");
-//		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
-//		// 가변인자를 통해서 생성자 직접 호출
-//		btn.m_datalist.emplace_back(pTex, pSound);
-//
-//		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
-//		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
-//		btn.m_datalist.emplace_back(pTex, pSound);
-//
-//		pTex = g_TextureMananger.Load(L"../../data/ui/menu_hover.png");
-//		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
-//		btn.m_datalist.emplace_back(pTex, pSound);
-//
-//
-//		btn.Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
-//			L"../../data/shader/VSPS_UI_0.txt",
-//			L"../../data/texture/blank.bmp", L"");
-//		btn_list.emplace_back(btn);
-//	}
-//	return true;
-//}
-//
-//bool KPlayerMenu::Frame()
-//{
-//	return true;
-//}
-//
-//bool KPlayerMenu::Render(ID3D11DeviceContext* context)
-//{
-//	img_background.Render(context);
-//	for (auto src : btn_list)
-//	{
-//		src.Render(context);
-//	}
-//	for (auto src : img_list)
-//	{
-//		src.Render(context);
-//	}
-//	return true;
-//}
-//
-//bool KPlayerMenu::Release()
-//{
-//	img_background.Release();
-//	for (auto src : btn_list)
-//	{
-//		src.Release();
-//	}
-//	for (auto src : img_list)
-//	{
-//		src.Release();
-//	}
-//	btn_list.clear();
-//	img_list.clear();
-//	return true;
-//}
+bool KListCtrlObject::Create(int xCount, int yCount , std::wstring ui_name)
+{
+	UpdateData();
+
+	int iHalfWidth = m_rtSize.width / xCount;
+	int iHalfHeight = m_rtSize.height/ yCount;
+	KVector2 pStart = { (float)m_rtDraw.left, (float)m_rtDraw.top };
+	pStart.x += m_rtSize.width / xCount / 2.0f;
+	pStart.y += m_rtSize.height / yCount / 2.0f;
+	for (int iCol = 0; iCol < xCount; iCol++)
+	{
+		for (int iRow = 0; iRow < yCount; iRow++)
+		{
+			KUIModel* pNewBtn = g_UIModelManager.GetPtr(ui_name)->Clone();
+			pNewBtn->m_pParent = this;
+			pNewBtn->m_Name = L"Btn";
+			pNewBtn->m_Name += std::to_wstring(iRow * yCount + iCol);
+			pNewBtn->SetRectDraw({ 0,0, iHalfWidth,iHalfHeight });
+			pNewBtn->SetPosition(KVector2(
+				pStart.x + iHalfWidth * iCol,
+				pStart.y + iHalfHeight * iRow));
+			pNewBtn->UpdateData();
+			Add(pNewBtn);
+		}
+	}
+	return true;
+}
+
+void KListCtrlObject::SelectOverlap(KCollider* pObj, DWORD dwState)
+{
+	if (m_PreSelectState == m_SelectState)
+	{
+		return;
+	}
+	m_PreSelectState = m_SelectState;
+}

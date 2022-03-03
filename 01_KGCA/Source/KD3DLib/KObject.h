@@ -32,8 +32,13 @@ struct CB_DATA
 namespace wrl = Microsoft::WRL;
 class KObject
 {
+//오브젝트 월드 행렬
 public:
-	KMatrix		m_matWorld;
+	KMatrix					m_matWorld;
+//상속관계 구현
+public:
+	KObject*				m_pParent = nullptr;
+	ID3D11DeviceContext*	m_pContext = nullptr;
 public:
 	UINT					m_iNumIndex = 0;
 	UINT					m_iVertexSize = 0;

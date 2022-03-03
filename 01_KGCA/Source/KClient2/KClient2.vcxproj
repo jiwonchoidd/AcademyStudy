@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KScene_Game_1.h" />
     <ClInclude Include="KSpriteEffect.h" />
     <ClInclude Include="KMap.h" />
     <ClInclude Include="KNpc2D.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="KScene_Intro.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KScene_Game_1.cpp" />
     <ClCompile Include="KSpriteEffect.cpp" />
     <ClCompile Include="KMap.cpp" />
     <ClCompile Include="KNpc2D.cpp" />

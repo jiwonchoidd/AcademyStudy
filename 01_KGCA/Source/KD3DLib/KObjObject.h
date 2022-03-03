@@ -6,7 +6,6 @@
 class KObjObject : public K2DAsset
 {
 private:
-    ID3D11DeviceContext* m_pContext;
     std::vector<KVector3> m_vlist;
     std::vector<KVector2> m_vtlist;
     std::vector<KVector3> m_vnlist;

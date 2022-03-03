@@ -42,6 +42,9 @@
     <ClCompile Include="KSpriteEffect.cpp">
       <Filter>Code\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="KScene_Game_1.cpp">
+      <Filter>Code\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="KSpriteEffect.h">
       <Filter>Code\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="KScene_Game_1.h">
+      <Filter>Code\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -3,8 +3,6 @@
 #include "K2DAsset.h"
 class KSpriteEffect : public K2DAsset
 {
-private:
-    ID3D11DeviceContext* m_pContext;
 public:
 	KSprite*    m_pSprite;
 	int		    m_Current_Index;

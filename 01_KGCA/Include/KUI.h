@@ -2,22 +2,7 @@
 #include "KUIModelManager.h"
 #include "KSoundManager.h"
 #include "KObjectManager.h"
-struct KUIData
-{
-    KTexture* pTex;
-    KSound* pSound;
 
-    KUIData() 
-    {
-        pTex = nullptr;
-        pSound = nullptr;
-    }
-    KUIData(KTexture* a, KSound* b)
-    {
-        pTex = a;
-        pSound = b;
-    }
-};
 // 상속 관계 KObject->KCollider->K2DAsset->KUIModel->KUI
 class KUI : public KUIModel
 {
@@ -31,7 +16,7 @@ private:
         copy->CreateVertexLayout();
         return copy;
     }
-    void  UpdateData()
+    void  UpdateData() override
     {
         m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
         m_matWorld._41 = m_pos.x;
@@ -45,13 +30,7 @@ private:
                 std::placeholders::_1,
                 std::placeholders::_2));
     }
-private:
-    ID3D11DeviceContext* m_pContext;
-public:
-    std::vector<KUIData> m_datalist;
-public:
-    RECT				m_rtOffset;
-    RECT				m_rtOffsetTex;
+
 public:
     virtual bool Init(ID3D11DeviceContext* context, std::wstring vs,
         std::wstring ps, std::wstring tex = nullptr, std::wstring mask = nullptr);
@@ -131,4 +110,39 @@ public:
 public:
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
     virtual bool    Frame()override;
+};
+
+class KListCtrlObject : public KUIModelComposite
+{
+public:
+    KUIModel* Clone()
+    {
+        KUIModelComposite* pModel = new KListCtrlObject;
+        std::list< KUIModel*>::iterator iter;
+        for (iter = m_Components.begin(); iter != m_Components.end();
+            iter++)
+        {
+            pModel->Add((*iter)->Clone());
+        }
+        return pModel;
+    };
+    bool  Create(int xCount, int yCount, std::wstring ui_name);
+    void  UpdateData()
+    {
+        m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+        m_matWorld._41 = m_pos.x;
+        m_matWorld._42 = m_pos.y;
+        g_ObjManager.AddCollisionExecute(this,
+            std::bind(&KCollider::ObjectOverlap, this,
+                std::placeholders::_1,
+                std::placeholders::_2));
+        g_ObjManager.AddSelectExecute(this,
+            std::bind(&KCollider::SelectOverlap, this,
+                std::placeholders::_1,
+                std::placeholders::_2));
+    }
+    virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
+public:
+    KListCtrlObject() {}
+    virtual ~KListCtrlObject() {}
 };

@@ -1,10 +1,32 @@
 #pragma once
 #include "KManager.h"
 #include "K2DAsset.h"
+#include "KSoundManager.h"
+struct KUIData
+{
+	KTexture* pTex;
+	KSound* pSound;
+
+	KUIData()
+	{
+		pTex = nullptr;
+		pSound = nullptr;
+	}
+	KUIData(KTexture* a, KSound* b)
+	{
+		pTex = a;
+		pSound = b;
+	}
+};
 class KUIModel : public K2DAsset
 {
 public:
-	KUIModel* m_pParent = nullptr;
+public:
+	public:
+	    std::vector<KUIData> m_datalist;
+	public:
+	    RECT				m_rtOffset;
+	    RECT				m_rtOffsetTex;
 public:
 	//모델을 복제해서 재활용
 	//상속해서 사용하는 함수

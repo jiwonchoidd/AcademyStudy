@@ -1,5 +1,4 @@
 #pragma once
-
 #include "KObject.h"
 //클래스 열거형은 중복이되어도 상관이없음
 //명시적으로 가능
@@ -55,6 +54,7 @@ public:
 		m_CollisonType = colltype;
 		m_SelectType = selecttype;
 	}
+
 public:
 
 	KCollider()

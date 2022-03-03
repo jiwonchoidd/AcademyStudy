@@ -6,7 +6,7 @@ bool KSceneManager::Init(ID3D11DeviceContext* context)
 
 	//첫번째 씬은 인트로 설정한다. 
 	m_pCurrentScene = new KScene_Intro;
-	m_CurrentScene_Index = S_MENU;
+	m_CurrentScene_Index = S_INTRO;
 	m_pCurrentScene->Init(m_pContext);
 	m_pCurrentScene->Load(L"test");
 	return true;
@@ -33,28 +33,32 @@ bool KSceneManager::SetScene(BYTE index)
 		//상태 패턴
 		switch (index)
 		{
-		case S_LOAD:
+			/*	S_INTRO,
+				S_GAME_0,
+				S_GAME_1,
+				S_COMBAT,*/
+		case S_INTRO:
 		{
 			m_pCurrentScene = new KScene_Intro;
-			m_CurrentScene_Index = S_LOAD;
+			m_CurrentScene_Index = S_INTRO;
 			break;
 		}
-		case S_MENU:
-		{
-			m_pCurrentScene = new KScene_Intro;
-			m_CurrentScene_Index = S_MENU;
-			break;
-		}
-		case S_GAME:
+		case S_GAME_0:
 		{
 			m_pCurrentScene = new KScene_Game_0;
-			m_CurrentScene_Index = S_GAME;
+			m_CurrentScene_Index = S_GAME_0;
 			break;
 		}
-		case S_RESULT:
+		case S_GAME_1:
+		{
+			m_pCurrentScene = new KScene_Game_1;
+			m_CurrentScene_Index = S_GAME_1;
+			break;
+		}
+		case S_COMBAT:
 		{
 			m_pCurrentScene = new KScene_Intro;
-			m_CurrentScene_Index = S_LOAD;
+			m_CurrentScene_Index = S_COMBAT;
 			break;
 		}
 		default:

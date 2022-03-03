@@ -1,19 +1,22 @@
 #include "KCamera.h"
 #include "KInput.h"
-
+#include "ImGuiManager.h"
 #pragma region Camera
 
 bool KCamera::Follow2DPos(KVector2* vPos)
 {
  // offset
-    m_vCameraPos.x = vPos->x + 1.0f;
-    m_vCameraPos.y = vPos->y + 1.0f;
-
+    m_vCameraPos.x = vPos->x;
+    m_vCameraPos.y = vPos->y;
+    if (ImGui::Begin("cam"))
+    {
+        ImGui::Text("pos -> %d %d ", (int)m_vCameraPos.x, (int)m_vCameraPos.y);
+    }
+    ImGui::End();
 
     m_matWorld._41 = m_vCameraPos.x;
     m_matWorld._42 = m_vCameraPos.y;
     m_matWorld._43 = m_vCameraPos.z;
-
     KQuaternion q;
     //사원수를 행렬로 변환하고 역행렬로 카메라
     D3DXQuaternionRotationYawPitchRoll(&q, m_fYaw, m_fPitch, m_fRoll);

@@ -84,28 +84,27 @@ bool KObjectManager::Frame()
 			}
 		}
 	}
-	//mouse
+	//mouse select 
 	for (auto src : m_SelectList)
 	{
 		KCollider* pObjSrc = (KCollider*)src.second;
-		//ignore 형태의 콜라이더를 무시한다.
-		if (pObjSrc->m_SelectType == KSelectType::Select_Ignore) continue;
 		DWORD dwState = KSelectState::S_DEFAULT;
 
-		if (KCollision::RectToPoint(pObjSrc->m_rtColl,
+		if (pObjSrc->m_SelectType != KSelectType::Select_Ignore &&
+			KCollision::RectToPoint(pObjSrc->m_rtColl,
 			g_InputData.iMousePos[0], g_InputData.iMousePos[1]))
 		{
 			BYTE mouseState = g_InputData.bMouseState[0];
 			pObjSrc->m_SelectState = KSelectState::S_HOVER;
-			if (mouseState == 2)
+			if (mouseState == 2)//push
 			{
 				pObjSrc->m_SelectState = KSelectState::S_ACTIVE;
 			}
-			if (mouseState == 3)
+			if (mouseState == 3)//hold
 			{
 				pObjSrc->m_SelectState = KSelectState::S_FOCUS;
 			}
-			if (mouseState == 1)
+			if (mouseState == 1)//keyup
 			{
 				pObjSrc->m_SelectState = KSelectState::S_SELECTED;
 			}

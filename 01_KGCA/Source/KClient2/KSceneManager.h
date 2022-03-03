@@ -1,16 +1,17 @@
 #pragma once
-#include "KScene_Intro.h"
-#include "KScene_Game_0.h"
+#include "KScene_Intro.h" // intro
+#include "KScene_Game_0.h"// game_0
+#include "KScene_Game_1.h"//game_1
 //¾À Çì´õ Æ÷ÇÔ
 class KSceneManager : public Singleton <KSceneManager>
 {
 public:
 	enum SceneID
 	{
-		S_LOAD,
-		S_MENU,
-		S_GAME,
-		S_RESULT,
+		S_INTRO,
+		S_GAME_0,
+		S_GAME_1,
+		S_COMBAT,
 	};
 public:
 	friend class Singleton<KSceneManager>;

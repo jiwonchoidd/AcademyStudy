@@ -27,7 +27,7 @@ void K2DAsset::SetRectDraw(RECT rt)
 	m_rtDraw = rt;
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
-	D3DKMatrixScaling(&m_matWorld, 10.0f, 10.0f, 1.0f);
+	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 }
 
 void K2DAsset::UpdateRectDraw(RECT rt)
@@ -35,6 +35,7 @@ void K2DAsset::UpdateRectDraw(RECT rt)
 	m_rtSize.width = rt.right;
 	m_rtSize.height = rt.bottom;
 }
+
 //생성 함수 마스킹 텍스쳐까지 불러옴
 //마스킹 텍스쳐 없을 경우 하나의 텍스쳐만 불러옴
 bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::wstring tex, std::wstring mask)
@@ -56,16 +57,18 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 	return true;
 }
 
-void K2DAsset::AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext)
+void K2DAsset::AddPosition(KVector2 vPos)
 {
-	//m_pos += vPos;
 	m_matWorld._41 += vPos.x;
 	m_matWorld._42 += vPos.y;
 	m_pos = { m_matWorld._41, m_matWorld._42 };
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
-	ConvertIndex(m_pos, m_rtSize.width, m_rtSize.height, m_VertexList);
-	pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
-		&m_VertexList.at(0), 0, 0);
+	SetUVcoord(m_VertexList);
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
+			&m_VertexList.at(0), 0, 0);
+	}
 }
 
 void K2DAsset::SetPosition(KVector2 vPos)
@@ -74,6 +77,12 @@ void K2DAsset::SetPosition(KVector2 vPos)
 	m_pos = vPos;
 	m_matWorld._41 = m_pos.x;
 	m_matWorld._42 = m_pos.y;
+
+	if (m_pContext != nullptr)
+	{
+		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,
+			&m_VertexList.at(0), 0, 0);
+	}
 }
 
 //현재 위치, 크기, 
@@ -153,12 +162,14 @@ void K2DAsset::ConvertIndex(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VER
 	retList.resize(list.size());
 	for (int i = 0; i < list.size(); i++)
 	{
-
-		retList[i].pos.x = list[i].pos.x / g_rtClient.right;
-		retList[i].pos.y = list[i].pos.y / g_rtClient.bottom;
-		retList[i].pos.x = retList[i].pos.x * 2.0f + 1.0f;
-		retList[i].pos.y = retList[i].pos.y * 2.0f + 1.0f;
+		retList[i].pos.x = list[i].pos.x;
+		retList[i].pos.y = list[i].pos.y;
 	}
+	SetUVcoord(retList);
+}
+
+void K2DAsset::SetUVcoord(std::vector<PNCT_VERTEX>& retList)
+{
 	if (m_rtSource.left == 0 && m_rtSource.right == 0 &&
 		m_rtSource.top == 0 && m_rtSource.bottom == 0)
 	{

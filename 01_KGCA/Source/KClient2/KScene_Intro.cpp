@@ -25,7 +25,7 @@ bool KScene_Intro::Load(std::wstring file)
 bool KScene_Intro::Init(ID3D11DeviceContext* context)
 {
 	KScene::Init(context);
-	m_SceneID = S_MENU;
+	m_SceneID = S_INTRO;
 	return true;
 }
 
@@ -34,7 +34,7 @@ bool KScene_Intro::Frame()
 	m_BGM->Frame();
 	if (g_InputData.bUpKey)
 	{
-		g_SceneManager.SetScene(2);
+		g_SceneManager.SetScene(1);
 		return true;
 	}
 	KScene::Frame();

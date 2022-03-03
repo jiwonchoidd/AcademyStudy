@@ -17,7 +17,7 @@ public:
 public:
 	virtual void		SetRectSource(RECT rt);
 	virtual void		SetRectDraw(RECT rt);
-	virtual void		AddPosition(KVector2 vPos, ID3D11DeviceContext* pContext);
+	virtual void		AddPosition(KVector2 vPos);
 	virtual void		SetPosition(KVector2 vPos);
 	virtual void		UpdateRectDraw(RECT rt);
 	virtual bool		CreateObject_Mask(std::wstring vsFile,
@@ -36,6 +36,7 @@ public:
 	// 화면좌표계를 NDC 변환
 	virtual void	ConvertIndex(std::vector<PNCT_VERTEX>& list,
 		std::vector<PNCT_VERTEX>& retList);
+	virtual void		SetUVcoord(std::vector<PNCT_VERTEX>& retList);
 public:
 	virtual bool		SetVertexData();
 	virtual bool		SetIndexData();

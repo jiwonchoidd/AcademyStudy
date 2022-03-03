@@ -3,7 +3,6 @@
 bool KUIModelComposite::Frame()
 {
 	//다수의 컴포넌트(ui)를 지닌 컴포지트 객체 반복문으로 Frame()
-	KUIModelComposite* model = new KUIModelComposite;
 	std::list<KUIModel*>::iterator iter;
 	for (iter = m_Components.begin(); iter != m_Components.end();
 		iter++)
@@ -16,7 +15,6 @@ bool KUIModelComposite::Frame()
 bool KUIModelComposite::Render(ID3D11DeviceContext* context)
 {
 	//컴포지트 렌더
-	KUIModelComposite* model = new KUIModelComposite;
 	std::list<KUIModel*>::iterator iter;
 	for (iter = m_Components.begin(); iter != m_Components.end();
 		iter++)
@@ -28,7 +26,6 @@ bool KUIModelComposite::Render(ID3D11DeviceContext* context)
 
 bool KUIModelComposite::Release()
 {
-	KUIModelComposite* model = new KUIModelComposite;
 	std::list<KUIModel*>::iterator iter;
 	for (iter = m_Components.begin(); iter != m_Components.end();
 		iter++)
@@ -64,5 +61,7 @@ void KUIModelComposite::UpdateData()
 		iter++)
 	{
 		(*iter)->UpdateData();
+		(*iter)->SetCollisionType(KCollisionType::Ignore,
+			KSelectType::Select_Overlap);
 	}
 }
