@@ -293,5 +293,8 @@
     <Text Include="..\..\data\shader\VS_2D_Map.txt">
       <Filter>Shader</Filter>
     </Text>
+    <Text Include="..\..\data\shader\VSPS_Debug_0.txt">
+      <Filter>Shader</Filter>
+    </Text>
   </ItemGroup>
 </Project>

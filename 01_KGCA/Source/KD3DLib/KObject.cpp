@@ -118,15 +118,17 @@ bool KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
 }
 
 //매니져를 사용해 텍스쳐 로드
-bool KObject::LoadTexture(std::wstring filename, std::wstring mask)
+bool KObject::LoadTexture(std::wstring tex, std::wstring mask)
 {
     if (!mask.empty())
     {
         m_pMaskTex = g_TextureMananger.Load(mask);
     }
-   
-    m_pColorTex = g_TextureMananger.Load(filename);
+    if (!tex.empty())
+    {
+    m_pColorTex = g_TextureMananger.Load(tex);
     m_TextureDesc = m_pColorTex->m_TextureDesc;
+    }
     return true;
 }
 

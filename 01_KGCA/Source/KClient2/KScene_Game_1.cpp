@@ -18,7 +18,7 @@ bool KScene_Game_1::Load(std::wstring file)
 
 	// 캐릭터 로드
 	m_PlayerObj.SetPosition(KVector2(0, 0));
-	m_PlayerObj.SetRectDraw({ 0, 0, 4, 4 });
+	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4 });
 	//캐릭터와 맵과 띄워 놓는다.
 	if (!m_PlayerObj.Init(m_pContext,
 		L"../../data/shader/vs_2D.txt",
@@ -57,8 +57,8 @@ bool KScene_Game_1::Init(ID3D11DeviceContext* context)
 
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -30), KVector3(0, 1, 0));
-	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.2f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -35), KVector3(0, 0, 0));
+	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 

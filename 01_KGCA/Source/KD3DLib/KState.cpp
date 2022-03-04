@@ -10,9 +10,10 @@ ID3D11DepthStencilState* KState::g_pDSS_Disabled = nullptr;
 ID3D11SamplerState* KState::g_pClampSS = nullptr;
 ID3D11SamplerState* KState::g_pWrapSS = nullptr;
 ID3D11SamplerState* KState::g_pMirrorSS = nullptr;
+ID3D11SamplerState* KState::g_pNoFilterSS =nullptr;
 ID3D11RasterizerState* KState::g_pRSSolid = nullptr;
 ID3D11RasterizerState* KState::g_pRSWireFrame = nullptr;
-ID3D11RasterizerState* KState::g_pRSBackface =nullptr; 
+ID3D11RasterizerState* KState::g_pRSBackface = nullptr;
 HRESULT KState::CreateDepthStenState()
 {
     HRESULT hr = S_OK;
@@ -140,6 +141,16 @@ HRESULT KState::CreateSamplerState()
     sd.MaxLOD = FLT_MIN;
     hr = g_pd3dDevice->CreateSamplerState(&sd,
         &g_pMirrorSS);
+
+    ZeroMemory(&sd, sizeof(D3D11_SAMPLER_DESC));
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.MinLOD = FLT_MAX;
+    sd.MaxLOD = FLT_MIN;
+    hr = g_pd3dDevice->CreateSamplerState(&sd,
+        &g_pNoFilterSS);
 
     return hr;
 }

@@ -69,7 +69,7 @@ bool KScene_Game_0::Load(std::wstring file)
 
 	// 캐릭터 로드
 	m_PlayerObj.SetPosition(KVector2(0, 0));
-	m_PlayerObj.SetRectDraw({ 0, 0, 4, 4});
+	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4});
 	//캐릭터와 맵과 띄워 놓는다.
 	if (!m_PlayerObj.Init(m_pContext,
 		L"../../data/shader/vs_2D.txt",
@@ -85,7 +85,7 @@ bool KScene_Game_0::Load(std::wstring file)
 	//맵 로드---------------------------
 	KMap* map = new KMap;
 	map->SetRectSource({ 255,2,255,186 });
-	map->SetRectDraw({ 0, 0, 35, 30});
+	map->SetRectDraw({ 0, 0, 32, 28});
 	map->SetPosition(KVector2(0, 0));
 	if (!map->Init(m_pContext,
 		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
@@ -107,7 +107,8 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -20), KVector3(0, 0, 0));
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -40), KVector3(0, 0, 0));
+	//m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }

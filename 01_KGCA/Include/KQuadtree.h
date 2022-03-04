@@ -1,50 +1,69 @@
 #pragma once
-#include "KNode.h"
+#include "KCollider.h"
 #include <queue>
-
-class KQuadtree
+class KNode
 {
 public:
-	UINT		m_iMaxDepth;
-	UINT		m_iNumCell;
-	UINT		m_iNumPatch;
-	vector<DWORD>  m_IndexList;
-	ID3D11Buffer* m_pIndexBuffer;
-	vector<TLodPatch>   m_LodPatchList;
+	KNode* m_pParent;
+	KRect	m_rect;
+	int		m_data;
+	int		m_depth;
+	KNode* m_pChild[4];
+	std::vector<DWORD>  m_CornerList;
 public:
-	KNode*		m_pRootNode;
-	int			m_iNumCol;
-	int			m_iNumRow;
-	queue<KNode*>  m_Queue;
-	map<int, KNode*>  m_pLeafList;
-	KMap*		m_pMap;
+	bool isRect(KVector2 pos)
+	{
+		if (this->m_rect.min.x <= pos.x &&
+			this->m_rect.max.x >= pos.x &&
+			this->m_rect.min.y <= pos.y &&
+			this->m_rect.max.y >= pos.y)
+		{
+			return true;
+		}
+		return false;
+	}
 public:
-	bool	UpdateIndexList(KNode* pNode);
-	HRESULT CreateIndexBuffer(KNode* pNode);
-	bool	UpdateVertexList(KNode* pNode);
-	HRESULT CreateVertexBuffer(KNode* pNode);
+	KNode()
+	{
+		m_pParent = nullptr;
+	}
+	KNode(float x, float y, float w, float h)
+	{
+		m_pParent = nullptr;
+		m_depth = 0;
+		m_rect = KRect({ x,y }, w, h);
+	}
+	~KNode()
+	{
+		for (int iChild = 0; iChild < 4; iChild++)
+		{
+			if (m_pChild[iChild] != nullptr)
+			{
+				delete m_pChild[iChild];
+				m_pChild[iChild] = nullptr;
+			}
+		}
+	}
+};
+
+class KQuadTree : public KObject
+{
+
 public:
-	void    Build(KMap* pMap);
-	KNode*  CreateNode(KNode* pParent, float x, float y, float w, float h);
-	void	Buildtree(KNode*);
-	bool    AddObject(KVector2 pos);
-	KNode*  FindNode(KNode* pNode, KVector2 pos);
-	
-	KNode*  FindPlayerNode(KVector2 pos);
-	bool	SubDivide(KNode* pNode);
-	void	SetNeighborNode();
-	bool    LoadObject(std::wstring filename);
+	KNode*				m_pRootNode;
+	std::vector<KNode*> m_pReafNode;
+	int					m_width;
+	int					m_height;
+	std::queue<KNode*>	m_queue;
+	bool	Init(ID3D11DeviceContext* contex, float width, float height);
+	void    Buildtree(KNode* pNode);
+	bool	Release();
+	KNode* CreateNode(KNode* pParent, float x, float y, float w, float h);
+	KNode* FindNode(KNode* pNode, KVector2 pos);
+	bool	CheckVertexData() override;
+	bool	Render(ID3D11DeviceContext* pContext)override;
 public:
-	bool    Init();
-	bool	Frame();
-	bool	Render(ID3D11DeviceContext* pContext, KVector3* vCamera);
-	bool    Release();
-	bool    ComputeStaticLodIndex(int iMaxCells);
-	HRESULT CreateIndexBuffer(TLodPatch& patch, int iCode);
-	template <typename OutputIterator>
-	void	Tokenize(const std::wstring& text, const std::wstring& delimiters, OutputIterator first);
-public:
-	KQuadtree();
-	virtual ~KQuadtree();
+	KQuadTree();
+	virtual ~KQuadTree();
 };
 

@@ -23,6 +23,7 @@ public:
 	static	ID3D11SamplerState*			g_pMirrorSS;
 	static	ID3D11SamplerState*			g_pClampSS;
 	static	ID3D11SamplerState*			g_pWrapSS;
+	static	ID3D11SamplerState*			g_pNoFilterSS;
 public:
 	static	HRESULT		CreateDepthStenState();
 	static	HRESULT		CreateBlendState();

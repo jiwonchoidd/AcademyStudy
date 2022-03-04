@@ -97,7 +97,7 @@ bool	KCore::PreRender() {
 
     m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     ApplyDSS(m_pImmediateContext, KState::g_pDSS);
-    ApplySS(m_pImmediateContext, KState::g_pWrapSS, 0);
+    ApplySS(m_pImmediateContext, KState::g_pNoFilterSS, 0);
     ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
     ApplyBS(m_pImmediateContext, KState::g_pBlendState);
 
