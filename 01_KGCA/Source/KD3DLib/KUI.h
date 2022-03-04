@@ -19,6 +19,7 @@ private:
     void  UpdateData() override
     {
         m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
+        SetCollisionType(KCollisionType::Ignore,KSelectType::Select_Overlap);
         m_matWorld._41 = m_pos.x;
         m_matWorld._42 = m_pos.y;
         g_ObjManager.AddCollisionExecute(this,

@@ -5,10 +5,10 @@ class KScene
 public:
 	enum SceneID 
 	{
-		S_LOAD,
-		S_MENU,
-		S_GAME,
-		S_RESULT,
+		S_INTRO,
+		S_GAME_0,
+		S_GAME_1,
+		S_COMBAT,
 	};
 public:
 	BYTE				 m_SceneID;

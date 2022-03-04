@@ -157,10 +157,14 @@ bool KState::ReleaseState()
 {
     g_pRSSolid->Release();
     g_pRSWireFrame->Release();
+    g_pRSBackface->Release();
+
     g_pDSS->Release();
+    g_pDSS_Disabled->Release();
+
     g_pBlendState->Release();
+    g_pMirrorSS->Release();
     g_pClampSS->Release();
     g_pWrapSS->Release();
-    g_pMirrorSS->Release();
     return true;
-} 
+}

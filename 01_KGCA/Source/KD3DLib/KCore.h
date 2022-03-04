@@ -11,11 +11,9 @@ class KCore : public KWindow
 {
 public:
 	KTimer			m_Timer;
-	KSoundManager	m_Sound;
 	KWrite			m_Write;
 	ImGuiManager	m_ImGuiManager;
 public:
-	float		m_Speed=1.0f;
 	bool		m_bDebugText = false;
 	bool		m_bFreeCamera = false;
 public:

@@ -10,7 +10,7 @@
 class KScene_Game_1 : public KScene
 {
 public:
-    KDebugCamera            m_Camera;
+    KCamera                 m_Camera;
     KPlayer2D			    m_PlayerObj;
     KSound*                 m_BGM;
 public:

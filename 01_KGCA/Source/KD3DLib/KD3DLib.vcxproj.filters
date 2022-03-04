@@ -135,6 +135,9 @@
     <ClCompile Include="KUIModelManager.cpp">
       <Filter>Code\Manager</Filter>
     </ClCompile>
+    <ClCompile Include="KQuadTree.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KInput.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="KUIModelManager.h">
       <Filter>Code\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="KQuadTree.h">
+      <Filter>Code</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

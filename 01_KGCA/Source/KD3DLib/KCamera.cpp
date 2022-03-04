@@ -3,11 +3,13 @@
 #include "ImGuiManager.h"
 #pragma region Camera
 
-bool KCamera::Follow2DPos(KVector2* vPos)
+bool KCamera::Follow2DPos(KVector2* vPos, KVector2 offset)
 {
  // offset
     m_vCameraPos.x = vPos->x;
-    m_vCameraPos.y = vPos->y;
+    m_vCameraPos.y = vPos->y - offset.y;
+    m_vCameraTarget.x = vPos->x;
+    m_vCameraTarget.y = vPos->y;
     if (ImGui::Begin("cam"))
     {
         ImGui::Text("pos -> %d %d ", (int)m_vCameraPos.x, (int)m_vCameraPos.y);
@@ -19,10 +21,7 @@ bool KCamera::Follow2DPos(KVector2* vPos)
     m_matWorld._43 = m_vCameraPos.z;
     KQuaternion q;
     //사원수를 행렬로 변환하고 역행렬로 카메라
-    D3DXQuaternionRotationYawPitchRoll(&q, m_fYaw, m_fPitch, m_fRoll);
-    KMatrix matRotation;
-    D3DKMatrixAffineTransformation(&matRotation, 1.0f, NULL, &q, &m_vCameraPos);
-    D3DKMatrixInverse(&m_matView, NULL, &matRotation);
+    D3DKMatrixLookAtLH(&m_matView, &m_vCameraPos, &m_vCameraTarget, &m_vUp);
     //매 프레임 마다 뷰행렬을 만든다.
     m_vSide.x = m_matView._11;
     m_vSide.y = m_matView._21;

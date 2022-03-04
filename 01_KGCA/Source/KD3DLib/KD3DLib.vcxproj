@@ -39,6 +39,7 @@
     <ClCompile Include="KObjectManager.cpp" />
     <ClCompile Include="KObjObject.cpp" />
     <ClCompile Include="KPlaneObj.cpp" />
+    <ClCompile Include="KQuadTree.cpp" />
     <ClCompile Include="KScene.cpp" />
     <ClCompile Include="KShaderManager.cpp" />
     <ClCompile Include="KSkyBox.cpp" />
@@ -77,6 +78,7 @@
     <ClInclude Include="KObjectManager.h" />
     <ClInclude Include="KObjObject.h" />
     <ClInclude Include="KPlaneObj.h" />
+    <ClInclude Include="KQuadTree.h" />
     <ClInclude Include="KScene.h" />
     <ClInclude Include="KShaderManager.h" />
     <ClInclude Include="KSkyBox.h" />

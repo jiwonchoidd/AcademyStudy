@@ -45,7 +45,6 @@ bool	KCore::GameFrame()
 
     if (ImGui::Begin(u8"성능 디스플레이"))
     {
-        ImGui::SliderFloat("Speed Factor", &m_Speed, 0.0f, 10.0f);
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
     }
@@ -120,10 +119,11 @@ bool	KCore::GameRelease()
 {
     Release();
     KState::ReleaseState();
-    // TODO : Render Timer
+
     m_Timer.Release();
     g_Input.Release();
     m_Write.Release();
+
     CleanupDevice();
     return true;
 }

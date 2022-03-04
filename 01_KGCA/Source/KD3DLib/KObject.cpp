@@ -16,6 +16,33 @@ void KObject::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
     m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
 
+void KObject::SetMatrix_Billboard(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj)
+{
+    if (pMatWorld != nullptr)
+    {
+        KMatrix billboard = pMatView->Transpose();
+        pMatWorld->_11 = billboard._11;
+        pMatWorld->_13 = billboard._13;
+        pMatWorld->_31 = billboard._31;
+        pMatWorld->_33 = billboard._33;
+
+        pMatWorld->_22 = billboard._22;
+        pMatWorld->_23 = billboard._23;
+        pMatWorld->_32 = billboard._32;
+        pMatWorld->_33 = billboard._33;
+        m_cbData.matWorld = pMatWorld->Transpose();
+    }
+    if (pMatView != nullptr)
+    {
+        m_cbData.matView = pMatView->Transpose();
+    }
+    if (pMatProj != nullptr)
+    {
+        m_cbData.matProj = pMatProj->Transpose();
+    }
+    m_cbData.matNormal = m_cbData.matNormal.Transpose();
+}
+
 bool KObject::Init()
 {
     return true;

@@ -107,8 +107,8 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -15), KVector3(0, 0, 0));
-	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -20), KVector3(0, 0, 0));
+	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 

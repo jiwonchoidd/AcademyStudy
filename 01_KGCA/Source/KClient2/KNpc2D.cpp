@@ -31,7 +31,6 @@ bool KNpc2D::Frame()
 {
 	AddPosition(KVector2(0, 0));
 
-
 	//플레이어 디버거
 	if (ImGui::Begin(u8"디버거"))
 	{

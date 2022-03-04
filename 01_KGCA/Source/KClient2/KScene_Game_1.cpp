@@ -28,7 +28,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -0.1f);
+	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -1.0f);
 	m_PlayerObj.m_CollisonType = KCollisionType::Overlap;
 
 	//맵 로드---------------------------
@@ -41,7 +41,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixScaling(&m_Map->m_matWorld, 2.0f, 2.0f, 1.0f);
+	D3DKMatrixScaling(&m_Map->m_matWorld, 2.0f, 2.0f, 1.5f);
 	
 	m_MapObj.push_back(m_Map);
 
@@ -57,8 +57,8 @@ bool KScene_Game_1::Init(ID3D11DeviceContext* context)
 
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -15), KVector3(0, 0, 0));
-	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -30), KVector3(0, 1, 0));
+	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.2f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 
@@ -68,8 +68,8 @@ bool KScene_Game_1::Frame()
 	//플레이어 이동
 	m_PlayerObj.Frame();
 	//카메라 이동
-	//m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
-	m_Camera.Frame();
+	m_Camera.Follow2DPos(&m_PlayerObj.m_pos, {0, 20});
+	//m_Camera.Frame();
 	//디버깅용 씬이동
 	if (g_InputData.bDownKey)
 	{
@@ -88,7 +88,12 @@ bool KScene_Game_1::Render()
 	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 
 	//플레이어 렌더링
-	m_PlayerObj.SetMatrix(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+		// Y축 회전행렬은 _11, _13, _31, _33번 행렬에 회전값이 들어간다
+		// 카메라의 Y축 회전행렬값을 읽어서 역행렬을 만들면 X,Z축이 고정된
+		// Y축 회전 빌보드 행렬을 만들수 있다
+	
+
+	m_PlayerObj.SetMatrix_Billboard(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_PlayerObj.Render(m_pContext);
 
 	KScene::Render();

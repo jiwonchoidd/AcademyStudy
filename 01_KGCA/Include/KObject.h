@@ -60,6 +60,8 @@ public:
 public:
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
+	virtual void		SetMatrix_Billboard(KMatrix* pMatWorld,
+		KMatrix* pMatView, KMatrix* pMatProj);
 	virtual bool		LoadShader(std::wstring vsFile, std::wstring psFile);
 	virtual bool		LoadTexture(std::wstring filename, std::wstring mask = L"");
 public:

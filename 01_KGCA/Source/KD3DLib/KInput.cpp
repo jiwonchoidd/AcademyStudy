@@ -191,6 +191,7 @@ bool KInput::Render()
 }
 bool KInput::Release()
 {
+    ShutDownDirectInput();
     return true;
 }
 KInput::KInput() 
@@ -199,5 +200,5 @@ KInput::KInput()
 }
 KInput::~KInput() 
 {
-    ShutDownDirectInput();
+    //ShutDownDirectInput();
 }

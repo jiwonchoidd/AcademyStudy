@@ -38,5 +38,6 @@ ImGuiManager::ImGuiManager()
 
 ImGuiManager::~ImGuiManager()
 {
-	ImGui::DestroyContext();
+    ImGui::DestroyContext();
+
 }
