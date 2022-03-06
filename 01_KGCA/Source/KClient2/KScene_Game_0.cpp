@@ -68,7 +68,6 @@ bool KScene_Game_0::Load(std::wstring file)
 	m_BGM->SoundPlay(true);
 
 	// 캐릭터 로드
-	m_PlayerObj.SetPosition(KVector2(0, 0));
 	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4});
 	//캐릭터와 맵과 띄워 놓는다.
 	if (!m_PlayerObj.Init(m_pContext,
@@ -79,7 +78,7 @@ bool KScene_Game_0::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -0.1f);
+	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld,-4, 2, -0.1f);
 	m_PlayerObj.m_CollisonType = KCollisionType::Overlap;
 
 	//맵 로드---------------------------
@@ -93,6 +92,7 @@ bool KScene_Game_0::Load(std::wstring file)
 	{
 		return false;
 	}
+	map->m_Space.LoadLeafData(L"../../data/map/map_0.txt");
 	m_MapObj.push_back(map);
 
 	return true;

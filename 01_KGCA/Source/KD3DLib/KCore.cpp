@@ -34,7 +34,7 @@ bool	KCore::GameFrame()
     
     m_Write.Frame();
     m_ImGuiManager.Frame();
-    if (g_Input.GetKey(DIK_F1) == KEY_PUSH)
+    if (g_InputData.bDebugRender)
     {
         m_bDebugText = !m_bDebugText;
     }

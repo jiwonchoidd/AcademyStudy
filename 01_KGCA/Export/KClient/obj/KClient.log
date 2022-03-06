@@ -1,5 +1,4 @@
-﻿  KMap.cpp
-  KNpc2D.cpp
+﻿  KNpc2D.cpp
 E:\github\AcademyStudy\01_KGCA\Source\KClient\KNpc2D.cpp(37,40): error C2660: 'K2DAsset::AddPosition': 함수는 2개의 인수를 사용하지 않습니다.
 E:\github\AcademyStudy\01_KGCA\Include\K2DAsset.h(20,16): message : 'K2DAsset::AddPosition' 선언을 참조하십시오.
   KPlayer2D.cpp

@@ -151,6 +151,14 @@ bool KInput::Frame()
         g_InputData.bExit = GetKey(DIK_ESCAPE);
         g_InputData.bSpace = GetKey(DIK_SPACE);
        
+#ifdef DEBUG
+        if (g_Input.GetKey(DIK_F1) == KEY_PUSH)
+        {
+            g_InputData.bDebugRender = !g_InputData.bDebugRender;
+        }
+#endif // DEBUG
+
+        
         if (GetKey(DIK_RETURN) == KEY_UP)
             g_InputData.bEnter= true;
         else

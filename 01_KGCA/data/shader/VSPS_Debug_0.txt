@@ -39,5 +39,5 @@ float4 PS(VS_OUTPUT input) : SV_TARGET
 {	
 	//텍스처에서 t좌표에 해당하는 컬러값(픽셀) 반환
 	float4 color = float4(1,0,0,1);
-	return color;
+	return input.c;
 }

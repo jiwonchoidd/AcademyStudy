@@ -6,10 +6,10 @@ class KNode
 public:
 	KNode* m_pParent;
 	KRect	m_rect;
+	int		m_index;
 	int		m_data;
 	int		m_depth;
 	KNode* m_pChild[4];
-	std::vector<DWORD>  m_CornerList;
 public:
 	bool isRect(KVector2 pos)
 	{
@@ -54,12 +54,16 @@ public:
 	std::vector<KNode*> m_pReafNode;
 	int					m_width;
 	int					m_height;
+	KVector2			m_offset;
 	std::queue<KNode*>	m_queue;
-	bool	Init(ID3D11DeviceContext* contex, float width, float height);
+	std::wstring		m_Name;
+	bool	Init(ID3D11DeviceContext* contex, KVector2 startpos, float width, float height);
 	void    Buildtree(KNode* pNode);
+	bool	LoadLeafData(std::wstring data);
 	bool	Release();
-	KNode* CreateNode(KNode* pParent, float x, float y, float w, float h);
-	KNode* FindNode(KNode* pNode, KVector2 pos);
+	KNode*  CreateNode(KNode* pParent, float x, float y, float w, float h);
+	KNode*	FindLeafNode(KVector2 pos);
+	KNode*  FindNode(KNode* pNode, KVector2 pos);
 	bool	CheckVertexData() override;
 	bool	Render(ID3D11DeviceContext* pContext)override;
 public:

@@ -44,6 +44,7 @@ public:
 public:
 	KRect				m_rtColl;
 	KVector2			m_pos;
+	int					m_blockstate;
 	KVector2			m_dir;
 	Rt_Size				m_rtSize; //사이즈 구조체
 public:

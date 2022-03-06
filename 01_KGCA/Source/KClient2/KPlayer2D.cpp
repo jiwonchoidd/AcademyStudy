@@ -4,7 +4,7 @@
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_Speed = 7.0f;
+	m_Speed = 5.0f;
 	m_Name = L"Player0";
 
 	//걷는 애니메이션 한줄 잘라내기
@@ -33,33 +33,69 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 
 bool KPlayer2D::Frame()
 {
-	KSprite* walk= g_SpriteManager.GetPtr(L"Player_Walk");
-	
+	KSprite* walk = g_SpriteManager.GetPtr(L"Player_Walk");
+
 	KVector2 pos;
+
+	#pragma region 키 입력 이동 처리
 	if (g_InputData.bWKey)
 	{
-		pos.y += m_Speed * g_fSecPerFrame;
-		m_dir = {0,1};
-		walk->RunAnim(3.0f, 8, 11);
+		m_dir = { 0,1 };
+
+		//8421 BCD 코드 
+		if (!(m_blockstate & 1))
+		{
+			walk->RunAnim(3.0f, 8, 11);
+		}
+		else
+		{
+			//맵 벽에 충돌했을때, 
+			m_dir = { 0,0 };
+			walk->m_AnimIndex = 8;
+		}
 	}
 	else if (g_InputData.bSKey)
 	{
-		pos.y -= m_Speed * g_fSecPerFrame;
 		m_dir = { 0,-1 };
-		walk->RunAnim(3.0f, 0, 3);
+		if (!(m_blockstate & 4))
+		{
+			walk->RunAnim(3.0f, 0, 3);
+		}
+		else
+		{
+			m_dir = { 0,0 };
+			walk->m_AnimIndex = 0;
+		}
 	}
 	else if (g_InputData.bAKey)
 	{
-		pos.x -= m_Speed * g_fSecPerFrame;
 		m_dir = { -1,0 };
-		walk->RunAnim(3.0f, 12, 15);
+		if (!(m_blockstate & 8))
+		{
+			walk->RunAnim(3.0f, 12, 15);
+		}
+		else
+		{
+			m_dir = { 0,0 };
+			walk->m_AnimIndex = 12;
+		}
 	}
 	else if (g_InputData.bDKey)
 	{
-		pos.x += m_Speed * g_fSecPerFrame;
 		m_dir = { 1,0 };
-		walk->RunAnim(3.0f, 4, 7);
+		if (!(m_blockstate & 2))
+		{
+			walk->RunAnim(3.0f, 4, 7);
+		}
+		else
+		{
+			m_dir = { 0,0 };
+			walk->m_AnimIndex = 4;
+		}
 	}
+#pragma endregion
+	
+	//키 입력이 없을때
 	else
 	{
 		if (m_dir == KVector2{ 0,1 })
@@ -78,9 +114,12 @@ bool KPlayer2D::Frame()
 		{
 			walk->m_AnimIndex = 4;
 		}
+		//m_dir = { 0,0 };
 	}
+
+	pos = m_dir * m_Speed * g_fSecPerFrame;
 	AddPosition(pos);
-	
+
 	return true;
 }
 bool KPlayer2D::Render(ID3D11DeviceContext* pContext)
@@ -99,25 +138,22 @@ bool KPlayer2D::Render(ID3D11DeviceContext* pContext)
 	//플레이어 디버거
 	if (ImGui::Begin(u8"플레이어 디버거"))
 	{
-		ImGui::Text("m_pos %d, %d", (int)m_pos.x, (int)m_pos.y);
+		ImGui::Text("m_pos %f, %f", m_pos.x, m_pos.y);
 		ImGui::Text("rt_coll %d, %d", (int)m_rtColl.max.x, (int)m_rtColl.max.y);
 		ImGui::Text("rt_size %d, %d", (int)m_rtSize.width, (int)m_rtSize.height);
 		ImGui::Text("matrix %d, %d", (int)m_matWorld._41, (int)m_matWorld._42);
+		ImGui::Text("blockstae %d, ", m_blockstate);
 	}
 	ImGui::End();
 
-	m_matWorld;
 	KObject::Render(pContext);
 	return true;
 }
 
 void KPlayer2D::ObjectOverlap(KCollider* pObj, DWORD dwState)
 {
-	//현재 오브젝트와 상대 오브젝트와 타입이 같을때
-	if (dwState == pObj->m_CollisonType)
-	{
-		int kkk=0;
-	}
+	//현재 오브젝트와 상대 오브젝트와 타입이 같을
+	
 }
 
 void KPlayer2D::SelectOverlap(KCollider* pObj, DWORD dwState)
