@@ -108,8 +108,8 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	//Ä«¸Þ¶ó ÃÊ±âÈ­
 	m_Camera.Init();
 	m_Camera.CreateViewMatrix(KVector3(0, 0, -40), KVector3(0, 0, 0));
-	//m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
-	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
+	//m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 
@@ -122,10 +122,9 @@ bool KScene_Game_0::Frame()
 	m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
 
 	//µð¹ö±ë¿ë ¾ÀÀÌµ¿
-	if (g_InputData.bDownKey)
+	if (m_PlayerObj.m_blockstate==-1)
 	{
 		g_SceneManager.SetScene(2);
-		g_InputData.bSpace = false;
 		return true;
 	}
 	KScene::Frame();
@@ -134,14 +133,6 @@ bool KScene_Game_0::Frame()
 
 bool KScene_Game_0::Render()
 {
-#ifdef DEBUG
-	if (ImGui::Begin("map debugger"))
-	{
-		ImGui::Text("map %d %d", m_MapObj[0]->m_matWorld._41, m_MapObj[0]->m_matWorld._42);
-	}
-	ImGui::End();
-#endif // DEBUG
-
 	//¸Ê
 	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 

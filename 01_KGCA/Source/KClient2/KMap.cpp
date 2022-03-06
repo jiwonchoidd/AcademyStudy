@@ -58,9 +58,12 @@ bool KMap::Frame()
 				m_Player->m_blockstate = 0;
 			}
 		}
-		
+		if(ImGui::Begin("map node"))
+		{
+			ImGui::Text(u8"해당 노드 정보 %d %d", pNode->m_index, pNode->m_data);
+		}
+		ImGui::End();
 	}
-	
 	KObject::Frame();
 	return true;
 }
@@ -86,7 +89,6 @@ void KMap::ObjectOverlap(KCollider* pObj, DWORD dwState)
 			m_Player = pObj;
 		}
 	}
-	
 }
 
 bool KMap::Release()

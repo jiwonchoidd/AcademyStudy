@@ -3,6 +3,7 @@
 class KPlayer2D :public K2DAsset
 {
 public:
+    KVector2    m_pre_pos;
     bool Init(ID3D11DeviceContext* context, std::wstring vs, 
         std::wstring ps, std::wstring tex = nullptr, std::wstring mask= nullptr);
     bool Frame()override;

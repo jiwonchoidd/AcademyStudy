@@ -17,7 +17,6 @@ bool KScene_Game_1::Load(std::wstring file)
 	m_BGM->SoundPlay(true);
 
 	// 캐릭터 로드
-	m_PlayerObj.SetPosition(KVector2(0, 0));
 	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4 });
 	//캐릭터와 맵과 띄워 놓는다.
 	if (!m_PlayerObj.Init(m_pContext,
@@ -28,12 +27,12 @@ bool KScene_Game_1::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 0.0f, 0.0f, -1.0f);
+	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 10.0f, -12.0f, -1.0f);
 	m_PlayerObj.m_CollisonType = KCollisionType::Overlap;
 
 	//맵 로드---------------------------
-	KObjObject* m_Map = new KObjObject;
-	if (!m_Map->Init(m_pContext,
+	KObjObject* map = new KObjObject;
+	if (!map->Init(m_pContext,
 		L"../../data/shader/VS_0.txt",
 		L"../../data/shader/PS_0.txt",
 		L"../../data/model/map_01tex.png",
@@ -41,9 +40,22 @@ bool KScene_Game_1::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixScaling(&m_Map->m_matWorld, 2.0f, 2.0f, 1.5f);
-	
-	m_MapObj.push_back(m_Map);
+	D3DKMatrixScaling(&map->m_matWorld, 2.0f, 2.0f, 1.5f);
+
+	KObjObject* building = new KObjObject;
+	if (!building->Init(m_pContext,
+		L"../../data/shader/VS_0.txt",
+		L"../../data/shader/PS_0.txt",
+		L"../../data/model/house1tex.jpg",
+		L"../../data/model/house_01.obj"))
+	{
+		return false;
+	}
+
+	D3DKMatrixTranslation(&building->m_matWorld, 10.0f, -10.0f, 1.0f);
+	D3DKMatrixRotationX(&building->m_matWorld, -1 * (3.14 / 2));
+	m_MapObj.push_back(map);
+	m_MapObj.push_back(building);
 
 	return true;
 }
@@ -86,6 +98,7 @@ bool KScene_Game_1::Render()
 
 	//맵
 	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+	m_MapObj[1]->SetMatrix(&m_MapObj[1]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 
 	//플레이어 렌더링
 		// Y축 회전행렬은 _11, _13, _31, _33번 행렬에 회전값이 들어간다

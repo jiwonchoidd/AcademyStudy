@@ -1,6 +1,7 @@
 #include "KPlayer2D.h"
 #include "ImGuiManager.h"
 #include "KSpriteManager.h"
+#include <math.h>
 bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
@@ -34,8 +35,7 @@ bool KPlayer2D::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring
 bool KPlayer2D::Frame()
 {
 	KSprite* walk = g_SpriteManager.GetPtr(L"Player_Walk");
-
-	KVector2 pos;
+	KVector2 pos = {0,0};
 
 	#pragma region 키 입력 이동 처리
 	if (g_InputData.bWKey)
@@ -114,7 +114,8 @@ bool KPlayer2D::Frame()
 		{
 			walk->m_AnimIndex = 4;
 		}
-		//m_dir = { 0,0 };
+		//반올림값이 나올때까지 이동하고 멈춤
+		m_dir = { 0,0 };
 	}
 
 	pos = m_dir * m_Speed * g_fSecPerFrame;
@@ -164,6 +165,7 @@ void KPlayer2D::SelectOverlap(KCollider* pObj, DWORD dwState)
 KPlayer2D::KPlayer2D()
 {
 	m_Speed = 0.0f;
+	m_pre_pos = {0,0};
 }
 
 KPlayer2D::~KPlayer2D()
