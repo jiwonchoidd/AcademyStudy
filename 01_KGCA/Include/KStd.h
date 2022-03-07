@@ -16,6 +16,8 @@
 #include "KMath.h"
 #include "KCollision.h"
 #include <atlconv.h> // A2W
+
+class KWrite;
 namespace wrl = Microsoft::WRL;
 namespace dx = DirectX;
 
@@ -35,6 +37,7 @@ extern HWND  g_hWnd;
 extern RECT  g_rtClient;
 extern ID3D11Device* g_pd3dDevice;
 extern HINSTANCE g_hInstance;
+extern KWrite*	g_Write;
 //≈€«√∏¥ ΩÃ±€≈Ê
 template<class T>
 class Singleton

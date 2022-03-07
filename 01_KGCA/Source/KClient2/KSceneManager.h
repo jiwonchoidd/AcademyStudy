@@ -2,6 +2,8 @@
 #include "KScene_Intro.h" // intro
 #include "KScene_Game_0.h"// game_0
 #include "KScene_Game_1.h"//game_1
+#include "KScene_Combat.h" //combat
+#include "KSoundManager.h"
 //¾À Çì´õ Æ÷ÇÔ
 class KSceneManager : public Singleton <KSceneManager>
 {
@@ -22,6 +24,7 @@ public:
 public:
 	bool	m_bChangeScene;
 	float	m_Timer;
+	KSound* m_shared_bgm;
 public:
 	KScene* GetScene();
 	bool	SetScene(BYTE index);

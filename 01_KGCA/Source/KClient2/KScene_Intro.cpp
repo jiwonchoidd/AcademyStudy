@@ -9,16 +9,17 @@ bool KScene_Intro::Load(std::wstring file)
 
 	//UI »ý¼º
 	KImage* obj = new KImage;
-	obj->SetRectDraw({ 0, 0, g_rtClient.right, g_rtClient.bottom });
-	obj->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
-	if (!obj->Init(m_pContext,L"../../data/shader/VSPS_UI_0.txt", L"../../data/shader/VSPS_UI_0.txt",
-		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Intro Movie.png", L""))
+	obj->SetRectSource({ 5,590,250,105});
+	obj->SetRectDraw({ 0, 0, 1, 1});
+	obj->SetPosition(KVector2(0, 0));
+	if (!obj->Init(m_pContext,L"../../data/shader/VS_UI_0.txt", L"../../data/shader/PS_UI_Mask.txt",
+		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Intro Movie.png", L"../../data/texture/intro_mask.jpg"))
 	{
 		return false;
 	}
 	obj->m_fAlpha = 0.0f;
 	obj->m_bFadeIn = true;
-	m_UIObj.push_back(obj);
+	m_UIObj.push_back(std::shared_ptr<KObject>(obj));
 	return true;
 }
 

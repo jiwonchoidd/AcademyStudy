@@ -8,6 +8,8 @@ public:
 	float				m_fAlpha = 1.0f;
 	bool				m_bFadeIn = false;
 	bool				m_bFadeOut = false;
+	bool				m_bMoveImg = false;
+	float				m_Timer;
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;

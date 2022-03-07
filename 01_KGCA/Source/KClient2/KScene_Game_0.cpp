@@ -7,15 +7,15 @@ bool KScene_Game_0::Load(std::wstring file)
 	#pragma region 사용할 모델 생성
 
 		//메뉴 배경화면-------------------
-		KImage* menu_background = new KImage;
+		std::shared_ptr<KImage> menu_background(new KImage);
 		menu_background->m_Name = L"menu_background";
 		menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2 });
 		menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 4));
 		menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 		menu_background->m_rtOffset = { 50, 50, 50, 50 };
 		if (!menu_background->Init(m_pContext,
-			L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/shader/VSPS_UI_0.txt",
+			L"../../data/shader/VS_UI_0.txt",
+			L"../../data/shader/PS_UI_0.txt",
 			L"../../data/texture/menu_background.png",
 			L""))
 		{
@@ -23,8 +23,28 @@ bool KScene_Game_0::Load(std::wstring file)
 		}
 		g_UIModelManager.m_list.insert(std::make_pair(L"menu_background", menu_background));
 
+		//전체 페이드 아웃 이미지-------------------
+		std::shared_ptr<KImage> fade_background(new KImage);
+		fade_background->m_Name = L"fade_background";
+		fade_background->SetRectDraw({ 0, 0, g_rtClient.right, g_rtClient.bottom});
+		fade_background->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
+		fade_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+		fade_background->m_rtOffset = { 0, 0, 0, 0 };
+		if (!fade_background->Init(m_pContext,
+			L"../../data/shader/VSPS_UI_Alpha.txt",
+			L"../../data/shader/VSPS_UI_Alpha.txt",
+			L"",
+			L""))
+		{
+			return false;
+		}
+		fade_background->m_fAlpha = 1.0f;
+		fade_background->m_bFadeOut = true;
+
+		g_UIModelManager.m_list.insert(std::make_pair(L"fade_background", fade_background));
+
 		//메뉴 버튼-------------------
-		KButton* btn = new KButton;
+		std::shared_ptr<KButton> btn(new KButton);
 		btn->m_Name = L"menu_button";
 		btn->m_rtOffset = { 50, 50, 50, 50 };
 		btn->SetRectDraw({ 0, 0, g_rtClient.right / 3, (g_rtClient.bottom / 2) / 5 });
@@ -42,8 +62,8 @@ bool KScene_Game_0::Load(std::wstring file)
 		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
 		btn->m_datalist.emplace_back(pTex, pSound);
 
-		if (!btn->Init(m_pContext, L"../../data/shader/VSPS_UI_0.txt",
-			L"../../data/shader/VSPS_UI_0.txt",
+		if (!btn->Init(m_pContext, L"../../data/shader/VS_UI_0.txt",
+			L"../../data/shader/PS_UI_0.txt",
 			L"../../data/texture/blank.png", L""))
 		{
 			return false;
@@ -59,8 +79,10 @@ bool KScene_Game_0::Load(std::wstring file)
 		button->m_Name = L"menu_button_1";
 		button->UpdateData();
 
-		m_UIObj.push_back(background);
-		m_UIObj.push_back(button);
+		KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
+		m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
+		m_UIObj.push_back(std::shared_ptr<KObject>(background));
+		m_UIObj.push_back(std::shared_ptr<KObject>(button));
 
 	#pragma endregion
 
@@ -71,8 +93,8 @@ bool KScene_Game_0::Load(std::wstring file)
 	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4});
 	//캐릭터와 맵과 띄워 놓는다.
 	if (!m_PlayerObj.Init(m_pContext,
-		L"../../data/shader/vs_2D.txt",
-		L"../../data/shader/ps_2D.txt",
+		L"../../data/shader/VS_2D.txt",
+		L"../../data/shader/PS_2D.txt",
 		L"../../data/texture/player_lucas.png",
 		L"../../data/texture/player_lucas_mask.png"))
 	{
@@ -93,7 +115,7 @@ bool KScene_Game_0::Load(std::wstring file)
 		return false;
 	}
 	map->m_Space.LoadLeafData(L"../../data/map/map_0.txt");
-	m_MapObj.push_back(map);
+	m_MapObj.push_back(std::shared_ptr<KObject>(map));
 
 	return true;
 }
@@ -124,8 +146,14 @@ bool KScene_Game_0::Frame()
 	//디버깅용 씬이동
 	if (m_PlayerObj.m_blockstate==-1)
 	{
-		g_SceneManager.SetScene(2);
-		return true;
+		m_PlayerObj.m_bMove = false;
+		m_Timer += g_fSecPerFrame;
+		if (m_Timer > 1.0f)
+		{
+			g_SceneManager.SetScene(2);
+			m_Timer = 0.0f;
+			return true;
+		}
 	}
 	KScene::Frame();
 	return true;

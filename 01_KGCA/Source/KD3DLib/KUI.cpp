@@ -1,11 +1,9 @@
 #include "KUI.h"
-
+#include "ImGuiManager.h"
 #pragma region 기본 UI
 bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_CollisonType = Ignore;
-	m_SelectType = Select_Overlap;
 	m_cbData.vLightDir = { 1,1,1,1};
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
@@ -26,13 +24,27 @@ bool KUI::Render(ID3D11DeviceContext* pContext)
 // 9등분, 한 이미지를 안깨지게 활용하기 위함
 bool KUI::SetVertexData()
 {
+	if (m_rtSource.left != 0)
+	{
+		K2DAsset::SetVertexData();
+		return true;
+	}
 	KVector2 left_top = { (float)m_rtOffset.left,  (float)m_rtOffset.top };
 	KVector2 right_top ={ (float)m_rtOffset.right, (float)m_rtOffset.top };
 	KVector2 left_bottom = { (float)m_rtOffset.left, (float)m_rtOffset.bottom };
 	KVector2 right_bottom = { (float)m_rtOffset.right, (float)m_rtOffset.bottom };
-
-	float width = m_pColorTex->m_TextureDesc.Width;
-	float height = m_pColorTex->m_TextureDesc.Height;
+	float width = 0.0f;
+	float height = 0.0f;
+	if (m_pColorTex != nullptr)
+	{
+		width = m_pColorTex->m_TextureDesc.Width;
+		height = m_pColorTex->m_TextureDesc.Height;
+	}
+	else
+	{
+		width = m_rtSize.width;
+		height = m_rtSize.height;
+	}
 	KVector2 tLT = { left_top.x / width, left_top.y / height };
 	KVector2 tRT = { right_top.x / width, right_top.y / height };
 	KVector2 tLB = { left_bottom.x / width, left_bottom.y / height };
@@ -92,6 +104,11 @@ bool KUI::SetVertexData()
 
 bool KUI::SetIndexData()
 {
+	if (m_rtSource.left != 0)
+	{
+		K2DAsset::SetIndexData();
+		return true;
+	}
 	m_IndexList.push_back(0); m_IndexList.push_back(1); m_IndexList.push_back(4);
 	m_IndexList.push_back(4); m_IndexList.push_back(1); m_IndexList.push_back(5);
 	m_IndexList.push_back(1); m_IndexList.push_back(2); m_IndexList.push_back(5);
@@ -134,11 +151,16 @@ bool KImage::Frame()
 {
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
+	if (m_bMoveImg) MoveIMG();
 	m_cbData.vLightDir.x = m_fAlpha;
 	m_cbData.vLightDir.y = m_fAlpha;
 	m_cbData.vLightDir.z = m_fAlpha;
 	m_cbData.vLightDir.w = 1.0f;
-
+	if (ImGui::Begin("dd"))
+	{
+		ImGui::Text("alpha %f", m_fAlpha);
+	}
+	ImGui::End();
 	return true;
 }
 
@@ -149,6 +171,19 @@ void KImage::FadeIn()
 	if (m_fAlpha >= 1.0f)
 	{
 		m_bFadeIn = false;
+	}
+}
+
+void KImage::MoveIMG()
+{
+	if (m_cbData.vValue.x > 1.5f)
+	{
+		m_bMoveImg = false;
+		m_Timer = 0.0f;
+	}
+	else
+	{
+		m_cbData.vValue.x += g_fSecPerFrame;
 	}
 }
 

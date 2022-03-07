@@ -14,6 +14,7 @@ public:
     KCamera                 m_Camera;
     KPlayer2D			    m_PlayerObj;
     KSound*                 m_BGM;
+    float                   m_Timer;
 public:
     bool    Load(std::wstring file) override;
 public:

@@ -6,7 +6,7 @@
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
 // 원하는 위치, 색, 크기, 폰트, 스트링 출력
-class KWrite
+class KWrite 
 {
 public:
 	ID2D1Factory*		m_pd2dFactory;

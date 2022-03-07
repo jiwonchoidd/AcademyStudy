@@ -149,6 +149,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KCombatCalculator.h" />
+    <ClInclude Include="KCombat.h" />
+    <ClInclude Include="KScene_Combat.h" />
     <ClInclude Include="KScene_Game_1.h" />
     <ClInclude Include="KSpriteEffect.h" />
     <ClInclude Include="KMap.h" />
@@ -161,6 +164,9 @@
     <ClInclude Include="KScene_Intro.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KCombatCalculator.cpp" />
+    <ClCompile Include="KCombat.cpp" />
+    <ClCompile Include="KScene_Combat.cpp" />
     <ClCompile Include="KScene_Game_1.cpp" />
     <ClCompile Include="KSpriteEffect.cpp" />
     <ClCompile Include="KMap.cpp" />

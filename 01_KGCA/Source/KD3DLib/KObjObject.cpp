@@ -124,12 +124,7 @@ bool KObjObject::SetVertexData()
 //추후에 추가함
 bool KObjObject::SetIndexData()
 {
-	//for (unsigned int index = 0; index < m_vertexindex.size(); index++)
-	//{
-	//	unsigned int vertexindex = m_vertexindex[index];
-	//	m_IndexList.push_back(vertexindex-1);
-	//}
-	//
+
 	return true;
 }
 

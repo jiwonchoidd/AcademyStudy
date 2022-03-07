@@ -11,8 +11,8 @@ class KCore : public KWindow
 {
 public:
 	KTimer			m_Timer;
-	KWrite			m_Write;
 	ImGuiManager	m_ImGuiManager;
+	KWrite			m_Write;
 public:
 	bool		m_bDebugText = false;
 	bool		m_bFreeCamera = false;

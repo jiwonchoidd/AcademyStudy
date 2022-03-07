@@ -1,5 +1,8 @@
 #include "KCore.h"
 #include "KObjectManager.h"
+
+KWrite*	g_Write= nullptr;
+
 bool	KCore::GameRun()
 {
     if (!GameFrame()) return false;
@@ -10,9 +13,9 @@ bool	KCore::GameInit()
 {
     KDevice::SetDevice();
     KState::SetState();
+    m_Write.Init();
     m_Timer.Init();
     g_Input.Init();
-    m_Write.Init();
     //g_Input.m_bInputAvailable = false;
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
@@ -20,7 +23,8 @@ bool	KCore::GameInit()
         (void**)&m_pBackBuffer);
     m_Write.CreateDeviceResources(m_pBackBuffer);
     if (m_pBackBuffer)m_pBackBuffer->Release();
-
+    
+    g_Write = &m_Write;
     Init();
     return true;
 }
@@ -31,8 +35,6 @@ bool	KCore::GameFrame()
     g_Input.Frame();
     //실시간 모든 콜라이더 충돌 프레임
     g_ObjManager.Frame();
-    
-    m_Write.Frame();
     m_ImGuiManager.Frame();
     if (g_InputData.bDebugRender)
     {
@@ -59,7 +61,6 @@ bool	KCore::GameFrame()
     }
     ImGui::End();
 
-
     Frame();
     return true;
 }
@@ -69,16 +70,15 @@ bool	KCore::GameRender()
         // TODO : Render Timer
         m_Timer.Render();
         g_Input.Render();
-        m_Write.Render();
+        
+        Render();
+        m_ImGuiManager.Render();
         if (m_bDebugText)
         {
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };
             m_Write.RenderText(rt, m_Timer.m_szTimerString,
-                D2D1::ColorF(0, 0, 0, 1));
+                D2D1::ColorF(1, 0, 0, 1));
         }
-        
-        Render();
-        m_ImGuiManager.Render();
     PostRender();
     return true;
 }
@@ -86,7 +86,7 @@ bool	KCore::GameRender()
 bool	KCore::PreRender() {
 
     //새 스왑체인 뷰포트
-    float ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f }; //red,green,blue,alpha
+    float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
     m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
 
     m_pImmediateContext->ClearDepthStencilView(
@@ -132,8 +132,8 @@ bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
     if (m_pd3dDevice == nullptr) return false;
     DeleteResizeDevice(iWidth, iHeight);
 
-    m_Write.DeleteDeviceResize();
 
+    m_Write.DeleteDeviceResize();
     KDevice::ResizeDevice(iWidth, iHeight);
     KWindow::ResizeDevice(iWidth, iHeight);
 

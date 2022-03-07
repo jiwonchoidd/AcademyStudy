@@ -38,7 +38,7 @@ bool KPlayer2D::Frame()
 	KVector2 pos = {0,0};
 
 	#pragma region 키 입력 이동 처리
-	if (g_InputData.bWKey)
+	if (g_InputData.bUpKey && m_bMove)
 	{
 		m_dir = { 0,1 };
 
@@ -54,7 +54,7 @@ bool KPlayer2D::Frame()
 			walk->m_AnimIndex = 8;
 		}
 	}
-	else if (g_InputData.bSKey)
+	else if (g_InputData.bDownKey && m_bMove)
 	{
 		m_dir = { 0,-1 };
 		if (!(m_blockstate & 4))
@@ -67,7 +67,7 @@ bool KPlayer2D::Frame()
 			walk->m_AnimIndex = 0;
 		}
 	}
-	else if (g_InputData.bAKey)
+	else if (g_InputData.bLeftKey && m_bMove)
 	{
 		m_dir = { -1,0 };
 		if (!(m_blockstate & 8))
@@ -80,7 +80,7 @@ bool KPlayer2D::Frame()
 			walk->m_AnimIndex = 12;
 		}
 	}
-	else if (g_InputData.bDKey)
+	else if (g_InputData.bRightKey && m_bMove)
 	{
 		m_dir = { 1,0 };
 		if (!(m_blockstate & 2))
@@ -166,6 +166,7 @@ KPlayer2D::KPlayer2D()
 {
 	m_Speed = 0.0f;
 	m_pre_pos = {0,0};
+	m_bMove = true;
 }
 
 KPlayer2D::~KPlayer2D()

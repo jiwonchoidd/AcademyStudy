@@ -10,7 +10,7 @@ bool KScene::Frame()
 {
 	for (auto obj : m_UIObj)
 	{
-		KObject* pObj = obj;
+		KObject* pObj = obj.get();
 		if (pObj != nullptr)
 		{
 			pObj->Frame();
@@ -18,7 +18,7 @@ bool KScene::Frame()
 	}
 	for (auto obj : m_MapObj)
 	{
-		KObject* pObj = obj;
+		KObject* pObj = obj.get();
 		if (pObj != nullptr)
 		{
 			pObj->Frame();
@@ -31,7 +31,7 @@ bool KScene::Render()
 {
 	for (auto obj : m_MapObj)
 	{
-		KObject* pObj = obj;
+		KObject* pObj = obj.get();
 		if (pObj != nullptr)
 		{
 			pObj->Render(m_pContext);
@@ -40,7 +40,7 @@ bool KScene::Render()
 	ApplyDSS(m_pContext, KState::g_pDSS_Disabled);
 	for (auto obj : m_UIObj)
 	{
-		KObject* pObj = obj;
+		KObject* pObj = obj.get();
 		if (pObj != nullptr)
 		{
 			pObj->Render(m_pContext);
@@ -57,7 +57,6 @@ bool KScene::Release()
 		if (obj!=nullptr)
 		{
 			obj->Release();
-			delete obj;
 			obj = nullptr;
 		}
 	}
@@ -66,7 +65,6 @@ bool KScene::Release()
 		if (obj != nullptr)
 		{
 			obj->Release();
-			delete obj;
 			obj = nullptr;
 		}
 	}
@@ -75,7 +73,6 @@ bool KScene::Release()
 		if (obj != nullptr)
 		{
 			obj->Release();
-			delete obj;
 			obj = nullptr;
 		}
 	}
@@ -84,7 +81,6 @@ bool KScene::Release()
 		if (obj != nullptr)
 		{
 			obj->Release();
-			delete obj;
 			obj = nullptr;
 		}
 	}

@@ -140,6 +140,5 @@ bool KObjectManager::Release()
 	m_ObjectList.clear();
 	if(!m_SelectList.empty())
 	m_SelectList.clear();
-
 	return true;
 }

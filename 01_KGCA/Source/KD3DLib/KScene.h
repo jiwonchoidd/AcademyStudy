@@ -13,10 +13,10 @@ public:
 public:
 	BYTE				 m_SceneID;
 	ID3D11DeviceContext* m_pContext;	// 다비이스 컨텍스트 객체
-	std::vector<KObject*> m_UIObj;
-	std::vector<KObject*> m_MapObj;
-	std::vector<KObject*> m_ItemObj;
-	std::vector<KObject*> m_CharaterObj;
+	std::vector<std::shared_ptr<KObject>> m_UIObj;
+	std::vector<std::shared_ptr<KObject>> m_MapObj;
+	std::vector<std::shared_ptr<KObject>> m_ItemObj;
+	std::vector<std::shared_ptr<KObject>> m_CharaterObj;
 	using m_iter = std::vector<KObject*>::iterator;
 public:
 	//순수 가상 함수들

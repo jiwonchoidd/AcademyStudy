@@ -106,12 +106,16 @@
     <Text Include="..\..\data\shader\PS_0.txt" />
     <Text Include="..\..\data\shader\PS_2D.txt" />
     <Text Include="..\..\data\shader\PS_2D_Map.txt" />
+    <Text Include="..\..\data\shader\PS_UI_0.txt" />
+    <Text Include="..\..\data\shader\PS_UI_Mask.txt" />
     <Text Include="..\..\data\shader\Skybox.txt" />
     <Text Include="..\..\data\shader\VSPS_Debug_0.txt" />
-    <Text Include="..\..\data\shader\VSPS_UI_0.txt" />
+    <Text Include="..\..\data\shader\VSPS_UI_Alpha.txt" />
     <Text Include="..\..\data\shader\VS_0.txt" />
     <Text Include="..\..\data\shader\VS_2D.txt" />
     <Text Include="..\..\data\shader\VS_2D_Map.txt" />
+    <Text Include="..\..\data\shader\VS_UI_0.txt" />
+    <Text Include="..\..\data\shader\VS_UI_Move.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

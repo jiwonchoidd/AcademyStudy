@@ -210,12 +210,12 @@ bool KDevice::CleanupDevice()
 	if (m_pImmediateContext) m_pImmediateContext->Release();
 	if (m_pd3dDevice) m_pd3dDevice->Release();
 	if (m_pGIFactory) m_pGIFactory->Release();
-	ImGui_ImplDX11_Shutdown();
 	m_pd3dDevice = nullptr;
 	m_pSwapChain = nullptr;
 	m_pRenderTargetView = nullptr;
 	m_pImmediateContext = nullptr;
 	m_pGIFactory = nullptr;
+	ImGui_ImplDX11_Shutdown();
 	return true;
 }
 

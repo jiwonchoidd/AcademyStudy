@@ -20,8 +20,8 @@ bool KScene_Game_1::Load(std::wstring file)
 	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4 });
 	//Ä³¸¯ÅÍ¿Í ¸Ê°ú ¶ç¿ö ³õ´Â´Ù.
 	if (!m_PlayerObj.Init(m_pContext,
-		L"../../data/shader/vs_2D.txt",
-		L"../../data/shader/ps_2D.txt",
+		L"../../data/shader/VS_2D.txt",
+		L"../../data/shader/PS_2D.txt",
 		L"../../data/texture/player_lucas.png",
 		L"../../data/texture/player_lucas_mask.png"))
 	{
@@ -54,8 +54,8 @@ bool KScene_Game_1::Load(std::wstring file)
 
 	D3DKMatrixTranslation(&building->m_matWorld, 10.0f, -10.0f, 1.0f);
 	D3DKMatrixRotationX(&building->m_matWorld, -1 * (3.14 / 2));
-	m_MapObj.push_back(map);
-	m_MapObj.push_back(building);
+	m_MapObj.push_back(std::shared_ptr<KObject>(map));
+	m_MapObj.push_back(std::shared_ptr<KObject>(building));
 
 	return true;
 }
@@ -81,12 +81,10 @@ bool KScene_Game_1::Frame()
 	m_PlayerObj.Frame();
 	//Ä«¸Þ¶ó ÀÌµ¿
 	m_Camera.Follow2DPos(&m_PlayerObj.m_pos, {0, 20});
-	//m_Camera.Frame();
 	//µð¹ö±ë¿ë ¾ÀÀÌµ¿
-	if (g_InputData.bDownKey)
+	if (g_InputData.bAKey)
 	{
-		//g_SceneManager.SetScene(1);
-		g_InputData.bSpace = false;
+		g_SceneManager.SetScene(3);
 		return true;
 	}
 	KScene::Frame();
@@ -95,7 +93,6 @@ bool KScene_Game_1::Frame()
 
 bool KScene_Game_1::Render()
 {
-
 	//¸Ê
 	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_MapObj[1]->SetMatrix(&m_MapObj[1]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);

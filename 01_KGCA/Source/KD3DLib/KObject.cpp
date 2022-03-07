@@ -50,7 +50,6 @@ bool KObject::Init()
 
 bool KObject::Frame()
 {
-    //m_cbData.vValue.z = g_fSecTimer;
     return true;
 }
 
@@ -126,8 +125,8 @@ bool KObject::LoadTexture(std::wstring tex, std::wstring mask)
     }
     if (!tex.empty())
     {
-    m_pColorTex = g_TextureMananger.Load(tex);
-    m_TextureDesc = m_pColorTex->m_TextureDesc;
+        m_pColorTex = g_TextureMananger.Load(tex);
+        m_TextureDesc = m_pColorTex->m_TextureDesc;
     }
     return true;
 }

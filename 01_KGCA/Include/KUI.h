@@ -48,6 +48,7 @@ public:
 
 class KImage : public KUI
 {
+
 private:
     KUIModel* Clone()
     {
@@ -76,6 +77,7 @@ private:
 public:  
     virtual bool    Frame()override;
     virtual void    FadeIn();
+    virtual void    MoveIMG();
     virtual void    FadeOut();
 };
 
