@@ -9,6 +9,20 @@ bool KSceneManager::Init(ID3D11DeviceContext* context)
 	m_CurrentScene_Index = S_INTRO;
 	m_pCurrentScene->Init(m_pContext);
 	m_pCurrentScene->Load(L"test");
+
+	//캐릭터는 하나의 객체로 갖고 있기로 함
+	m_Player = new KPlayer2D();
+	m_Player->SetRectDraw({ 0, 0, 3, 4 });
+	m_Player->m_CollisonType = KCollisionType::Overlap;
+	//캐릭터와 맵과 띄워 놓는다.
+	if (!m_Player->Init(m_pContext,
+		L"../../data/shader/VS_2D.txt",
+		L"../../data/shader/PS_2D.txt",
+		L"../../data/texture/player_lucas.png",
+		L"../../data/texture/player_lucas_mask.png"))
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -31,6 +45,8 @@ bool KSceneManager::SetScene(BYTE index)
 			m_pCurrentScene = nullptr;
 		}
 	}
+	//
+	m_Player->RegisterOverlap();
 	//상태 패턴
 	switch (index)
 	{
@@ -102,4 +118,6 @@ KSceneManager::KSceneManager()
 	m_CurrentScene_Index = -1;
 	m_Timer = 0.0f;
 	m_pContext = nullptr;
+	m_Player= nullptr;
+	m_BGM = nullptr;
 }

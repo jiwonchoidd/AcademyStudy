@@ -107,7 +107,13 @@ bool KSound::Release()
 
 KSound::KSound()
 {
-
+	m_pSystem = nullptr;
+	m_id = 0;
+	m_name = L"";
+	m_bPlay = false;
+	m_fVolume = 1.0f;
+	m_size = 0;
+	m_pos = 0;
 }
 
 KSound::KSound(FMOD::System* system, int index, std::wstring name)

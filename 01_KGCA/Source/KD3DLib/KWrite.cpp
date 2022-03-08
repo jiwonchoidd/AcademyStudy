@@ -35,7 +35,9 @@ bool KWrite::Init()
         __uuidof(IDWriteFactory), 
         reinterpret_cast<IUnknown**>(&m_pdWriteFactory));
     if (FAILED(hr)) return false;
-    
+
+    AddFontResourceEx(L"../../data/font/PFStardust.ttf", FR_PRIVATE, 0);
+
      hr = m_pdWriteFactory->CreateTextFormat(
             L"궁서",
             NULL,
@@ -46,16 +48,29 @@ bool KWrite::Init()
             L"ko-kr",//L"en-us",//L"ko-kr",
             &m_pTextFormat
         );
+     if (FAILED(hr)) return false;
      hr = m_pdWriteFactory->CreateTextFormat(
-         L"고딕",
+         L"PFStardust",
          NULL,
-         DWRITE_FONT_WEIGHT_NORMAL,
+         DWRITE_FONT_WEIGHT_BOLD,
          DWRITE_FONT_STYLE_NORMAL,
-         DWRITE_FONT_STRETCH_NORMAL,
-         50,
+         DWRITE_FONT_STRETCH_EXTRA_CONDENSED,
+         20,
          L"ko-kr",//L"en-us",//L"ko-kr",
-         &m_pTextFormat50
+         &m_pTextGame20
      );
+     if (FAILED(hr)) return false;
+     hr = m_pdWriteFactory->CreateTextFormat(
+         L"PFStardust",
+         NULL,
+         DWRITE_FONT_WEIGHT_BOLD,
+         DWRITE_FONT_STYLE_NORMAL,
+         DWRITE_FONT_STRETCH_EXTRA_CONDENSED,
+         40,
+         L"ko-kr",//L"en-us",//L"ko-kr",
+         &m_pTextGame40
+     );
+    m_pTextGame40->SetLineSpacing(DWRITE_LINE_SPACING_METHOD_UNIFORM, 50.0f, 40.0f);
     if (FAILED(hr)) return false;
     return true;
 }
@@ -82,7 +97,7 @@ bool KWrite::RenderText(RECT rt,
         if (pTextFormat == nullptr)
         {
             m_pRT->DrawText(data, wcslen(data),
-                m_pTextFormat, rect, m_pTextBrush);
+                m_pTextGame40, rect, m_pTextBrush);
         }
         else
         {
@@ -91,6 +106,22 @@ bool KWrite::RenderText(RECT rt,
         }
         m_pRT->EndDraw();
     }
+    return true;
+}
+bool KWrite::RenderText_Sequence(RECT rt, std::wstring text, D2D1::ColorF color, IDWriteTextFormat* pTextFormat)
+{
+    if (m_SeqText == text)
+    {
+        m_SeqTimer = 0.0f;
+        m_SeqText = text;
+    }
+    else
+    {
+        m_SeqTimer += g_fSecPerFrame*15;
+        m_SeqTimer = min(m_SeqTimer, text.length());
+        m_SeqText =text.substr(0,m_SeqTimer);
+    }
+    RenderText(rt, m_SeqText.c_str(), color);
     return true;
 }
 void KWrite::DeleteDeviceResize()
@@ -104,8 +135,10 @@ bool KWrite::Release()
     if (m_pdWriteFactory) m_pdWriteFactory->Release();
     if (m_pRT) m_pRT->Release();
     if (m_pTextFormat) m_pTextFormat->Release();
-    if (m_pTextFormat50) m_pTextFormat50->Release();
     if (m_pTextBrush) m_pTextBrush->Release();
-    
+    if (m_pTextGame40)m_pTextGame40->Release();
+    if (m_pTextGame20)m_pTextGame20->Release();
+    //ex버젼은 자동으로 해제해준다
+    RemoveFontResourceEx(L"../../data/font/PFStardust.ttf", FR_PRIVATE, 0);
     return true;
 }

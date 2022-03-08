@@ -1,6 +1,5 @@
 #pragma once
 #include "KSound.h"
-
 class KSoundManager : public Singleton<KSoundManager>
 {
 private:

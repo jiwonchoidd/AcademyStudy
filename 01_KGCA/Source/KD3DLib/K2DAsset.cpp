@@ -1,5 +1,16 @@
 #include "K2DAsset.h"
 #include "KObjectManager.h"
+void K2DAsset::RegisterOverlap()
+{
+	g_ObjManager.AddCollisionExecute(this,
+		std::bind(&KCollider::ObjectOverlap, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
+	g_ObjManager.AddSelectExecute(this,
+		std::bind(&KCollider::SelectOverlap, this,
+			std::placeholders::_1,
+			std::placeholders::_2));
+}
 //오브젝트 충돌콜백
 void K2DAsset::ObjectOverlap(KCollider* pObj, DWORD dwState)
 {
@@ -44,14 +55,8 @@ bool K2DAsset::CreateObject_Mask(std::wstring vsFile, std::wstring psFile, std::
 	m_rtColl = KRect(m_pos, m_rtSize.width, m_rtSize.height);
 	m_matWorld._41 = m_pos.x;
 	m_matWorld._42 = m_pos.y;
-	g_ObjManager.AddCollisionExecute(this,
-		std::bind(&KCollider::ObjectOverlap, this,
-			std::placeholders::_1,
-			std::placeholders::_2));
-	g_ObjManager.AddSelectExecute(this,
-		std::bind(&KCollider::SelectOverlap, this,
-			std::placeholders::_1,
-			std::placeholders::_2));
+	
+	RegisterOverlap();
 
 	CreateObject(vsFile, psFile, tex, mask);
 	return true;
@@ -78,6 +83,8 @@ void K2DAsset::SetPosition(KVector2 vPos)
 	m_matWorld._41 = m_pos.x;
 	m_matWorld._42 = m_pos.y;
 
+	SetVertexData();
+	SetIndexData();
 	if (m_pContext != nullptr)
 	{
 		m_pContext->UpdateSubresource(m_pVertexBuffer.Get(), 0, NULL,

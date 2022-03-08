@@ -11,28 +11,34 @@ bool KScene_Game_1::Load(std::wstring file)
 	//메뉴 버튼-------------------
 
 #pragma endregion
-	//캐릭터
+	//진행되는 음원이 해당 음원이 아니라면 바꿔준다.
+	if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
+	{
+		g_SceneManager.m_BGM->SoundStop();
+		g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
+		g_SceneManager.m_BGM->SoundPlay(true);
+	}
+	
 
-	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
-	m_BGM->SoundPlay(true);
+	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, 10.0f, -12.0f, -1.0f);
 
-	// 캐릭터 로드
-	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4 });
-	//캐릭터와 맵과 띄워 놓는다.
-	if (!m_PlayerObj.Init(m_pContext,
-		L"../../data/shader/VS_2D.txt",
-		L"../../data/shader/PS_2D.txt",
-		L"../../data/texture/player_lucas.png",
-		L"../../data/texture/player_lucas_mask.png"))
+	//맵 로드---------------------------
+	KMapSpace* map = new KMapSpace;
+	map->SetRectSource({ 255,2,255,186 });
+	map->SetRectDraw({ 0, 0, 32, 28 });
+	map->SetPosition(KVector2(0, 0));
+	if (!map->Init(m_pContext,
+		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
+		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
 	{
 		return false;
 	}
-	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld, 10.0f, -12.0f, -1.0f);
-	m_PlayerObj.m_CollisonType = KCollisionType::Overlap;
-
-	//맵 로드---------------------------
-	KObjObject* map = new KObjObject;
-	if (!map->Init(m_pContext,
+	map->m_Space.LoadLeafData(L"../../data/map/map_0.txt");
+	m_MapObj.push_back(std::shared_ptr<KObject>(map));
+	
+	
+	std::shared_ptr<KObjObject> map3D = std::make_shared<KObjObject>();
+	if (!map3D->Init(m_pContext,
 		L"../../data/shader/VS_0.txt",
 		L"../../data/shader/PS_0.txt",
 		L"../../data/model/map_01tex.png",
@@ -40,9 +46,9 @@ bool KScene_Game_1::Load(std::wstring file)
 	{
 		return false;
 	}
-	D3DKMatrixScaling(&map->m_matWorld, 2.0f, 2.0f, 1.5f);
+	D3DKMatrixScaling(&map3D->m_matWorld, 2.0f, 2.0f, 1.5f);
 
-	KObjObject* building = new KObjObject;
+	std::shared_ptr<KObjObject> building = std::make_shared<KObjObject>();;
 	if (!building->Init(m_pContext,
 		L"../../data/shader/VS_0.txt",
 		L"../../data/shader/PS_0.txt",
@@ -54,7 +60,7 @@ bool KScene_Game_1::Load(std::wstring file)
 
 	D3DKMatrixTranslation(&building->m_matWorld, 10.0f, -10.0f, 1.0f);
 	D3DKMatrixRotationX(&building->m_matWorld, -1 * (3.14 / 2));
-	m_MapObj.push_back(std::shared_ptr<KObject>(map));
+	m_MapObj.push_back(std::shared_ptr<KObject>(map3D));
 	m_MapObj.push_back(std::shared_ptr<KObject>(building));
 
 	return true;
@@ -76,16 +82,24 @@ bool KScene_Game_1::Init(ID3D11DeviceContext* context)
 
 bool KScene_Game_1::Frame()
 {
-	m_BGM->Frame();
+	g_SceneManager.m_BGM->Frame();
 	//플레이어 이동
-	m_PlayerObj.Frame();
+	g_SceneManager.m_Player->Frame();
 	//카메라 이동
-	m_Camera.Follow2DPos(&m_PlayerObj.m_pos, {0, 20});
+	m_Camera.Follow2DPos(&g_SceneManager.m_Player->m_pos, {0, 20});
 	//디버깅용 씬이동
 	if (g_InputData.bAKey)
 	{
-		g_SceneManager.SetScene(3);
-		return true;
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		if (g_SceneManager.m_Timer > 1.0f)
+		{
+			g_SceneManager.m_BGM->SoundStop();
+			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Battle! (Wild Pokemon).wav");
+			g_SceneManager.m_BGM->SoundPlay(true);
+			g_SceneManager.m_Timer = 0.0f;
+			g_SceneManager.SetScene(3);
+			return true;
+		}
 	}
 	KScene::Frame();
 	return true;
@@ -103,8 +117,9 @@ bool KScene_Game_1::Render()
 		// Y축 회전 빌보드 행렬을 만들수 있다
 	
 
-	m_PlayerObj.SetMatrix_Billboard(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-	m_PlayerObj.Render(m_pContext);
+	g_SceneManager.m_Player->SetMatrix_Billboard(&g_SceneManager.m_Player->m_matWorld, 
+		&m_Camera.m_matView, &m_Camera.m_matProj);
+	g_SceneManager.m_Player->Render(m_pContext);
 
 	KScene::Render();
 	return true;
@@ -112,8 +127,6 @@ bool KScene_Game_1::Render()
 
 bool KScene_Game_1::Release()
 {
-	m_BGM->SoundStop();
-	m_PlayerObj.Release();
 	m_Camera.Release();
 	KScene::Release();
 	return true;

@@ -4,7 +4,6 @@
 class KScene_Intro : public KScene
 {
 public:
-    KSound*         m_BGM;
 public:
     bool    Load(std::wstring file) override;
 public:

@@ -16,7 +16,7 @@ public:
 	std::vector<std::shared_ptr<KObject>> m_UIObj;
 	std::vector<std::shared_ptr<KObject>> m_MapObj;
 	std::vector<std::shared_ptr<KObject>> m_ItemObj;
-	std::vector<std::shared_ptr<KObject>> m_CharaterObj;
+	
 	using m_iter = std::vector<KObject*>::iterator;
 public:
 	//순수 가상 함수들

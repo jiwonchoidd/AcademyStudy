@@ -77,7 +77,7 @@ bool	KCore::GameRender()
         {
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };
             m_Write.RenderText(rt, m_Timer.m_szTimerString,
-                D2D1::ColorF(1, 0, 0, 1));
+                D2D1::ColorF(1, 0, 0, 1), m_Write.m_pTextFormat);
         }
     PostRender();
     return true;

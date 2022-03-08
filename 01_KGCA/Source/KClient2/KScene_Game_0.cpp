@@ -86,29 +86,25 @@ bool KScene_Game_0::Load(std::wstring file)
 
 	#pragma endregion
 
-	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
-	m_BGM->SoundPlay(true);
-
+	//사운드 로드
+		if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
+		{
+			g_SceneManager.m_BGM->SoundStop();
+			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
+			g_SceneManager.m_BGM->SoundPlay(true);
+		}
 	// 캐릭터 로드
-	m_PlayerObj.SetRectDraw({ 0, 0, 3, 4});
-	//캐릭터와 맵과 띄워 놓는다.
-	if (!m_PlayerObj.Init(m_pContext,
-		L"../../data/shader/VS_2D.txt",
-		L"../../data/shader/PS_2D.txt",
-		L"../../data/texture/player_lucas.png",
-		L"../../data/texture/player_lucas_mask.png"))
-	{
-		return false;
-	}
-	D3DKMatrixTranslation(&m_PlayerObj.m_matWorld,-4, 2, -0.1f);
-	m_PlayerObj.m_CollisonType = KCollisionType::Overlap;
+
+	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, -4, 2, -0.1f);
+		
 
 	//맵 로드---------------------------
-	KMap* map = new KMap;
-	map->SetRectSource({ 255,2,255,186 });
-	map->SetRectDraw({ 0, 0, 32, 28});
-	map->SetPosition(KVector2(0, 0));
-	if (!map->Init(m_pContext,
+	std::shared_ptr<KImage> map_img = std::make_shared<KImage>();
+	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
+	map_img->SetRectSource({ 255,2,255,186 });
+	map_img->SetRectDraw({ 0, 0, 32, 28 });
+	map_img->SetPosition(KVector2(0, 0));
+	if (!map_img->Init(
 		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
 		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
 	{
@@ -137,21 +133,22 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 
 bool KScene_Game_0::Frame()
 {
-	m_BGM->Frame();
+	g_SceneManager.m_BGM->Frame();
 	//플레이어 이동
-	m_PlayerObj.Frame();
+	g_SceneManager.m_Player->Frame();
 	//카메라 이동
-	m_Camera.Follow2DPos(&m_PlayerObj.m_pos);
+	m_Camera.Follow2DPos(&g_SceneManager.m_Player->m_pos);
 
 	//디버깅용 씬이동
-	if (m_PlayerObj.m_blockstate==-1)
+	if (g_SceneManager.m_Player->m_blockstate==-1)
 	{
-		m_PlayerObj.m_bMove = false;
-		m_Timer += g_fSecPerFrame;
-		if (m_Timer > 1.0f)
+		g_SceneManager.m_Player->m_bMove = false;
+		g_SceneManager.m_Timer += g_fSecPerFrame;
+		if (g_SceneManager.m_Timer > 1.0f)
 		{
+			g_SceneManager.m_Timer = 0.0f;
+			g_SceneManager.m_Player->m_bMove = true;
 			g_SceneManager.SetScene(2);
-			m_Timer = 0.0f;
 			return true;
 		}
 	}
@@ -165,8 +162,8 @@ bool KScene_Game_0::Render()
 	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 
 	//플레이어 렌더링
-	m_PlayerObj.SetMatrix(&m_PlayerObj.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-	m_PlayerObj.Render(m_pContext);
+	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+	g_SceneManager.m_Player->Render(m_pContext);
 
 	KScene::Render();
 	return true;
@@ -174,8 +171,7 @@ bool KScene_Game_0::Render()
 
 bool KScene_Game_0::Release()
 {
-	m_BGM->SoundStop();
-	m_PlayerObj.Release();
+	//m_BGM->SoundStop();
 	m_Camera.Release();
 	KScene::Release();
 	return true;

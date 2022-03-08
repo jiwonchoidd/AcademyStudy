@@ -2,7 +2,7 @@
 #include "KScene.h"
 #include "KPlayer2D.h"
 #include "KUI.h"
-#include "KMap.h"
+#include "KMapSpace.h"
 #include "KCamera.h"
 #include "KObjObject.h"
 #include "KState.h"
@@ -10,7 +10,7 @@
 class KScene_Combat : public KScene
 {
 public:
-    KSound*                 m_BGM;
+    std::wstring            m_text_dialog;
 public:
     bool    Load(std::wstring file) override;
 public:

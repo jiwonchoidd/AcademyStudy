@@ -13,7 +13,7 @@ public:
 public:
 	RECT				m_rtSource;
 	RECT				m_rtDraw;
-
+	virtual	void		RegisterOverlap();
 	virtual void		ObjectOverlap(KCollider* pObj, DWORD dwState);
 	virtual void		SelectOverlap(KCollider* pObj, DWORD dwState);
 public:

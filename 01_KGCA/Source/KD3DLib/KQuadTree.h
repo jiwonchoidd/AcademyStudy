@@ -65,6 +65,7 @@ public:
 	KNode*	FindLeafNode(KVector2 pos);
 	KNode*  FindNode(KNode* pNode, KVector2 pos);
 	bool	CheckVertexData() override;
+	bool	Frame()override;
 	bool	Render(ID3D11DeviceContext* pContext)override;
 public:
 	KQuadTree();

@@ -76,18 +76,9 @@ bool KScene::Release()
 			obj = nullptr;
 		}
 	}
-	for (auto obj : m_CharaterObj)
-	{
-		if (obj != nullptr)
-		{
-			obj->Release();
-			obj = nullptr;
-		}
-	}
 	m_UIObj.clear();
 	m_MapObj.clear();
 	m_ItemObj.clear();
-	m_CharaterObj.clear();
 	return true;
 }
 

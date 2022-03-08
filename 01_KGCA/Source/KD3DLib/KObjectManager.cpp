@@ -136,9 +136,11 @@ bool KObjectManager::Frame()
 
 bool KObjectManager::Release()
 {
-	if(!m_ObjectList.empty())
+	if (!m_ObjectList.empty())
 	m_ObjectList.clear();
 	if(!m_SelectList.empty())
 	m_SelectList.clear();
+	m_iExcueteSelectID = 0;
+	m_iExcueteCollisionID = 0;
 	return true;
 }

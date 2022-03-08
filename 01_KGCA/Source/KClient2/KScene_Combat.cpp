@@ -1,5 +1,6 @@
 #include "KScene_Combat.h"
 #include "KSceneManager.h"
+#include "KCombat.h"
 #include "KUI.h"
 #include "KWrite.h"
 bool KScene_Combat::Load(std::wstring file)
@@ -20,7 +21,7 @@ bool KScene_Combat::Load(std::wstring file)
 	{
 		return false;
 	}
-	//대화상자
+	//전투 배경화면 초반에 쉐이더로 uv이동
 	combat_background->m_bMoveImg = true;
 	m_UIObj.push_back(std::shared_ptr<KObject>(combat_background));
 
@@ -38,11 +39,10 @@ bool KScene_Combat::Load(std::wstring file)
 	{
 		return false;
 	}
-	m_UIObj.push_back(std::shared_ptr<KObject>(dialog_background));
 	// 발판
 	std::shared_ptr<KImage> combat_stepimg(new KImage);
 	combat_stepimg->m_Name = L"combat_step";
-	combat_stepimg->SetRectDraw({ 0,0,128, 40});
+	combat_stepimg->SetRectDraw({ 0,0,128 * 2, 40 * 2 });
 	combat_stepimg->SetPosition(KVector2(g_rtClient.right / 2, g_rtClient.bottom / 2));
 	combat_stepimg->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 	combat_stepimg->m_rtOffset = { 0, 0, 0, 0 };
@@ -55,14 +55,20 @@ bool KScene_Combat::Load(std::wstring file)
 		return false;
 	}
 	g_UIModelManager.m_list.insert(std::make_pair(L"combat_step", combat_stepimg));
-	// 
-	//플레이어
-	//대화창
+
+	KUIModel* mystep = g_UIModelManager.GetPtr(L"combat_step")->Clone();
+	mystep->SetRectDraw({ 0,0,128 * 4, 40 * 4 });
+	mystep->SetPosition(KVector2(200, g_rtClient.bottom-150));
+	mystep->UpdateData();
+	KUIModel* enemystep = g_UIModelManager.GetPtr(L"combat_step")->Clone();
+	enemystep->SetPosition(KVector2(g_rtClient.right-200, g_rtClient.bottom / 2));
+	enemystep->UpdateData();
+	//발판
+	m_UIObj.push_back(std::shared_ptr<KObject>(mystep));
+	m_UIObj.push_back(std::shared_ptr<KObject>(enemystep));
+	m_UIObj.push_back(std::shared_ptr<KObject>(dialog_background));
 	
 #pragma endregion
-
-	m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
-	m_BGM->SoundPlay(true);
 
 	return true;
 }
@@ -71,17 +77,23 @@ bool KScene_Combat::Init(ID3D11DeviceContext* context)
 {
 	//상속된 씬 초기화
 	KScene::Init(context);
+
+	m_text_dialog = L"우왓! 야생 찌르꼬가 돌진해왔다!";
 	//현재 씬 열거형 타입 지정
 	m_SceneID = S_COMBAT;
-
+	std::shared_ptr<KCombat> combat;
+	//combat->Init();
 	return true;
 }
 
 bool KScene_Combat::Frame()
 {
-	m_BGM->Frame();
 	//플레이어 이동
-
+	g_SceneManager.m_Timer += g_fSecPerFrame;
+	if (g_SceneManager.m_Timer >= 2)
+	{
+		m_text_dialog = L"가랏! 팽도리!";
+	}
 	KScene::Frame();
 	return true;
 }
@@ -90,15 +102,16 @@ bool KScene_Combat::Render()
 {
 
 	KScene::Render();
-	RECT  rt = { 0, 0, g_rtClient.right, g_rtClient.bottom };
-	g_Write->RenderText(rt, L"test",
-		D2D1::ColorF(0, 0, 0, 1));
+
+	//대화창텍스트 : 무조건 상위에 있어야하기 때문에 나중에 렌더함
+	RECT  rt = { 25, g_rtClient.bottom - 125 , g_rtClient.right, g_rtClient.bottom};
+	g_Write->RenderText_Sequence(rt, m_text_dialog,
+		D2D1::ColorF(0.2f, 0.2f, 0.3f, 1));
 	return true;
 }
 
 bool KScene_Combat::Release()
 {
-	m_BGM->SoundStop();
 	KScene::Release();
 	return true;
 }

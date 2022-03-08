@@ -150,6 +150,11 @@ bool KQuadTree::CheckVertexData()
 	return true;
 }
 
+bool KQuadTree::Frame()
+{
+	return true;
+}
+
 bool KQuadTree::Render(ID3D11DeviceContext* pContext)
 {
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
@@ -160,6 +165,8 @@ bool KQuadTree::Render(ID3D11DeviceContext* pContext)
 
 KQuadTree::KQuadTree()
 {
+	m_height = 0;
+	m_width = 0;
 	m_pRootNode = nullptr;
 }
 

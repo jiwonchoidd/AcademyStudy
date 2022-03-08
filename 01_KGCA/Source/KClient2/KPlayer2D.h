@@ -1,6 +1,6 @@
 #pragma once
 #include "K2DAsset.h"
-struct PoketmonInfo
+struct PokemonInfo
 {
     RECT            mon_rect;
     int             mon_level; //레벨
@@ -9,6 +9,15 @@ struct PoketmonInfo
     int             type; //타입
     bool            sex; //성별
     std::vector<int> skill;
+    int             hp;
+    int IncHP(int v = 1)
+    {
+        return hp += v;
+    }
+    int DecHP(int v = 1)
+    {
+        return hp -=v;
+    }
 };
 
 struct ItemInfo
@@ -20,19 +29,19 @@ struct Slot
 {
     ItemInfo slot_item;
     int slot_count;
-    void Additem(int count = 1)
+    int Additem(int count = 1)
     {
-        slot_count += count;
+        return slot_count += count;
     }
-    void Delitem(int count = 1)
+    int Delitem(int count = 1)
     {
-        slot_count -= count;
+        return slot_count -= count;
     }
 };
 struct KInventory
 {
     std::list<Slot>         item_list;
-    std::list<PoketmonInfo> poketmon_list;
+    std::list<PokemonInfo> poketmon_list;
 };
 
 class KPlayer2D :public K2DAsset

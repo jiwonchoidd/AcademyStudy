@@ -2,7 +2,7 @@
 #include "KScene.h"
 #include "KPlayer2D.h"
 #include "KUI.h"
-#include "KMap.h"
+#include "KMapSpace.h"
 #include "KNpc2D.h"
 #include "KCamera.h"
 #include "KObjObject.h"
@@ -12,8 +12,6 @@ class KScene_Game_0 : public KScene
 {
 public:
     KCamera                 m_Camera;
-    KPlayer2D			    m_PlayerObj;
-    KSound*                 m_BGM;
     float                   m_Timer;
 public:
     bool    Load(std::wstring file) override;

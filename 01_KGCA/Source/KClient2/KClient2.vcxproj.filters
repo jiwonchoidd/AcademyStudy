@@ -30,7 +30,7 @@
     <ClCompile Include="KSceneManager.cpp">
       <Filter>Code\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="KMap.cpp">
+    <ClCompile Include="KMapSpace.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KNpc2D.cpp">
@@ -48,18 +48,18 @@
     <ClCompile Include="KScene_Combat.cpp">
       <Filter>Code\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="KCombatCalculator.cpp">
-      <Filter>Code</Filter>
+    <ClCompile Include="KPokemon.cpp">
+      <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KCombat.cpp">
-      <Filter>Code\Obj</Filter>
+      <Filter>Code\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="KMap.h">
+    <ClInclude Include="KMapSpace.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KNpc2D.h">
@@ -89,11 +89,14 @@
     <ClInclude Include="KScene_Combat.h">
       <Filter>Code\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="KCombatCalculator.h">
-      <Filter>Code</Filter>
+    <ClInclude Include="KPokemon.h">
+      <Filter>Code\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KCombat.h">
-      <Filter>Code\Obj</Filter>
+      <Filter>Code\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="KCombatCalculator.h">
+      <Filter>Code\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

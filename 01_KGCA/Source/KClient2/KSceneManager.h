@@ -22,9 +22,11 @@ public:
 	BYTE						m_CurrentScene_Index;
 	ID3D11DeviceContext*		m_pContext;	// 디바이스 컨텍스트 객체
 public:
+	KPlayer2D*					m_Player;
+	KSound*						m_BGM;
+public:
 	bool	m_bChangeScene;
 	float	m_Timer;
-	KSound* m_shared_bgm;
 public:
 	KScene* GetScene();
 	bool	SetScene(BYTE index);
