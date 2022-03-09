@@ -57,16 +57,19 @@ public:
 	KVector2			m_offset;
 	std::queue<KNode*>	m_queue;
 	std::wstring		m_Name;
-	bool	Init(ID3D11DeviceContext* contex, KVector2 startpos, float width, float height);
 	void    Buildtree(KNode* pNode);
 	bool	LoadLeafData(std::wstring data);
-	bool	Release();
 	KNode*  CreateNode(KNode* pParent, float x, float y, float w, float h);
 	KNode*	FindLeafNode(KVector2 pos);
 	KNode*  FindNode(KNode* pNode, KVector2 pos);
 	bool	CheckVertexData() override;
-	bool	Frame()override;
-	bool	Render(ID3D11DeviceContext* pContext)override;
+	virtual bool	Init(ID3D11DeviceContext* contex, KVector2 startpos, float width, float height);
+	virtual bool	Frame();
+	virtual bool	Render(ID3D11DeviceContext* pContext)override;
+	virtual bool	Release();
+	virtual void HitOverlap(KCollider* pObj, DWORD dwState);
+	virtual void ObjectOverlap(KCollider* pObj, DWORD dwState);
+
 public:
 	KQuadTree();
 	virtual ~KQuadTree();

@@ -1,3 +1,3 @@
 ﻿  KScene_Game_1.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KClient2\KScene_Game_1.cpp(62,60): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
-  KClient2.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KClient2\KClient2.exe
+E:\github\AcademyStudy\01_KGCA\Source\KClient2\KScene_Game_1.cpp(59,42): warning C4305: '인수': 'double'에서 'float'(으)로 잘립니다.
+  KClient2.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KClient2\KClient2.exe

@@ -1,5 +1,5 @@
 #include "KQuadTree.h"
-
+#include "KState.h"
 
 bool KQuadTree::Init(ID3D11DeviceContext* context, KVector2 offset, float width, float height)
 {
@@ -158,10 +158,22 @@ bool KQuadTree::Frame()
 bool KQuadTree::Render(ID3D11DeviceContext* pContext)
 {
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	ApplyDSS(pContext, KState::g_pDSS_Disabled);
 	KObject::Render(pContext);
 	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	ApplyDSS(pContext, KState::g_pDSS);
 	return true;
 }
+
+void KQuadTree::HitOverlap(KCollider* pObj, DWORD dwState)
+{
+}
+
+//플레이어 위치
+void KQuadTree::ObjectOverlap(KCollider* pObj, DWORD dwState)
+{
+}
+
 
 KQuadTree::KQuadTree()
 {

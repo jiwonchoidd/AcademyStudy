@@ -1,5 +1,12 @@
 #include "KMapSpace.h"
 #include "ImGuiManager.h"
+#include "KSceneManager.h"
+bool KMapSpace::Init(ID3D11DeviceContext* context, KVector2 offset, float width, float height)
+{
+	m_Player = g_SceneManager.m_Player;
+	KQuadTree::Init(context, offset , width, height);
+	return true;
+}
 
 bool KMapSpace::Frame()
 {
@@ -35,13 +42,14 @@ bool KMapSpace::Frame()
 }
 bool KMapSpace::Render(ID3D11DeviceContext* context)
 {
-	if(m_bDebugRender)
-	KObject::Render(context);
+	if (m_bDebugRender)
+	{
+		KQuadTree::Render(context);
+	}
 	return true;
 }
 void KMapSpace::HitOverlap(KCollider* pObj, DWORD dwState)
 {
-	int k = 0;
 }
 
 //플레이어 위치

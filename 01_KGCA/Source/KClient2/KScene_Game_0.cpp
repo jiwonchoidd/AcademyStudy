@@ -97,21 +97,24 @@ bool KScene_Game_0::Load(std::wstring file)
 
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, -4, 2, -0.1f);
 		
-
 	//¸Ê ·Îµå---------------------------
 	std::shared_ptr<KImage> map_img = std::make_shared<KImage>();
 	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
-	map_img->SetRectSource({ 255,2,255,186 });
-	map_img->SetRectDraw({ 0, 0, 32, 28 });
-	map_img->SetPosition(KVector2(0, 0));
-	if (!map_img->Init(
+	map_img.get()->SetRectSource({ 255,2,255,186 });
+	map_img.get()->SetRectDraw({ 0, 0, 32, 28 });
+	map_img.get()->SetPosition(KVector2(0, 0));
+	if (!map_img.get()->Init(m_pContext,
 		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
 		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
 	{
 		return false;
 	}
-	map->m_Space.LoadLeafData(L"../../data/map/map_0.txt");
-	m_MapObj.push_back(std::shared_ptr<KObject>(map));
+	map_space.get()->Init(m_pContext, KVector2(0, 0),
+		map_img.get()->m_rtSize.width, map_img.get()->m_rtSize.height);
+
+	map_space.get()->LoadLeafData(L"../../data/map/map_0.txt");
+	m_MapObj.push_back(std::shared_ptr<KObject>(map_img));
+	m_MapObj.push_back(std::shared_ptr<KObject>(map_space));
 
 	return true;
 }
@@ -159,13 +162,16 @@ bool KScene_Game_0::Frame()
 bool KScene_Game_0::Render()
 {
 	//¸Ê
-	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-
-	//ÇÃ·¹ÀÌ¾î ·»´õ¸µ
-	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-	g_SceneManager.m_Player->Render(m_pContext);
-
+	for (int map = 0; map < m_MapObj.size(); map++)
+	{
+		m_MapObj[map]->SetMatrix(&m_MapObj[0]->m_matWorld,
+			&m_Camera.m_matView, &m_Camera.m_matProj);
+	}
 	KScene::Render();
+	//ÇÃ·¹ÀÌ¾î ·»´õ¸µ
+	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld,
+		&m_Camera.m_matView, &m_Camera.m_matProj);
+	g_SceneManager.m_Player->Render(m_pContext);
 	return true;
 }
 

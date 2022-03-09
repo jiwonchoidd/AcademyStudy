@@ -19,26 +19,14 @@ bool KScene_Game_1::Load(std::wstring file)
 		g_SceneManager.m_BGM->SoundPlay(true);
 	}
 	
-
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, 10.0f, -12.0f, -1.0f);
 
+
 	//맵 로드---------------------------
-	KMapSpace* map = new KMapSpace;
-	map->SetRectSource({ 255,2,255,186 });
-	map->SetRectDraw({ 0, 0, 32, 28 });
-	map->SetPosition(KVector2(0, 0));
-	if (!map->Init(m_pContext,
-		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
-		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
-	{
-		return false;
-	}
-	map->m_Space.LoadLeafData(L"../../data/map/map_0.txt");
-	m_MapObj.push_back(std::shared_ptr<KObject>(map));
-	
-	
 	std::shared_ptr<KObjObject> map3D = std::make_shared<KObjObject>();
-	if (!map3D->Init(m_pContext,
+	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
+
+	if (!map3D.get()->Init(m_pContext,
 		L"../../data/shader/VS_0.txt",
 		L"../../data/shader/PS_0.txt",
 		L"../../data/model/map_01tex.png",
@@ -47,22 +35,52 @@ bool KScene_Game_1::Load(std::wstring file)
 		return false;
 	}
 	D3DKMatrixScaling(&map3D->m_matWorld, 2.0f, 2.0f, 1.5f);
+	map_space.get()->Init(m_pContext, KVector2(0, 0),
+		32*2,32*2);
 
-	std::shared_ptr<KObjObject> building = std::make_shared<KObjObject>();;
-	if (!building->Init(m_pContext,
-		L"../../data/shader/VS_0.txt",
-		L"../../data/shader/PS_0.txt",
-		L"../../data/model/house1tex.jpg",
-		L"../../data/model/house_01.obj"))
+	//map_space.get()->LoadLeafData(L"../../data/map/map_0.txt");
+
+	KMatrix s,r,t;
+	for (int build = 0; build < 4; build++)
 	{
-		return false;
+		std::shared_ptr<KObjObject> building = std::make_shared<KObjObject>();;
+		if (!building.get()->Init(m_pContext,
+			L"../../data/shader/VS_0.txt",
+			L"../../data/shader/PS_0.txt",
+			L"../../data/model/house1tex.jpg",
+			L"../../data/model/house_01.obj"))
+		{
+			return false;
+		}
+		D3DKMatrixIdentity(&s);
+		D3DKMatrixIdentity(&r);
+		D3DKMatrixIdentity(&t);
+		D3DKMatrixScaling(&s, 3.5f, 3.5f, 3.5f);
+		D3DKMatrixRotationX(&r, -1 * (3.14 / 2));
+
+		if (build == 0)
+		{
+			D3DKMatrixTranslation(&t, -11.0f, 17.0f, 0.0f);
+		}
+		if (build == 1)
+		{
+			D3DKMatrixTranslation(&t, 11.0f, 17.0f, 0.0f);
+		}
+		if (build == 2)
+		{
+			D3DKMatrixTranslation(&t, -11.0f, -7.0f, 0.0f);
+		}
+		if (build == 3)
+		{
+			D3DKMatrixTranslation(&t, 11.0f, -7.0f, 0.0f);
+		}
+		building.get()->m_matWorld = building.get()->m_matWorld * s * r *t;
+		m_MapObj.push_back(std::shared_ptr<KObject>(building));
 	}
 
-	D3DKMatrixTranslation(&building->m_matWorld, 10.0f, -10.0f, 1.0f);
-	D3DKMatrixRotationX(&building->m_matWorld, -1 * (3.14 / 2));
 	m_MapObj.push_back(std::shared_ptr<KObject>(map3D));
-	m_MapObj.push_back(std::shared_ptr<KObject>(building));
-
+	m_MapObj.push_back(std::shared_ptr<KObject>(map_space));
+	
 	return true;
 }
 
@@ -108,20 +126,21 @@ bool KScene_Game_1::Frame()
 bool KScene_Game_1::Render()
 {
 	//맵
-	m_MapObj[0]->SetMatrix(&m_MapObj[0]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-	m_MapObj[1]->SetMatrix(&m_MapObj[1]->m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
-
+	for (int map = 0; map < m_MapObj.size(); map++)
+	{
+		m_MapObj[map]->SetMatrix(&m_MapObj[map]->m_matWorld,
+			&m_Camera.m_matView, &m_Camera.m_matProj);
+	}
 	//플레이어 렌더링
 		// Y축 회전행렬은 _11, _13, _31, _33번 행렬에 회전값이 들어간다
 		// 카메라의 Y축 회전행렬값을 읽어서 역행렬을 만들면 X,Z축이 고정된
 		// Y축 회전 빌보드 행렬을 만들수 있다
-	
 
+	KScene::Render();
 	g_SceneManager.m_Player->SetMatrix_Billboard(&g_SceneManager.m_Player->m_matWorld, 
 		&m_Camera.m_matView, &m_Camera.m_matProj);
 	g_SceneManager.m_Player->Render(m_pContext);
 
-	KScene::Render();
 	return true;
 }
 
