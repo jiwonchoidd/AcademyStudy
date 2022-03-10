@@ -5,24 +5,6 @@
 bool KScene_Game_0::Load(std::wstring file)
 {
 	#pragma region 사용할 모델 생성
-
-		//메뉴 배경화면-------------------
-		std::shared_ptr<KImage> menu_background(new KImage);
-		menu_background->m_Name = L"menu_background";
-		menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2 });
-		menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 4));
-		menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
-		menu_background->m_rtOffset = { 50, 50, 50, 50 };
-		if (!menu_background->Init(m_pContext,
-			L"../../data/shader/VS_UI_0.txt",
-			L"../../data/shader/PS_UI_0.txt",
-			L"../../data/texture/menu_background.png",
-			L""))
-		{
-			return false;
-		}
-		g_UIModelManager.m_list.insert(std::make_pair(L"menu_background", menu_background));
-
 		//전체 페이드 아웃 이미지-------------------
 		std::shared_ptr<KImage> fade_background(new KImage);
 		fade_background->m_Name = L"fade_background";
@@ -40,15 +22,49 @@ bool KScene_Game_0::Load(std::wstring file)
 		}
 		fade_background->m_fAlpha = 1.0f;
 		fade_background->m_bFadeOut = true;
-
 		g_UIModelManager.m_list.insert(std::make_pair(L"fade_background", fade_background));
+
+		//메뉴 배경화면-------------------
+		std::shared_ptr<KImage> menu_background(new KImage);
+		menu_background->m_Name = L"menu_background";
+		menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2 });
+		menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 4));
+		menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+		menu_background->m_rtOffset = { 20, 20, 20, 20 };
+		if (!menu_background->Init(m_pContext,
+			L"../../data/shader/VS_UI_0.txt",
+			L"../../data/shader/PS_UI_0.txt",
+			L"../../data/texture/menu_background.png",
+			L""))
+		{
+			return false;
+		}
+		g_UIModelManager.m_list.insert(std::make_pair(L"menu_background", menu_background));
+
+		//메뉴 아이콘-------------------
+		std::shared_ptr<KImage> menu_icon(new KImage);
+		menu_icon->m_Name = L"menu_icon";
+		menu_icon->SetRectDraw({ 0, 0, 35, 35});
+		menu_icon->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
+		menu_icon->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+		menu_icon->m_rtOffset = { 0, 0, 0, 0};
+		if (!menu_icon->Init(m_pContext,
+			L"../../data/shader/VS_UI_0.txt",
+			L"../../data/shader/PS_UI_0.txt",
+			L"../../data/texture/menu_bag.png",
+			L""))
+		{
+			return false;
+		}
+		g_UIModelManager.m_list.insert(std::make_pair(L"menu_icon", menu_icon));
 
 		//메뉴 버튼-------------------
 		std::shared_ptr<KButton> btn(new KButton);
 		btn->m_Name = L"menu_button";
-		btn->m_rtOffset = { 50, 50, 50, 50 };
+		btn->m_rtOffset = { 40, 40, 40, 40 };
 		btn->SetRectDraw({ 0, 0, g_rtClient.right / 3, (g_rtClient.bottom / 2) / 5 });
 		btn->SetPosition(KVector2(g_rtClient.right / 1.2f, (g_rtClient.bottom / 20)));
+		btn->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
 
 		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.png");
 		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
@@ -79,10 +95,22 @@ bool KScene_Game_0::Load(std::wstring file)
 		button->m_Name = L"menu_button_1";
 		button->UpdateData();
 
+		KUIModel* icon = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon->m_Name = L"menu_icon_1";
+		icon->SetPosition(KVector2(button->m_pos.x -120.0f,button->m_pos.y));
+		icon->UpdateData();
+
+		std::shared_ptr<KUIModelComposite> compositeobj (new KUIModelComposite);
+		compositeobj->m_Name = L"Menu";
+		compositeobj->Add(background);
+		compositeobj->Add(icon);
+		compositeobj->Add(button);
+
+
+		m_UIObj.push_back(std::shared_ptr<KObject>(compositeobj));
+
 		KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
 		m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
-		m_UIObj.push_back(std::shared_ptr<KObject>(background));
-		m_UIObj.push_back(std::shared_ptr<KObject>(button));
 
 	#pragma endregion
 
@@ -128,7 +156,7 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -40), KVector3(0, 0, 0));
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -36), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	//m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
@@ -167,11 +195,11 @@ bool KScene_Game_0::Render()
 		m_MapObj[map]->SetMatrix(&m_MapObj[0]->m_matWorld,
 			&m_Camera.m_matView, &m_Camera.m_matProj);
 	}
-	KScene::Render();
 	//플레이어 렌더링
 	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld,
 		&m_Camera.m_matView, &m_Camera.m_matProj);
 	g_SceneManager.m_Player->Render(m_pContext);
+	KScene::Render();
 	return true;
 }
 

@@ -11,6 +11,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	//메뉴 버튼-------------------
 
 #pragma endregion
+
 	//진행되는 음원이 해당 음원이 아니라면 바꿔준다.
 	if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
 	{
@@ -21,28 +22,53 @@ bool KScene_Game_1::Load(std::wstring file)
 	
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, 10.0f, -12.0f, -1.0f);
 
-
 	//맵 로드---------------------------
-	std::shared_ptr<KObjObject> map3D = std::make_shared<KObjObject>();
+	
 	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
 
-	if (!map3D.get()->Init(m_pContext,
-		L"../../data/shader/VS_0.txt",
-		L"../../data/shader/PS_0.txt",
-		L"../../data/model/map_01tex.png",
-		L"../../data/model/map1.obj"))
+	
+	for (int i = 0; i < 3; i++)
 	{
-		return false;
+		KMatrix s, r, t;
+		std::shared_ptr<KObjObject> map3D_1 = std::make_shared<KObjObject>();
+		D3DKMatrixIdentity(&s);
+		D3DKMatrixIdentity(&r);
+		D3DKMatrixIdentity(&t);
+		D3DKMatrixScaling(&s, 2.0f, 2.0f, 1.5f);
+		if (!map3D_1.get()->Init(m_pContext,
+			L"../../data/shader/VS_0.txt",
+			L"../../data/shader/PS_0.txt",
+			L"../../data/model/map_01tex.png",
+			L"../../data/model/map1.obj"))
+		{
+			return false;
+		}
+		if (i == 0)
+		{
+			D3DKMatrixTranslation(&t, 0.0f, 0.0f, 0.0f);
+			D3DKMatrixRotationZ(&r, 0.0f);
+		}
+		if (i == 1)
+		{
+			D3DKMatrixTranslation(&t, 64.0f, 0.0f, 0.0f);
+		}
+		if (i == 2)
+		{
+			D3DKMatrixTranslation(&t, -64.0f, 0.0f, 0.0f);
+		}
+		map3D_1.get()->m_matWorld = map3D_1.get()->m_matWorld * s * t * r;
+		m_MapObj.push_back(std::shared_ptr<KObject>(map3D_1));
 	}
-	D3DKMatrixScaling(&map3D->m_matWorld, 2.0f, 2.0f, 1.5f);
+
 	map_space.get()->Init(m_pContext, KVector2(0, 0),
 		32*2,32*2);
 
-	//map_space.get()->LoadLeafData(L"../../data/map/map_0.txt");
+	map_space.get()->LoadLeafData(L"../../data/map/map_1.txt");
 
-	KMatrix s,r,t;
+	
 	for (int build = 0; build < 4; build++)
 	{
+		KMatrix s, r, t;
 		std::shared_ptr<KObjObject> building = std::make_shared<KObjObject>();;
 		if (!building.get()->Init(m_pContext,
 			L"../../data/shader/VS_0.txt",
@@ -78,7 +104,6 @@ bool KScene_Game_1::Load(std::wstring file)
 		m_MapObj.push_back(std::shared_ptr<KObject>(building));
 	}
 
-	m_MapObj.push_back(std::shared_ptr<KObject>(map3D));
 	m_MapObj.push_back(std::shared_ptr<KObject>(map_space));
 	
 	return true;
@@ -93,7 +118,7 @@ bool KScene_Game_1::Init(ID3D11DeviceContext* context)
 
 	//카메라 초기화
 	m_Camera.Init();
-	m_Camera.CreateViewMatrix(KVector3(0, 0, -35), KVector3(0, 0, 0));
+	m_Camera.CreateViewMatrix(KVector3(0, 0, -28), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
