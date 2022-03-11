@@ -48,6 +48,7 @@ class KUIModelComposite: public KUIModel
 {
 public:
 	std::list< KUIModel*> m_Components;
+	int					  m_iSelected =0;
 public:
 	virtual bool		Frame();
 	virtual bool		Render(ID3D11DeviceContext* context);

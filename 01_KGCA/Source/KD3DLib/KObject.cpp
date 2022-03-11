@@ -260,4 +260,5 @@ KObject::KObject()
 {
     m_iVertexSize = sizeof(PNCT_VERTEX);
     m_iNumIndex = 0;
+    m_bVisibility=true;
 }

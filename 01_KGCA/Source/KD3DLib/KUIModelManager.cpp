@@ -19,6 +19,7 @@ bool KUIModelComposite::Render(ID3D11DeviceContext* context)
 	for (iter = m_Components.begin(); iter != m_Components.end();
 		iter++)
 	{
+		if((*iter)->m_bVisibility)
 		(*iter)->Render(context);
 	}
 	return true;

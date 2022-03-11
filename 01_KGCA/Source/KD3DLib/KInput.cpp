@@ -137,6 +137,10 @@ bool KInput::Frame()
         g_InputData.iMousePos[1] = m_ptPos.y;
 #pragma endregion
 
+        if (g_Input.GetKey(DIK_A) == KEY_PUSH)
+        {
+            g_InputData.bMenu = !g_InputData.bMenu;
+        }
         g_InputData.bWKey = GetKey(DIK_W);
         g_InputData.bAKey = GetKey(DIK_A);
         g_InputData.bSKey = GetKey(DIK_S);
@@ -156,6 +160,7 @@ bool KInput::Frame()
         {
             g_InputData.bDebugRender = !g_InputData.bDebugRender;
         }
+
 #endif // DEBUG
 
         

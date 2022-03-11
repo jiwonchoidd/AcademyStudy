@@ -73,6 +73,7 @@ struct INPUT_MAP
 	bool bEnter;
 
 	//¸¶¿ì½º 
+	bool bMenu;//A
 	int  iMouseValue[3];
 	int  iMousePos[2];
 	BYTE bMouseState[3];

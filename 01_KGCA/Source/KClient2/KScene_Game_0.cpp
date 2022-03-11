@@ -2,6 +2,7 @@
 #include "KSceneManager.h"
 #include "KUI.h"
 #include "ImGuiManager.h"
+#include "KWrite.h"
 bool KScene_Game_0::Load(std::wstring file)
 {
 	#pragma region 사용할 모델 생성
@@ -27,9 +28,9 @@ bool KScene_Game_0::Load(std::wstring file)
 		//메뉴 배경화면-------------------
 		std::shared_ptr<KImage> menu_background(new KImage);
 		menu_background->m_Name = L"menu_background";
-		menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, g_rtClient.bottom / 2 });
-		menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 4));
-		menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
+		menu_background->SetRectDraw({ 0, 0, g_rtClient.right / 3, (g_rtClient.bottom / 2)+50});
+		menu_background->SetPosition(KVector2(g_rtClient.right / 1.2f, g_rtClient.bottom / 3.5f));
+		menu_background->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
 		menu_background->m_rtOffset = { 20, 20, 20, 20 };
 		if (!menu_background->Init(m_pContext,
 			L"../../data/shader/VS_UI_0.txt",
@@ -44,7 +45,7 @@ bool KScene_Game_0::Load(std::wstring file)
 		//메뉴 아이콘-------------------
 		std::shared_ptr<KImage> menu_icon(new KImage);
 		menu_icon->m_Name = L"menu_icon";
-		menu_icon->SetRectDraw({ 0, 0, 35, 35});
+		menu_icon->SetRectDraw({ 0, 0, 50, 50});
 		menu_icon->SetPosition(KVector2(g_rtClient.right / 2.0f, g_rtClient.bottom / 2.0f));
 		menu_icon->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 		menu_icon->m_rtOffset = { 0, 0, 0, 0};
@@ -62,9 +63,9 @@ bool KScene_Game_0::Load(std::wstring file)
 		std::shared_ptr<KButton> btn(new KButton);
 		btn->m_Name = L"menu_button";
 		btn->m_rtOffset = { 40, 40, 40, 40 };
-		btn->SetRectDraw({ 0, 0, g_rtClient.right / 3, (g_rtClient.bottom / 2) / 5 });
-		btn->SetPosition(KVector2(g_rtClient.right / 1.2f, (g_rtClient.bottom / 20)));
-		btn->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		btn->SetRectDraw({ 0, 0, (g_rtClient.right / 3)-20, ((g_rtClient.bottom / 2) / 4)-6});
+		btn->SetPosition(KVector2(g_rtClient.right, g_rtClient.bottom));
+		btn->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Ignore);
 
 		KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/blank.png");
 		KSound* pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
@@ -86,29 +87,87 @@ bool KScene_Game_0::Load(std::wstring file)
 		}
 		g_UIModelManager.m_list.insert(std::make_pair(L"menu_button", btn));
 
-		//-----------------------
+		//----------------------- 메뉴 모델
+		#pragma region 메뉴 모델
 		KUIModel* background = g_UIModelManager.GetPtr(L"menu_background")->Clone();
 		background->m_Name = L"menu_background_1";
 		background->UpdateData();
+		
+		KUIModel* button1 = g_UIModelManager.GetPtr(L"menu_button")->Clone();
+		button1->m_Name = L"menu_button_1";
+		button1->SetPosition(KVector2(background->m_pos.x, background->m_pos.y - 120));
+		button1->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		button1->UpdateData();
+		KUIModel* button2 = g_UIModelManager.GetPtr(L"menu_button")->Clone();
+		button2->m_Name = L"menu_button_2";
+		float offset = 60.0f;
+		button2->SetPosition(KVector2(background->m_pos.x, button1->m_pos.y + offset));
+		button2->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		button2->UpdateData();
+		KUIModel* button3 = g_UIModelManager.GetPtr(L"menu_button")->Clone();
+		button3->m_Name = L"menu_button_3";
+		button3->SetPosition(KVector2(background->m_pos.x, button2->m_pos.y + offset));
+		button3->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		button3->UpdateData();
+		KUIModel* button4 = g_UIModelManager.GetPtr(L"menu_button")->Clone();
+		button4->m_Name = L"menu_button_4";
+		button4->SetPosition(KVector2(background->m_pos.x, button3->m_pos.y + offset));
+		button4->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		button4->UpdateData();
+		KUIModel* button5 = g_UIModelManager.GetPtr(L"menu_button")->Clone();
+		button5->m_Name = L"menu_button_5";
+		button5->SetPosition(KVector2(background->m_pos.x, button4->m_pos.y + offset));
+		button5->SetCollisionType(KCollisionType::Ignore, KSelectType::Select_Overlap);
+		button5->UpdateData();
 
-		KUIModel* button = g_UIModelManager.GetPtr(L"menu_button")->Clone();
-		button->m_Name = L"menu_button_1";
-		button->UpdateData();
+		KUIModel* icon1 = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon1->m_Name = L"menu_icon_1";
+		icon1->SetPosition(KVector2(button1->m_pos.x - 115.0f, button1->m_pos.y));
+		icon1->UpdateData();
+		KUIModel* icon2 = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon2->m_Name = L"menu_icon_2";
+		icon2->m_pColorTex = g_TextureMananger.Load(L"../../data/texture/menu_user.png");
+		icon2->SetPosition(KVector2(button1->m_pos.x - 115.0f, button2->m_pos.y));
+		icon2->UpdateData();
+		KUIModel* icon3 = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon3->m_Name = L"menu_icon_3";
+		icon3->m_pColorTex = g_TextureMananger.Load(L"../../data/texture/menu_report.png");
+		icon3->SetPosition(KVector2(button1->m_pos.x - 115.0f, button3->m_pos.y));
+		icon3->UpdateData();
+		KUIModel* icon4 = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon4->m_Name = L"menu_icon_4";
+		icon4->m_pColorTex = g_TextureMananger.Load(L"../../data/texture/menu_setting.png");
+		icon4->SetPosition(KVector2(button1->m_pos.x - 115.0f, button4->m_pos.y));
+		icon4->UpdateData();
+		KUIModel* icon5 = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
+		icon5->m_Name = L"menu_icon_5";
+		icon5->m_pColorTex = g_TextureMananger.Load(L"../../data/texture/menu_close.png");
+		icon5->SetPosition(KVector2(button1->m_pos.x - 115.0f, button5->m_pos.y));
+		icon5->UpdateData();
 
-		KUIModel* icon = g_UIModelManager.GetPtr(L"menu_icon")->Clone();
-		icon->m_Name = L"menu_icon_1";
-		icon->SetPosition(KVector2(button->m_pos.x -120.0f,button->m_pos.y));
-		icon->UpdateData();
 
-		std::shared_ptr<KUIModelComposite> compositeobj (new KUIModelComposite);
+		std::shared_ptr<KUIModelComposite> compositeobj(new KUIModelComposite);
 		compositeobj->m_Name = L"Menu";
 		compositeobj->Add(background);
-		compositeobj->Add(icon);
-		compositeobj->Add(button);
+		compositeobj->Add(button1);
+		compositeobj->Add(button2);
+		compositeobj->Add(button3);
+		compositeobj->Add(button4);
+		compositeobj->Add(button5);
+		compositeobj->Add(icon1);
+		compositeobj->Add(icon2);
+		compositeobj->Add(icon3);
+		compositeobj->Add(icon4);
+		compositeobj->Add(icon5);
 
-
+#pragma endregion
+		m_Menu = compositeobj;
+		m_Menu.get()->m_bVisibility = false;
+		for (auto list : m_Menu.get()->m_Components)
+		{
+			list->m_bVisibility = false;
+		}
 		m_UIObj.push_back(std::shared_ptr<KObject>(compositeobj));
-
 		KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
 		m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
 
@@ -170,6 +229,30 @@ bool KScene_Game_0::Frame()
 	//카메라 이동
 	m_Camera.Follow2DPos(&g_SceneManager.m_Player->m_pos);
 
+
+	//메뉴 조작 캐릭터 이동 불가
+	if (g_InputData.bMenu)
+	{
+		g_SceneManager.m_Player->m_bMove = !g_SceneManager.m_Player->m_bMove;
+		m_bMenu = !m_bMenu;
+		m_Menu.get()->m_bVisibility = !m_Menu.get()->m_bVisibility;
+		for (auto list : m_Menu.get()->m_Components)
+		{
+			list->m_bVisibility = !list->m_bVisibility;
+		}
+		KSound* sound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
+		sound->SoundPlay_Once();
+	}
+	if (m_bMenu)
+	{
+		if (g_InputData.bUpKey)
+		{
+		}
+		if (g_InputData.bDownKey)
+		{
+
+		}
+	}
 	//디버깅용 씬이동
 	if (g_SceneManager.m_Player->m_blockstate==-1)
 	{
@@ -195,11 +278,21 @@ bool KScene_Game_0::Render()
 		m_MapObj[map]->SetMatrix(&m_MapObj[0]->m_matWorld,
 			&m_Camera.m_matView, &m_Camera.m_matProj);
 	}
+
+	
 	//플레이어 렌더링
 	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld,
 		&m_Camera.m_matView, &m_Camera.m_matProj);
 	g_SceneManager.m_Player->Render(m_pContext);
 	KScene::Render();
+
+	//메뉴 텍스트
+	if (m_bMenu)
+	{
+		RECT  rt = { g_rtClient.right-235, 8, g_rtClient.right, g_rtClient.bottom };
+		g_Write->RenderText(rt, L"가방\n지원\n리포트\n설정\n닫는다",
+			D2D1::ColorF(0.2f, 0.2f, 0.3f, 1), g_Write->m_pTextGame40_Space);
+	}
 	return true;
 }
 

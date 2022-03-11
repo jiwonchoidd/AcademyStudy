@@ -35,6 +35,7 @@ class KObject
 //오브젝트 월드 행렬
 public:
 	KMatrix					m_matWorld;
+	bool					m_bVisibility=true;
 //상속관계 구현
 public:
 	KObject*				m_pParent = nullptr;

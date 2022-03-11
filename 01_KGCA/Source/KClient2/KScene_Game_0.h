@@ -8,11 +8,13 @@
 #include "KObjObject.h"
 #include "KState.h"
 #include "KSoundManager.h"
+#include "KUIModelManager.h"
 class KScene_Game_0 : public KScene
 {
 public:
     KCamera                 m_Camera;
-    float                   m_Timer;
+    std::shared_ptr<KUIModelComposite> m_Menu;
+    bool                    m_bMenu = false;
 public:
     bool    Load(std::wstring file) override;
 public:

@@ -1,5 +1,11 @@
-﻿  KScene.cpp
-  KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+﻿  KUI.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(40,37): warning C4244: '=': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(41,38): warning C4244: '=': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(303,17): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KUI.cpp(304,18): warning C4244: '초기화 중': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KUIModelManager.cpp
+  코드를 생성하고 있습니다...
+  KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h

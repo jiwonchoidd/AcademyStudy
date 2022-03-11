@@ -196,18 +196,56 @@ void KImage::FadeOut()
 		m_bFadeOut = false;
 	}
 }
-#pragma endregion
+void KImage::SelectOverlap(KCollider* pObj, DWORD dwState)
+{
+	if (m_bVisibility && m_SelectType != Select_Ignore)
+	{
+		if (m_PreSelectState == m_SelectState)
+		{
+			return;
+		}
+		switch (m_SelectState)
+		{
+
+		case KSelectState::S_DEFAULT:
+		{
+			m_bImgHover = false;
+		}break;
+		case KSelectState::S_SELECTED:
+		{
+		}break;
+		case KSelectState::S_HOVER:
+		{
+			m_bImgHover = true;
+		}break;
+		case KSelectState::S_ACTIVE:
+		{
+		}break;
+		case KSelectState::S_FOCUS:
+		{
+		}break;
+		default:
+		{
+		}
+		m_PreSelectState = m_SelectState;
+		}
+
+	}
+}
 //버튼 클릭
 void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 {
-	if (m_PreSelectState == m_SelectState)
+	if (m_bVisibility && m_SelectType!=Select_Ignore)
 	{
-		return;
-	}
-	if (m_datalist.size() <= 0) return;
+		if (m_PreSelectState == m_SelectState)
+		{
+			return;
+		}
+		if (m_datalist.size() <= 0) return;
 
-	switch (m_SelectState)
-	{
+		switch (m_SelectState)
+		{
+
 		case KSelectState::S_DEFAULT:
 		{
 			if (m_datalist[0].pTex != nullptr)
@@ -217,34 +255,35 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 		{
 			//클릭 활성화
 			m_btn_active = true;
-			if(m_datalist[2].pSound!=nullptr)
-			m_datalist[2].pSound->SoundPlay_Once();
+			if (m_datalist[2].pSound != nullptr)
+				m_datalist[2].pSound->SoundPlay_Once();
 			if (m_datalist[0].pTex != nullptr)
-			m_pColorTex = m_datalist[0].pTex;
+				m_pColorTex = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_HOVER:
 		{
 			if (m_datalist[1].pSound != nullptr)
-			m_datalist[1].pSound->SoundPlay_Once();
+				m_datalist[1].pSound->SoundPlay_Once();
 			if (m_datalist[1].pTex != nullptr)
-			m_pColorTex = m_datalist[1].pTex;
+				m_pColorTex = m_datalist[1].pTex;
 		}break;
 		case KSelectState::S_ACTIVE:
 		{
 			if (m_datalist[0].pTex != nullptr)
-			m_pColorTex = m_datalist[0].pTex;
+				m_pColorTex = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_FOCUS:
 		{
 			if (m_datalist[0].pTex != nullptr)
-			m_pColorTex = m_datalist[0].pTex;
+				m_pColorTex = m_datalist[0].pTex;
 		}break;
 		default:
 		{
 			m_btn_active = false;
 		}
+		}
+		m_PreSelectState = m_SelectState;
 	}
-	m_PreSelectState = m_SelectState;
 }
 
 bool KButton::Frame()

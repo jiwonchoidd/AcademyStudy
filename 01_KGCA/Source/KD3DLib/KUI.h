@@ -74,11 +74,14 @@ private:
                 std::placeholders::_1,
                 std::placeholders::_2));
     }
+public:
+    bool    m_bImgHover = false;
 public:  
     virtual bool    Frame()override;
     virtual void    FadeIn();
     virtual void    MoveIMG();
     virtual void    FadeOut();
+    virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
 };
 
 class KButton : public KUI
