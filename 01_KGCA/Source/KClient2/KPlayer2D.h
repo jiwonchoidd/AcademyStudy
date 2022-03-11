@@ -55,6 +55,7 @@ public:
         std::wstring ps, std::wstring tex = nullptr, std::wstring mask= nullptr);
     bool Frame()override;
     bool Render(ID3D11DeviceContext* pContext)override;
+    bool AutoMove(KVector2 move);
     virtual void	ObjectOverlap(KCollider* pObj, DWORD dwState);
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState);
 public:

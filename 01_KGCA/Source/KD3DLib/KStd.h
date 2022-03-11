@@ -63,7 +63,8 @@ struct INPUT_MAP
 	bool bDKey;
 	bool bQKey;
 	bool bEKey;
-	bool bZKey;
+	bool bZKey;//확인
+	bool bXKey;//취소
 	bool bCKey;
 
 
@@ -73,7 +74,12 @@ struct INPUT_MAP
 	bool bEnter;
 
 	//마우스 
-	bool bMenu;//A
+	bool bMenu;//메뉴 A
+	bool bMenu_UP;//윗키
+	bool bMenu_DOWN;//아랫키
+	bool bMenu_LEFT;//오른쪽
+	bool bMenu_RIGHT;//방향키
+	bool bMenu_SELECT;//선택 Z
 	int  iMouseValue[3];
 	int  iMousePos[2];
 	BYTE bMouseState[3];

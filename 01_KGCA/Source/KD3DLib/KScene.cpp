@@ -34,6 +34,7 @@ bool KScene::Render()
 		KObject* pObj = obj.get();
 		if (pObj != nullptr)
 		{
+			if (pObj->m_bVisibility)
 			pObj->Render(m_pContext);
 		}
 	}

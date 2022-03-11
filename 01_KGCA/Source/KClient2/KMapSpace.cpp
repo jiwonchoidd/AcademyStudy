@@ -1,6 +1,7 @@
 #include "KMapSpace.h"
-#include "ImGuiManager.h"
 #include "KSceneManager.h"
+#include "KState.h"
+#include "ImGuiManager.h"
 bool KMapSpace::Init(ID3D11DeviceContext* context, KVector2 offset, float width, float height)
 {
 	m_Player = g_SceneManager.m_Player;
@@ -44,6 +45,7 @@ bool KMapSpace::Render(ID3D11DeviceContext* context)
 {
 	if (m_bDebugRender)
 	{
+
 		KQuadTree::Render(context);
 	}
 	return true;

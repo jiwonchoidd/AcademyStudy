@@ -160,6 +160,7 @@
     <ClInclude Include="KPlayer2D.h" />
     <ClInclude Include="KSceneManager.h" />
     <ClInclude Include="KScene_Game_0.h" />
+    <ClInclude Include="KTriggerCollider.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sample.h" />
     <ClInclude Include="KScene_Intro.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="KPlayer2D.cpp" />
     <ClCompile Include="KSceneManager.cpp" />
     <ClCompile Include="KScene_Game_0.cpp" />
+    <ClCompile Include="KTriggerCollider.cpp" />
     <ClCompile Include="Sample.cpp" />
     <ClCompile Include="KScene_Intro.cpp" />
   </ItemGroup>

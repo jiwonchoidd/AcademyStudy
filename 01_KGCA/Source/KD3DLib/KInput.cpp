@@ -141,10 +141,36 @@ bool KInput::Frame()
         {
             g_InputData.bMenu = !g_InputData.bMenu;
         }
+        if (g_Input.GetKey(DIK_X) == KEY_PUSH)
+        {
+            g_InputData.bExit = !g_InputData.bExit;
+        }
+        if (g_Input.GetKey(DIK_Z) == KEY_PUSH)
+        {
+            g_InputData.bMenu_SELECT = !g_InputData.bMenu_SELECT;
+        }
+        if (g_Input.GetKey(DIK_UP) == KEY_PUSH)
+        {
+            g_InputData.bMenu_UP = !g_InputData.bMenu_UP;
+        }
+        if (g_Input.GetKey(DIK_DOWN) == KEY_PUSH)
+        {
+            g_InputData.bMenu_DOWN = !g_InputData.bMenu_DOWN;
+        }
+        if (g_Input.GetKey(DIK_LEFT) == KEY_PUSH)
+        {
+            g_InputData.bMenu_LEFT = !g_InputData.bMenu_LEFT;
+        }
+        if (g_Input.GetKey(DIK_RIGHT) == KEY_PUSH)
+        {
+            g_InputData.bMenu_RIGHT = !g_InputData.bMenu_RIGHT;
+        }
         g_InputData.bWKey = GetKey(DIK_W);
         g_InputData.bAKey = GetKey(DIK_A);
         g_InputData.bSKey = GetKey(DIK_S);
         g_InputData.bDKey = GetKey(DIK_D);
+        g_InputData.bZKey = GetKey(DIK_Z);
+        g_InputData.bXKey = GetKey(DIK_X);
 
         g_InputData.bLShift = GetKey(DIK_LSHIFT);
 
@@ -152,8 +178,6 @@ bool KInput::Frame()
         g_InputData.bRightKey = GetKey(DIK_RIGHT);
         g_InputData.bUpKey = GetKey(DIK_UP);
         g_InputData.bDownKey = GetKey(DIK_DOWN);
-        g_InputData.bExit = GetKey(DIK_ESCAPE);
-        g_InputData.bSpace = GetKey(DIK_SPACE);
        
 #ifdef DEBUG
         if (g_Input.GetKey(DIK_F1) == KEY_PUSH)

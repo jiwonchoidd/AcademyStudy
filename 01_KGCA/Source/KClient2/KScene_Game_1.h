@@ -7,10 +7,18 @@
 #include "KObjObject.h"
 #include "KState.h"
 #include "KSoundManager.h"
+#include "KTriggerCollider.h"
 class KScene_Game_1 : public KScene
 {
 public:
     KCamera                 m_Camera;
+    KTriggerCollider*       m_Trigger_Home;
+    KTriggerCollider*       m_Trigger_Combat;
+
+public:
+    std::shared_ptr<KUIModelComposite> m_Menu;
+    bool                               m_bMenu = false;
+    void                               ActiveMenu();
 public:
     bool    Load(std::wstring file) override;
 public:

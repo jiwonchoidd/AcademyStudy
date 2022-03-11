@@ -9,12 +9,16 @@
 #include "KState.h"
 #include "KSoundManager.h"
 #include "KUIModelManager.h"
+#include "KTriggerCollider.h"
 class KScene_Game_0 : public KScene
 {
 public:
     KCamera                 m_Camera;
+    KTriggerCollider*       m_Trigger;
+    KUIModel*                 m_Fade;
+public:
     std::shared_ptr<KUIModelComposite> m_Menu;
-    bool                    m_bMenu = false;
+    bool                               m_bMenu = false;
 public:
     bool    Load(std::wstring file) override;
 public:
@@ -22,5 +26,6 @@ public:
     virtual bool	Frame();
     virtual bool	Render();
     virtual bool	Release();
+    void            ActiveMenu();
 };
 

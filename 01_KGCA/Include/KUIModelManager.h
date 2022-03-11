@@ -47,7 +47,8 @@ public:
 class KUIModelComposite: public KUIModel
 {
 public:
-	std::list< KUIModel*> m_Components;
+	std::list <KUIModel*> m_Components;
+	std::vector <KUIModel*> m_ButtonComponents;
 	int					  m_iSelected =0;
 public:
 	virtual bool		Frame();

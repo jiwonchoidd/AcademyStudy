@@ -127,14 +127,7 @@ bool KPlayer2D::Render(ID3D11DeviceContext* pContext)
 {
 	KSprite* walk = g_SpriteManager.GetPtr(L"Player_Walk");
 	//m_AnimIndex 배열로 저장된 좌표로 출력
-	//if(m_AnimIndex<m_rtWalking.size())
 	SetRectSource(walk->m_anim_array[walk->m_AnimIndex]);
-	//anim 디버거
-	if (ImGui::Begin(u8"player anim"))
-	{
-		ImGui::Text("animation %d, ", walk->m_AnimIndex);
-	}
-	ImGui::End();
 
 	//플레이어 디버거
 	if (ImGui::Begin(u8"플레이어 디버거"))
@@ -148,6 +141,33 @@ bool KPlayer2D::Render(ID3D11DeviceContext* pContext)
 	ImGui::End();
 
 	KObject::Render(pContext);
+	return true;
+}
+
+bool KPlayer2D::AutoMove(KVector2 move)
+{
+	KSprite* walk = g_SpriteManager.GetPtr(L"Player_Walk");
+	KVector2 pos = { 0,0 };
+
+	m_dir = move;
+	if (m_dir == KVector2( 0,-1 ))
+	{
+		walk->RunAnim(3.0f, 0, 3);
+	}
+	else if (m_dir == KVector2(-1, 0))
+	{
+		walk->RunAnim(3.0f, 12, 15);
+	}
+	else if (m_dir == KVector2(1, 0))
+	{
+		walk->RunAnim(3.0f, 4, 7);
+	}
+	else if (m_dir == KVector2(0, 1))
+	{
+		walk->RunAnim(3.0f, 8, 11);;
+	}
+	pos = m_dir * m_Speed * g_fSecPerFrame;
+	AddPosition(pos);
 	return true;
 }
 

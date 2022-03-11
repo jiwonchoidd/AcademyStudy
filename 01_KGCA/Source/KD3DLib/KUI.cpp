@@ -156,17 +156,12 @@ bool KImage::Frame()
 	m_cbData.vLightDir.y = m_fAlpha;
 	m_cbData.vLightDir.z = m_fAlpha;
 	m_cbData.vLightDir.w = 1.0f;
-	if (ImGui::Begin("dd"))
-	{
-		ImGui::Text("alpha %f", m_fAlpha);
-	}
-	ImGui::End();
 	return true;
 }
 
 void KImage::FadeIn()
 {
-	m_fAlpha += g_fSecPerFrame * 0.3f;
+	m_fAlpha += g_fSecPerFrame;
 	m_fAlpha = min(m_fAlpha, 1.0f);
 	if (m_fAlpha >= 1.0f)
 	{
@@ -174,6 +169,15 @@ void KImage::FadeIn()
 	}
 }
 
+void KImage::FadeOut()
+{
+	m_fAlpha -= g_fSecPerFrame*0.5f;
+	m_fAlpha = max(m_fAlpha, 0.0f);
+	if (m_fAlpha <= 0.0f)
+	{
+		m_bFadeOut = false;
+	}
+}
 void KImage::MoveIMG()
 {
 	if (m_cbData.vValue.x > 1.5f)
@@ -187,15 +191,6 @@ void KImage::MoveIMG()
 	}
 }
 
-void KImage::FadeOut()
-{
-	m_fAlpha = m_fAlpha - g_fSecPerFrame * 0.3f;
-	m_fAlpha = max(m_fAlpha, 0.0f);
-	if (m_fAlpha <= 0.0f)
-	{
-		m_bFadeOut = false;
-	}
-}
 void KImage::SelectOverlap(KCollider* pObj, DWORD dwState)
 {
 	if (m_bVisibility && m_SelectType != Select_Ignore)
@@ -237,24 +232,33 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 {
 	if (m_bVisibility && m_SelectType!=Select_Ignore)
 	{
+		
+	}
+}
+
+bool KButton::Frame()
+{
+
+	if (m_bVisibility && m_SelectType != Select_Ignore)
+	{
 		if (m_PreSelectState == m_SelectState)
 		{
-			return;
+			return false;
 		}
-		if (m_datalist.size() <= 0) return;
+		if (m_datalist.size() <= 0) return false;
 
 		switch (m_SelectState)
 		{
-
 		case KSelectState::S_DEFAULT:
 		{
 			if (m_datalist[0].pTex != nullptr)
 				m_pColorTex = m_datalist[0].pTex;
+			m_bSelect = false;
 		}break;
 		case KSelectState::S_SELECTED:
 		{
 			//클릭 활성화
-			m_btn_active = true;
+			m_bSelect = true;
 			if (m_datalist[2].pSound != nullptr)
 				m_datalist[2].pSound->SoundPlay_Once();
 			if (m_datalist[0].pTex != nullptr)
@@ -262,10 +266,14 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 		}break;
 		case KSelectState::S_HOVER:
 		{
-			if (m_datalist[1].pSound != nullptr)
-				m_datalist[1].pSound->SoundPlay_Once();
-			if (m_datalist[1].pTex != nullptr)
-				m_pColorTex = m_datalist[1].pTex;
+			if (!m_bSelect)
+			{
+				if (m_datalist[1].pSound != nullptr)
+					m_datalist[1].pSound->SoundPlay_Once();
+				if (m_datalist[1].pTex != nullptr)
+					m_pColorTex = m_datalist[1].pTex;
+
+			}
 		}break;
 		case KSelectState::S_ACTIVE:
 		{
@@ -279,19 +287,11 @@ void KButton::SelectOverlap(KCollider* pObj, DWORD dwState)
 		}break;
 		default:
 		{
-			m_btn_active = false;
+			m_bSelect = false;
 		}
 		}
 		m_PreSelectState = m_SelectState;
 	}
-}
-
-bool KButton::Frame()
-{
-	m_cbData.vLightDir.x = m_fAlpha;
-	m_cbData.vLightDir.y = m_fAlpha;
-	m_cbData.vLightDir.z = m_fAlpha;
-	m_cbData.vLightDir.w = 1.0f;
 
 	return true;
 }

@@ -23,7 +23,7 @@ public:
 	virtual void		SetPosition(KVector2 vPos);
 	virtual void		UpdateRectDraw(RECT rt);
 	virtual bool		CreateObject_Mask(std::wstring vsFile,
-		std::wstring psFile, std::wstring tex, std::wstring mask);
+		std::wstring psFile, std::wstring tex=nullptr, std::wstring mask = nullptr);
 	// 화면좌표 위치를 중점으로 NDC 변환
 	virtual void	Convert(
 		KVector2 center, float fWidth, float fHeight,

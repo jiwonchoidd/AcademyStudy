@@ -1,7 +1,6 @@
 #include "KScene_Game_0.h"
 #include "KSceneManager.h"
 #include "KUI.h"
-#include "ImGuiManager.h"
 #include "KWrite.h"
 bool KScene_Game_0::Load(std::wstring file)
 {
@@ -72,11 +71,11 @@ bool KScene_Game_0::Load(std::wstring file)
 		btn->m_datalist.emplace_back(pTex, pSound);
 
 		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
-		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
+		//pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
 		btn->m_datalist.emplace_back(pTex, pSound);
 
 		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
-		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
+		//pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_select.mp3");
 		btn->m_datalist.emplace_back(pTex, pSound);
 
 		if (!btn->Init(m_pContext, L"../../data/shader/VS_UI_0.txt",
@@ -88,7 +87,10 @@ bool KScene_Game_0::Load(std::wstring file)
 		g_UIModelManager.m_list.insert(std::make_pair(L"menu_button", btn));
 
 		//----------------------- 메뉴 모델
-		#pragma region 메뉴 모델
+
+	#pragma endregion
+
+	#pragma region 로드한 모델로 메뉴 생성
 		KUIModel* background = g_UIModelManager.GetPtr(L"menu_background")->Clone();
 		background->m_Name = L"menu_background_1";
 		background->UpdateData();
@@ -145,6 +147,11 @@ bool KScene_Game_0::Load(std::wstring file)
 		icon5->SetPosition(KVector2(button1->m_pos.x - 115.0f, button5->m_pos.y));
 		icon5->UpdateData();
 
+		button1->m_pParent = icon1;
+		button2->m_pParent = icon2;
+		button3->m_pParent = icon3;
+		button4->m_pParent = icon4;
+		button5->m_pParent = icon5;
 
 		std::shared_ptr<KUIModelComposite> compositeobj(new KUIModelComposite);
 		compositeobj->m_Name = L"Menu";
@@ -161,30 +168,34 @@ bool KScene_Game_0::Load(std::wstring file)
 		compositeobj->Add(icon5);
 
 #pragma endregion
-		m_Menu = compositeobj;
-		m_Menu.get()->m_bVisibility = false;
-		for (auto list : m_Menu.get()->m_Components)
-		{
-			list->m_bVisibility = false;
-		}
-		m_UIObj.push_back(std::shared_ptr<KObject>(compositeobj));
-		KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
-		m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
 
-	#pragma endregion
+	//이 클래스에서 사용하기위해 맴버포인터로 받아옴
+	m_Menu = compositeobj;
 
-	//사운드 로드
-		if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
-		{
-			g_SceneManager.m_BGM->SoundStop();
-			g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
-			g_SceneManager.m_BGM->SoundPlay(true);
-		}
-	// 캐릭터 로드
+	//시작시에 메뉴가 보이지 않기 위해 모든 컴포넌트 invisibility
+	m_Menu.get()->m_bVisibility = false;
+	for (auto list : m_Menu.get()->m_Components)
+	{
+		list->m_bVisibility = false;
+	}
 
+	//씬 유아이 오브젝트 로드---------------------------------------
+	m_UIObj.push_back(std::shared_ptr<KObject>(compositeobj));
+	KUIModel* fadeimg = g_UIModelManager.GetPtr(L"fade_background")->Clone();
+	m_UIObj.push_back(std::shared_ptr<KObject>(fadeimg));
+	//사운드 로드---------------------------------------------------
+	if (g_SceneManager.m_BGM->m_name != L"Twinleaf Town (Day)")
+	{
+		g_SceneManager.m_BGM->SoundStop();
+		g_SceneManager.m_BGM = g_SoundManager.LoadSound(L"../../data/sound/bgm/Twinleaf Town (Day).wav");
+		g_SceneManager.m_BGM->SoundPlay(true);
+	}
+
+	// 캐릭터 씬메니져 전역으로 뺐음
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, -4, 2, -0.1f);
 		
-	//맵 로드---------------------------
+	//맵 로드-------------------------------------------------------
+	//맵 공간분할 로드-----------------------------------------------
 	std::shared_ptr<KImage> map_img = std::make_shared<KImage>();
 	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
 	map_img.get()->SetRectSource({ 255,2,255,186 });
@@ -200,8 +211,16 @@ bool KScene_Game_0::Load(std::wstring file)
 		map_img.get()->m_rtSize.width, map_img.get()->m_rtSize.height);
 
 	map_space.get()->LoadLeafData(L"../../data/map/map_0.txt");
+
 	m_MapObj.push_back(std::shared_ptr<KObject>(map_img));
 	m_MapObj.push_back(std::shared_ptr<KObject>(map_space));
+
+	//맵이동 트리거
+	std::shared_ptr<KTriggerCollider> enter_trigger = std::make_shared<KTriggerCollider>();
+	enter_trigger.get()->Init(m_pContext, KVector2(5, 4), {0,0,1,1});
+	m_MapObj.push_back(std::shared_ptr<KObject>(enter_trigger));
+	m_Trigger = enter_trigger.get();
+	m_Fade = fadeimg;
 
 	return true;
 }
@@ -217,7 +236,6 @@ bool KScene_Game_0::Init(ID3D11DeviceContext* context)
 	m_Camera.Init();
 	m_Camera.CreateViewMatrix(KVector3(0, 0, -36), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.18f, (float)g_rtClient.right / (float)g_rtClient.bottom);
-	//m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.3f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	return true;
 }
 
@@ -229,37 +247,97 @@ bool KScene_Game_0::Frame()
 	//카메라 이동
 	m_Camera.Follow2DPos(&g_SceneManager.m_Player->m_pos);
 
-
+	#pragma region 메뉴 조작
 	//메뉴 조작 캐릭터 이동 불가
 	if (g_InputData.bMenu)
 	{
-		g_SceneManager.m_Player->m_bMove = !g_SceneManager.m_Player->m_bMove;
-		m_bMenu = !m_bMenu;
-		m_Menu.get()->m_bVisibility = !m_Menu.get()->m_bVisibility;
-		for (auto list : m_Menu.get()->m_Components)
-		{
-			list->m_bVisibility = !list->m_bVisibility;
-		}
-		KSound* sound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
-		sound->SoundPlay_Once();
+		ActiveMenu();
 	}
+
 	if (m_bMenu)
 	{
-		if (g_InputData.bUpKey)
+		int button_count = m_Menu.get()->m_ButtonComponents.size();
+
+		//위아래로 버튼 리스트 조작
+		if (g_InputData.bMenu_UP)
 		{
+			if (m_Menu.get()->m_iSelected > 0)
+				m_Menu.get()->m_iSelected = m_Menu.get()->m_iSelected - 1;
 		}
-		if (g_InputData.bDownKey)
+		if (g_InputData.bMenu_DOWN)
 		{
+			if (m_Menu.get()->m_iSelected < button_count - 1)
+				m_Menu.get()->m_iSelected = m_Menu.get()->m_iSelected + 1;
+		}
+		//해당 버튼 호버 상태로 변환
+		m_Menu.get()->m_ButtonComponents[m_Menu.get()->m_iSelected]->m_SelectState = KSelectState::S_HOVER;
+
+		for (int i = 0; i < button_count; i++)
+		{
+			static_cast<KImage*>(m_Menu.get()->m_ButtonComponents[i]->m_pParent)->m_fAlpha = 0.25f;
+		}
+		static_cast<KImage*>(m_Menu.get()->m_ButtonComponents[m_Menu.get()->m_iSelected]->m_pParent)->m_fAlpha = 1.0f;
+
+		//선택 Z키 입력시 발동 또는 클릭 시에 m_bSelect가 true 가 된다.
+		if (g_InputData.bMenu_SELECT)
+		{
+			m_Menu.get()->m_ButtonComponents[m_Menu.get()->m_iSelected]->m_SelectState = KSelectState::S_SELECTED;
+		}
+		//각 버튼의 동작
+		if (m_Menu.get()->m_ButtonComponents[0]->m_bSelect)
+		{
+			//가방
+			ActiveMenu();
+			m_Menu.get()->m_ButtonComponents[0]->m_SelectState = KSelectState::S_DEFAULT;
+			m_Menu.get()->m_ButtonComponents[0]->m_bSelect = false;
+		}
+		if (m_Menu.get()->m_ButtonComponents[1]->m_bSelect)
+		{
+			//프로필
+			ActiveMenu();
+			m_Menu.get()->m_ButtonComponents[1]->m_SelectState = KSelectState::S_DEFAULT;
+			m_Menu.get()->m_ButtonComponents[1]->m_bSelect = false;
+		}
+		if (m_Menu.get()->m_ButtonComponents[2]->m_bSelect)
+		{
+			//리포트
+			ActiveMenu();
+			m_Menu.get()->m_ButtonComponents[2]->m_SelectState = KSelectState::S_DEFAULT;
+			m_Menu.get()->m_ButtonComponents[2]->m_bSelect = false;
 
 		}
+		if (m_Menu.get()->m_ButtonComponents[3]->m_bSelect)
+		{
+			//설정
+			ActiveMenu();
+			m_Menu.get()->m_ButtonComponents[3]->m_SelectState = KSelectState::S_DEFAULT;
+			m_Menu.get()->m_ButtonComponents[3]->m_bSelect = false;
+		}
+		if (m_Menu.get()->m_ButtonComponents[4]->m_bSelect)
+		{
+			//닫는다
+			ActiveMenu();
+			m_Menu.get()->m_ButtonComponents[4]->m_SelectState = KSelectState::S_DEFAULT;
+			m_Menu.get()->m_ButtonComponents[4]->m_bSelect = false;
+		}
+		if (g_InputData.bExit)
+		{
+			ActiveMenu();
+		}
 	}
+#pragma endregion
+
 	//디버깅용 씬이동
-	if (g_SceneManager.m_Player->m_blockstate==-1)
+	if (m_Trigger->m_bisTrigger)
 	{
+		m_Fade->m_bFadeIn = true;
 		g_SceneManager.m_Player->m_bMove = false;
+		g_SceneManager.m_Player->AutoMove(KVector2(1, 0));
 		g_SceneManager.m_Timer += g_fSecPerFrame;
 		if (g_SceneManager.m_Timer > 1.0f)
 		{
+			KSound* sound= g_SoundManager.LoadSound(L"../../data/sound/scene.mp3");
+			sound->SoundPlay_Once();
 			g_SceneManager.m_Timer = 0.0f;
 			g_SceneManager.m_Player->m_bMove = true;
 			g_SceneManager.SetScene(2);
@@ -278,7 +356,6 @@ bool KScene_Game_0::Render()
 		m_MapObj[map]->SetMatrix(&m_MapObj[0]->m_matWorld,
 			&m_Camera.m_matView, &m_Camera.m_matProj);
 	}
-
 	
 	//플레이어 렌더링
 	g_SceneManager.m_Player->SetMatrix(&g_SceneManager.m_Player->m_matWorld,
@@ -298,8 +375,20 @@ bool KScene_Game_0::Render()
 
 bool KScene_Game_0::Release()
 {
-	//m_BGM->SoundStop();
 	m_Camera.Release();
 	KScene::Release();
 	return true;
+}
+
+void KScene_Game_0::ActiveMenu()
+{
+	g_SceneManager.m_Player->m_bMove = !g_SceneManager.m_Player->m_bMove;
+	m_bMenu = !m_bMenu;
+	m_Menu.get()->m_bVisibility = !m_Menu.get()->m_bVisibility;
+	for (auto list : m_Menu.get()->m_Components)
+	{
+		list->m_bVisibility = !list->m_bVisibility;
+	}
+	KSound* sound = g_SoundManager.LoadSound(L"../../data/sound/menu_open.mp3");
+	sound->SoundPlay_Once();
 }

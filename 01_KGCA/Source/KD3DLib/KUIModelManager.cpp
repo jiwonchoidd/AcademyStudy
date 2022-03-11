@@ -40,6 +40,11 @@ void KUIModelComposite::Add(KUIModel* pObj)
 {
 	//컴포지트 리스트에 추가
 	m_Components.push_back(pObj);
+
+	if (pObj->m_datalist.size()>1)
+	{
+		m_ButtonComponents.push_back(pObj);
+	}
 }
 
 KUIModel* KUIModelComposite::Clone()

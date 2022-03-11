@@ -112,8 +112,6 @@ private:
                 std::placeholders::_2));
     }
 public:
-    bool m_btn_active = false;
-public:
     virtual void	SelectOverlap(KCollider* pObj, DWORD dwState) override;
     virtual bool    Frame()override;
 };
