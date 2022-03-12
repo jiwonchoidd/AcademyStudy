@@ -71,7 +71,7 @@ bool KScene_Game_0::Load(std::wstring file)
 		btn->m_datalist.emplace_back(pTex, pSound);
 
 		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");
-		//pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
+		pSound = g_SoundManager.LoadSound(L"../../data/sound/menu_hover.mp3");
 		btn->m_datalist.emplace_back(pTex, pSound);
 
 		pTex = g_TextureMananger.Load(L"../../data/texture/menu_hover.png");

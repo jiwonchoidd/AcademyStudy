@@ -181,6 +181,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	compositeobj->Add(icon5);
 
 #pragma endregion
+
 	//이 클래스에서 사용하기위해 맴버포인터로 받아옴
 	m_Menu = compositeobj;
 
@@ -207,6 +208,7 @@ bool KScene_Game_1::Load(std::wstring file)
 	//플레이어 초기 위치
 	D3DKMatrixTranslation(&g_SceneManager.m_Player->m_matWorld, 8.5f, -15.0f, -1.0f);
 	g_SceneManager.m_Player->m_dir = { 0,-1 };
+
 	//맵 로드---------------------------
 	//OBJ 파일 맵
 	KMatrix s, r, t;
@@ -296,6 +298,16 @@ bool KScene_Game_1::Load(std::wstring file)
 		m_MapObj.push_back(std::shared_ptr<KObject>(building));
 	}
 #pragma endregion
+	//풀 배치
+	std::shared_ptr<KImage> map_grass = std::make_shared<KImage>();
+	map_grass.get()->SetRectDraw({ 0, 0, 32, 28 });
+	map_grass.get()->SetPosition(KVector2(0, 0));
+	if (!map_grass.get()->Init(m_pContext,
+		L"../../data/shader/VS_2D_Map.txt", L"../../data/shader/PS_2D_Map.txt",
+		L"../../data/texture/DS DSi - Pokemon Diamond Pearl - Players House.png", L""))
+	{
+		return false;
+	}
 
 	//쿼트트리-------------------------------
 	std::shared_ptr<KMapSpace> map_space = std::make_shared<KMapSpace>();
