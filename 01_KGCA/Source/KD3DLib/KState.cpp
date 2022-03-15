@@ -166,16 +166,27 @@ bool KState::SetState()
 
 bool KState::ReleaseState()
 {
-    g_pRSSolid->Release();
-    g_pRSWireFrame->Release();
-    g_pRSBackface->Release();
+    if (g_pBlendState)g_pBlendState->Release();
+    if (g_pDSS)g_pDSS->Release();
+    if (g_pDSS_Disabled)g_pDSS_Disabled->Release();
+    if (g_pClampSS)g_pClampSS->Release();
+    if (g_pWrapSS)g_pWrapSS->Release();
+    if (g_pMirrorSS)g_pMirrorSS->Release();
+    if (g_pNoFilterSS)g_pNoFilterSS->Release();
+    if (g_pRSSolid)g_pRSSolid->Release();
+    if (g_pRSBackface)g_pRSBackface->Release();
+    if (g_pRSWireFrame)g_pRSWireFrame->Release();
 
-    g_pDSS->Release();
-    g_pDSS_Disabled->Release();
-
-    g_pBlendState->Release();
-    g_pMirrorSS->Release();
-    g_pClampSS->Release();
-    g_pWrapSS->Release();
+    g_pBlendState = nullptr;
+    g_pDSS = nullptr;
+    g_pDSS_Disabled = nullptr;
+    g_pClampSS = nullptr;
+    g_pWrapSS = nullptr;
+    g_pMirrorSS = nullptr;
+    g_pNoFilterSS = nullptr;
+    g_pRSSolid = nullptr;
+    g_pRSWireFrame = nullptr;
+    g_pRSBackface = nullptr;
+   
     return true;
 }

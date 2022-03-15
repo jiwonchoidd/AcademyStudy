@@ -1,4 +1,11 @@
-﻿  KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+﻿  KCore.cpp
+  KDevice.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(6,10): warning C4101: 'hr' :참조되지 않은 지역 변수입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(100,1): warning C4002: 함수 같은 매크로 호출 'FAILED'에 대해 인수가 너무 많습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(165,36): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KDevice.cpp(166,37): warning C4244: '=': 'UINT'에서 'FLOAT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  코드를 생성하고 있습니다...
+  KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h

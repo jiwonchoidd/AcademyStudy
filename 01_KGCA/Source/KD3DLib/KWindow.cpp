@@ -33,7 +33,6 @@ LRESULT  KWindow::MsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         UINT iWidth = LOWORD(lParam);
         UINT iHeight = HIWORD(lParam);
-
         g_pWindow->ResizeDevice(iWidth, iHeight);
     }break;
     default:
@@ -75,13 +74,15 @@ bool   KWindow::InitWindows(
     RECT rc = { 0, 0, width, height };
     // 작업영역(  타이틀 바/경계선/메뉴/스크롤 바 등의 영역을 제외한 영역), 윈도우 스타일, 메뉴여부
     // Chilil가 이게 베스트 세팅이라고 함
-    AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+    //AdjustWindowRect(&rc, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE);
+    //WS_OVERLAPPEDWINDOW
+    AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	// 윈도우 생성 함수
 	m_hWnd = CreateWindowExW(
         0,
         L"dd_ch",
         strWindowTitle,
-        WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+        WS_OVERLAPPEDWINDOW,
         0,
         0,
         rc.right-rc.left,

@@ -3,13 +3,13 @@
 class KDevice
 {
 public:
-	ID3D11Device*			m_pd3dDevice;		// 디바이스 객체
-	ID3D11DeviceContext*	m_pImmediateContext;// 디바이스 컨텍스트
-	IDXGISwapChain*			m_pSwapChain;		// 스왑체인 객체
-	ID3D11RenderTargetView* m_pRenderTargetView;// 메인 랜더타켓 뷰
-	ID3D11DepthStencilView*	m_DepthStencilView;
-	IDXGIFactory*			m_pGIFactory;		// DXGI 객체
-	ID3D11ShaderResourceView* m_pTextureSRV;
+	wrl::ComPtr <ID3D11Device>				m_pd3dDevice;		// 디바이스 객체
+	wrl::ComPtr <ID3D11DeviceContext>		m_pImmediateContext;// 디바이스 컨텍스트
+	wrl::ComPtr <IDXGISwapChain>			m_pSwapChain;		// 스왑체인 객체
+	wrl::ComPtr <ID3D11RenderTargetView>	m_pRenderTargetView;// 메인 랜더타켓 뷰
+	wrl::ComPtr <ID3D11DepthStencilView>	m_DepthStencilView;
+	wrl::ComPtr <IDXGIFactory>				m_pGIFactory;		// DXGI 객체
+	wrl::ComPtr <ID3D11ShaderResourceView>  m_pTextureSRV;
 public:
 	DXGI_SWAP_CHAIN_DESC	m_SwapChainDesc;	// 스왑체인 속성값
 	D3D_DRIVER_TYPE         m_driverType;		// 디바이스 타입( 디폴트:하드웨어 가속 )

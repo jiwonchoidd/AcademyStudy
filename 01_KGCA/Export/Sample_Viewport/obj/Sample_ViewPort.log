@@ -1,0 +1,6 @@
+﻿  KScene_Intro.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ViewPort\KScene_Intro.cpp(17,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ViewPort\KScene_Intro.cpp(18,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ViewPort\KScene_Intro.cpp(19,10): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_ViewPort\KScene_Intro.cpp(20,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Sample_ViewPort.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Sample_Viewport\Sample_ViewPort.exe

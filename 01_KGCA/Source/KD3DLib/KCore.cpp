@@ -16,7 +16,7 @@ bool	KCore::GameInit()
     m_Write.Init();
     m_Timer.Init();
     g_Input.Init();
-    //g_Input.m_bInputAvailable = false;
+
     IDXGISurface1* m_pBackBuffer;
     m_pSwapChain->GetBuffer(0, 
         __uuidof(IDXGISurface),
@@ -30,10 +30,8 @@ bool	KCore::GameInit()
 }
 bool	KCore::GameFrame() 
 {
-    // TODO : Frame Timer
     m_Timer.Frame();
     g_Input.Frame();
-    //실시간 모든 콜라이더 충돌 프레임
     g_ObjManager.Frame();
     m_ImGuiManager.Frame();
     if (g_InputData.bDebugRender)
@@ -49,15 +47,6 @@ bool	KCore::GameFrame()
     {
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
-    }
-    ImGui::End();
-
-    if (ImGui::Begin(u8"인풋 디버거"))
-    {
-        ImGui::Text("iMouseValue %d , %d , %d", g_InputData.iMouseValue[0]
-            , g_InputData.iMouseValue[1], g_InputData.iMouseValue[2]);
-        ImGui::Text("iMousePos %d , %d", g_InputData.iMousePos[0]
-            , g_InputData.iMousePos[1]);
     }
     ImGui::End();
 
@@ -86,32 +75,33 @@ bool	KCore::GameRender()
 bool	KCore::PreRender() {
 
     //새 스왑체인 뷰포트
-    float ClearColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f }; //red,green,blue,alpha
-    m_pImmediateContext->ClearRenderTargetView(m_pRenderTargetView, ClearColor);
+    float ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f }; //red,green,blue,alpha
+    m_pImmediateContext.Get()->ClearRenderTargetView(m_pRenderTargetView.Get(), ClearColor);
 
-    m_pImmediateContext->ClearDepthStencilView(
-        m_DepthStencilView,
+    m_pImmediateContext.Get()->ClearDepthStencilView(
+        m_DepthStencilView.Get(),
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    m_pImmediateContext->OMSetRenderTargets(1,
-        &m_pRenderTargetView, m_DepthStencilView);
+    m_pImmediateContext.Get()->OMSetRenderTargets(1,
+        m_pRenderTargetView.GetAddressOf(), m_DepthStencilView.Get());
 
-    m_pImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    ApplyDSS(m_pImmediateContext, KState::g_pDSS);
-    ApplySS(m_pImmediateContext, KState::g_pNoFilterSS, 0);
-    ApplyRS(m_pImmediateContext, KState::g_pCurrentRS);
-    ApplyBS(m_pImmediateContext, KState::g_pBlendState);
-
+    m_pImmediateContext.Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    ApplyDSS(m_pImmediateContext.Get(), KState::g_pDSS);
+    ApplySS(m_pImmediateContext.Get(), KState::g_pNoFilterSS, 0);
+    ApplyRS(m_pImmediateContext.Get(), KState::g_pCurrentRS);
+    ApplyBS(m_pImmediateContext.Get(), KState::g_pBlendState);
     return true;
 }
 
-bool	KCore::Render() {
+bool	KCore::Render() 
+{
     return true;
 }
 
-bool	KCore::PostRender() {
+bool	KCore::PostRender() 
+{
     //스왑체인 작업
-    assert(m_pSwapChain);
-    m_pSwapChain->Present(0, 0);
+    assert(m_pSwapChain.Get());
+    m_pSwapChain.Get()->Present(0, 0);
     return true;
 }
 
@@ -123,13 +113,13 @@ bool	KCore::GameRelease()
     m_Timer.Release();
     g_Input.Release();
     m_Write.Release();
-
+    m_ImGuiManager.Release();
     CleanupDevice();
     return true;
 }
 bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
 {
-    if (m_pd3dDevice == nullptr) return false;
+    if (m_pd3dDevice.Get() == nullptr) return false;
     DeleteResizeDevice(iWidth, iHeight);
 
 
@@ -138,7 +128,7 @@ bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
     KWindow::ResizeDevice(iWidth, iHeight);
 
     IDXGISurface1* pSurface = nullptr;
-    HRESULT hr = m_pSwapChain->GetBuffer(0,
+    HRESULT hr = m_pSwapChain.Get()->GetBuffer(0,
         __uuidof(IDXGISurface1),
         (void**)&pSurface);
     if (SUCCEEDED(hr))

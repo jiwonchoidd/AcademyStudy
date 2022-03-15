@@ -12,6 +12,7 @@ public:
 public:
 	void Frame();
 	void Render();
+	void Release();
 public:
 	ImGuiManager();
 	~ImGuiManager();

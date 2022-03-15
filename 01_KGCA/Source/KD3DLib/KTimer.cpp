@@ -43,7 +43,7 @@ bool KTimer::Render()
 }
 bool KTimer::Release()
 {
-	return false;
+	return true;
 }
 KTimer::KTimer()
 {

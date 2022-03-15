@@ -18,6 +18,11 @@ void ImGuiManager::Render()
     }
 }
 
+void ImGuiManager::Release()
+{
+    
+}
+
 void ImGuiManager::OnOffImgui()
 {
     m_bImguiEnable = !m_bImguiEnable;
@@ -39,5 +44,4 @@ ImGuiManager::ImGuiManager()
 ImGuiManager::~ImGuiManager()
 {
     ImGui::DestroyContext();
-
 }
