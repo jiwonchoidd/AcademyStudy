@@ -5,7 +5,7 @@ cbuffer CBuf
 	matrix g_matProj : packoffset(c8);
 	matrix g_matNormal : packoffset(c12);
 	float4 g_lightPos : packoffset(c16); //라이트 방향
-	float4 g_lightColor : packoffset(c17); //라이트 방향
+	float4 g_lightColor : packoffset(c17); //라이트 색상
 	float4 g_camPos : packoffset(c18); //카메라 방향
 	float4 g_value : packoffset(c19); //기타 시간 값등
 };
@@ -13,6 +13,8 @@ struct VS_INPUT
 {
    float3 mPosition : POSITION;
    float3 mNormal    : NORMAL;
+   float3 mTangent	: TANGENT;
+   float3 mBinormal : BINORMAL;
    float4 mColor	: COLOR;
    float2 mUV		: TEXTURE;
 };
@@ -22,9 +24,11 @@ struct VS_OUTPUT
 	float3 mNormal : NORMAL;
 	float4 mColor : COLOR0;
 	float2 mUV : TEXCOORD0;		//uv
-	float3 mDiffuse : TEXCOORD1; //디퓨즈
+	float3 mLightDir : TEXCOORD1; //방향
 	float3 mViewDir : TEXCOORD2; //방향
-	float3 mReflection : TEXCOORD3; //반사
+	float3 mT        : TEXCOORD3;
+	float3 mB        : TEXCOORD4;
+	float3 mN        : TEXCOORD5;
 };
 
 VS_OUTPUT VS(VS_INPUT Input) 
@@ -35,10 +39,10 @@ VS_OUTPUT VS(VS_INPUT Input)
 	Output.mPosition = float4(Input.mPosition, 1.0f);
 	Output.mPosition = mul(Output.mPosition, g_matWorld);
 
-	//월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
+	//라이트 방향 월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
 	float3 lightDir = Output.mPosition.xyz - g_lightPos.xyz;
 	lightDir = normalize(lightDir);
-	//
+	//보는 방향
 	float3 viewDir = Output.mPosition.xyz - g_camPos.xyz;
 	Output.mViewDir = viewDir;
 	//
@@ -47,10 +51,13 @@ VS_OUTPUT VS(VS_INPUT Input)
 	Output.mPosition = mul(Output.mPosition, g_matProj);
 
 	float3 worldNormal = mul(Input.mNormal, (float3x3)g_matWorld);
-	worldNormal = normalize(worldNormal);
-	//내적함수 dot()사용
-	Output.mDiffuse = dot(-lightDir, worldNormal);
-	Output.mReflection = reflect(lightDir, worldNormal);
+	Output.mN = normalize(worldNormal);
+
+	float3 worldTangent = mul(Input.mTangent, (float3x3)g_matWorld);
+	Output.mT = normalize(worldTangent);
+
+	float3 worldBinormal = mul(Input.mBinormal, (float3x3)g_matWorld);
+	Output.mB = normalize(worldBinormal);
 
 	Output.mNormal = Input.mNormal;
 	Output.mColor = Input.mColor;

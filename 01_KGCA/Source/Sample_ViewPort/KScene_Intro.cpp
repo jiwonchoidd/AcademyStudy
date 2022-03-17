@@ -15,7 +15,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	std::shared_ptr<KSkyBox> skybox(new KSkyBox);
 	skybox.get()->Init(context, L"../../data/shader/Skybox.hlsl",L"../../data/texture/Skybox_dd.dds");
 	m_MapObj.push_back(skybox);
-	m_Box.Init(L"../../data/shader/VS_0.hlsl", L"../../data/shader/PS_0.hlsl", L"../../data/texture/UV.bmp", L"");
+	m_Box.Init(L"../../data/shader/VS_0.hlsl", L"../../data/shader/PS_0.hlsl", L"../../data/texture/UV.bmp", L"../../data/texture/UV.bmp", L"../../data/texture/normal.jpg");
 	KMatrix R;
 	D3DKMatrixIdentity(&R);
 	R._11 = cos(3.14 / 4.0f); //0

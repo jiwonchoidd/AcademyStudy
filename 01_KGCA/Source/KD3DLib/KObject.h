@@ -4,7 +4,9 @@
 struct PNCT_VERTEX
 {
 	KVector3 pos;
-	KVector3 normal;
+	KVector3 normal; // 법선
+	KVector3 tangent; // 접선
+	KVector3 binormal; // 종법선
 	KVector4 color;
 	KVector2 tex;
 	PNCT_VERTEX()
@@ -51,8 +53,10 @@ public:
 public:
 	KShader*		m_pVS = nullptr;
 	KShader*		m_pPS = nullptr;
-	KTexture*		m_pColorTex = nullptr;
-	KTexture*		m_pMaskTex = nullptr;
+public://텍스쳐 디퓨즈맵, 스페큘러맵, 노말맵
+	KTexture*		m_pTexture_Diffuse = nullptr;
+	KTexture*		m_pTexture_Specular = nullptr;
+	KTexture*		m_pTexture_Normal = nullptr;
 	D3D11_TEXTURE2D_DESC		m_TextureDesc;
 public:
 	wrl::ComPtr <ID3D11Buffer>	 	 m_pVertexBuffer;
@@ -65,7 +69,7 @@ public:
 	virtual void		SetMatrix_Billboard(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
 	virtual bool		LoadShader(std::wstring vsFile, std::wstring psFile);
-	virtual bool		LoadTexture(std::wstring filename, std::wstring mask = L"");
+	virtual bool		LoadTexture(std::wstring tex1= L"", std::wstring tex2 = L"", std::wstring tex3 = L"");
 public:
 	virtual bool		CheckVertexData();
 	virtual bool		CheckIndexData();
@@ -75,7 +79,7 @@ public:
 	virtual HRESULT		CreateVertexLayout();
 public:
 	virtual bool		CreateObject(std::wstring vsFile, std::wstring psFile,
-						std::wstring tex1= L"", std::wstring tex2=L"");
+						std::wstring tex1= L"", std::wstring tex2= L"", std::wstring tex3 = L"");
 	virtual bool		Init();
 	virtual bool		Frame();
 	virtual bool		PreRender(ID3D11DeviceContext* pContext);

@@ -23,7 +23,7 @@ void KSkyBox::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
 bool KSkyBox::Init(ID3D11DeviceContext* context,std::wstring shader, std::wstring tex)
 {
     m_pContext = context;
-    KBoxObj::Init(shader, shader,tex,L"");
+    KBoxObj::Init(shader, shader, tex, L"", L"");
     return true;
 }
 

@@ -139,10 +139,10 @@ void K2DAsset::Convert(std::vector<PNCT_VERTEX>& list,
 	}
 	else
 	{
-		float u = m_rtSource.left / (float)m_pColorTex->m_TextureDesc.Width;
-		float pos = m_rtSource.top / (float)m_pColorTex->m_TextureDesc.Height;
-		float w = m_rtSource.right / (float)m_pColorTex->m_TextureDesc.Width;
-		float h = m_rtSource.bottom / (float)m_pColorTex->m_TextureDesc.Height;
+		float u = m_rtSource.left / (float)m_pTexture_Diffuse->m_TextureDesc.Width;
+		float pos = m_rtSource.top / (float)m_pTexture_Diffuse->m_TextureDesc.Height;
+		float w = m_rtSource.right / (float)m_pTexture_Diffuse->m_TextureDesc.Width;
+		float h = m_rtSource.bottom / (float)m_pTexture_Diffuse->m_TextureDesc.Height;
 		retList[0].tex.x = u; retList[0].tex.y = pos; // v0
 		retList[1].tex.x = u + w; retList[1].tex.y = pos; // v1
 		retList[2].tex.x = u; retList[2].tex.y = pos + h;

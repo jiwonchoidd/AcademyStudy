@@ -63,13 +63,15 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
     pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
-    //텍스쳐 리소스를 0번 슬롯에 하나를 넣겠다는 뜻
- 
-    if(m_pColorTex!=nullptr)
-    pContext->PSSetShaderResources(0, 1, m_pColorTex->m_pSRVTexture.GetAddressOf());
+    //텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
+    if(m_pTexture_Diffuse !=nullptr)
+    pContext->PSSetShaderResources(0, 1, m_pTexture_Diffuse->m_pSRVTexture.GetAddressOf());
 
-    if (m_pMaskTex!= nullptr)
-    pContext->PSSetShaderResources(1, 1, m_pMaskTex->m_pSRVTexture.GetAddressOf());
+    if (m_pTexture_Specular != nullptr)
+    pContext->PSSetShaderResources(1, 1, m_pTexture_Specular->m_pSRVTexture.GetAddressOf());
+
+    if (m_pTexture_Normal != nullptr)
+     pContext->PSSetShaderResources(2, 1, m_pTexture_Normal->m_pSRVTexture.GetAddressOf());
 
     //쉐이더
     pContext->VSSetShader(m_pVS->m_pVertexShader.Get(), NULL, 0);
@@ -117,16 +119,20 @@ bool KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
 }
 
 //매니져를 사용해 텍스쳐 로드
-bool KObject::LoadTexture(std::wstring tex, std::wstring mask)
+bool KObject::LoadTexture(std::wstring tex1, std::wstring tex2, std::wstring tex3)
 {
-    if (!mask.empty())
+    if (!tex1.empty())
     {
-        m_pMaskTex = g_TextureMananger.Load(mask);
+        m_pTexture_Diffuse = g_TextureMananger.Load(tex1);
+        m_TextureDesc = m_pTexture_Diffuse->m_TextureDesc;
     }
-    if (!tex.empty())
+    if (!tex2.empty())
     {
-        m_pColorTex = g_TextureMananger.Load(tex);
-        m_TextureDesc = m_pColorTex->m_TextureDesc;
+        m_pTexture_Specular = g_TextureMananger.Load(tex2);
+    }
+    if (!tex3.empty())
+    {
+        m_pTexture_Normal = g_TextureMananger.Load(tex3);
     }
     return true;
 }
@@ -208,8 +214,10 @@ HRESULT KObject::CreateVertexLayout()
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
         { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TANGENT",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "BINORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 64, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     hr = g_pd3dDevice->CreateInputLayout(layout, _countof(layout),
         m_pVS->m_pVSCodeResult.Get()->GetBufferPointer(),
@@ -221,11 +229,11 @@ HRESULT KObject::CreateVertexLayout()
 }
 
 bool KObject::CreateObject(std::wstring vsFile,
-    std::wstring psFile, std::wstring tex1, std::wstring tex2)
+    std::wstring psFile, std::wstring tex1, std::wstring tex2, std::wstring tex3)
 {
     //버텍스 데이터 생성
 
-    LoadTexture(tex1, tex2);
+    LoadTexture(tex1, tex2, tex3);
  
     if (CheckVertexData())
     {

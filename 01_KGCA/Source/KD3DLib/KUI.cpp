@@ -35,10 +35,10 @@ bool KUI::SetVertexData()
 	KVector2 right_bottom = { (float)m_rtOffset.right, (float)m_rtOffset.bottom };
 	float width = 0.0f;
 	float height = 0.0f;
-	if (m_pColorTex != nullptr)
+	if (m_pTexture_Diffuse != nullptr)
 	{
-		width = m_pColorTex->m_TextureDesc.Width;
-		height = m_pColorTex->m_TextureDesc.Height;
+		width = m_pTexture_Diffuse->m_TextureDesc.Width;
+		height = m_pTexture_Diffuse->m_TextureDesc.Height;
 	}
 	else
 	{
@@ -252,7 +252,7 @@ bool KButton::Frame()
 		case KSelectState::S_DEFAULT:
 		{
 			if (m_datalist[0].pTex != nullptr)
-				m_pColorTex = m_datalist[0].pTex;
+				m_pTexture_Diffuse = m_datalist[0].pTex;
 			m_bSelect = false;
 		}break;
 		case KSelectState::S_SELECTED:
@@ -262,7 +262,7 @@ bool KButton::Frame()
 			if (m_datalist[2].pSound != nullptr)
 				m_datalist[2].pSound->SoundPlay_Once();
 			if (m_datalist[0].pTex != nullptr)
-				m_pColorTex = m_datalist[0].pTex;
+				m_pTexture_Diffuse = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_HOVER:
 		{
@@ -271,19 +271,19 @@ bool KButton::Frame()
 				if (m_datalist[1].pSound != nullptr)
 					m_datalist[1].pSound->SoundPlay_Once();
 				if (m_datalist[1].pTex != nullptr)
-					m_pColorTex = m_datalist[1].pTex;
+					m_pTexture_Diffuse = m_datalist[1].pTex;
 
 			}
 		}break;
 		case KSelectState::S_ACTIVE:
 		{
 			if (m_datalist[0].pTex != nullptr)
-				m_pColorTex = m_datalist[0].pTex;
+				m_pTexture_Diffuse = m_datalist[0].pTex;
 		}break;
 		case KSelectState::S_FOCUS:
 		{
 			if (m_datalist[0].pTex != nullptr)
-				m_pColorTex = m_datalist[0].pTex;
+				m_pTexture_Diffuse = m_datalist[0].pTex;
 		}break;
 		default:
 		{
