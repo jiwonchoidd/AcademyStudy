@@ -15,9 +15,9 @@ struct PNCT_VERTEX
 		color.y = 1.0f;
 		color.z = 1.0f;
 		color.w = 1.0f;
-		normal.x = 0.0f;
-		normal.y = 0.0f;
-		normal.z = 0.0f;
+		tangent = { 0.0f,0.0f, 0.0f };
+		binormal = { 0.0f,0.0f, 0.0f };
+		normal = { 0.0f,0.0f, 0.0f };
 		tex.x = 0.0f;
 		tex.y = 0.0f;
 	}
@@ -29,6 +29,7 @@ struct CB_DATA
 	KMatrix  matProj;
 	KMatrix  matNormal;
 	KVector4 vLightPos;
+	KVector4 vLightColor;
 	KVector4 vCamPos;
 	KVector4 vValue; // ½Ã°£ °ª xyzw
 };

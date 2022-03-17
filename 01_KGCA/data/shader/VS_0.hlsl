@@ -12,16 +12,15 @@ cbuffer CBuf
 struct VS_INPUT 
 {
    float3 mPosition : POSITION;
-   float3 mNormal    : NORMAL;
    float3 mTangent	: TANGENT;
    float3 mBinormal : BINORMAL;
+   float3 mNormal    : NORMAL;
    float4 mColor	: COLOR;
    float2 mUV		: TEXTURE;
 };
 struct VS_OUTPUT
 {
 	float4 mPosition : SV_POSITION;
-	float3 mNormal : NORMAL;
 	float4 mColor : COLOR0;
 	float2 mUV : TEXCOORD0;		//uv
 	float3 mLightDir : TEXCOORD1; //방향
@@ -41,25 +40,23 @@ VS_OUTPUT VS(VS_INPUT Input)
 
 	//라이트 방향 월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
 	float3 lightDir = Output.mPosition.xyz - g_lightPos.xyz;
-	lightDir = normalize(lightDir);
+	Output.mLightDir= normalize(lightDir);
 	//보는 방향
 	float3 viewDir = Output.mPosition.xyz - g_camPos.xyz;
-	Output.mViewDir = viewDir;
+	Output.mViewDir = normalize(viewDir);
 	//
 
 	Output.mPosition = mul(Output.mPosition, g_matView);
 	Output.mPosition = mul(Output.mPosition, g_matProj);
 
+	float3 worldTangent = mul(Input.mTangent, (float3x3)g_matWorld);
+	Output.mT = normalize(worldTangent);
+	float3 worldBinormal = mul(Input.mBinormal, (float3x3)g_matWorld);
+	Output.mB = normalize(worldBinormal);
 	float3 worldNormal = mul(Input.mNormal, (float3x3)g_matWorld);
 	Output.mN = normalize(worldNormal);
 
-	float3 worldTangent = mul(Input.mTangent, (float3x3)g_matWorld);
-	Output.mT = normalize(worldTangent);
 
-	float3 worldBinormal = mul(Input.mBinormal, (float3x3)g_matWorld);
-	Output.mB = normalize(worldBinormal);
-
-	Output.mNormal = Input.mNormal;
 	Output.mColor = Input.mColor;
 	Output.mUV = Input.mUV;
 	return  Output;
