@@ -1,6 +1,5 @@
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\kd3dlib.pdb
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\kd3dlib.idb
-e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kplaneobj.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kobjobject.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kobjectmanager.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kobject.obj
@@ -12,6 +11,7 @@ e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kcollision.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kcollider.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kcamera.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kboxobj.obj
+e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\k3dasset.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\k2dasset.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\imgui_widgets.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\imgui_impl_win32.obj
@@ -35,6 +35,7 @@ e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kskybox.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kshadermanager.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kscene.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kquadtree.obj
+e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kplaneobj.obj
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\kd3dlib.lib
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kd3dlib.res
 e:\choijiwon\academystudy\01_kgca\export\kd3dlib\obj\kd3dlib.tlog\cl.command.1.tlog

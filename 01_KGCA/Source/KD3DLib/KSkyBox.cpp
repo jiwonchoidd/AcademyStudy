@@ -1,4 +1,5 @@
 #include "KSkyBox.h"
+#include "KState.h"
 void KSkyBox::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj)
 {
     if (pMatWorld != nullptr)
@@ -19,9 +20,10 @@ void KSkyBox::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
     m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
 
-bool KSkyBox::Init(std::wstring shader, std::wstring tex)
+bool KSkyBox::Init(ID3D11DeviceContext* context,std::wstring shader, std::wstring tex)
 {
-    KBoxObj::Init(shader, shader,tex);
+    m_pContext = context;
+    KBoxObj::Init(shader, shader,tex,L"");
     return true;
 }
 
@@ -32,7 +34,11 @@ bool KSkyBox::Frame()
 
 bool KSkyBox::Render(ID3D11DeviceContext* pContext)
 {
+    ApplyRS(pContext, KState::g_pRSBackface);
+    ApplyDSS(pContext, KState::g_pDSS_Disabled);
     KObject::Render(pContext);
+    ApplyRS(pContext, KState::g_pRSSolid);
+    ApplyDSS(pContext, KState::g_pDSS);
     return true;
 }
 

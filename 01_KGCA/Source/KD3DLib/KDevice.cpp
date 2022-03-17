@@ -72,7 +72,7 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 	m_SwapChainDesc.Windowed = true;
 	//m_SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 	//백버퍼에 가장 적합한 디스플레이 모드로 자동 전환함
-	m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	//m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	
 	hr = D3D11CreateDeviceAndSwapChain(
 		NULL,
@@ -204,11 +204,6 @@ bool KDevice::CleanupDevice()
 {
 	//스마트 포인터 사용
 	if (m_pImmediateContext.Get()) m_pImmediateContext.Get()->ClearState();
-	//if (m_pRenderTargetView.Get()) m_pRenderTargetView.Get()->Release();
-	//if (m_pSwapChain.Get()) m_pSwapChain.Get()->Release();
-	//if (m_pImmediateContext.Get()) m_pImmediateContext.Get()->Release();
-	//if (m_pd3dDevice.Get()) m_pd3dDevice.Get()->Release();
-	//if (m_pGIFactory.Get()) m_pGIFactory.Get()->Release();
 	ImGui_ImplDX11_Shutdown();
 	return true;
 }

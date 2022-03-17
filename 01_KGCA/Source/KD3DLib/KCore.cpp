@@ -40,13 +40,14 @@ bool	KCore::GameFrame()
     }
     if (g_Input.GetKey(DIK_F2) == KEY_PUSH)
     {
-        m_ImGuiManager.OnOffImgui();   
+        m_ImGuiManager.OnOffImgui(); 
     }
 
     if (ImGui::Begin(u8"성능 디스플레이"))
     {
         ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
+
     }
     ImGui::End();
 
@@ -86,7 +87,7 @@ bool	KCore::PreRender() {
 
     m_pImmediateContext.Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     ApplyDSS(m_pImmediateContext.Get(), KState::g_pDSS);
-    ApplySS(m_pImmediateContext.Get(), KState::g_pNoFilterSS, 0);
+    ApplySS(m_pImmediateContext.Get(), KState::g_pWrapSS, 0);
     ApplyRS(m_pImmediateContext.Get(), KState::g_pCurrentRS);
     ApplyBS(m_pImmediateContext.Get(), KState::g_pBlendState);
     return true;
@@ -121,7 +122,6 @@ bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
 {
     if (m_pd3dDevice.Get() == nullptr) return false;
     DeleteResizeDevice(iWidth, iHeight);
-
 
     m_Write.DeleteDeviceResize();
     KDevice::ResizeDevice(iWidth, iHeight);

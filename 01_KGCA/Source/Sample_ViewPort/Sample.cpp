@@ -6,7 +6,6 @@ bool Sample::Init()
 	g_SoundManager.Init();
 	//씬 매니져
 	g_SceneManager.Init(m_pImmediateContext.Get());
-
     return true;
 }
 // 프레임 함수
@@ -34,4 +33,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(종횡비 유지, 960, 540);
+WinMain_OPT(셰이더 빛, 960, 540);

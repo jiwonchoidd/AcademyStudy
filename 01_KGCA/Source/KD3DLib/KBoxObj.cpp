@@ -1,7 +1,8 @@
 #include "KBoxObj.h"
 
-bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring texturefile)
+bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring texturefile, std::wstring normalfile)
 {
+	m_VertexList.clear();
 	const KVector3 vertices[] =
 	{
 		{-1.0f,-1.0f,-1.0f},
@@ -56,6 +57,33 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		{0.0f,0.0f},
 		{1.0f,0.0f},//¾Æ·§¸é
 	};
+	const KVector3 normal[] =
+	{
+		{0.0f,0.0f,-1.0f},
+		{ 0.0f,0.0f,-1.0f},
+		{0.0f,0.0f,-1.0f},
+		{ 0.0f,0.0f,-1.0f},//Á¤¸é3
+		{0.0f,0.0f,1.0f},
+		{ 0.0f,0.0f,1.0f},
+		{0.0f,0.0f,1.0f},
+		{0.0f,0.0f,1.0f},//µÞ¸é7
+		{1.0f,0.0f,0.0f},
+		{ 1.0f,0.0f,0.0f},
+		{1.0f,0.0f,0.0f},
+		{ 1.0f,0.0f,0.0f},//¿À¸¥ÂÊ¸é11
+		{-1.0f,0.0f,0.0f},
+		{ -1.0f,0.0f,0.0f},
+		{-1.0f,0.0f,0.0f},
+		{ -1.0f,0.0f,0.0f},//¿ÞÂÊ¸é15
+		{0.0f,1.0f,0.0f},
+		{ 0.0f,1.0f,0.0f},
+		{0.0f,1.0f,0.0f},
+		{ 0.0f,1.0f,0.0f},//À­ÂÊ¸é19
+		{0.0f,-1.0f,0.0f},
+		{ 0.0f,-1.0f,0.0f},
+		{0.0f,-1.0f,0.0f},
+		{ 0.0f,-1.0f,0.0f},//¾Æ·§¸é23
+	};
 	const unsigned short indices[] =
 	{
 		2,1,0,	 2,3,1,//Á¤¸é
@@ -75,6 +103,7 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 	{
 		PNCT_VERTEX pnct;
 		pnct.pos = vertices[num];
+		pnct.normal = normal[num];
 		pnct.color = { 1.0f,1.0f,1.0f,1.0f };
 		pnct.tex = uv[num];
 		m_VertexList.push_back(pnct);
@@ -87,7 +116,7 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 
 	if (CreateObject(vsfile,
 		psfile,
-		texturefile, L""))
+		texturefile, normalfile))
 	{
 		return true;
 	}

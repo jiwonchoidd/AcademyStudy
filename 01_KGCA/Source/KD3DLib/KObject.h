@@ -26,7 +26,8 @@ struct CB_DATA
 	KMatrix  matView;
 	KMatrix  matProj;
 	KMatrix  matNormal;
-	KVector4 vLightDir;
+	KVector4 vLightPos;
+	KVector4 vCamPos;
 	KVector4 vValue; // ½Ã°£ °ª xyzw
 };
 namespace wrl = Microsoft::WRL;

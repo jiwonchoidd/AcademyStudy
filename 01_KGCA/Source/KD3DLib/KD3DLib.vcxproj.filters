@@ -31,6 +31,9 @@
     <Filter Include="Code\Obj\2D">
       <UniqueIdentifier>{59beabdd-ddec-4d8f-824d-bec149491c53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Obj\3D">
+      <UniqueIdentifier>{12549f7e-8259-4a9d-ae05-ac087cd6cf38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -69,16 +72,7 @@
     <ClCompile Include="KTextureManager.cpp">
       <Filter>Code\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="KBoxObj.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="KObject.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="KPlaneObj.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
-    <ClCompile Include="KSkyBox.cpp">
       <Filter>Code\Obj</Filter>
     </ClCompile>
     <ClCompile Include="KCamera.cpp">
@@ -126,9 +120,6 @@
     <ClCompile Include="KUI.cpp">
       <Filter>Code\Obj\2D</Filter>
     </ClCompile>
-    <ClCompile Include="KObjObject.cpp">
-      <Filter>Code\Obj</Filter>
-    </ClCompile>
     <ClCompile Include="KObjectManager.cpp">
       <Filter>Code\Manager</Filter>
     </ClCompile>
@@ -137,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="KQuadTree.cpp">
       <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="KBoxObj.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KObjObject.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KSkyBox.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KPlaneObj.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="K3DAsset.cpp">
+      <Filter>Code\Obj\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,16 +194,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resource Files</Filter>
     </ClInclude>
-    <ClInclude Include="KBoxObj.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="KPlaneObj.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="KObject.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
-    <ClInclude Include="KSkyBox.h">
       <Filter>Code\Obj</Filter>
     </ClInclude>
     <ClInclude Include="KCollision.h">
@@ -245,9 +242,6 @@
     <ClInclude Include="KUI.h">
       <Filter>Code\Obj\2D</Filter>
     </ClInclude>
-    <ClInclude Include="KObjObject.h">
-      <Filter>Code\Obj</Filter>
-    </ClInclude>
     <ClInclude Include="KObjectManager.h">
       <Filter>Code\Manager</Filter>
     </ClInclude>
@@ -256,6 +250,21 @@
     </ClInclude>
     <ClInclude Include="KQuadTree.h">
       <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KBoxObj.h">
+      <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KObjObject.h">
+      <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KPlaneObj.h">
+      <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KSkyBox.h">
+      <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="K3DAsset.h">
+      <Filter>Code\Obj\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -269,9 +278,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\data\shader\PS_0.txt">
-      <Filter>Shader</Filter>
-    </Text>
     <Text Include="..\..\data\shader\PS_2D.txt">
       <Filter>Shader</Filter>
     </Text>
@@ -282,12 +288,6 @@
       <Filter>Shader</Filter>
     </Text>
     <Text Include="..\..\data\shader\PS_UI_Mask.txt">
-      <Filter>Shader</Filter>
-    </Text>
-    <Text Include="..\..\data\shader\Skybox.txt">
-      <Filter>Shader</Filter>
-    </Text>
-    <Text Include="..\..\data\shader\VS_0.txt">
       <Filter>Shader</Filter>
     </Text>
     <Text Include="..\..\data\shader\VS_2D.txt">
@@ -308,5 +308,16 @@
     <Text Include="..\..\data\shader\VSPS_UI_Alpha.txt">
       <Filter>Shader</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\data\shader\PS_0.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\data\shader\VS_0.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\data\shader\Skybox.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

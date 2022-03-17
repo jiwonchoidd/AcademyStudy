@@ -4,7 +4,6 @@
 class Sample : public KCore
 {
 public:
-public:
 	bool		Init()override;
 	bool		Frame()override;
 	bool		Render()override;

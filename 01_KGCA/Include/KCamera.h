@@ -4,6 +4,11 @@ class KCamera
 {
 public:
 	float				m_fSpeed;
+	float				m_fAspect;
+	float				m_fFov;
+	float				m_fNear;
+	float				m_fFar;
+public:
 	float				m_fMouseSensitivity;
 	float				m_fOriginSpeed;
 	KVector3			m_vCameraPos;
@@ -17,9 +22,9 @@ public:
 	float				m_fRoll;
 	float				m_fRadius;
 public:
-	KMatrix			m_matWorld;
-	KMatrix			m_matView;
-	KMatrix			m_matProj;
+	KMatrix				m_matWorld;
+	KMatrix				m_matView;
+	KMatrix				m_matProj;
 public:
 	KMatrix				OnMouseRotation();
 	KVector3*			GetCameraTarget();
@@ -27,6 +32,7 @@ public:
 	virtual KMatrix     CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp= KVector3(0,1,0));
 	virtual KMatrix  	CreateProjMatrix(float fNear, float fFar, float fFov, float fAspect);
 public:
+	virtual	bool		ResizeRatio();
 	virtual	bool		Follow2DPos(KVector2* vPos, KVector2 offset = {0,0});
 	virtual bool		Init();
 	virtual bool		Frame();
@@ -41,8 +47,6 @@ public:
 class KDebugCamera : public KCamera
 {
 public:
-	//virtual bool		Frame() override;
-	virtual KMatrix		OnMouseRotation();
 	virtual bool		Frame();
 };
 

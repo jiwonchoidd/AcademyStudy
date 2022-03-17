@@ -4,7 +4,7 @@
 bool KUI::Init(ID3D11DeviceContext* context, std::wstring vs, std::wstring ps, std::wstring tex, std::wstring mask)
 {
 	m_pContext = context;
-	m_cbData.vLightDir = { 1,1,1,1};
+	//m_cbData.vLightDir = { 1,1,1,1};
 	K2DAsset::CreateObject_Mask(vs, ps, tex, mask);
 	return true;
 }
@@ -152,10 +152,10 @@ bool KImage::Frame()
 	if (m_bFadeIn)	FadeIn();
 	if (m_bFadeOut)	FadeOut();
 	if (m_bMoveImg) MoveIMG();
-	m_cbData.vLightDir.x = m_fAlpha;
-	m_cbData.vLightDir.y = m_fAlpha;
-	m_cbData.vLightDir.z = m_fAlpha;
-	m_cbData.vLightDir.w = 1.0f;
+	//m_cbData.vLightDir.x = m_fAlpha;
+	//m_cbData.vLightDir.y = m_fAlpha;
+	//m_cbData.vLightDir.z = m_fAlpha;
+	//m_cbData.vLightDir.w = 1.0f;
 	return true;
 }
 

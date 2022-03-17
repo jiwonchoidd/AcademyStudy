@@ -27,6 +27,7 @@
     <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="K2DAsset.cpp" />
+    <ClCompile Include="K3DAsset.cpp" />
     <ClCompile Include="KBoxObj.cpp" />
     <ClCompile Include="KCamera.cpp" />
     <ClCompile Include="KCollider.cpp" />
@@ -66,6 +67,7 @@
     <ClInclude Include="ImGui\imstb_textedit.h" />
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="K2DAsset.h" />
+    <ClInclude Include="K3DAsset.h" />
     <ClInclude Include="KBoxObj.h" />
     <ClInclude Include="KCamera.h" />
     <ClInclude Include="KCollider.h" />
@@ -103,19 +105,28 @@
     <Image Include="C:\Users\kgca4021\OneDrive - nsu.ac.kr\DD_ICON.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\data\shader\PS_0.txt" />
     <Text Include="..\..\data\shader\PS_2D.txt" />
     <Text Include="..\..\data\shader\PS_2D_Map.txt" />
     <Text Include="..\..\data\shader\PS_UI_0.txt" />
     <Text Include="..\..\data\shader\PS_UI_Mask.txt" />
-    <Text Include="..\..\data\shader\Skybox.txt" />
+    <FxCompile Include="..\..\data\shader\Skybox.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </FxCompile>
     <Text Include="..\..\data\shader\VSPS_Debug_0.txt" />
     <Text Include="..\..\data\shader\VSPS_UI_Alpha.txt" />
-    <Text Include="..\..\data\shader\VS_0.txt" />
     <Text Include="..\..\data\shader\VS_2D.txt" />
     <Text Include="..\..\data\shader\VS_2D_Map.txt" />
     <Text Include="..\..\data\shader\VS_UI_0.txt" />
     <Text Include="..\..\data\shader\VS_UI_Move.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\..\data\shader\PS_0.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+    <FxCompile Include="..\..\data\shader\VS_0.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
