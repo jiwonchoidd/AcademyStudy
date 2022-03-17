@@ -8,7 +8,7 @@ bool KCamera::ResizeRatio()
     float new_Aspect = static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom);
     if (m_fAspect != new_Aspect)
     {
-        CreateProjMatrix(m_fNear, m_fNear, m_fFov, new_Aspect);
+        CreateProjMatrix(m_fNear, m_fFar, m_fFov, new_Aspect);
         return true;
     }
     return false;

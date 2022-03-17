@@ -2,7 +2,6 @@
 
 bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring texturefile, std::wstring normalfile)
 {
-	m_VertexList.clear();
 	const KVector3 vertices[] =
 	{
 		{-1.0f,-1.0f,-1.0f},
