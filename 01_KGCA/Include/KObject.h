@@ -4,22 +4,19 @@
 struct PNCT_VERTEX
 {
 	KVector3 pos;
-	KVector3 normal; // 법선
-	KVector3 tangent; // 접선
-	KVector3 binormal; // 종법선
+	KVector3 normal; // 법선	
 	KVector4 color;
 	KVector2 tex;
+	KVector3 tangent; // 접선
+	KVector3 binormal; // 종법선
 	PNCT_VERTEX()
 	{
-		color.x = 1.0f;
-		color.y = 1.0f;
-		color.z = 1.0f;
-		color.w = 1.0f;
+		pos = { 1.0f,1.0f,1.0f };
+		normal = { 0.0f,0.0f, 0.0f };
 		tangent = { 0.0f,0.0f, 0.0f };
 		binormal = { 0.0f,0.0f, 0.0f };
-		normal = { 0.0f,0.0f, 0.0f };
-		tex.x = 0.0f;
-		tex.y = 0.0f;
+		color = { 1.0f,1.0f,1.0f,1.0f };
+		tex = {0.0f,0.0f};
 	}
 };
 struct CB_DATA

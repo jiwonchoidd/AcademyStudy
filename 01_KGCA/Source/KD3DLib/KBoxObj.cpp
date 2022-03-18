@@ -30,6 +30,33 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		{-1.0f,-1.0f,-1.0f},
 		{ 1.0f,-1.0f,-1.0f},//¾Æ·§¸é23
 	};
+	const KVector3 normal[] =
+	{
+		{0.0f,0.0f,-1.0f},
+		{ 0.0f,0.0f,-1.0f},
+		{0.0f,0.0f,-1.0f},
+		{ 0.0f,0.0f,-1.0f},//Á¤¸é3
+		{0.0f,0.0f,1.0f},
+		{ 0.0f,0.0f,1.0f},
+		{0.0f,0.0f,1.0f},
+		{0.0f,0.0f,1.0f},//µÞ¸é7
+		{1.0f,0.0f,0.0f},
+		{ 1.0f,0.0f,0.0f},
+		{1.0f,0.0f,0.0f},
+		{ 1.0f,0.0f,0.0f},//¿À¸¥ÂÊ¸é11
+		{-1.0f,0.0f,0.0f},
+		{ -1.0f,0.0f,0.0f},
+		{-1.0f,0.0f,0.0f},
+		{ -1.0f,0.0f,0.0f},//¿ÞÂÊ¸é15
+		{0.0f,1.0f,0.0f},
+		{ 0.0f,1.0f,0.0f},
+		{0.0f,1.0f,0.0f},
+		{ 0.0f,1.0f,0.0f},//À­ÂÊ¸é19
+		{0.0f,-1.0f,0.0f},
+		{ 0.0f,-1.0f,0.0f},
+		{0.0f,-1.0f,0.0f},
+		{ 0.0f,-1.0f,0.0f},//¾Æ·§¸é23
+	};
 	const KVector2 uv[] =
 	{
 		{0.0f,1.0f},
@@ -79,31 +106,38 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		PNCT_VERTEX pnct3;
 		PNCT_VERTEX pnct4;
 		pnct1.pos = vertices[num];
-		pnct1.color = { 1.0f,1.0f,1.0f,1.0f };
 		pnct1.tex = uv[num];
+		pnct1.color = { 1.0f,1.0f,1.0f,1.0f };
 
 		pnct2.pos = vertices[num+1];
-		pnct2.color = { 1.0f,1.0f,1.0f,1.0f };
 		pnct2.tex = uv[num+1];
+		pnct2.color = { 1.0f,1.0f,1.0f,1.0f };
 
 		pnct3.pos = vertices[num+2];
-		pnct3.color = { 1.0f,1.0f,1.0f,1.0f };
 		pnct3.tex = uv[num+2];
+		pnct3.color = { 1.0f,1.0f,1.0f,1.0f };
 
 		pnct4.pos = vertices[num + 3];
-		pnct4.color = { 1.0f,1.0f,1.0f,1.0f };
 		pnct4.tex = uv[num + 3];
+		pnct4.color = { 1.0f,1.0f,1.0f,1.0f };
 		KVector3 t, b, n;
-		CreateTangentSpace(&pnct1.pos, &pnct2.pos, &pnct3.pos, &pnct1.tex, &pnct2.tex, &pnct3.tex,&t, &b, &n);
+		CreateTangentSpace(&pnct1.pos, &pnct2.pos, &pnct3.pos, 
+			&pnct1.tex, &pnct2.tex, &pnct3.tex,&n, &t, &b);
 		pnct1.tangent = t;
 		pnct1.binormal = b;
 		pnct1.normal = n;
+		CreateTangentSpace(&pnct2.pos, &pnct3.pos, &pnct1.pos,
+			&pnct2.tex, &pnct3.tex, &pnct1.tex, &n, &t, &b);
 		pnct2.tangent = t;
 		pnct2.binormal = b;
 		pnct2.normal = n;
+		CreateTangentSpace(&pnct3.pos, &pnct1.pos, &pnct2.pos,
+			&pnct3.tex, &pnct1.tex, &pnct2.tex, &n, &t, &b);
 		pnct3.tangent = t;
 		pnct3.binormal = b;
 		pnct3.normal = n;
+		CreateTangentSpace(&pnct4.pos, &pnct3.pos, &pnct2.pos,
+			&pnct4.tex, &pnct3.tex, &pnct2.tex, &n, &t, &b);
 		pnct4.tangent = t;
 		pnct4.binormal = b;
 		pnct4.normal = n;
@@ -131,7 +165,8 @@ bool KBoxObj::Frame()
 	return true;
 }
 
-void KBoxObj::CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVector2* uv1, KVector2* uv2, KVector2* uv3, KVector3* normal, KVector3* tangent, KVector3* binormal)
+void KBoxObj::CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVector2* uv1, 
+	KVector2* uv2, KVector2* uv3, KVector3* normal, KVector3* tangent, KVector3* binormal)
 {
 	KVector3 vEdge1 = *v2 - *v1;
 	KVector3 vEdge2 = *v3 - *v1;
@@ -170,7 +205,7 @@ void KBoxObj::CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVect
 		float fScale2 = 1.0f / ((T.x * B.y * N.z - T.z * B.y * N.x) +
 								(B.x * N.y * T.z - B.z * N.y * T.x) + 
 								(N.x * T.y * B.z - N.z * T.y * B.x));
-		KVector3 vTemp;
+		KVector3 vTemp = {0,0,0};
 		(*tangent).x = D3DXVec3Cross(&vTemp, &B, &N)->x * fScale2; 
 		(*tangent).y = -(D3DXVec3Cross(&vTemp, &N, &T)->x * fScale2);
 		(*tangent).z = D3DXVec3Cross(&vTemp, &T, &B)->x * fScale2;
@@ -189,6 +224,11 @@ void KBoxObj::CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVect
 
 bool KBoxObj::Render(ID3D11DeviceContext* pContext)
 {
+	pContext->IASetInputLayout(m_pVertexLayout.Get());
+	UINT pStrides = m_iVertexSize;
+	UINT pOffsets = 0;
+	pContext->IASetVertexBuffers(1, 1, m_pVertexBuffer.GetAddressOf(),
+		&pStrides, &pOffsets);
 	KObject::Render(pContext);
 	return true;
 }

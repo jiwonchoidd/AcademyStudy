@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "String01", "String01\String01.vcxproj", "{16A569C0-A3A7-4C6C-B650-EE1AE80FD834}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "String01\String01.vcxproj", "{16A569C0-A3A7-4C6C-B650-EE1AE80FD834}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLang", "CLang", "{DF8BE603-0D22-4120-B2A4-44F7FD14406F}"
 EndProject

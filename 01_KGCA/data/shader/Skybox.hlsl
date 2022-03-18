@@ -1,14 +1,16 @@
 TextureCube		g_txSky : register(t0);
 SamplerState	g_Sample : register(s0);
 
-cbuffer CBuf
+cbuffer CBuf: register(b0)
 {
 	matrix g_matWorld : packoffset(c0);
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
 	matrix g_matNormal : packoffset(c12);
-	float4 g_light : packoffset(c16);
-	float4 g_value : packoffset(c17); 
+	float4 g_lightPos : packoffset(c16);	//라이트 방향
+	float4 g_lightColor : packoffset(c17);  //라이트 색상
+	float4 g_camPos : packoffset(c18);		//카메라 방향
+	float4 g_value : packoffset(c19);		//기타 시간 값등
 };
 
 struct VS_INPUT
@@ -16,14 +18,14 @@ struct VS_INPUT
 	float3 p : POSITION;
 	float3 n : NORMAL;
 	float4 c : COLOR;
-	float3 t : TEXTURE;
+	float3 t : TEXCOORD;
 };
 struct VS_OUTPUT
 {
 	float4 p : SV_POSITION;
 	float3 n : NORMAL;
 	float4 c : COLOR0;
-	float3 t : TEXTURE;	// float3임
+	float3 t : TEXCOORD;	// float3임
 };
 
 VS_OUTPUT VS(VS_INPUT vIn) 

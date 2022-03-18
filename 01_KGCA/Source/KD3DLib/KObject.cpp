@@ -13,7 +13,7 @@ void KObject::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
     {
         m_cbData.matProj = pMatProj->Transpose();
     }
-    m_cbData.matNormal = m_cbData.matNormal.Transpose();
+    //m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
 
 void KObject::SetMatrix_Billboard(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj)
@@ -40,7 +40,7 @@ void KObject::SetMatrix_Billboard(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix
     {
         m_cbData.matProj = pMatProj->Transpose();
     }
-    m_cbData.matNormal = m_cbData.matNormal.Transpose();
+    //m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
 
 bool KObject::Init()
@@ -212,12 +212,13 @@ HRESULT KObject::CreateVertexLayout()
     HRESULT hr = S_OK;
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TANGENT",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "BINORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 36, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 48, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXTURE", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 64, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,    0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,        0, 40, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+
+        { "TANGENT",   0, DXGI_FORMAT_R32G32B32_FLOAT,   1, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "BINORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT,  1, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
     };
     hr = g_pd3dDevice->CreateInputLayout(layout, _countof(layout),
         m_pVS->m_pVSCodeResult.Get()->GetBufferPointer(),
