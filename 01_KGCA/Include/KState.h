@@ -39,7 +39,7 @@ static ID3D11DepthStencilState* ApplyDSS(ID3D11DeviceContext* pContext,
 {
 	ID3D11DepthStencilState* pDSS = KState::g_pCurrentDSS;
 	pContext->OMSetDepthStencilState(pState, 0x01);
-	KState::g_pCurrentDSS = pState;
+	//KState::g_pCurrentDSS = pState;
 	return pDSS;
 }
 static ID3D11SamplerState* ApplySS(ID3D11DeviceContext* pContext,
@@ -47,7 +47,7 @@ static ID3D11SamplerState* ApplySS(ID3D11DeviceContext* pContext,
 {
 	ID3D11SamplerState* pSS = KState::g_pCurrentSS[StartSlot];
 	pContext->PSSetSamplers(StartSlot, 1, &pState);
-	KState::g_pCurrentSS[StartSlot] = pState;
+	//KState::g_pCurrentSS[StartSlot] = pState;
 	return pSS;
 }
 
@@ -56,7 +56,7 @@ static ID3D11RasterizerState* ApplyRS(ID3D11DeviceContext* pContext,
 {
 	ID3D11RasterizerState* pRS = KState::g_pCurrentRS;
 	pContext->RSSetState(pState);
-	KState::g_pCurrentRS = pState;
+	//KState::g_pCurrentRS = pState;
 	return pRS;
 }
 static ID3D11BlendState* ApplyBS(ID3D11DeviceContext* pContext,
@@ -65,6 +65,6 @@ static ID3D11BlendState* ApplyBS(ID3D11DeviceContext* pContext,
 	ID3D11BlendState* pBS = KState::g_pCurrentBS;
 	float BlendFactor[] = { 0.0f,0.0f,0.0f,1.0f };
 	pContext->OMSetBlendState(pState, BlendFactor, 0xffffff);
-	KState::g_pCurrentBS = pState;
+	//KState::g_pCurrentBS = pState;
 	return pBS;
 }

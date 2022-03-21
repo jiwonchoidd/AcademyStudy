@@ -34,11 +34,12 @@ bool KSkyBox::Frame()
 
 bool KSkyBox::Render(ID3D11DeviceContext* pContext)
 {
-    ApplyRS(pContext, KState::g_pRSBackface);
+    if (KState::g_pCurrentRS != KState::g_pRSWireFrame)
+        ApplyRS(pContext, KState::g_pRSBackface);
     ApplyDSS(pContext, KState::g_pDSS_Disabled);
     KObject::Render(pContext);
-    ApplyRS(pContext, KState::g_pRSSolid);
-    ApplyDSS(pContext, KState::g_pDSS);
+    ApplyRS(pContext, KState::g_pCurrentRS);
+    ApplyDSS(pContext, KState::g_pCurrentDSS);
     return true;
 }
 

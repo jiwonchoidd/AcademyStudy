@@ -134,7 +134,7 @@ bool KWrite::Release()
 {
     if (m_pd2dFactory) m_pd2dFactory->Release();
     if (m_pdWriteFactory) m_pdWriteFactory->Release();
-    if (m_pRT) m_pRT->Release();
+    //if (m_pRT) m_pRT->Release();
     if (m_pTextFormat) m_pTextFormat->Release();
     if (m_pTextBrush) m_pTextBrush->Release();
     if (m_pTextGame40)m_pTextGame40->Release();

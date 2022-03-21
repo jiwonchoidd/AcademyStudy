@@ -54,7 +54,6 @@ KMatrix KCamera::OnMouseRotation()
     }
     m_fRoll += 0;
     m_fRadius += 0;
-
     KQuaternion q;
     //사원수를 행렬로 변환하고 역행렬로 카메라
     D3DXQuaternionRotationYawPitchRoll(&q, m_fYaw, m_fPitch, m_fRoll);
@@ -118,6 +117,10 @@ KMatrix   KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vU
     m_vLook.x = m_matView._13;
     m_vLook.y = m_matView._23;
     m_vLook.z = m_matView._33;
+
+    m_fYaw = m_vLook.x;
+    m_fPitch = -m_vLook.y;
+    //m_fRoll = m_vLook.z;
     return m_matView;
 }
 KMatrix     KCamera::CreateProjMatrix(

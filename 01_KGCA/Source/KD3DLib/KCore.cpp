@@ -36,7 +36,7 @@ bool	KCore::GameFrame()
     m_ImGuiManager.Frame();
     if (g_InputData.bDebugRender)
     {
-        m_bDebugText = !m_bDebugText;
+        m_bDebugMode = !m_bDebugMode;
     }
     if (g_Input.GetKey(DIK_F2) == KEY_PUSH)
     {
@@ -63,11 +63,18 @@ bool	KCore::GameRender()
         
         Render();
         m_ImGuiManager.Render();
-        if (m_bDebugText)
+
+        //F1 누르면 디버그 모드 :: 와이어 프레임 모드
+        if (m_bDebugMode)
         {
+            KState::g_pCurrentRS = KState::g_pRSWireFrame;
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };
             m_Write.RenderText(rt, m_Timer.m_szTimerString,
                 D2D1::ColorF(1, 0, 0, 1), m_Write.m_pTextFormat);
+        }
+        else
+        {
+            KState::g_pCurrentRS = KState::g_pRSSolid;
         }
     PostRender();
     return true;
@@ -86,10 +93,10 @@ bool	KCore::PreRender() {
         m_pRenderTargetView.GetAddressOf(), m_DepthStencilView.Get());
 
     m_pImmediateContext.Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    ApplyDSS(m_pImmediateContext.Get(), KState::g_pDSS);
+    ApplyDSS(m_pImmediateContext.Get(), KState::g_pCurrentDSS);
     ApplySS(m_pImmediateContext.Get(), KState::g_pWrapSS, 0);
     ApplyRS(m_pImmediateContext.Get(), KState::g_pCurrentRS);
-    ApplyBS(m_pImmediateContext.Get(), KState::g_pBlendState);
+    ApplyBS(m_pImmediateContext.Get(), KState::g_pCurrentBS);
     return true;
 }
 

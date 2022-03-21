@@ -1,4 +1,8 @@
-﻿  KCore.cpp
+﻿  KMap.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMap.cpp(101,26): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMap.cpp(103,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMap.cpp(130,26): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMap.cpp(132,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
   KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
@@ -12,6 +16,7 @@
   KDevice.h
   KInput.h
   KManager.h
+  KMap.h
   KObject.h
   KObjectManager.h
   KObjObject.h
@@ -32,4 +37,4 @@
   KWindow.h
   KWrite.h
   resource.h
-         31개 파일이 복사되었습니다.
+         32개 파일이 복사되었습니다.

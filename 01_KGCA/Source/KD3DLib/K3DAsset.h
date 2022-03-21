@@ -2,10 +2,12 @@
 #include "KCollider.h"
 class K3DAsset : public KObject
 {
+public:
+	KVector3	m_pos;
+	KVector3	m_dir;
+public:
 	virtual void		AddPosition(KVector3 vPos);
 	virtual void		SetPosition(KVector3 vPos);
-	virtual bool		CreateObject(std::wstring vsFile,
-		std::wstring psFile, std::wstring tex = nullptr, std::wstring mask = nullptr);
 	// 화면좌표 위치를 중점으로 NDC 변환
 	virtual void	Convert(
 		KVector2 center, float fWidth, float fHeight,
@@ -13,18 +15,12 @@ class K3DAsset : public KObject
 	// 화면좌표계를 NDC 변환
 	virtual void	Convert(std::vector<PNCT_VERTEX>& list,
 		std::vector<PNCT_VERTEX>& retList);
-	// 화면좌표 위치를 중점으로 NDC 변환
-	virtual void	ConvertIndex(
-		KVector2 center, float fWidth, float fHeight,
-		std::vector<PNCT_VERTEX>& retList);
-	// 화면좌표계를 NDC 변환
-	virtual void	ConvertIndex(std::vector<PNCT_VERTEX>& list,
-		std::vector<PNCT_VERTEX>& retList);
 	virtual void		SetUVcoord(std::vector<PNCT_VERTEX>& retList);
 public:
-	virtual bool		SetVertexData();
-	virtual bool		SetIndexData();
-	virtual bool		CheckVertexData() override;
+	virtual bool		CreateVertexData()override;
+	virtual bool		CreateIndexData()override;
+	virtual bool		CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVector2* uv1,
+		KVector2* uv2, KVector2* uv3, KVector3* normal, KVector3* tangent, KVector3* binormal);
 public:
 	K3DAsset();
 	~K3DAsset();

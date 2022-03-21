@@ -29,6 +29,7 @@ bool KScene::Frame()
 
 bool KScene::Render()
 {
+
 	for (auto obj : m_MapObj)
 	{
 		KObject* pObj = obj.get();

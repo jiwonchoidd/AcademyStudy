@@ -71,6 +71,8 @@ public:
 public:
 	virtual bool		CheckVertexData();
 	virtual bool		CheckIndexData();
+	virtual bool		CreateVertexData();
+	virtual bool		CreateIndexData();
 	virtual HRESULT		CreateConstantBuffer();
 	virtual HRESULT		CreateVertexBuffer();
 	virtual HRESULT		CreateIndexBuffer();

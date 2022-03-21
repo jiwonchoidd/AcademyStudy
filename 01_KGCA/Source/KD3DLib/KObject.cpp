@@ -155,6 +155,16 @@ bool KObject::CheckIndexData()
     return false;
 }
 
+bool KObject::CreateVertexData()
+{
+    return true;
+}
+
+bool KObject::CreateIndexData()
+{
+    return true;
+}
+
 HRESULT KObject::CreateConstantBuffer()
 {
     HRESULT hr = S_OK;
@@ -229,13 +239,24 @@ HRESULT KObject::CreateVertexLayout()
     return hr;
 }
 
+
 bool KObject::CreateObject(std::wstring vsFile,
     std::wstring psFile, std::wstring tex1, std::wstring tex2, std::wstring tex3)
 {
     //버텍스 데이터 생성
+    if (!CreateVertexData())
+    {
+        return false;
+    }
+    if (!CreateIndexData())
+    {
+        return false;
+    }
+    if (!LoadTexture(tex1, tex2, tex3))
+    {
+        return false;
+    }
 
-    LoadTexture(tex1, tex2, tex3);
- 
     if (CheckVertexData())
     {
         CreateVertexBuffer();

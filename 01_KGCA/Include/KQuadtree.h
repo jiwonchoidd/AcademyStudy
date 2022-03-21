@@ -1,15 +1,16 @@
 #pragma once
-#include "KCollider.h"
+#include "K3DAsset.h"
 #include <queue>
 class KNode
 {
 public:
-	KNode* m_pParent;
+	KNode*  m_pParent;
 	KRect	m_rect;
 	int		m_index;
 	int		m_data;
 	int		m_depth;
-	KNode* m_pChild[4];
+	KNode*  m_pChild[4];
+	bool	m_bLeaf;
 public:
 	bool isRect(KVector2 pos)
 	{
@@ -46,7 +47,7 @@ public:
 	}
 };
 
-class KQuadTree : public KObject
+class KQuadTree : public K3DAsset
 {
 
 public:
@@ -62,14 +63,10 @@ public:
 	KNode*  CreateNode(KNode* pParent, float x, float y, float w, float h);
 	KNode*	FindLeafNode(KVector2 pos);
 	KNode*  FindNode(KNode* pNode, KVector2 pos);
-	bool	CheckVertexData() override;
-	virtual bool	Init(ID3D11DeviceContext* contex, KVector2 startpos, float width, float height);
+	virtual bool	Init(KVector2 offset, float width, float height);
 	virtual bool	Frame();
 	virtual bool	Render(ID3D11DeviceContext* pContext)override;
 	virtual bool	Release();
-	virtual void HitOverlap(KCollider* pObj, DWORD dwState);
-	virtual void ObjectOverlap(KCollider* pObj, DWORD dwState);
-
 public:
 	KQuadTree();
 	virtual ~KQuadTree();

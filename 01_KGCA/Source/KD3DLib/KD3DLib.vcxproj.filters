@@ -34,6 +34,9 @@
     <Filter Include="Code\Obj\3D">
       <UniqueIdentifier>{12549f7e-8259-4a9d-ae05-ac087cd6cf38}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Obj\3D\TestObj">
+      <UniqueIdentifier>{67e57aef-c689-4010-83fa-f12e194b7114}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -129,20 +132,23 @@
     <ClCompile Include="KQuadTree.cpp">
       <Filter>Code</Filter>
     </ClCompile>
-    <ClCompile Include="KBoxObj.cpp">
-      <Filter>Code\Obj\3D</Filter>
-    </ClCompile>
     <ClCompile Include="KObjObject.cpp">
-      <Filter>Code\Obj\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="KSkyBox.cpp">
-      <Filter>Code\Obj\3D</Filter>
-    </ClCompile>
-    <ClCompile Include="KPlaneObj.cpp">
       <Filter>Code\Obj\3D</Filter>
     </ClCompile>
     <ClCompile Include="K3DAsset.cpp">
       <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KMap.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KPlaneObj.cpp">
+      <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClCompile>
+    <ClCompile Include="KSkyBox.cpp">
+      <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClCompile>
+    <ClCompile Include="KBoxObj.cpp">
+      <Filter>Code\Obj\3D\TestObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,20 +257,23 @@
     <ClInclude Include="KQuadTree.h">
       <Filter>Code</Filter>
     </ClInclude>
-    <ClInclude Include="KBoxObj.h">
-      <Filter>Code\Obj\3D</Filter>
-    </ClInclude>
     <ClInclude Include="KObjObject.h">
-      <Filter>Code\Obj\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="KPlaneObj.h">
-      <Filter>Code\Obj\3D</Filter>
-    </ClInclude>
-    <ClInclude Include="KSkyBox.h">
       <Filter>Code\Obj\3D</Filter>
     </ClInclude>
     <ClInclude Include="K3DAsset.h">
       <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KMap.h">
+      <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KPlaneObj.h">
+      <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClInclude>
+    <ClInclude Include="KSkyBox.h">
+      <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClInclude>
+    <ClInclude Include="KBoxObj.h">
+      <Filter>Code\Obj\3D\TestObj</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

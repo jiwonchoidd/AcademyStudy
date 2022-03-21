@@ -1,9 +1,8 @@
 #include "KQuadTree.h"
 #include "KState.h"
 
-bool KQuadTree::Init(ID3D11DeviceContext* context, KVector2 offset, float width, float height)
+bool KQuadTree::Init(KVector2 offset, float width, float height)
 {
-	m_pContext = context;
 	m_width = width;
 	m_height = height;
 	m_offset = offset;
@@ -46,6 +45,7 @@ void KQuadTree::Buildtree(KNode* pNode)
 	else
 	{
 		pNode->m_index = m_pReafNode.size();
+		pNode->m_bLeaf = true;
 		m_pReafNode.push_back(pNode);
 	}
 }
@@ -103,6 +103,7 @@ KNode* KQuadTree::FindLeafNode(KVector2 pos)
 	}
 	return nullptr;
 }
+//파일 로드
 bool KQuadTree::LoadLeafData(std::wstring data)
 {
 	//8,4,2,1
@@ -132,24 +133,6 @@ bool KQuadTree::LoadLeafData(std::wstring data)
 	return true;
 }
 
-//Object CheckVertexData 함수 오버라이드해서
-//버텍스 리스트 만든다.
-bool KQuadTree::CheckVertexData()
-{
-	for (int i = 0; i < m_pReafNode.size(); i++)
-	{
-		PNCT_VERTEX vt;
-		vt.pos = { m_pReafNode[i]->m_rect.min.x, m_pReafNode[i]->m_rect.min.y};
-		vt.color = { 1,0,0,1 };
-		m_VertexList.push_back(vt);
-
-		vt.pos = { m_pReafNode[i]->m_rect.max.x, m_pReafNode[i]->m_rect.max.y };
-		vt.color = { 0,1,0,1 };
-		m_VertexList.push_back(vt);
-	}
-	return true;
-}
-
 bool KQuadTree::Frame()
 {
 	return true;
@@ -157,23 +140,13 @@ bool KQuadTree::Frame()
 
 bool KQuadTree::Render(ID3D11DeviceContext* pContext)
 {
-	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	ApplyDSS(pContext, KState::g_pDSS_Disabled);
-	KObject::Render(pContext);
-	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	ApplyDSS(pContext, KState::g_pDSS);
+	//pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+	//ApplyDSS(pContext, KState::g_pDSS_Disabled);
+	//KObject::Render(pContext);
+	//pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	//ApplyDSS(pContext, KState::g_pDSS);
 	return true;
 }
-
-void KQuadTree::HitOverlap(KCollider* pObj, DWORD dwState)
-{
-}
-
-//플레이어 위치
-void KQuadTree::ObjectOverlap(KCollider* pObj, DWORD dwState)
-{
-}
-
 
 KQuadTree::KQuadTree()
 {

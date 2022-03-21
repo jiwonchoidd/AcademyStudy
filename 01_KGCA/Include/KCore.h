@@ -14,7 +14,7 @@ public:
 	ImGuiManager	m_ImGuiManager;
 	KWrite			m_Write;
 public:
-	bool		m_bDebugText = false;
+	bool		m_bDebugMode = false;
 	bool		m_bFreeCamera = false;
 public:
 	virtual bool	CreateResizeDevice(UINT iWidth, UINT iHeight);
