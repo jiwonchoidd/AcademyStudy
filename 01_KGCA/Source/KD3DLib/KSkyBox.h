@@ -3,7 +3,7 @@
 class KSkyBox : public KBoxObj
 {
 public:
-	KMatrix	m_matSkyWorld;
+	KMatrix	m_matSkyView;
 public:
 	void SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj);
 	bool Init(ID3D11DeviceContext* context, std::wstring shader, std::wstring tex = nullptr);

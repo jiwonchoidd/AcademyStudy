@@ -50,10 +50,10 @@ bool KSkyBox::Release()
 
 KSkyBox::KSkyBox()
 {
-    D3DKMatrixIdentity(&m_matSkyWorld);
-    m_matSkyWorld._11 = 10.0f;
-    m_matSkyWorld._22 = 10.0f;
-    m_matSkyWorld._33 = 10.0f;
+    D3DKMatrixIdentity(&m_matSkyView);
+    m_matSkyView._11 = 10.0f;
+    m_matSkyView._22 = 10.0f;
+    m_matSkyView._33 = 10.0f;
 }
 
 KSkyBox::~KSkyBox()

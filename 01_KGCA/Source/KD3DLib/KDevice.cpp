@@ -24,6 +24,8 @@ bool	KDevice::SetDevice()
 	{
 		return false;
 	}
+	// imgui d3d impl 초기화
+	ImGui_ImplDX11_Init(g_pd3dDevice, m_pImmediateContext.Get());
 	return true;
 }
 HRESULT KDevice::CreateGIFactory()
@@ -159,20 +161,14 @@ HRESULT KDevice::SetDepthStencilView()
 HRESULT KDevice::SetViewPort()
 {
 	HRESULT hr = S_OK;
-	DXGI_SWAP_CHAIN_DESC Desc;
-	m_pSwapChain.Get()->GetDesc(&Desc);
 	// Setup the viewport    
-	m_ViewPort.Width = Desc.BufferDesc.Width;
-	m_ViewPort.Height = Desc.BufferDesc.Height;
+	m_ViewPort.Width = m_SwapChainDesc.BufferDesc.Width;
+	m_ViewPort.Height = m_SwapChainDesc.BufferDesc.Height;
 	m_ViewPort.MinDepth = 0.0f;
 	m_ViewPort.MaxDepth = 1.0f;
 	m_ViewPort.TopLeftX = 0;
 	m_ViewPort.TopLeftY = 0;
 	m_pImmediateContext->RSSetViewports(1, &m_ViewPort);
-
-	// imgui d3d impl 초기화
-	ImGui_ImplDX11_Init(g_pd3dDevice, m_pImmediateContext.Get());
-
 	return hr;
 }
 

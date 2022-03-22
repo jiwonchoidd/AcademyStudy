@@ -14,6 +14,22 @@ ID3D11SamplerState* KState::g_pNoFilterSS =nullptr;
 ID3D11RasterizerState* KState::g_pRSSolid = nullptr;
 ID3D11RasterizerState* KState::g_pRSWireFrame = nullptr;
 ID3D11RasterizerState* KState::g_pRSBackface = nullptr;
+
+bool KState::SetState()
+{
+    CreateDepthStenState();
+    CreateSamplerState();
+    CreateRasterizeState();
+    CreateBlendState();
+
+    //초기 설정
+     g_pCurrentDSS = g_pDSS;
+     g_pCurrentSS[0] = g_pClampSS;
+     g_pCurrentSS[1] = g_pWrapSS;
+     g_pCurrentRS = g_pRSSolid;
+     g_pCurrentBS = g_pBlendState;
+	return true;
+}
 HRESULT KState::CreateDepthStenState()
 {
     HRESULT hr = S_OK;
@@ -94,7 +110,7 @@ HRESULT KState::CreateRasterizeState()
     D3D11_RASTERIZER_DESC rd;
     ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
     rd.FillMode = D3D11_FILL_WIREFRAME;
-    rd.CullMode = D3D11_CULL_BACK;
+    rd.CullMode = D3D11_CULL_NONE;
     hr = g_pd3dDevice->CreateRasterizerState(&rd, &g_pRSWireFrame);
     ZeroMemory(&rd, sizeof(D3D11_RASTERIZER_DESC));
     rd.FillMode = D3D11_FILL_SOLID;
@@ -155,14 +171,6 @@ HRESULT KState::CreateSamplerState()
     return hr;
 }
 
-bool KState::SetState()
-{
-    CreateDepthStenState();
-    CreateSamplerState();
-    CreateRasterizeState();
-    CreateBlendState();
-	return true;
-}
 
 bool KState::ReleaseState()
 {

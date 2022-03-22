@@ -4,10 +4,17 @@ class K3DAsset : public KObject
 {
 public:
 	KVector3	m_pos;
+	KVector3	m_rot;
 	KVector3	m_dir;
+	KVector3	m_vRight;
+	KVector3	m_vUp;
+	KVector3	m_vLook;
 public:
+	virtual void		SetMatrix(KMatrix* matWorld,
+		KMatrix* matView, KMatrix* matProj)override;
 	virtual void		AddPosition(KVector3 vPos);
 	virtual void		SetPosition(KVector3 vPos);
+	virtual void		SetRotation(KVector3 vRot);
 	// 화면좌표 위치를 중점으로 NDC 변환
 	virtual void	Convert(
 		KVector2 center, float fWidth, float fHeight,

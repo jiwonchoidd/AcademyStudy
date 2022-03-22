@@ -21,6 +21,10 @@ public:
 	virtual bool CreateVertexData()override;
 	virtual bool CreateIndexData()override;
 	virtual bool Render(ID3D11DeviceContext* context);
+public:
+	virtual float GetHeight(float xpos, float ypos);
+	virtual float GetHeightMap(int row, int col);
+	virtual float Lerp(float start, float end, float tangent);
 private:
 	virtual bool CreateHeightMap(std::wstring heightmap=L"");
 	virtual bool CreateMap(UINT width, UINT height, float distance);

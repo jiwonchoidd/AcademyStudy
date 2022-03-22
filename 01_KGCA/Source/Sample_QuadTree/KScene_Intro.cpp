@@ -40,7 +40,6 @@ bool KScene_Intro::Frame()
 {
 	m_Camera.Frame();
 	m_Box.Frame();
-
 	KScene::Frame();
 	return true;
 }
@@ -54,6 +53,7 @@ bool KScene_Intro::Render()
 	m_MapObj[1]->m_cbData.vLightPos = { 300.0f,300.0f,-300.0f,1.0f };
 	m_MapObj[1]->m_cbData.vCamPos = { m_Camera.GetCameraPos()->x , m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
 	KScene::Render();
+
 	m_Box.SetMatrix(&m_Box.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_Box.m_cbData.vLightColor = { 0.9f,0.9f,0.85f,1 };
 	m_Box.m_cbData.vLightPos = { 300.0f,300.0f,-300.0f,1.0f };
