@@ -1,4 +1,4 @@
-s#pragma once
+#pragma once
 #include "K3DAsset.h"
 #include "KObjectManager.h"
 class KBoxObj : public K3DAsset

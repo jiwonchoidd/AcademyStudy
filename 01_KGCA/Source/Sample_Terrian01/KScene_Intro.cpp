@@ -70,9 +70,10 @@ bool KScene_Intro::Render()
 	m_SkyBox.m_matSkyView._41 = 0;
 	m_SkyBox.m_matSkyView._42 = 0;
 	m_SkyBox.m_matSkyView._43 = 0;
-	//KMatrix matRotation;
-	//matRotation = matRotation.CreateRotationY(g_fSecTimer* 3.14f);
-	//m_SkyBox.m_matWorld = matRotation;
+
+	KMatrix matRotation;
+	matRotation = matRotation.CreateRotationY(g_fSecTimer* 3.14f);
+	m_SkyBox.m_matWorld *= matRotation;
 	m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
 	m_SkyBox.Render(m_pContext);
 

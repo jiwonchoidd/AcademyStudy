@@ -1,9 +1,36 @@
-﻿  KBoxObj.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KBoxObj.h(1,2): error C2014: 전처리기 명령은 공백 아닌 문자로 시작해야 합니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\sal.h(2361,1): error C2144: 구문 오류: int'은(는) ';' 다음에 와야 합니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\sal.h(2361,8): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-  KSkyBox.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KD3DLib\KBoxObj.h(1,2): error C2014: 전처리기 명령은 공백 아닌 문자로 시작해야 합니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\sal.h(2361,1): error C2144: 구문 오류: int'은(는) ';' 다음에 와야 합니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\sal.h(2361,8): error C4430: 형식 지정자가 없습니다. int로 가정합니다. 참고: C++에서는 기본 int를 지원하지 않습니다.
-  코드를 생성하고 있습니다...
+﻿  KCore.cpp
+  KD3DLib.vcxproj -> C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+          1개 파일이 복사되었습니다.
+  ImGuiManager.h
+  K2DAsset.h
+  K3DAsset.h
+  KBoxObj.h
+  KCamera.h
+  KCollider.h
+  KCollision.h
+  KCore.h
+  KDevice.h
+  KInput.h
+  KManager.h
+  KMap.h
+  KObject.h
+  KObjectManager.h
+  KObjObject.h
+  KPlaneObj.h
+  KQuadTree.h
+  KScene.h
+  KShaderManager.h
+  KSkyBox.h
+  KSound.h
+  KSoundManager.h
+  KSpriteManager.h
+  KState.h
+  KStd.h
+  KTextureManager.h
+  KTimer.h
+  KUI.h
+  KUIModelManager.h
+  KWindow.h
+  KWrite.h
+  resource.h
+         32개 파일이 복사되었습니다.

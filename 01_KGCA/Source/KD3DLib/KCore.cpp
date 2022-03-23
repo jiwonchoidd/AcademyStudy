@@ -11,19 +11,22 @@ bool	KCore::GameRun()
 }
 bool	KCore::GameInit()
 {
-    KDevice::SetDevice();
-    KState::SetState();
-    m_Write.Init();
-    m_Timer.Init();
-    g_Input.Init();
+    if (KDevice::SetDevice())
+    {
+        KState::SetState();
+        m_Timer.Init();
+        g_Input.Init();
+        if (m_Write.Init())
+        {
+            IDXGISurface1* m_pBackBuffer;
+            m_pSwapChain->GetBuffer(0,
+                __uuidof(IDXGISurface),
+                (void**)&m_pBackBuffer);
+            m_Write.CreateDeviceResources(m_pBackBuffer);
+            if (m_pBackBuffer)m_pBackBuffer->Release();
+        }
+    }
 
-    IDXGISurface1* m_pBackBuffer;
-    m_pSwapChain->GetBuffer(0, 
-        __uuidof(IDXGISurface),
-        (void**)&m_pBackBuffer);
-    m_Write.CreateDeviceResources(m_pBackBuffer);
-    if (m_pBackBuffer)m_pBackBuffer->Release();
-    
     g_Write = &m_Write;
     Init();
     return true;
@@ -134,15 +137,15 @@ bool    KCore::ResizeDevice(UINT iWidth, UINT iHeight)
     KDevice::ResizeDevice(iWidth, iHeight);
     KWindow::ResizeDevice(iWidth, iHeight);
 
-    wrl::ComPtr<IDXGISurface1> pSurface = nullptr;
+    IDXGISurface1* pSurface = nullptr;
     HRESULT hr = m_pSwapChain.Get()->GetBuffer(0,
         __uuidof(IDXGISurface1),
-        (void**)pSurface.GetAddressOf());
+        (void**)&pSurface);
     if (SUCCEEDED(hr))
     {
-        m_Write.CreateDeviceResources(pSurface.Get());
+        m_Write.CreateDeviceResources(pSurface);
     }
-    if (pSurface.Get()) pSurface.Get()->Release();
+    if (pSurface) pSurface->Release();
 
     CreateResizeDevice(iWidth, iHeight);
     return true;
