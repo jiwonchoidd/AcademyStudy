@@ -44,9 +44,9 @@ void K3DAsset::SetPosition(KVector3 vPos)
 
 void K3DAsset::SetRotation(KVector3 vRot)
 {
-    //D3DKMatrixRotationX(&m_matWorld, vRot.x);
+    D3DKMatrixRotationZ(&m_matWorld, vRot.z);
+    D3DKMatrixRotationX(&m_matWorld, vRot.x);
     D3DKMatrixRotationY(&m_matWorld, vRot.y);
-    //D3DKMatrixRotationZ(&m_matWorld, vRot.z);
 }
 
 void K3DAsset::Convert(std::vector<PNCT_VERTEX>& list, std::vector<PNCT_VERTEX>& retList)
