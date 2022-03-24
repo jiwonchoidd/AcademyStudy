@@ -1,4 +1,5 @@
 #include "KMapLOD.h"
+#include "ImGuiManager.h"
 template <typename OutputIterator>
 void KMapLOD::Tokenize(const std::wstring& text, const std::wstring& delimiters, OutputIterator first)
 {
@@ -258,17 +259,22 @@ bool KMapLOD::Frame()
 
 bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 {
+	if (ImGui::Begin(u8"리프노드 첫번째꺼"))
+	{
+		ImGui::Text("%f", (m_pLeafList[0]->m_Center - *vCamera).Length());
+	}
+	ImGui::End();
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 20.0f)
+		if (fDistance < 30.0f)
 		{
 			m_pLeafList[iNode]->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 60.0f)
+		else if (fDistance < 80.0f)
 		{
 			m_pLeafList[iNode]->m_LodLevel = 1;
 		}

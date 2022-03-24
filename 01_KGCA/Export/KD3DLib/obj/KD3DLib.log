@@ -19,21 +19,21 @@ E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KQuadTree.h(66,26): warning C42
           [
               _Ty=DWORD
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(33,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(33,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(37,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(37,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(49,23): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(49,23): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(81,85): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(81,27): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(80,57): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(176,65): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(193,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(208,49): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(308,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(313,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(318,34): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(34,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(34,21): message : 이 인수는 버퍼 크기로 사용됩니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(38,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(38,21): message : 이 인수는 버퍼 크기로 사용됩니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(50,23): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'unsigned __int64'입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(50,23): message : 이 인수는 버퍼 크기로 사용됩니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(82,85): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(82,27): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(81,57): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(177,65): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(194,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(209,49): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(314,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(319,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(324,34): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
