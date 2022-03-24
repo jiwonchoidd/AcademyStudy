@@ -1,5 +1,4 @@
-﻿  K3DAsset.cpp
-  KD3DLib.vcxproj -> C:\Users\popo2\Documents\GitHub\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+﻿  KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h
@@ -13,6 +12,7 @@
   KInput.h
   KManager.h
   KMap.h
+  KMapLOD.h
   KObject.h
   KObjectManager.h
   KObjObject.h
@@ -33,4 +33,4 @@
   KWindow.h
   KWrite.h
   resource.h
-         32개 파일이 복사되었습니다.
+         33개 파일이 복사되었습니다.

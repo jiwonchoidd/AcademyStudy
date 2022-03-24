@@ -37,6 +37,9 @@
     <Filter Include="Code\Obj\3D\TestObj">
       <UniqueIdentifier>{67e57aef-c689-4010-83fa-f12e194b7114}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Obj\3D\Map">
+      <UniqueIdentifier>{823a47e9-ebdc-4aa6-aba5-6a61d36316c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImGui\imgui.cpp">
@@ -138,9 +141,6 @@
     <ClCompile Include="K3DAsset.cpp">
       <Filter>Code\Obj\3D</Filter>
     </ClCompile>
-    <ClCompile Include="KMap.cpp">
-      <Filter>Code\Obj\3D</Filter>
-    </ClCompile>
     <ClCompile Include="KPlaneObj.cpp">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClCompile>
@@ -149,6 +149,12 @@
     </ClCompile>
     <ClCompile Include="KBoxObj.cpp">
       <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClCompile>
+    <ClCompile Include="KMapLOD.cpp">
+      <Filter>Code\Obj\3D\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="KMap.cpp">
+      <Filter>Code\Obj\3D\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +269,6 @@
     <ClInclude Include="K3DAsset.h">
       <Filter>Code\Obj\3D</Filter>
     </ClInclude>
-    <ClInclude Include="KMap.h">
-      <Filter>Code\Obj\3D</Filter>
-    </ClInclude>
     <ClInclude Include="KPlaneObj.h">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClInclude>
@@ -274,6 +277,12 @@
     </ClInclude>
     <ClInclude Include="KBoxObj.h">
       <Filter>Code\Obj\3D\TestObj</Filter>
+    </ClInclude>
+    <ClInclude Include="KMapLOD.h">
+      <Filter>Code\Obj\3D\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="KMap.h">
+      <Filter>Code\Obj\3D\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

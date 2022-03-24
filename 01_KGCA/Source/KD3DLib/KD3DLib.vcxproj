@@ -37,6 +37,7 @@
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="KManager.cpp" />
     <ClCompile Include="KMap.cpp" />
+    <ClCompile Include="KMapLOD.cpp" />
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="KObjectManager.cpp" />
     <ClCompile Include="KObjObject.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="KInput.h" />
     <ClInclude Include="KManager.h" />
     <ClInclude Include="KMap.h" />
+    <ClInclude Include="KMapLOD.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="KObjectManager.h" />
     <ClInclude Include="KObjObject.h" />

@@ -19,7 +19,10 @@ void KSkyBox::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj
     }
     m_cbData.matNormal = m_cbData.matNormal.Transpose();
 }
-
+//스카이 박스 3개 방식, 
+//1. 6개 면을 하나씩 뿌리는 방법 영역별로 for문 돌아야함, 
+//2. 텍스쳐 SRV를 배열로 받아서 한번에 뿌리는 방법, 
+//3. 큐브맵 cubemap를 사용 큐브맵 리소스 필요함. (이 방식)
 bool KSkyBox::Init(ID3D11DeviceContext* context,std::wstring shader, std::wstring tex)
 {
     m_pContext = context;

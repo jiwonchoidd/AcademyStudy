@@ -4,6 +4,7 @@
 #include "KSoundManager.h"
 #include "KSkyBox.h"
 #include "KMap.h"
+#include "KMapLOD.h"
 class KScene_Intro : public KScene
 {
 public:
@@ -11,6 +12,7 @@ public:
     KDebugCamera   m_Camera;
     KBoxObj        m_Box;
     KMap           m_Terrian;
+    KMapLOD        m_Lod;
 public:
     bool    Load(std::wstring file) override;
 public:

@@ -18,7 +18,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	m_Terrian.Init(m_pContext, L"../../data/map/129_heightmap.jpg");
 	m_Terrian.CreateObject(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/map/baseColor.jpg",
 		L"../../data/map/Ground_Grass_001_ROUGH.jpg", L"../../data/map/Ground_Grass_001_NORM.jpg");
-	
+	m_Lod.Build(&m_Terrian);
 
 	m_Box.Init(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/texture/brick.jpg",
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
@@ -76,7 +76,8 @@ bool KScene_Intro::Render()
 	m_Terrian.m_cbData.vLightColor = { 0.9f,0.9f,0.85f,1 };
 	m_Terrian.m_cbData.vLightPos = { 100.0f,100.0f,1.0f };
 	m_Terrian.m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
-	m_Terrian.Render(m_pContext);
+	//m_Terrian.Render(m_pContext);
+	m_Lod.Render(m_pContext,m_Camera.GetCameraPos());
 
 	m_Box.SetMatrix(&m_Box.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_Box.m_cbData.vLightColor = { 0.9f,0.9f,0.85f,1 };
@@ -90,6 +91,7 @@ bool KScene_Intro::Render()
 
 bool KScene_Intro::Release()
 {
+	m_Lod.Release();
 	m_Camera.Release();
 	m_Box.Release();
 	KScene::Release();

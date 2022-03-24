@@ -1,54 +1,113 @@
 #include "KQuadTree.h"
 #include "KState.h"
 
-bool KQuadTree::Init(KVector2 offset, float width, float height)
+bool KQuadTree::Init(float width, float height)
 {
 	m_width = width;
 	m_height = height;
-	m_offset = offset;
 	//0,0 기준이 가운데로
 	m_pRootNode = CreateNode(nullptr, 0, 0, m_width, m_height);
 	Buildtree(m_pRootNode);
-	KObject::CreateObject(L"../../data/shader/VSPS_Debug_0.txt",
-		L"../../data/shader/VSPS_Debug_0.txt");
 	return true;
 }
 
 void KQuadTree::Buildtree(KNode* pNode)
 {
-	if (pNode->m_rect.size.x >= m_width / 10.0f &&
-		pNode->m_rect.size.y >= m_height/ 10.0f)
+	if (SubDivide(pNode))
 	{
-		pNode->m_pChild[0] = CreateNode(pNode, (pNode->m_rect.min.x + pNode->m_rect.middle.x) /2.0f,
-			(pNode->m_rect.min.y + pNode->m_rect.middle.y) / 2.0f,
-			pNode->m_rect.size.x / 2.0f,
-			pNode->m_rect.size.y / 2.0f);
-		Buildtree(pNode->m_pChild[0]);
+		int center = (pNode->m_CornerList[3] + pNode->m_CornerList[0]) / 2;
+		int mt = (pNode->m_CornerList[0] + pNode->m_CornerList[1]) / 2;
+		int ml = (pNode->m_CornerList[2] + pNode->m_CornerList[0]) / 2;
+		int mr = (pNode->m_CornerList[3] + pNode->m_CornerList[1]) / 2;
+		int mb = (pNode->m_CornerList[2] + pNode->m_CornerList[3]) / 2;
 
-		pNode->m_pChild[1] = CreateNode(pNode, pNode->m_pChild[0]->m_rect.middle.x * -1.0f,
-			pNode->m_pChild[0]->m_rect.middle.y,
-			pNode->m_pChild[0]->m_rect.size.x,
-			pNode->m_pChild[0]->m_rect.size.y);
-		Buildtree(pNode->m_pChild[1]);
-		pNode->m_pChild[2] = CreateNode(pNode, pNode->m_pChild[0]->m_rect.middle.x,
-			pNode->m_pChild[0]->m_rect.middle.y * -1.0f,
-			pNode->m_pChild[0]->m_rect.size.x,
-			pNode->m_pChild[0]->m_rect.size.y);
-		Buildtree(pNode->m_pChild[2]);
+		pNode->m_pChildlist[0] = CreateNode(pNode, pNode->m_CornerList[0],
+			mt,
+			ml,
+			center);
+		Buildtree(pNode->m_pChildlist[0]);
 
-		pNode->m_pChild[3] = CreateNode(pNode, pNode->m_pChild[0]->m_rect.middle.x * -1.0f,
-			pNode->m_pChild[0]->m_rect.middle.y * -1.0f,
-			pNode->m_pChild[0]->m_rect.size.x,
-			pNode->m_pChild[0]->m_rect.size.y);
-		Buildtree(pNode->m_pChild[3]);
+		pNode->m_pChildlist[1] = CreateNode(pNode, mt,
+			pNode->m_CornerList[1],
+			center,
+			mr);
+		Buildtree(pNode->m_pChildlist[1]);
+
+		pNode->m_pChildlist[2] = CreateNode(pNode, ml,
+			center,
+			pNode->m_CornerList[2],
+			mb);
+		Buildtree(pNode->m_pChildlist[2]);
+
+		pNode->m_pChildlist[3] = CreateNode(pNode, center,
+			mr,
+			mb,
+			pNode->m_CornerList[3]);
+		Buildtree(pNode->m_pChildlist[3]);
 	}
 	else
 	{
-		pNode->m_index = m_pReafNode.size();
+		pNode->m_index = m_pLeafList.size();
 		pNode->m_bLeaf = true;
-		m_pReafNode.push_back(pNode);
+		if (m_maxDepth < pNode->m_depth)
+		{
+			m_maxDepth = pNode->m_depth;
+		}
+		// 공유 버택스버퍼용(정점버퍼 리프노드 당), 
+		// 맵의 버텍스 버퍼, 노드의 버텍스 버퍼 동기화
+		if (UpdateVertexList(pNode))
+		{
+			CreateVertexBuffer(pNode);
+		}
+		m_pLeafList.insert(std::make_pair(pNode->m_index, pNode));
 	}
 }
+
+void KQuadTree::SetNeighborNode()
+{
+	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
+	{
+		auto iter = m_pLeafList.find(iNode);
+		_ASSERT(iter != m_pLeafList.end());
+		KNode* pNode = iter->second;
+		DWORD dwNumPatchCount = (DWORD)pow(2.0f, (float)pNode->m_depth);
+		DWORD dwNeighborCol, dwNeighborRow;
+
+		if (pNode->m_Element.y > 0)  //상
+		{
+			dwNeighborCol = pNode->m_Element.x;
+			dwNeighborRow = (pNode->m_Element.y - 1) * dwNumPatchCount;
+			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
+			_ASSERT(iter != m_pLeafList.end());
+			pNode->m_pNeighborlist[3] = iter->second;;
+		}
+		if (pNode->m_Element.y < dwNumPatchCount - 1) // 하
+		{
+			dwNeighborCol = pNode->m_Element.x;
+			dwNeighborRow = (pNode->m_Element.y + 1) * dwNumPatchCount;
+			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
+			_ASSERT(iter != m_pLeafList.end());
+			pNode->m_pNeighborlist[2] = iter->second;;
+		}
+		if (pNode->m_Element.x > 0) // 좌
+		{
+			dwNeighborCol = pNode->m_Element.x - 1;
+			dwNeighborRow = pNode->m_Element.y * dwNumPatchCount;
+			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
+			_ASSERT(iter != m_pLeafList.end());
+			pNode->m_pNeighborlist[1] = iter->second;;
+		}
+		if (pNode->m_Element.x < dwNumPatchCount - 1) // 우
+		{
+			dwNeighborCol = pNode->m_Element.x + 1;
+			dwNeighborRow = pNode->m_Element.y * dwNumPatchCount;
+			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
+			_ASSERT(iter != m_pLeafList.end());
+			pNode->m_pNeighborlist[0] = iter->second;;
+		}
+	}
+}
+
 
 bool KQuadTree::Release()
 {
@@ -79,10 +138,10 @@ KNode* KQuadTree::FindNode(KNode* pNode, KVector2 pos)
 	do {
 		for (int iNode = 0; iNode < 4; iNode++)
 		{
-			if (pNode->m_pChild[iNode] != nullptr &&
-				pNode->m_pChild[iNode]->isRect(pos))
+			if (pNode->m_pChildlist[iNode] != nullptr &&
+				pNode->m_pChildlist[iNode]->isRect(pos))
 			{
-				m_queue.push(pNode->m_pChild[iNode]);
+				m_queue.push(pNode->m_pChildlist[iNode]);
 				break;
 			}
 		}
@@ -92,13 +151,22 @@ KNode* KQuadTree::FindNode(KNode* pNode, KVector2 pos)
 	} while (pNode);
 	return pNode;
 }
+bool KQuadTree::SubDivide(KNode* pNode)
+{
+	if ((pNode->m_CornerList[1] - pNode->m_CornerList[0]) > 4)
+	{
+		return true;
+	}
+	return false;
+}
+
 KNode* KQuadTree::FindLeafNode(KVector2 pos)
 {
-	for (int iNode = 0; iNode < m_pReafNode.size(); iNode++)
+	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
-		if (m_pReafNode[iNode]->isRect(pos))
+		if (m_pLeafList[iNode]->isRect(pos))
 		{
-			return m_pReafNode[iNode];
+			return m_pLeafList[iNode];
 		}
 	}
 	return nullptr;
@@ -120,14 +188,13 @@ bool KQuadTree::LoadLeafData(std::wstring data)
 	_fgetts(buffer, _countof(buffer), fp);
 	TCHAR filename[32] = {0,};
 	_stscanf_s(buffer, _T("%s %d"), filename, (unsigned int)_countof(filename));
-	m_Name = filename;
 
 	while (_fgetts(buffer, _countof(buffer), fp) != 0)
 	{
 		int index = 0;
 		int data = 0;
 		_stscanf_s(buffer, _T("%d %d \n"),&index, &data);
-		m_pReafNode[index]->m_data = data;
+		m_pLeafList[index]->m_data = data;
 	}
 	fclose(fp);
 	return true;
@@ -140,13 +207,19 @@ bool KQuadTree::Frame()
 
 bool KQuadTree::Render(ID3D11DeviceContext* pContext)
 {
-	//pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
-	//ApplyDSS(pContext, KState::g_pDSS_Disabled);
-	//KObject::Render(pContext);
-	//pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	//ApplyDSS(pContext, KState::g_pDSS);
 	return true;
 }
+
+//가상함수----------------------------------------------------
+bool KQuadTree::UpdateVertexList(KNode* pNode)
+{
+	return true;
+}
+HRESULT KQuadTree::CreateVertexBuffer(KNode* pNode)
+{
+	return E_NOTIMPL;
+}
+//------------------------------------------------------------
 
 KQuadTree::KQuadTree()
 {

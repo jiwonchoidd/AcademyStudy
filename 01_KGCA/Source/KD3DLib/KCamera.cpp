@@ -49,7 +49,7 @@ KMatrix KCamera::OnMouseRotation()
 {
     if (g_Input.m_DIMouseState.rgbButtons[1])
     {
-        m_fYaw += XMConvertToRadians(g_InputData.iMouseValue[0] * m_fMouseSensitivity * g_fSecPerFrame);
+        m_fYaw += XMConvertToRadians(g_InputData.iMouseValue[0] * m_fMouseSensitivity *g_fSecPerFrame);
         m_fPitch += XMConvertToRadians(g_InputData.iMouseValue[1] * m_fMouseSensitivity * g_fSecPerFrame);
     }
     m_fRoll += 0;
@@ -139,7 +139,7 @@ KCamera::KCamera()
     m_vCameraPos = { 0, 0, -10.0f };
     m_vCameraTarget = { 0, 0, 0.0f };
     m_fSpeed = 1.0f;
-    m_fMouseSensitivity = 200;
+    m_fMouseSensitivity = 10;
     m_fOriginSpeed = m_fSpeed;
 }
 KCamera::~KCamera()
