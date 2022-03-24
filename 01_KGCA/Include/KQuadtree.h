@@ -21,7 +21,7 @@ public:
 	std::vector <DWORD>		    m_IndexList;
 	std::vector <PNCT_VERTEX>	m_VertexList;
 	wrl::ComPtr<ID3D11Buffer>	m_pVertexBuffer;
-	wrl::ComPtr<ID3D11Buffer>	m_pIndexBuffer;
+	//wrl::ComPtr<ID3D11Buffer>	m_pIndexBuffer;
 public:
 	bool isRect(KVector2 pos)
 	{
@@ -71,20 +71,13 @@ public:
 		{
 			if (m_pChildlist[iChild] != nullptr)
 			{
+				m_pChildlist[iChild]->m_pVertexBuffer.Reset();
+				//m_pChildlist[iChild]->m_pIndexBuffer.Reset();
 				delete m_pChildlist[iChild];
 				m_pChildlist[iChild] = nullptr;
 			}
 		}
-		for (int iNeighbor = 0; iNeighbor < 4; iNeighbor++)
-		{
-			if (m_pNeighborlist[iNeighbor] != nullptr)
-			{
-				delete m_pNeighborlist[iNeighbor];
-				m_pNeighborlist[iNeighbor] = nullptr;
-			}
-		}
-		//if (m_pIndexBuffer) m_pIndexBuffer->Release();
-		//if (m_pVertexBuffer) m_pVertexBuffer->Release();
+		m_pVertexBuffer.Reset();
 	}
 };
 

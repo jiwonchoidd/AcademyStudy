@@ -258,8 +258,6 @@ float KMap::GetHeightMap(int row, int col)
 	return m_VertexList[row * m_num_row + col].pos.y;
 }
 
-
-
 KMap::~KMap()
 {
 }

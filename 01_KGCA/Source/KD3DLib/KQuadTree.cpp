@@ -108,7 +108,6 @@ void KQuadTree::SetNeighborNode()
 	}
 }
 
-
 bool KQuadTree::Release()
 {
 	if (m_pRootNode != nullptr)

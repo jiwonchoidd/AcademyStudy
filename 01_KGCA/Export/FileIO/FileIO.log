@@ -1,13 +1,13 @@
 ﻿  FileIO.cpp
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): warning C4473: 'fprintf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 6개 필요하지만 1개가 제공되었습니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): message : 누락된 variadic 인수 2이(가) 서식 문자열 '%d'에 필요합니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(26,18): warning C4477: 'fscanf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int'입니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int'입니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4313: 'printf': 서식 문자열의 '%s'이(가) 인수 1('int' 형식)과(와) 충돌합니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 2개 필요하지만 1개가 제공되었습니다.
-E:\github\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): message : 누락된 variadic 인수 2이(가) 서식 문자열 '%s'에 필요합니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): warning C4473: 'fprintf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 6개 필요하지만 1개가 제공되었습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(8,18): message : 누락된 variadic 인수 2이(가) 서식 문자열 '%d'에 필요합니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(26,18): warning C4477: 'fscanf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int'입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4477: 'printf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'int'입니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4313: 'printf': 서식 문자열의 '%s'이(가) 인수 1('int' 형식)과(와) 충돌합니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): warning C4473: 'printf': 서식 문자열에 대한 인수가 충분하게 전달되지 않았습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): message : 자리 표시자 및 해당 매개 변수에는 variadic 인수가 2개 필요하지만 1개가 제공되었습니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\FileIO\FileIO.cpp(27,10): message : 누락된 variadic 인수 2이(가) 서식 문자열 '%s'에 필요합니다.
   Sample.cpp
   코드를 생성하고 있습니다...
-LINK : fatal error LNK1104: '..\..\Export\FileIO\FileIO.exe' 파일을 열 수 없습니다.
+  FileIO.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\FileIO\FileIO.exe

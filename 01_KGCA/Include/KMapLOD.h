@@ -12,16 +12,14 @@ struct KLodPatch
 		{
 			if (IndexBufferList[iBuffer].Get())
 			{
-				//IndexBufferList[iBuffer].Get()->Release();
-				//IndexBufferList[iBuffer] = nullptr;
+				IndexBufferList[iBuffer].Reset();
+				IndexBufferList[iBuffer] = nullptr;
 			}
-
 		}
 	}
 	KLodPatch() {}
 	~KLodPatch()
 	{
-		Release();
 	}
 };
 class KMapLOD : public KQuadTree
@@ -30,7 +28,8 @@ class KMapLOD : public KQuadTree
 	int						m_iNumCell;
 	int						m_iPatchLodCount;
 	std::vector<KLodPatch>   m_LodPatchList;
-
+	wrl::ComPtr<ID3D11Buffer> m_pLodIndexBuffer;
+	std::vector<DWORD>			 m_IndexList;
 public:
 	virtual bool	Build(KMap* pmap);
 	virtual bool	SetLOD();

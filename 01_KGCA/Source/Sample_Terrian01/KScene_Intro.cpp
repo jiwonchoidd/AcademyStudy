@@ -91,7 +91,9 @@ bool KScene_Intro::Render()
 
 bool KScene_Intro::Release()
 {
+	m_SkyBox.Release();
 	m_Lod.Release();
+	m_Terrian.Release();
 	m_Camera.Release();
 	m_Box.Release();
 	KScene::Release();

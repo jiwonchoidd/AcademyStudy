@@ -205,13 +205,13 @@ HRESULT KMapLOD::CreateIndexBuffer(KNode* pNode)
 	HRESULT hr = S_OK;
 	D3D11_BUFFER_DESC bd;
 	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-	bd.ByteWidth = sizeof(DWORD)*m_pMap->m_IndexList.size();
+	bd.ByteWidth = sizeof(DWORD)*m_IndexList.size();
 	bd.Usage = D3D11_USAGE_DEFAULT;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	D3D11_SUBRESOURCE_DATA data;
 	ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
-	data.pSysMem = &m_pMap->m_IndexList.at(0);
-	hr = g_pd3dDevice->CreateBuffer(&bd, &data, m_pMap->m_pIndexBuffer.GetAddressOf());
+	data.pSysMem = &m_IndexList.at(0);
+	hr = g_pd3dDevice->CreateBuffer(&bd, &data, m_pLodIndexBuffer.GetAddressOf());
 	if (FAILED(hr)) return hr;
 	return hr;
 }
@@ -224,7 +224,7 @@ bool KMapLOD::UpdateIndexList(KNode* pNode)
 	int iEndCol = pNode->m_CornerList[1] % iNumCols;
 	int iNumColCell = iEndCol - iStartCol;
 	int iNumRowCell = iEndRow - iStartRow;
-	m_pMap->m_IndexList.resize(iNumColCell * iNumRowCell * 2 * 3);
+	m_IndexList.resize(iNumColCell * iNumRowCell * 2 * 3);
 
 	int iIndex = 0;
 	for (int iRow = 0; iRow < iNumRowCell; iRow++)
@@ -233,17 +233,17 @@ bool KMapLOD::UpdateIndexList(KNode* pNode)
 		{
 			int iCurrentIndex = iRow * (iNumColCell + 1) + iCol;
 			int iNextRow = (iRow + 1) * (iNumColCell + 1) + iCol;
-			m_pMap->m_IndexList[iIndex + 0] = iCurrentIndex;
-			m_pMap->m_IndexList[iIndex + 1] = iCurrentIndex + 1;
-			m_pMap->m_IndexList[iIndex + 2] = iNextRow;
+			m_IndexList[iIndex + 0] = iCurrentIndex;
+			m_IndexList[iIndex + 1] = iCurrentIndex + 1;
+			m_IndexList[iIndex + 2] = iNextRow;
 
-			m_pMap->m_IndexList[iIndex + 3] = m_pMap->m_IndexList[iIndex + 2];
-			m_pMap->m_IndexList[iIndex + 4] = m_pMap->m_IndexList[iIndex + 1];
-			m_pMap->m_IndexList[iIndex + 5] = iNextRow + 1;
+			m_IndexList[iIndex + 3] = m_IndexList[iIndex + 2];
+			m_IndexList[iIndex + 4] = m_IndexList[iIndex + 1];
+			m_IndexList[iIndex + 5] = iNextRow + 1;
 			iIndex += 6;
 		}
 	}
-	if (m_pMap->m_IndexList.size() > 0) return true;
+	if (m_IndexList.size() > 0) return true;
 	return false;
 }
 bool KMapLOD::Init()
@@ -263,12 +263,12 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 15.0f)
+		if (fDistance < 20.0f)
 		{
 			m_pLeafList[iNode]->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 40.0f)
+		else if (fDistance < 60.0f)
 		{
 			m_pLeafList[iNode]->m_LodLevel = 1;
 		}
@@ -315,8 +315,8 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 		}
 		else if(m_pLeafList[iNode]->m_LodLevel == 2)
 		{
-			iNumIndex = m_pMap->m_IndexList.size();
-			pRenderBuffer = m_pMap->m_pIndexBuffer.Get();
+			iNumIndex = m_IndexList.size();
+			pRenderBuffer = m_pLodIndexBuffer.Get();
 		}
 		m_pMap->PreRender(pContext);
 		pContext->IASetInputLayout(m_pMap->m_pVertexLayout.Get());
@@ -335,8 +335,10 @@ bool KMapLOD::Release()
 {
 	for (int iPatch = 0; iPatch < m_LodPatchList.size(); iPatch++)
 	{
+		//m_LodPatchList[iPatch].IndexBufferList->Reset();
 		m_LodPatchList[iPatch].Release();
 	}
+	KQuadTree::Release();
 	return true;
 }
 
