@@ -17,7 +17,7 @@ public:
 	ID2D1RenderTarget*	m_pRT; // 3d ¿¬µ¿
 	IDWriteTextFormat*	m_pTextFormat;
 	IDWriteTextFormat*  m_pTextGame40;
-	IDWriteTextFormat*	m_pTextGame40_Space;
+	IDWriteTextFormat*	m_pTextGame15;
 	ID2D1SolidColorBrush* m_pTextBrush;
 public:
 	HRESULT CreateDeviceResources(IDXGISurface1* pSurface);

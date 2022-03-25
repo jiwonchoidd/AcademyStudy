@@ -73,7 +73,7 @@ bool	KCore::GameRender()
             KState::g_pCurrentRS = KState::g_pRSWireFrame;
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };
             m_Write.RenderText(rt, m_Timer.m_szTimerString,
-                D2D1::ColorF(1, 0, 0, 1), m_Write.m_pTextFormat);
+                D2D1::ColorF(0.5f, 0.5f, 0.5f, 1), m_Write.m_pTextGame15);
         }
         else
         {
@@ -86,7 +86,7 @@ bool	KCore::GameRender()
 bool	KCore::PreRender() {
 
     //새 스왑체인 뷰포트
-    float ClearColor[4] = { 0.1f, 0.1f, 0.1f, 1.0f }; //red,green,blue,alpha
+    float ClearColor[4] = { 0.0f, 0.0f, 0.02f, 1.0f }; //red,green,blue,alpha
     m_pImmediateContext.Get()->ClearRenderTargetView(m_pRenderTargetView.Get(), ClearColor);
 
     m_pImmediateContext.Get()->ClearDepthStencilView(

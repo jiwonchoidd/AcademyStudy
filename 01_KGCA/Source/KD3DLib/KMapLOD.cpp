@@ -74,17 +74,21 @@ bool  KMapLOD::LoadLODFile(std::wstring filename)
 }
 bool KMapLOD::Build(KMap* pmap)
 {
-	m_pMap = pmap;
-	m_width = pmap->m_num_row;
-	m_height = pmap->m_num_col;
-	//0,0 기준이 가운데로
-	m_pRootNode = CreateNode(nullptr, 0, m_pMap->m_num_col - 1,
-		(m_pMap->m_num_row - 1) * m_pMap->m_num_col, m_pMap->m_num_row* m_pMap->m_num_col - 1);
-	Buildtree(m_pRootNode);
-	SetNeighborNode();
 	//쿼드트리 크기 지정, 쿼드트리 생성
 	if (LoadLODFile(L"../../data/script/StaticLod.txt"))
 	{
+		m_pMap = pmap;
+		m_width = pmap->m_num_row;
+		m_height = pmap->m_num_col;
+		
+		m_pRootNode = CreateNode(nullptr, 0, m_pMap->m_num_col - 1,
+			(m_pMap->m_num_row - 1) * m_pMap->m_num_col, m_pMap->m_num_row * m_pMap->m_num_col - 1);
+		Buildtree(m_pRootNode);
+		SetNeighborNode();
+		//129/4 =5
+		m_iNumCell = (int)((m_pMap->m_num_col - 1) / pow(2.0f, (float)m_maxDepth));
+		// LOD 레벨 개수( z = pow( x,y )에서 y = log(z) / log(x) ) 
+		m_iPatchLodCount = (int)((log((float)m_iNumCell) / log(2.0f)));
 		SetLOD();
 		if (m_iPatchLodCount > 0)
 		{
@@ -102,14 +106,6 @@ bool KMapLOD::Build(KMap* pmap)
 
 bool KMapLOD::SetLOD()
 {
-	if (m_maxDepth == 0)
-	{
-		return false;
-	}
-	//129/4 =5
-	m_iNumCell = (int)((m_width - 1) / pow(2.0f, (float)m_maxDepth));
-	// LOD 레벨 개수( z = pow( x,y )에서 y = log(z) / log(x) ) 
-	m_iPatchLodCount = (int)((log((float)m_iNumCell) / log(2.0f)));
 	return true;
 }
 
@@ -139,7 +135,7 @@ KNode* KMapLOD::CreateNode(KNode* pParent, float x, float y, float w, float h)
 	KVector3 vRT = m_pMap->m_VertexList[pNode->m_CornerList[1]].pos;
 	KVector3 vLB = m_pMap->m_VertexList[pNode->m_CornerList[2]].pos;
 	KVector3 vRB = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos;
-	pNode->SetRect(vLT.x, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
+	pNode->SetRect(vLT.x, (vLT.y-vRB.y)/2.0f, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
 
 	return pNode;
 }
@@ -259,50 +255,45 @@ bool KMapLOD::Frame()
 
 bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 {
-	if (ImGui::Begin(u8"리프노드 첫번째꺼"))
-	{
-		ImGui::Text("%f", (m_pLeafList[0]->m_Center - *vCamera).Length());
-	}
-	ImGui::End();
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 30.0f)
+		if (fDistance < 60.0f)
 		{
-			m_pLeafList[iNode]->m_LodLevel = 2;
+			m_pLeafList.at(iNode)->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 80.0f)
+		else if (fDistance < 120.0f)
 		{
-			m_pLeafList[iNode]->m_LodLevel = 1;
+			m_pLeafList.at(iNode)->m_LodLevel = 1;
 		}
 		//제일 낮은 LOD 값
 		else
-			m_pLeafList[iNode]->m_LodLevel = 0;
+			m_pLeafList.at(iNode)->m_LodLevel = 0;
 	}
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
 		int iRenderCode = 0;
 		// 동서남북
-		if (m_pLeafList[iNode]->m_pNeighborlist[0] &&
-			m_pLeafList[iNode]->m_LodLevel < m_pLeafList[iNode]->m_pNeighborlist[0]->m_LodLevel)
+		if (m_pLeafList.at(iNode)->m_pNeighborlist[0] &&
+			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[0]->m_LodLevel)
 		{
 			iRenderCode += 2;
 		}
-		if (m_pLeafList[iNode]->m_pNeighborlist[1] &&
-			m_pLeafList[iNode]->m_LodLevel < m_pLeafList[iNode]->m_pNeighborlist[1]->m_LodLevel)
+		if (m_pLeafList.at(iNode)->m_pNeighborlist[1] &&
+			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[1]->m_LodLevel)
 		{
 			iRenderCode += 8;
 		}
-		if (m_pLeafList[iNode]->m_pNeighborlist[2] &&
-			m_pLeafList[iNode]->m_LodLevel < m_pLeafList[iNode]->m_pNeighborlist[2]->m_LodLevel)
+		if (m_pLeafList.at(iNode)->m_pNeighborlist[2] &&
+			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[2]->m_LodLevel)
 		{
 			iRenderCode += 4;
 		}
-		if (m_pLeafList[iNode]->m_pNeighborlist[3] &&
-			m_pLeafList[iNode]->m_LodLevel < m_pLeafList[iNode]->m_pNeighborlist[3]->m_LodLevel)
+		if (m_pLeafList.at(iNode)->m_pNeighborlist[3] &&
+			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[3]->m_LodLevel)
 		{
 			iRenderCode += 1;
 		}

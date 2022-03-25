@@ -34,15 +34,15 @@ public:
 		}
 		return false;
 	}
-	void SetRect(float x, float y, float w, float h)
+	void SetRect(float x, float y, float z, float w, float h)
 	{
 		this->m_rect.size = KVector2(w, h);
-		this->m_rect.min = KVector2(x, y);
+		this->m_rect.min = KVector2(x, z);
 		this->m_rect.max.x = this->m_rect.min.x + w;
 		this->m_rect.max.y = this->m_rect.min.y - h;
 		m_Center.x = x + (w / 2.0f);
-		m_Center.y = 0.0f;
-		m_Center.z = y - (h / 2.0f);
+		m_Center.y = y;
+		m_Center.z = z - (h / 2.0f);
 	}
 public:
 	KNode()
@@ -59,7 +59,6 @@ public:
 		m_pParent = nullptr; m_Element = { 0,0 };
 		m_bLeaf = false; m_data = 0;
 		m_index = 0; m_depth = 0;
-		m_rect = KRect({ x,y }, w, h);
 		m_CornerList.push_back(x);
 		m_CornerList.push_back(y);
 		m_CornerList.push_back(w);

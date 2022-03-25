@@ -13,7 +13,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	KScene::Init(context);
 	m_SceneID = S_INTRO;
 
-	m_SkyBox.Init(context, L"../../data/shader/Skybox.hlsl",L"../../data/texture/Skybox_dd.dds");
+	m_SkyBox.Init(context, L"../../data/shader/Skybox.hlsl",L"../../data/texture/Skybox_Miramar.dds");
 
 	m_Terrian.Init(m_pContext, L"../../data/map/129_heightmap.jpg");
 	m_Terrian.CreateObject(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/map/baseColor.jpg",

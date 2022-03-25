@@ -138,7 +138,7 @@ KCamera::KCamera()
     D3DKMatrixIdentity(&m_matWorld);
     m_vCameraPos = { 0, 0, -10.0f };
     m_vCameraTarget = { 0, 0, 0.0f };
-    m_fSpeed = 1.0f;
+    m_fSpeed = 25.0f;
     m_fMouseSensitivity = 10;
     m_fOriginSpeed = m_fSpeed;
 }
@@ -172,12 +172,13 @@ bool KDebugCamera::Frame()
     }
 
     g_InputData.bLShift ?
-        m_fSpeed += 40.0f * g_fSecPerFrame : m_fSpeed -= 25.0f * g_fSecPerFrame;
+        m_fSpeed += 80.0f * g_fSecPerFrame : m_fSpeed -= 80.0f * g_fSecPerFrame;
 
-    if (m_fSpeed >= m_fOriginSpeed * 20.0f)
+    if (m_fSpeed >= 200.0f)
     {
-        m_fSpeed = m_fOriginSpeed * 20.0f;
+        m_fSpeed = 200.0f;
     }
+
     if (m_fSpeed <= m_fOriginSpeed)
     {
         m_fSpeed = m_fOriginSpeed;

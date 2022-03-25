@@ -14,8 +14,8 @@
 bool Sample::Init()
 {
     KMapInfo info{
-            16 + 1,
-            16 + 1, 0,0, 0,
+            32 + 1,
+            32 + 1, 0,0, 0,
             10.0f
     };
     //텍스쳐 붙이기
@@ -29,7 +29,7 @@ bool Sample::Init()
     m_Quadtree.LoadObject(L"../../data/script/StaticLod.txt");
     m_Quadtree.Build(&m_Map);
 
-    m_DebugCamera.CreateViewMatrix(KVector3(0, 0, -100), KVector3(0, 0, 0));
+    m_DebugCamera.CreateViewMatrix(KVector3(0, 10, 0), KVector3(0, 0, 0));
     m_DebugCamera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.25f, (float)g_rtClient.right / (float)g_rtClient.bottom);
     return true;
 }

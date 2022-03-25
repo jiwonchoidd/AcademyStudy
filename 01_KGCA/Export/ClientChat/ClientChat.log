@@ -1,3 +1,1 @@
-﻿  Sample.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\ClientChat\Sample.cpp(10,1): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(1074,5): error MSB6006: "link.exe"이(가) 종료되었습니다(코드: 1).
+﻿  ClientChat.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\ClientChat\ClientChat.exe

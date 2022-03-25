@@ -35,7 +35,7 @@ bool KTimer::Frame()
 bool KTimer::Render()
 {
 	_stprintf_s(m_szTimerString,
-		L"FPS=%d\tTimer=%10.4f",
+		L"프레임 (FPS) : %d \n타이머(Timer) :%10.4f",
 		m_iFPS,
 		m_fGameTimer);
 	//OutputDebugString(timerString);

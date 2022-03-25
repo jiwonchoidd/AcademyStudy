@@ -3,11 +3,11 @@
 
 bool KQuadTree::Init(float width, float height)
 {
-	m_width = width;
-	m_height = height;
-	//0,0 기준이 가운데로
-	m_pRootNode = CreateNode(nullptr, 0, 0, m_width, m_height);
-	Buildtree(m_pRootNode);
+	//m_width = width;
+	//m_height = height;
+	////0,0 기준이 가운데로
+	//m_pRootNode = CreateNode(nullptr, 0, 0, m_width, m_height);
+	//Buildtree(m_pRootNode);
 	return true;
 }
 
@@ -47,7 +47,7 @@ void KQuadTree::Buildtree(KNode* pNode)
 	}
 	else
 	{
-		pNode->m_index = m_pLeafList.size();
+		//pNode->m_index = m_pLeafList.size();
 		pNode->m_bLeaf = true;
 		if (m_maxDepth < pNode->m_depth)
 		{
@@ -65,13 +65,15 @@ void KQuadTree::Buildtree(KNode* pNode)
 
 void KQuadTree::SetNeighborNode()
 {
+	//최하단 LowQuality 패치의 기준
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
 		auto iter = m_pLeafList.find(iNode);
 		_ASSERT(iter != m_pLeafList.end());
 		KNode* pNode = iter->second;
 		DWORD dwNumPatchCount = (DWORD)pow(2.0f, (float)pNode->m_depth);
-		DWORD dwNeighborCol, dwNeighborRow;
+		DWORD dwNeighborCol = 0;
+		DWORD dwNeighborRow = 0;
 
 		if (pNode->m_Element.y > 0)  //상
 		{
@@ -79,7 +81,7 @@ void KQuadTree::SetNeighborNode()
 			dwNeighborRow = (pNode->m_Element.y - 1) * dwNumPatchCount;
 			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
 			_ASSERT(iter != m_pLeafList.end());
-			pNode->m_pNeighborlist[3] = iter->second;;
+			pNode->m_pNeighborlist[3] = iter->second;
 		}
 		if (pNode->m_Element.y < dwNumPatchCount - 1) // 하
 		{
@@ -87,7 +89,7 @@ void KQuadTree::SetNeighborNode()
 			dwNeighborRow = (pNode->m_Element.y + 1) * dwNumPatchCount;
 			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
 			_ASSERT(iter != m_pLeafList.end());
-			pNode->m_pNeighborlist[2] = iter->second;;
+			pNode->m_pNeighborlist[2] = iter->second;
 		}
 		if (pNode->m_Element.x > 0) // 좌
 		{
@@ -95,7 +97,7 @@ void KQuadTree::SetNeighborNode()
 			dwNeighborRow = pNode->m_Element.y * dwNumPatchCount;
 			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
 			_ASSERT(iter != m_pLeafList.end());
-			pNode->m_pNeighborlist[1] = iter->second;;
+			pNode->m_pNeighborlist[1] = iter->second;
 		}
 		if (pNode->m_Element.x < dwNumPatchCount - 1) // 우
 		{
@@ -103,7 +105,7 @@ void KQuadTree::SetNeighborNode()
 			dwNeighborRow = pNode->m_Element.y * dwNumPatchCount;
 			auto iter = m_pLeafList.find(dwNeighborRow + dwNeighborCol);
 			_ASSERT(iter != m_pLeafList.end());
-			pNode->m_pNeighborlist[0] = iter->second;;
+			pNode->m_pNeighborlist[0] = iter->second;
 		}
 	}
 }

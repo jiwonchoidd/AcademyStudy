@@ -1,5 +1,1 @@
-﻿  Sample.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Socket_Host\Sample.cpp(6,1): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Socket_Host\Sample.cpp(16,28): warning C4305: '인수': 'int'에서 'u_short'(으)로 잘립니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Socket_Host\Sample.cpp(16,22): warning C4309: '인수': 상수 값이 잘립니다.
-  Socket_Host.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Socke_Host\Socket_Server.exe
+﻿  Socket_Host.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\Socke_Host\Socket_Server.exe
