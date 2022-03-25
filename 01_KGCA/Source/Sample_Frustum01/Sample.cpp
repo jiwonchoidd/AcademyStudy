@@ -33,4 +33,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(¼ÎÀÌ´õ ºû, 960, 540);
+WinMain_OPT(Á¤ÀûLOD, 960, 540);

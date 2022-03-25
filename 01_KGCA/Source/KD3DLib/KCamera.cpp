@@ -21,11 +21,7 @@ bool KCamera::Follow2DPos(KVector2* vPos, KVector2 offset)
     m_vCameraPos.y = vPos->y - offset.y;
     m_vCameraTarget.x = vPos->x;
     m_vCameraTarget.y = vPos->y;
-    if (ImGui::Begin("cam"))
-    {
-        ImGui::Text("pos -> %d %d ", (int)m_vCameraPos.x, (int)m_vCameraPos.y);
-    }
-    ImGui::End();
+   
 
     m_matWorld._41 = m_vCameraPos.x;
     m_matWorld._42 = m_vCameraPos.y;
@@ -49,8 +45,8 @@ KMatrix KCamera::OnMouseRotation()
 {
     if (g_Input.m_DIMouseState.rgbButtons[1])
     {
-        m_fYaw += XMConvertToRadians(g_InputData.iMouseValue[0] * m_fMouseSensitivity *g_fSecPerFrame);
-        m_fPitch += XMConvertToRadians(g_InputData.iMouseValue[1] * m_fMouseSensitivity * g_fSecPerFrame);
+        m_fYaw += XMConvertToRadians((g_InputData.iMouseValue[0] * m_fMouseSensitivity) *g_fSecPerFrame);
+        m_fPitch += XMConvertToRadians((g_InputData.iMouseValue[1] * m_fMouseSensitivity) * g_fSecPerFrame);
     }
     m_fRoll += 0;
     m_fRadius += 0;
@@ -139,7 +135,7 @@ KCamera::KCamera()
     m_vCameraPos = { 0, 0, -10.0f };
     m_vCameraTarget = { 0, 0, 0.0f };
     m_fSpeed = 25.0f;
-    m_fMouseSensitivity = 10;
+    m_fMouseSensitivity = 30;
     m_fOriginSpeed = m_fSpeed;
 }
 KCamera::~KCamera()
@@ -150,6 +146,11 @@ KCamera::~KCamera()
 #pragma region Camera>>DebugCamera
 bool KDebugCamera::Frame()
 {
+    if (ImGui::Begin("cam"))
+    {
+        ImGui::Text("pos -> %d %d ", (int)m_vCameraPos.x, (int)m_vCameraPos.y);
+    }
+    ImGui::End();
     ResizeRatio();
     OnMouseRotation();
     if (g_InputData.bWKey)
