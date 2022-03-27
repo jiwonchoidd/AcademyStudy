@@ -33,4 +33,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(정적LOD, 960, 540);
+WinMain_OPT(프러스텀, 960, 540);

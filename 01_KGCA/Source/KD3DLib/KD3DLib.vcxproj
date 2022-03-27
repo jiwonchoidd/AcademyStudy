@@ -34,6 +34,7 @@
     <ClCompile Include="KCollision.cpp" />
     <ClCompile Include="KCore.cpp" />
     <ClCompile Include="KDevice.cpp" />
+    <ClCompile Include="KFrustum.cpp" />
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="KManager.cpp" />
     <ClCompile Include="KMap.cpp" />
@@ -76,6 +77,7 @@
     <ClInclude Include="KCollision.h" />
     <ClInclude Include="KCore.h" />
     <ClInclude Include="KDevice.h" />
+    <ClInclude Include="KFrustum.h" />
     <ClInclude Include="KInput.h" />
     <ClInclude Include="KManager.h" />
     <ClInclude Include="KMap.h" />
@@ -109,6 +111,9 @@
     <Image Include="C:\Users\kgca4021\OneDrive - nsu.ac.kr\DD_ICON.ico" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\data\shader\VSPS_Frustum.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
     <FxCompile Include="..\..\data\shader\VS_Light.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <EntryPointName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">VS</EntryPointName>

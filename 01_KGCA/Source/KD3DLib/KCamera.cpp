@@ -56,6 +56,11 @@ KMatrix KCamera::OnMouseRotation()
     KMatrix matRotation;
     D3DKMatrixAffineTransformation(&matRotation, 1.0f, NULL, &q, &m_vCameraPos);
     D3DKMatrixInverse(&m_matView, NULL, &matRotation);
+    UpdateCamera();
+    return matRotation;
+}
+void KCamera::UpdateCamera()
+{
     //매 프레임 마다 뷰행렬을 만든다.
     m_vSide.x = m_matView._11;
     m_vSide.y = m_matView._21;
@@ -66,10 +71,11 @@ KMatrix KCamera::OnMouseRotation()
     m_vLook.x = m_matView._13;
     m_vLook.y = m_matView._23;
     m_vLook.z = m_matView._33;
-    return matRotation;
+    CreateFrustum(m_matView, m_matProj);
 }
 bool KCamera::Init()
 {
+    KFrustum::Init();
     return true;
 }
 bool KCamera::Frame()
@@ -93,6 +99,7 @@ KVector3* KCamera::GetCameraTarget()
 {
     return &m_vCameraTarget;
 }
+//뷰행렬 만듬
 KMatrix   KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp)
 {
     m_vCameraPos = vPos;
@@ -116,9 +123,9 @@ KMatrix   KCamera::CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vU
 
     m_fYaw = m_vLook.x;
     m_fPitch = -m_vLook.y;
-    //m_fRoll = m_vLook.z;
     return m_matView;
 }
+//투영행렬 만듬
 KMatrix     KCamera::CreateProjMatrix(
     float fNear, float fFar, float fFov, float fAspect)
 {
@@ -129,6 +136,7 @@ KMatrix     KCamera::CreateProjMatrix(
     D3DKMatrixPerspectiveFovLH(&m_matProj, m_fFov, m_fAspect, m_fNear, m_fFar);
     return m_matProj;
 }
+
 KCamera::KCamera()
 {
     D3DKMatrixIdentity(&m_matWorld);

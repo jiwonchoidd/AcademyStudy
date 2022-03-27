@@ -29,6 +29,10 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	m_Camera.CreateViewMatrix(KVector3(-2, 3, -8), KVector3(0, 0, 0));
 	m_Camera.CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, 
 		static_cast<float>(g_rtClient.right)/ static_cast<float>(g_rtClient.bottom));
+
+	m_Camera.m_pTexture_Diffuse = g_TextureMananger.Load(L"../../data/charport.bmp");
+	m_Camera.m_pVS = g_ShaderManager.CreateVertexShader(L"../../data/shader/VSPS_Frustum.hlsl", "VS");;
+	m_Camera.m_pPS= g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_Frustum.hlsl", "PS");;
 	return true;
 }
 

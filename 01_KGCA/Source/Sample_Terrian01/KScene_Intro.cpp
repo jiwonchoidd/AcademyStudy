@@ -37,7 +37,7 @@ bool KScene_Intro::Frame()
 	m_Camera.Frame();
 	m_Box.Frame();
 
-#pragma region  오브젝트 이동
+	#pragma region  오브젝트 이동
 	if (g_InputData.bUpKey)
 	{
 		m_Box.m_pos += m_Box.m_vLook * g_fSecPerFrame * 10.0f;
@@ -58,6 +58,7 @@ bool KScene_Intro::Frame()
 	m_Box.SetRotation(m_Box.m_rot);
 	m_Box.SetPosition(m_Box.m_pos);
 #pragma endregion
+
 	KScene::Frame();
 	return true;
 }

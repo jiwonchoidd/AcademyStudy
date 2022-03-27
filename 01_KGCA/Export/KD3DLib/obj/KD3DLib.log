@@ -1,40 +1,4 @@
-﻿  KMapLOD.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KQuadTree.h(62,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KQuadTree.h(63,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KQuadTree.h(64,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KQuadTree.h(65,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(34,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(34,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(38,21): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 2의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(38,21): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(50,23): warning C4477: 'swscanf_s' : 서식 문자열 '%s'에 'unsigned int' 형식의 인수가 필요하지만 variadic 인수 3의 형식이 'unsigned __int64'입니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(50,23): message : 이 인수는 버퍼 크기로 사용됩니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(85,87): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(85,28): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(84,58): warning C4244: '인수': 'UINT'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(173,65): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(190,62): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(205,49): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(305,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(310,71): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(315,34): warning C4267: '=': 'size_t'에서 'UINT'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-  KD3DLib.vcxproj -> E:\Choijiwon\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
+﻿  KD3DLib.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\KD3DLib\KD3DLib.lib
           1개 파일이 복사되었습니다.
   ImGuiManager.h
   K2DAsset.h
@@ -45,6 +9,7 @@ E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(315,34): warning C4
   KCollision.h
   KCore.h
   KDevice.h
+  KFrustum.h
   KInput.h
   KManager.h
   KMap.h
@@ -69,4 +34,4 @@ E:\Choijiwon\AcademyStudy\01_KGCA\Source\KD3DLib\KMapLOD.cpp(315,34): warning C4
   KWindow.h
   KWrite.h
   resource.h
-         33개 파일이 복사되었습니다.
+         34개 파일이 복사되었습니다.

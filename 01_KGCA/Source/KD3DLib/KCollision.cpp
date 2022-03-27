@@ -1,4 +1,22 @@
 #include "KCollision.h"
+bool KCollision::SphereToPoint(KSphere sp, float x, float y, float z)
+{
+	float fDistance = (sp.vCenter -KVector3(x, y, z)).Length();
+	if (fDistance <= sp.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
+bool KCollision::SphereToPoint(KSphere sp, KVector3 v)
+{
+	float fDistance = (sp.vCenter - v).Length();
+	if (fDistance <= sp.fRadius)
+	{
+		return true;
+	}
+	return false;
+}
 bool   KCollision::RectToPoint(KRect rt, int x, int y)
 {
 	if (rt.min.x <= x && rt.max.x >= x &&

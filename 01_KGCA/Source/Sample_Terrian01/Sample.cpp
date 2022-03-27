@@ -33,4 +33,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(셰이더 빛, 960, 540);
+WinMain_OPT(높이지형+정적LOD, 960, 540);

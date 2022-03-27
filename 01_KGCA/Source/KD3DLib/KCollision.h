@@ -88,6 +88,8 @@ struct KBox
 	KVector3 max;
 	KVector3 middle;
 	KVector3 size;
+	KVector3 List[8];
+	KVector3 Axis[3];
 	bool operator == (const KBox& v)
 	{
 		if (fabs((min - v.min).Length()) < 0.0001f)
@@ -119,9 +121,20 @@ struct KBox
 		this->size.y = h;
 	}
 };
+struct KSphere
+{
+	KVector3 vCenter;
+	float    fRadius;
+	KSphere()
+	{
+		fRadius = 3.0f;
+	}
+};
 class KCollision
 {
 public:
+	static bool   SphereToPoint(KSphere sp, float x, float y, float z);
+	static bool   SphereToPoint(KSphere sp, KVector3 v);
 	static bool   RectToPoint(KRect rt, int x, int y);
 	static bool   RectToPoint(KRect rt, KVector2 v);
 	static KCollisionResult    RectToRect(KRect, KRect);

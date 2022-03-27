@@ -144,9 +144,6 @@
     <ClCompile Include="KPlaneObj.cpp">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClCompile>
-    <ClCompile Include="KSkyBox.cpp">
-      <Filter>Code\Obj\3D\TestObj</Filter>
-    </ClCompile>
     <ClCompile Include="KBoxObj.cpp">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClCompile>
@@ -155,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="KMap.cpp">
       <Filter>Code\Obj\3D\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="KFrustum.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="KSkyBox.cpp">
+      <Filter>Code\Obj\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +275,6 @@
     <ClInclude Include="KPlaneObj.h">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClInclude>
-    <ClInclude Include="KSkyBox.h">
-      <Filter>Code\Obj\3D\TestObj</Filter>
-    </ClInclude>
     <ClInclude Include="KBoxObj.h">
       <Filter>Code\Obj\3D\TestObj</Filter>
     </ClInclude>
@@ -283,6 +283,12 @@
     </ClInclude>
     <ClInclude Include="KMap.h">
       <Filter>Code\Obj\3D\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="KFrustum.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KSkyBox.h">
+      <Filter>Code\Obj\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +347,9 @@
       <Filter>Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\..\data\shader\VS_Normalmap.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\..\data\shader\VSPS_Frustum.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
   </ItemGroup>

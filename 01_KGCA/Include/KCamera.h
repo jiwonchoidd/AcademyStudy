@@ -1,16 +1,16 @@
 #pragma once
-#include "KStd.h"
-class KCamera
+#include "KFrustum.h"
+class KCamera : public KFrustum
 {
 public:
 	float				m_fSpeed;
+	float				m_fOriginSpeed;
 	float				m_fAspect;
 	float				m_fFov;
 	float				m_fNear;
 	float				m_fFar;
 public:
-	float				m_fMouseSensitivity;
-	float				m_fOriginSpeed;
+	float				m_fMouseSensitivity; //°¨µµ
 	KVector3			m_vCameraPos;
 	KVector3			m_vCameraTarget;
 	KVector3			m_vLook;
@@ -31,6 +31,7 @@ public:
 	KVector3*			GetCameraPos();
 	virtual KMatrix     CreateViewMatrix(KVector3 vPos, KVector3 vTarget, KVector3 vUp= KVector3(0,1,0));
 	virtual KMatrix  	CreateProjMatrix(float fNear, float fFar, float fFov, float fAspect);
+	void				UpdateCamera();
 public:
 	virtual	bool		ResizeRatio();
 	virtual	bool		Follow2DPos(KVector2* vPos, KVector2 offset = {0,0});
