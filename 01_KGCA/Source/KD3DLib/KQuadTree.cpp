@@ -152,6 +152,10 @@ KNode* KQuadTree::FindNode(KNode* pNode, KVector2 pos)
 	} while (pNode);
 	return pNode;
 }
+KNode* KQuadTree::FindNode(KNode* pNode, KBox& box)
+{
+	return nullptr;
+}
 bool KQuadTree::SubDivide(KNode* pNode)
 {
 	if ((pNode->m_CornerList[1] - pNode->m_CornerList[0]) > 4)
@@ -231,4 +235,19 @@ KQuadTree::KQuadTree()
 
 KQuadTree::~KQuadTree()
 {
+}
+
+void KNode::AddObject(KMapObject* obj)
+{
+	m_ObjectList.push_back(obj);
+}
+
+void KNode::AddDynamicObject(KMapObject* obj)
+{
+	m_ObjectList_Dynamic.push_back(obj);
+}
+
+void KNode::DelDynamicObject(KMapObject* obj)
+{
+	m_ObjectList_Dynamic.clear();
 }

@@ -73,8 +73,9 @@ void KCamera::UpdateCamera()
     m_vLook.z = m_matView._33;
     CreateFrustum(m_matView, m_matProj);
 }
-bool KCamera::Init()
+bool KCamera::Init(ID3D11DeviceContext* pContext)
 {
+    m_pContext = pContext;
     KFrustum::Init();
     return true;
 }
@@ -83,8 +84,9 @@ bool KCamera::Frame()
     return true;
 }
 //None
-bool KCamera::Render()
+bool KCamera::Render(ID3D11DeviceContext* pContext)
 {
+    K3DAsset::Render(pContext);
     return true;
 }
 bool KCamera::Release()
@@ -154,11 +156,6 @@ KCamera::~KCamera()
 #pragma region Camera>>DebugCamera
 bool KDebugCamera::Frame()
 {
-    if (ImGui::Begin("cam"))
-    {
-        ImGui::Text("pos -> %d %d ", (int)m_vCameraPos.x, (int)m_vCameraPos.y);
-    }
-    ImGui::End();
     ResizeRatio();
     OnMouseRotation();
     if (g_InputData.bWKey)
@@ -181,7 +178,7 @@ bool KDebugCamera::Frame()
     }
 
     g_InputData.bLShift ?
-        m_fSpeed += 80.0f * g_fSecPerFrame : m_fSpeed -= 80.0f * g_fSecPerFrame;
+        m_fSpeed += 80.0f * g_fSecPerFrame : m_fSpeed -= 200.0f * g_fSecPerFrame;
 
     if (m_fSpeed >= 200.0f)
     {

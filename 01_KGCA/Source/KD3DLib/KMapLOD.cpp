@@ -135,7 +135,7 @@ KNode* KMapLOD::CreateNode(KNode* pParent, float x, float y, float w, float h)
 	KVector3 vRT = m_pMap->m_VertexList[pNode->m_CornerList[1]].pos;
 	KVector3 vLB = m_pMap->m_VertexList[pNode->m_CornerList[2]].pos;
 	KVector3 vRB = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos;
-	pNode->SetRect(vLT.x, (vLT.y-vRB.y)/2.0f, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
+	pNode->SetRect(vLT.x, (vRB.y- vLT.y)/2.0f, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
 
 	return pNode;
 }
@@ -260,12 +260,12 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 45.0f)
+		if (fDistance < 65.0f)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 90.0f)
+		else if (fDistance < 130.0f)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 1;
 		}

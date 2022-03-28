@@ -4,7 +4,7 @@
 class KBoxObj : public K3DAsset
 {
 public:
-	bool Init(std::wstring vsfile, std::wstring psfile, std::wstring tex1=L"", std::wstring tex2 = L"", std::wstring tex3 = L"");
+	bool Init(std::wstring vsfile = L"", std::wstring psfile = L"", std::wstring tex1=L"", std::wstring tex2 = L"", std::wstring tex3 = L"");
 	bool Frame();
 	bool CreateVertexData()override;
 	bool CreateIndexData()override;

@@ -5,6 +5,7 @@ struct KLodPatch
 {
 	UINT   iLodLevel;
 	std::vector<DWORD>	IndexList[16];
+	std::vector<KNode*> g_DrawLeafNodes;
 	wrl::ComPtr<ID3D11Buffer> IndexBufferList[16] = { nullptr, };
 	void Release()
 	{

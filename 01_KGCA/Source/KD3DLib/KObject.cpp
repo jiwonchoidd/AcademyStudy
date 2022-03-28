@@ -113,9 +113,20 @@ bool KObject::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 //매니져를 사용해 쉐이더 로드
 bool KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
 {
-    m_pVS = g_ShaderManager.CreateVertexShader(vsFile, "VS");
-    m_pPS = g_ShaderManager.CreatePixelShader(psFile, "PS");
-    return true;
+    if (m_pVS != nullptr || m_pPS != nullptr)
+    {
+        return true;
+    }
+    else
+    {
+        if (!vsFile.empty() || !psFile.empty())
+        {
+            m_pVS = g_ShaderManager.CreateVertexShader(vsFile, "VS");
+            m_pPS = g_ShaderManager.CreatePixelShader(psFile, "PS");
+            return true;
+        }
+        return false;
+    }
 }
 
 //매니져를 사용해 텍스쳐 로드

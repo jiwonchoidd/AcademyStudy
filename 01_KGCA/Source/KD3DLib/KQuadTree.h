@@ -1,6 +1,14 @@
 #pragma once
 #include "K3DAsset.h"
 #include <queue>
+struct KMapObject
+{
+	std::wstring	obj_name;
+	KMatrix			obj_matWorld;//오브젝트마다 위치만 다름
+	KVector3		obj_pos;
+	KBox			obj_box; // 오브젝트 위치 OBB AABB 포함
+	K3DAsset*		obj_pObject;
+};
 class KNode
 {
 public:
@@ -17,6 +25,12 @@ public:
 	UINT    m_LodLevel;
 	POINT	m_Element;				// 위치 포인트
 	bool	m_bLeaf;
+public:								//오브젝트 리스트
+	std::list<KMapObject*> m_ObjectList;
+	std::list<KMapObject*> m_ObjectList_Dynamic;
+	void   AddObject(KMapObject* obj);
+	void   AddDynamicObject(KMapObject* obj);
+	void   DelDynamicObject(KMapObject* obj);
 public:
 	std::vector <DWORD>		    m_IndexList;
 	std::vector <PNCT_VERTEX>	m_VertexList;
@@ -70,13 +84,27 @@ public:
 		{
 			if (m_pChildlist[iChild] != nullptr)
 			{
-				m_pChildlist[iChild]->m_pVertexBuffer.Reset();
-				//m_pChildlist[iChild]->m_pIndexBuffer.Reset();
 				delete m_pChildlist[iChild];
 				m_pChildlist[iChild] = nullptr;
 			}
 		}
-		m_pVertexBuffer.Reset();
+		for (auto ol : m_ObjectList)
+		{
+			if (ol != nullptr)
+			{
+				ol->obj_pObject->Release();
+				delete ol;
+			}
+		}
+		for (auto ol_d : m_ObjectList_Dynamic)
+		{
+			if (ol_d != nullptr)
+			{
+				ol_d->obj_pObject->Release();
+				delete ol_d;
+			}
+		}
+
 	}
 };
 
@@ -97,6 +125,8 @@ public:
 	void	SetNeighborNode();
 	KNode*	FindLeafNode(KVector2 pos);
 	KNode*  FindNode(KNode* pNode, KVector2 pos);
+	KNode*  FindNode(KNode* pNode, KBox& box);
+
 	bool	SubDivide(KNode* pNode);
 public:
 	virtual bool	UpdateVertexList(KNode* pNode); // 가상 함수

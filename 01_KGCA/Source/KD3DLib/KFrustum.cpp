@@ -4,14 +4,51 @@ bool KFrustum::Init()
 {
 	//¿ÞÂÊ ¾Æ·¡ºÎÅÍ 
 	m_Frustum[0] = KVector3(-1.0f, -1.0f, 0.0f);
-	m_Frustum[1] = KVector3(-1.0f, 1.0f, 0.0f);
-	m_Frustum[2] = KVector3(1.0f, 1.0f, 0.0f);
-	m_Frustum[3] = KVector3(1.0f, -1.0f, 0.0f);
+	m_Frustum[1] = KVector3(1.0f, -1.0f, 0.0f);
+	m_Frustum[2] = KVector3(-1.0f, 1.0f, 0.0f);
+	m_Frustum[3] = KVector3(1.0f, 1.0f, 0.0f);
 
 	m_Frustum[4] = KVector3(-1.0f, -1.0f, 1.0f);
-	m_Frustum[5] = KVector3(-1.0f, 1.0f, 1.0f);
-	m_Frustum[6] = KVector3(1.0f, 1.0f, 1.0f);
-	m_Frustum[7] = KVector3(1.0f, -1.0f, 1.0f);
+	m_Frustum[5] = KVector3(1.0f, -1.0f, 1.0f);
+	m_Frustum[6] = KVector3(-1.0f, 1.0f, 1.0f);
+	m_Frustum[7] = KVector3(1.0f, 1.0f, 1.0f);
+
+	KBoxObj::Init(L"", L"");
+
+	//»ö»ó ¹Ù²Ù±â
+	int color = 0;
+
+	// Á¤¸é
+	m_VertexList[color].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
+
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
+
+	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
+
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
+
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
+
+	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
+	
 	return true;
 }
 
@@ -19,18 +56,20 @@ bool KFrustum::Init()
 void KFrustum::CreateFrustum(KMatrix& matView, KMatrix& matProj)
 {
 	m_Frustum[0] = KVector3(-1.0f, -1.0f, 0.0f);
-	m_Frustum[1] = KVector3(-1.0f, 1.0f, 0.0f);
-	m_Frustum[2] = KVector3(1.0f, 1.0f, 0.0f);
-	m_Frustum[3] = KVector3(1.0f, -1.0f, 0.0f);
-				   
+	m_Frustum[1] = KVector3(1.0f, -1.0f, 0.0f);
+	m_Frustum[2] = KVector3(-1.0f, 1.0f, 0.0f);
+	m_Frustum[3] = KVector3(1.0f, 1.0f, 0.0f);
+
 	m_Frustum[4] = KVector3(-1.0f, -1.0f, 1.0f);
-	m_Frustum[5] = KVector3(-1.0f, 1.0f, 1.0f);
-	m_Frustum[6] = KVector3(1.0f, 1.0f, 1.0f);
-	m_Frustum[7] = KVector3(1.0f, -1.0f, 1.0f);
+	m_Frustum[5] = KVector3(1.0f, -1.0f, 1.0f);
+	m_Frustum[6] = KVector3(-1.0f, 1.0f, 1.0f);
+	m_Frustum[7] = KVector3(1.0f, 1.0f, 1.0f);
 
 	KMatrix matInverse;
 	D3DKMatrixMultiply(&matInverse, &matView, &matProj);
 	D3DKMatrixInverse(&matInverse, NULL, &matInverse);
+
+	//ÇÁ·¯½ºÅÒ¿¡ ¸Â°Ô º¯Çü½ÃÅ´
 	for (int iVer = 0; iVer < 8; iVer++)
 	{
 		D3DXVec3TransformCoord(
@@ -38,52 +77,52 @@ void KFrustum::CreateFrustum(KMatrix& matView, KMatrix& matProj)
 	}
 	if (m_VertexList.size() > 0)
 	{
-		int index = 0;
-		// +z
-		m_VertexList[index].pos = m_Frustum[6];
-		m_VertexList[++index].pos = m_Frustum[5];
-		m_VertexList[++index].pos = m_Frustum[7];
-		m_VertexList[++index].pos = m_Frustum[4];
-		// -Z plane
-		m_VertexList[++index].pos = m_Frustum[1];
-		m_VertexList[++index].pos = m_Frustum[2];
-		m_VertexList[++index].pos = m_Frustum[0];
-		m_VertexList[++index].pos = m_Frustum[3];
-		// +X plane
-		m_VertexList[++index].pos = m_Frustum[2];
-		m_VertexList[++index].pos = m_Frustum[6];
-		m_VertexList[++index].pos = m_Frustum[3];
-		m_VertexList[++index].pos = m_Frustum[7];
-		// -X plane
-		m_VertexList[++index].pos = m_Frustum[5];;
-		m_VertexList[++index].pos = m_Frustum[1];
-		m_VertexList[++index].pos = m_Frustum[4];
-		m_VertexList[++index].pos = m_Frustum[0];
-		// -y plane
-		m_VertexList[++index].pos = m_Frustum[0];
-		m_VertexList[++index].pos = m_Frustum[3];
-		m_VertexList[++index].pos = m_Frustum[4];
-		m_VertexList[++index].pos = m_Frustum[7];
-		// +y plane
-		m_VertexList[++index].pos = m_Frustum[5];
-		m_VertexList[++index].pos = m_Frustum[6];
-		m_VertexList[++index].pos = m_Frustum[1];
-		m_VertexList[++index].pos = m_Frustum[2];
+		// Á¤¸é
+		m_VertexList[0].pos = m_Frustum[0];
+		m_VertexList[1].pos = m_Frustum[1];
+		m_VertexList[2].pos = m_Frustum[2];
+		m_VertexList[3].pos = m_Frustum[3];
+		// µÞ¸é
+		m_VertexList[4].pos = m_Frustum[5];
+		m_VertexList[5].pos = m_Frustum[4];
+		m_VertexList[6].pos = m_Frustum[7];
+		m_VertexList[7].pos = m_Frustum[6];
+		// ¿À¸¥ÂÊ¸é
+		m_VertexList[8].pos = m_Frustum[1];
+		m_VertexList[9].pos = m_Frustum[5];
+		m_VertexList[10].pos = m_Frustum[3];
+		m_VertexList[11].pos = m_Frustum[7];
+		// ¿ÞÂÊ¸é
+		m_VertexList[12].pos = m_Frustum[4];
+		m_VertexList[13].pos = m_Frustum[0];
+		m_VertexList[14].pos = m_Frustum[6];
+		m_VertexList[15].pos = m_Frustum[2];
+		// À­ÂÊ¸é
+		m_VertexList[16].pos = m_Frustum[2];
+		m_VertexList[17].pos = m_Frustum[3];
+		m_VertexList[18].pos = m_Frustum[6];
+		m_VertexList[19].pos = m_Frustum[7];
+		// ¾Æ·§¸é
+		m_VertexList[20].pos = m_Frustum[1];
+		m_VertexList[21].pos = m_Frustum[0];
+		m_VertexList[22].pos = m_Frustum[5];
+		m_VertexList[23].pos = m_Frustum[4];
 		m_pContext->UpdateSubresource(
 			m_pVertexBuffer.Get(), 0, NULL, &m_VertexList.at(0), 0, 0);
 	}
 	
-	m_Plane[0] = KPlane(m_Frustum[0], m_Frustum[1], m_Frustum[2]);  //-z
+	m_Plane[0] = KPlane(m_Frustum[0], m_Frustum[2], m_Frustum[3]);  //-z Á¤¸é
 
-	m_Plane[1] = KPlane(m_Frustum[6], m_Frustum[5], m_Frustum[4]);	//+z
+	m_Plane[1] = KPlane(m_Frustum[4], m_Frustum[6], m_Frustum[7]);	//+z µÞ¸é
 
-	m_Plane[2] = KPlane(m_Frustum[5], m_Frustum[1], m_Frustum[0]);	// -x
+	m_Plane[2] = KPlane(m_Frustum[1], m_Frustum[3], m_Frustum[7]);	//+x ¿À¸¥ÂÊ
 
-	m_Plane[3] = KPlane(m_Frustum[2], m_Frustum[6], m_Frustum[7]);	//+x
+	m_Plane[3] = KPlane(m_Frustum[4], m_Frustum[6], m_Frustum[2]);	// -x ¿ÞÂÊ
 
-	m_Plane[4] = KPlane(m_Frustum[7], m_Frustum[4], m_Frustum[0]);	//-y
+	m_Plane[4] = KPlane(m_Frustum[2], m_Frustum[6], m_Frustum[7]);	//+y À­ÂÊ
 
-	m_Plane[5] = KPlane(m_Frustum[5], m_Frustum[6], m_Frustum[1]);	//+y
+	m_Plane[5] = KPlane(m_Frustum[0], m_Frustum[4], m_Frustum[5]);	//-y ¾Æ·§ÂÊ
+
 }
 
 BOOL KFrustum::ClassifyPoint(KVector3* v)

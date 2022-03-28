@@ -1,46 +1,46 @@
 ﻿  Sample.cpp
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(10,31): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(13,3): error C2679: 이항 '=': 오른쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(10,31): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(13,3): error C2679: 이항 '=': 오른쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
           with
           [
               _Ty=KNetworkUser *
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &&)'일 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &&)'일 수 있습니다.
           with
           [
               _Ty=KNetworkUser
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 또는       'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &)'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 또는       'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &)'
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(13,3): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(13,3): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(14,36): error C2678: 이항 '!=': 왼쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(14,36): error C2678: 이항 '!=': 왼쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
           with
           [
               _Ty=KNetworkUser
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(205,21): message : 'bool std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator !=(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &) noexcept const'일 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(205,21): message : 'bool std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator !=(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &) noexcept const'일 수 있습니다.
           with
           [
               _Ty=KNetworkUser
           ]
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\guiddef.h(197,15): message : 또는       'bool operator !=(const GUID &,const GUID &)'
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(14,36): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(14,36): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(16,43): error C2664: 'int KNetwork::RecvUser(KNetworkUser *)': 인수 1을(를) 'KNetworkUser'에서 'KNetworkUser *'(으)로 변환할 수 없습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(16,38): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KNetwork.h(16,6): message : 'KNetwork::RecvUser' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(20,41): error C2664: 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> std::list<_Ty,std::allocator<_Ty>>::erase(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>) noexcept': 인수 1을(를) 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'에서 'const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'(으)로 변환할 수 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(16,43): error C2664: 'int KNetwork::RecvUser(KNetworkUser *)': 인수 1을(를) 'KNetworkUser'에서 'KNetworkUser *'(으)로 변환할 수 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(16,38): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KNetwork.h(16,6): message : 'KNetwork::RecvUser' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(20,41): error C2664: 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> std::list<_Ty,std::allocator<_Ty>>::erase(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>) noexcept': 인수 1을(를) 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'에서 'const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'(으)로 변환할 수 없습니다.
           with
           [
               _Ty=KNetworkUser *
@@ -53,51 +53,51 @@ E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(20,41): error
           [
               _Ty=KNetworkUser *
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(20,37): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(1349,14): message : 'std::list<KNetworkUser *,std::allocator<KNetworkUser *>>::erase' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(28,24): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(41,32): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(45,3): error C2679: 이항 '=': 오른쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(20,37): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(1349,14): message : 'std::list<KNetworkUser *,std::allocator<KNetworkUser *>>::erase' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(28,24): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(41,32): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(45,3): error C2679: 이항 '=': 오른쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
           with
           [
               _Ty=KNetworkUser *
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &&)'일 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &&)'일 수 있습니다.
           with
           [
               _Ty=KNetworkUser
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 또는       'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &)'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(277,1): message : 또는       'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator =(const std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &)'
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(45,3): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(45,3): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(46,37): error C2678: 이항 '!=': 왼쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(46,37): error C2678: 이항 '!=': 왼쪽 피연산자로 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>' 형식을 사용하는 연산자가 없거나 허용되는 변환이 없습니다.
           with
           [
               _Ty=KNetworkUser
           ]
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(205,21): message : 'bool std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator !=(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &) noexcept const'일 수 있습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(205,21): message : 'bool std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>::operator !=(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>> &) noexcept const'일 수 있습니다.
           with
           [
               _Ty=KNetworkUser
           ]
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\guiddef.h(197,15): message : 또는       'bool operator !=(const GUID &,const GUID &)'
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(46,37): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(46,37): message : 인수 목록 '(std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>, std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>)'을(를) 일치시키는 동안
           with
           [
               _Ty=KNetworkUser
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(49,24): error C2039: 'Broadcast': 'KServer'의 멤버가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(53,42): error C2664: 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> std::list<_Ty,std::allocator<_Ty>>::erase(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>) noexcept': 인수 1을(를) 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'에서 'const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'(으)로 변환할 수 없습니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(49,24): error C2039: 'Broadcast': 'KServer'의 멤버가 아닙니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(53,42): error C2664: 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>> std::list<_Ty,std::allocator<_Ty>>::erase(const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>) noexcept': 인수 1을(를) 'std::_List_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'에서 'const std::_List_const_iterator<std::_List_val<std::_List_simple_types<_Ty>>>'(으)로 변환할 수 없습니다.
           with
           [
               _Ty=KNetworkUser *
@@ -110,8 +110,8 @@ E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(53,42): error
           [
               _Ty=KNetworkUser *
           ]
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(53,38): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.29.30133\include\list(1349,14): message : 'std::list<KNetworkUser *,std::allocator<KNetworkUser *>>::erase' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(61,25): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
-E:\Choijiwon\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
-E:\Choijiwon\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(68,1): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(53,38): message : 이 변환을 수행할 수 있는 사용 가능한 사용자 정의 변환 연산자가 없거나 연산자를 호출할 수 없습니다.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.29.30133\include\list(1349,14): message : 'std::list<KNetworkUser *,std::allocator<KNetworkUser *>>::erase' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(61,25): error C2039: 'm_hMutex': 'KServer'의 멤버가 아닙니다.
+E:\github\AcademyStudy\01_KGCA\include\KServerLib\KServer.h(7): message : 'KServer' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Source\Sample_KServer\Sample.cpp(68,1): warning C4326: 'main'의 반환 형식이 'int'이어야 하는데 'void'입니다.

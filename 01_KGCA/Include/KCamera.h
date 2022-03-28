@@ -35,9 +35,9 @@ public:
 public:
 	virtual	bool		ResizeRatio();
 	virtual	bool		Follow2DPos(KVector2* vPos, KVector2 offset = {0,0});
-	virtual bool		Init();
+	virtual bool		Init(ID3D11DeviceContext* pContext);
 	virtual bool		Frame();
-	virtual bool		Render();
+	virtual bool		Render(ID3D11DeviceContext* pContext);
 	virtual bool		Release();
 	
 public:
