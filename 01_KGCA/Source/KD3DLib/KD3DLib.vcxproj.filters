@@ -132,9 +132,6 @@
     <ClCompile Include="KUIModelManager.cpp">
       <Filter>Code\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="KQuadTree.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
     <ClCompile Include="KObjObject.cpp">
       <Filter>Code\Obj\3D</Filter>
     </ClCompile>
@@ -158,6 +155,12 @@
     </ClCompile>
     <ClCompile Include="KSkyBox.cpp">
       <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="KQuadTree.cpp">
+      <Filter>Code\Obj\3D\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="KNode.cpp">
+      <Filter>Code\Obj\3D\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,9 +266,6 @@
     <ClInclude Include="KUIModelManager.h">
       <Filter>Code\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="KQuadTree.h">
-      <Filter>Code</Filter>
-    </ClInclude>
     <ClInclude Include="KObjObject.h">
       <Filter>Code\Obj\3D</Filter>
     </ClInclude>
@@ -289,6 +289,12 @@
     </ClInclude>
     <ClInclude Include="KSkyBox.h">
       <Filter>Code\Obj\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="KQuadTree.h">
+      <Filter>Code\Obj\3D\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="KNode.h">
+      <Filter>Code\Obj\3D\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

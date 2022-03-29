@@ -3,11 +3,6 @@
 
 bool KQuadTree::Init(float width, float height)
 {
-	//m_width = width;
-	//m_height = height;
-	////0,0 기준이 가운데로
-	//m_pRootNode = CreateNode(nullptr, 0, 0, m_width, m_height);
-	//Buildtree(m_pRootNode);
 	return true;
 }
 
@@ -154,8 +149,40 @@ KNode* KQuadTree::FindNode(KNode* pNode, KVector2 pos)
 }
 KNode* KQuadTree::FindNode(KNode* pNode, KBox& box)
 {
-	return nullptr;
+	do {
+		for (int iNode = 0; iNode < 4; iNode++)
+		{
+			if (pNode->m_pChildlist[iNode] != nullptr)
+			{
+				if (CheckBox(pNode->m_pChildlist[iNode]->m_node_box,
+					box))
+				{
+					m_queue.push(pNode->m_pChildlist[iNode]);
+					break;
+				}
+			}
+		}
+		if (m_queue.empty()) break;
+		pNode = m_queue.front();
+		m_queue.pop();
+	} while (pNode);
+	return pNode;
 }
+
+bool KQuadTree::CheckBox(KBox& boxA, KBox& boxB)
+{
+	if (boxA.min.x <= boxB.min.x && boxA.min.y <= boxB.min.y &&
+		boxA.min.z <= boxB.min.z)
+	{
+		if (boxA.max.x >= boxB.max.x && boxA.max.y >= boxB.max.y &&
+			boxA.max.z >= boxB.max.z)
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
 bool KQuadTree::SubDivide(KNode* pNode)
 {
 	if ((pNode->m_CornerList[1] - pNode->m_CornerList[0]) > 4)
@@ -164,6 +191,8 @@ bool KQuadTree::SubDivide(KNode* pNode)
 	}
 	return false;
 }
+
+
 
 KNode* KQuadTree::FindLeafNode(KVector2 pos)
 {
@@ -237,17 +266,4 @@ KQuadTree::~KQuadTree()
 {
 }
 
-void KNode::AddObject(KMapObject* obj)
-{
-	m_ObjectList.push_back(obj);
-}
 
-void KNode::AddDynamicObject(KMapObject* obj)
-{
-	m_ObjectList_Dynamic.push_back(obj);
-}
-
-void KNode::DelDynamicObject(KMapObject* obj)
-{
-	m_ObjectList_Dynamic.clear();
-}

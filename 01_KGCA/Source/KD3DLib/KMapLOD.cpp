@@ -72,7 +72,7 @@ bool  KMapLOD::LoadLODFile(std::wstring filename)
 	fclose(fp);
 	return true;
 }
-bool KMapLOD::Build(KMap* pmap)
+bool KMapLOD::Build(KMap* pmap, KCamera* pCamera)
 {
 	//쿼드트리 크기 지정, 쿼드트리 생성
 	if (LoadLODFile(L"../../data/script/StaticLod.txt"))
@@ -80,6 +80,7 @@ bool KMapLOD::Build(KMap* pmap)
 		m_pMap = pmap;
 		m_width = pmap->m_num_row;
 		m_height = pmap->m_num_col;
+		m_pCamera = pCamera;
 		
 		m_pRootNode = CreateNode(nullptr, 0, m_pMap->m_num_col - 1,
 			(m_pMap->m_num_row - 1) * m_pMap->m_num_col, m_pMap->m_num_row * m_pMap->m_num_col - 1);
@@ -89,7 +90,6 @@ bool KMapLOD::Build(KMap* pmap)
 		m_iNumCell = (int)((m_pMap->m_num_col - 1) / pow(2.0f, (float)m_maxDepth));
 		// LOD 레벨 개수( z = pow( x,y )에서 y = log(z) / log(x) ) 
 		m_iPatchLodCount = (int)((log((float)m_iNumCell) / log(2.0f)));
-		SetLOD();
 		if (m_iPatchLodCount > 0)
 		{
 			m_LodPatchList.resize(m_iPatchLodCount);
@@ -102,11 +102,6 @@ bool KMapLOD::Build(KMap* pmap)
 	}
 
 	return false;
-}
-
-bool KMapLOD::SetLOD()
-{
-	return true;
 }
 
 bool KMapLOD::ComputeStaticLodIndex(int numcell)
@@ -136,6 +131,7 @@ KNode* KMapLOD::CreateNode(KNode* pParent, float x, float y, float w, float h)
 	KVector3 vLB = m_pMap->m_VertexList[pNode->m_CornerList[2]].pos;
 	KVector3 vRB = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos;
 	pNode->SetRect(vLT.x, (vRB.y- vLT.y)/2.0f, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
+	//리프 노드의 바운딩 박스를 만든다.
 
 	return pNode;
 }
@@ -181,6 +177,7 @@ HRESULT KMapLOD::CreateVertexBuffer(KNode* pNode)
 	return hr;
 }
 
+//패치 인덱스
 HRESULT KMapLOD::CreateIndexBuffer(KLodPatch& patch, int iCode)
 {
 	patch.IndexBufferList[iCode] = nullptr;
@@ -197,6 +194,8 @@ HRESULT KMapLOD::CreateIndexBuffer(KLodPatch& patch, int iCode)
 	if (FAILED(hr)) return hr;
 	return hr;
 }
+
+
 HRESULT KMapLOD::CreateIndexBuffer(KNode* pNode)
 {
 	HRESULT hr = S_OK;
@@ -212,6 +211,7 @@ HRESULT KMapLOD::CreateIndexBuffer(KNode* pNode)
 	if (FAILED(hr)) return hr;
 	return hr;
 }
+
 bool KMapLOD::UpdateIndexList(KNode* pNode)
 {
 	int iNumCols = m_pMap->m_num_col;
@@ -252,8 +252,8 @@ bool KMapLOD::Frame()
 {
 	return false;
 }
-
-bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
+//전체 노드의 LOD레벨을 저장
+bool KMapLOD::SetLOD(KVector3* vCamera)
 {
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
@@ -273,6 +273,20 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 		else
 			m_pLeafList.at(iNode)->m_LodLevel = 0;
 	}
+	return true;
+}
+//보여지는 리프 노드 갱신
+
+bool KMapLOD::Render(ID3D11DeviceContext* pContext)
+{
+	if (ImGui::Begin("test"))
+	{
+		ImGui::Text("%d",m_pDrawableLeafList.size());
+	}ImGui::End();
+	DrawableUpdate();
+	SetLOD(m_pCamera->GetCameraPos());
+
+	//프로스텀에 있는 보이는 리프노드만 타입을 정해줌
 	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
 	{
 		int iRenderCode = 0;
@@ -325,6 +339,15 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext, KVector3* vCamera)
 		pContext->IASetIndexBuffer(pRenderBuffer, DXGI_FORMAT_R32_UINT, 0);
 		m_pMap->PostRender(pContext, iNumIndex);
 	}
+
+	//맵 오브젝트 렌더
+	for (auto obj : m_ObjectList)
+	{
+		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
+			&m_pMap->m_cbData.matView,
+			&m_pMap->m_cbData.matProj);
+		obj->obj_pObject->Render(pContext);
+	}
 	return true;
 }
 
@@ -336,6 +359,60 @@ bool KMapLOD::Release()
 	}
 	KQuadTree::Release();
 	return true;
+}
+void KMapLOD::DrawableUpdate()
+{
+	m_pDrawableLeafList.clear();
+	m_ObjectList.clear();
+	RenderTile(m_pRootNode);
+}
+void KMapLOD::RenderTile(KNode* pNode)
+{
+	if (pNode == nullptr) return;
+	if (m_pCamera->ClassifyOBB(&pNode->m_node_box) == TRUE)
+	{
+		for (auto obj : pNode->m_StaticObjectList)
+		{
+			if (m_pCamera->ClassifyOBB(&obj->obj_box) == TRUE)
+			{
+				m_ObjectList.push_back(obj);
+			}
+		}
+		if (pNode->m_bLeaf == true)
+		{
+			m_pDrawableLeafList.push_back(pNode);
+			return;
+		}
+
+		for (int iNode = 0; iNode < 3; iNode++)
+		{
+			RenderTile(pNode->m_pChildlist[iNode]);
+		}
+	}
+}
+bool KMapLOD::AddObject(KMapObject* obj)
+{
+	//노드 위치를 찾고 오브젝트를 추가한다.
+	KNode* pFindNode = FindNode(m_pRootNode, obj->obj_box);
+	if (pFindNode != nullptr)
+	{
+		pFindNode->AddObject(obj);
+		return true;
+	}
+	return false;
+}
+
+bool KMapLOD::AddDynamicObject(KMapObject* obj)
+{
+	KNode* pFindNode =
+		FindNode(m_pRootNode, obj->obj_box);
+	if (pFindNode != nullptr)
+	{
+		//obj->m_iNodeIndex = pFindNode->m_iIndex;
+		pFindNode->AddDynamicObject(obj);
+		return true;
+	}
+	return false;
 }
 
 KMapLOD::KMapLOD()

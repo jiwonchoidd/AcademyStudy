@@ -15,33 +15,35 @@ void KScene_Intro::SetupMapObject()
 	KMatrix matRotateObj;
 	for (int iObj = 0; iObj < 30; iObj++)
 	{
-		std::shared_ptr<KMapObject> pObj(new KMapObject);
+		KMapObject* pObj= new KMapObject;
 		for (int iv = 0; iv < 8; iv++)
 		{
-			pObj->obj_box.List[iv] = m_pBoxObj->m_BoxCollision.vList[iv];
+			pObj->obj_box.List[iv] = m_pBoxObj.get()->m_BoxCollision.List[iv];
 		}
 		pObj->obj_pos = KVector3(
-			randstep(m_MapObj.m_BoxCollision.vMin.x, m_MapObj.m_BoxCollision.vMax.x),
+			randstep(m_Terrian.m_BoxCollision.min.x, m_Terrian.m_BoxCollision.max.x),
 			0.0f,
-			randstep(m_MapObj.m_BoxCollision.vMin.z, m_MapObj.m_BoxCollision.vMax.z));
+			randstep(m_Terrian.m_BoxCollision.min.z, m_Terrian.m_BoxCollision.max.z));
 
-		T::D3DXMatrixScaling(&matScale, randstep(10.0f, 100.0f),
+		D3DKMatrixScaling(&matScale, randstep(10.0f, 100.0f),
 			randstep(10.0f, 100.0f),
 			randstep(10.0f, 100.0f));
-		T::D3DXMatrixRotationYawPitchRoll(&matRotateObj,
+		D3DKMatrixRotationYawPitchRoll(&matRotateObj,
 			cosf(randstep(0.0f, 360.0f)) * XM_PI,
 			sinf(randstep(0.0f, 360.0f)) * XM_PI,
 			1.0f);
-		pObj->matWorld = matScale * matRotateObj;
-		pObj->vPos.y = m_MapObj.GetHeight(pObj->vPos.x, pObj->vPos.z);
-		pObj->matWorld._41 = pObj->vPos.x;
-		pObj->matWorld._42 = pObj->vPos.y;
-		pObj->matWorld._43 = pObj->vPos.z;
+		pObj->obj_matWorld = matScale * matRotateObj;
+		pObj->obj_pos.y = m_Terrian.GetHeight(pObj->obj_pos.x, pObj->obj_pos.z);
+		pObj->obj_matWorld._41 = pObj->obj_pos.x;
+		pObj->obj_matWorld._42 = pObj->obj_pos.y;
+		pObj->obj_matWorld._43 = pObj->obj_pos.z;
 		pObj->UpdateData();
 		pObj->UpdateCollision();
-		pObj->pObject = m_pBoxObj;
+		pObj->obj_pObject = static_cast<K3DAsset*>(m_pBoxObj.get());
 		m_pObjList.push_back(pObj);
+	}
 }
+
 bool KScene_Intro::Load(std::wstring file)
 {
 	return true;
@@ -57,7 +59,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	m_Terrian.Init(m_pContext, L"../../data/map/129_heightmap.jpg");
 	m_Terrian.CreateObject(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/map/baseColor.jpg",
 		L"../../data/map/Ground_Grass_001_ROUGH.jpg", L"../../data/map/Ground_Grass_001_NORM.jpg");
-	m_Lod.Build(&m_Terrian);
+	m_Lod.Build(&m_Terrian, &m_Camera);
 
 	m_Box.Init(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/texture/brick.jpg",
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
@@ -76,6 +78,11 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.45f,
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
+	SetupMapObject();
+	for (int iObj = 0; iObj < m_pObjList.size(); iObj++)
+	{
+		m_Lod.AddObject(m_pObjList[iObj]);
+	}
 	return true;
 }
 
@@ -134,7 +141,7 @@ bool KScene_Intro::Render()
 	m_Terrian.m_cbData.vLightPos = { m_LightPos[0],m_LightPos[1],m_LightPos[2]};
 	m_Terrian.m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
 	//m_Terrian.Render(m_pContext);
-	m_Lod.Render(m_pContext,m_Camera.GetCameraPos());
+	m_Lod.Render(m_pContext);
 
 	m_Box.SetMatrix(&m_Box.m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_Box.m_cbData.vLightColor = { m_LightColor[0],m_LightColor[1],m_LightColor[2],1 };

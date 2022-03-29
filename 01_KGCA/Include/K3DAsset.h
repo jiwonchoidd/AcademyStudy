@@ -3,6 +3,8 @@
 class K3DAsset : public KObject
 {
 public:
+	KBox		m_BoxCollision;
+public:
 	KVector3	m_pos;
 	KVector3	m_rot;
 	KVector3	m_dir;

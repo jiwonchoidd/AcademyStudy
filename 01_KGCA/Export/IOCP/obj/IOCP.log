@@ -1,4 +1,2 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(498,5): warning MSB8004: Intermediate 디렉터리가 슬래시로 끝나지 않습니다. Intermediate 디렉터리의 적절한 평가를 허용하는 데 필요하므로 이 빌드 인스턴스에서 슬래시를 추가합니다.
-  Sample.cpp
-E:\github\AcademyStudy\01_KGCA\Source\IOCP\Sample.cpp(220,8): warning C4101: 'dwWritten' :참조되지 않은 지역 변수입니다.
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(1074,5): error MSB6006: "link.exe"이(가) 종료되었습니다(코드: 1).
+  IOCP.vcxproj -> E:\github\AcademyStudy\01_KGCA\Export\IOCP\IOCP.exe

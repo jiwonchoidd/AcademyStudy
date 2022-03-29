@@ -2,4 +2,3 @@
 E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(320,14): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.
 E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(321,19): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.
 E:\github\AcademyStudy\01_KGCA\Source\ODBC_3\KODBC.cpp(323,17): error C2065: 'm_hStmt': 선언되지 않은 식별자입니다.
-  Sample.cpp
