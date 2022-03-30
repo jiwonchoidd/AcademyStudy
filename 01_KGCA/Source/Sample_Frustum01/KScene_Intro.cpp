@@ -61,6 +61,8 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 		L"../../data/map/Ground_Grass_001_ROUGH.jpg", L"../../data/map/Ground_Grass_001_NORM.jpg");
 	m_Lod.Build(&m_Terrian, &m_Camera);
 
+	m_Lod.DrawDebugInit(m_pContext);
+
 	m_Box.Init(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/texture/brick.jpg",
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
 	m_Box.m_matWorld._42 = 1.0f;
@@ -79,6 +81,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
 	SetupMapObject();
+
 	for (int iObj = 0; iObj < m_pObjList.size(); iObj++)
 	{
 		m_Lod.AddObject(m_pObjList[iObj]);

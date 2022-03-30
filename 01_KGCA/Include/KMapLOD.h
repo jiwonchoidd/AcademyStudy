@@ -40,10 +40,11 @@ public:								//오브젝트 리스트
 public:
 	std::vector<KNode*>		m_pDrawableLeafList;//프로스텀에 보이는 리프노드
 public:
+	KBoxObj					m_Debug_Box;// Temporary debug object
+public:
 	void   DrawableUpdate();
 	void   RenderTile(KNode* pNode);
 	bool   AddObject(KMapObject* obj);
-	KBox	 CreateNodeBox(KNode* pNode);
 	bool   AddDynamicObject(KMapObject* obj);
 public:
 	virtual bool	Build(KMap* pmap, KCamera* pCamera);
@@ -65,6 +66,9 @@ public:
 	virtual bool	Frame();
 	virtual bool	Render(ID3D11DeviceContext* pContext);
 	virtual bool	Release();
+public:
+	void DrawDebugInit(ID3D11DeviceContext* pContext);
+	void DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext);
 public:
 	KMapLOD();
 	virtual ~KMapLOD();

@@ -130,9 +130,9 @@ KNode* KMapLOD::CreateNode(KNode* pParent, float x, float y, float w, float h)
 	KVector3 vRT = m_pMap->m_VertexList[pNode->m_CornerList[1]].pos;
 	KVector3 vLB = m_pMap->m_VertexList[pNode->m_CornerList[2]].pos;
 	KVector3 vRB = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos;
-	pNode->SetRect(vLT.x, (vRB.y- vLT.y)/2.0f, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
+	pNode->SetRect(vLT.x, (vRB.y- vLT.y), vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
 	//리프 노드의 바운딩 박스를 만든다.
-
+	pNode->SetBox(vLT.x, vLT.y, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
 	return pNode;
 }
 
@@ -195,7 +195,6 @@ HRESULT KMapLOD::CreateIndexBuffer(KLodPatch& patch, int iCode)
 	return hr;
 }
 
-
 HRESULT KMapLOD::CreateIndexBuffer(KNode* pNode)
 {
 	HRESULT hr = S_OK;
@@ -243,6 +242,7 @@ bool KMapLOD::UpdateIndexList(KNode* pNode)
 	if (m_IndexList.size() > 0) return true;
 	return false;
 }
+
 bool KMapLOD::Init()
 {
 	return false;
@@ -283,31 +283,32 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	{
 		ImGui::Text("%d",m_pDrawableLeafList.size());
 	}ImGui::End();
+
 	DrawableUpdate();
 	SetLOD(m_pCamera->GetCameraPos());
 
 	//프로스텀에 있는 보이는 리프노드만 타입을 정해줌
-	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
+	for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
 	{
 		int iRenderCode = 0;
 		// 동서남북
-		if (m_pLeafList.at(iNode)->m_pNeighborlist[0] &&
-			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[0]->m_LodLevel)
+		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[0] &&
+			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[0]->m_LodLevel)
 		{
 			iRenderCode += 2;
 		}
-		if (m_pLeafList.at(iNode)->m_pNeighborlist[1] &&
-			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[1]->m_LodLevel)
+		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[1] &&
+			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[1]->m_LodLevel)
 		{
 			iRenderCode += 8;
 		}
-		if (m_pLeafList.at(iNode)->m_pNeighborlist[2] &&
-			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[2]->m_LodLevel)
+		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[2] &&
+			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[2]->m_LodLevel)
 		{
 			iRenderCode += 4;
 		}
-		if (m_pLeafList.at(iNode)->m_pNeighborlist[3] &&
-			m_pLeafList.at(iNode)->m_LodLevel < m_pLeafList.at(iNode)->m_pNeighborlist[3]->m_LodLevel)
+		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[3] &&
+			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[3]->m_LodLevel)
 		{
 			iRenderCode += 1;
 		}
@@ -341,12 +342,18 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	}
 
 	//맵 오브젝트 렌더
-	for (auto obj : m_ObjectList)
+	/*for (auto obj : m_ObjectList)
 	{
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
 			&m_pMap->m_cbData.matView,
 			&m_pMap->m_cbData.matProj);
 		obj->obj_pObject->Render(pContext);
+	}*/
+
+	//todo:디버깅 박스, 플래그 설정
+	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
+	{
+		DrawDebugRender(&m_pLeafList[iNode]->m_node_box, pContext);
 	}
 	return true;
 }
@@ -358,6 +365,7 @@ bool KMapLOD::Release()
 		m_LodPatchList[iPatch].Release();
 	}
 	KQuadTree::Release();
+	m_Debug_Box.Release();
 	return true;
 }
 void KMapLOD::DrawableUpdate()
@@ -414,6 +422,94 @@ bool KMapLOD::AddDynamicObject(KMapObject* obj)
 	}
 	return false;
 }
+
+/// <summary>
+/// Temporary Debuging Object
+/// </summary>
+void KMapLOD::DrawDebugInit(ID3D11DeviceContext* pContext)
+{
+	if (m_Debug_Box.Init(L"../../data/shader/VSPS_Frustum.hlsl", L"../../data/shader/VSPS_Frustum.hlsl"))
+	{
+		//debug object created
+		m_Debug_Box.m_pContext = pContext;
+	}
+}
+
+void KMapLOD::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
+{
+	//add list
+	
+	/// <summary> 모든 정육면체 이렇게 통일
+	///		6		7
+	/// 2		3
+	///  
+	///		4		5
+	/// 0		1
+	/// </summary> 0 1 2 3 -> 5 4 7 6
+
+	pBox->List[0] = KVector3(pBox->min.x,
+		pBox->min.y,
+		pBox->max.z);
+	pBox->List[1] = KVector3(pBox->max.x,
+		pBox->min.y,
+		pBox->max.z);
+	pBox->List[2] = KVector3(pBox->min.x,
+		pBox->max.y,
+		pBox->max.z);
+	pBox->List[3] = KVector3(pBox->max.x,
+		pBox->max.y,
+		pBox->max.z);
+
+	pBox->List[4] = KVector3(pBox->min.x,
+		pBox->min.y,
+		pBox->min.z);
+	pBox->List[5] = KVector3(pBox->max.x,
+		pBox->min.y,
+		pBox->min.z);
+	pBox->List[6] = KVector3(pBox->min.x,
+		pBox->max.y,
+		pBox->min.z);
+	pBox->List[7] = KVector3(pBox->max.x,
+		pBox->max.y,
+		pBox->min.z);
+
+	// 정면
+	m_Debug_Box.m_VertexList[0].pos = pBox->List[0];
+	m_Debug_Box.m_VertexList[1].pos = pBox->List[1];
+	m_Debug_Box.m_VertexList[2].pos = pBox->List[2];
+	m_Debug_Box.m_VertexList[3].pos = pBox->List[3];
+	// 뒷면
+	m_Debug_Box.m_VertexList[4].pos = pBox->List[5];
+	m_Debug_Box.m_VertexList[5].pos = pBox->List[4];
+	m_Debug_Box.m_VertexList[6].pos = pBox->List[7];
+	m_Debug_Box.m_VertexList[7].pos = pBox->List[6];
+	// 오른쪽면
+	m_Debug_Box.m_VertexList[8].pos = pBox->List[1];
+	m_Debug_Box.m_VertexList[9].pos = pBox->List[5];
+	m_Debug_Box.m_VertexList[10].pos = pBox->List[3];
+	m_Debug_Box.m_VertexList[11].pos = pBox->List[7];
+	// 왼쪽면
+	m_Debug_Box.m_VertexList[12].pos = pBox->List[4];
+	m_Debug_Box.m_VertexList[13].pos = pBox->List[0];
+	m_Debug_Box.m_VertexList[14].pos = pBox->List[6];
+	m_Debug_Box.m_VertexList[15].pos = pBox->List[2];
+	// 윗쪽면
+	m_Debug_Box.m_VertexList[16].pos = pBox->List[2];
+	m_Debug_Box.m_VertexList[17].pos = pBox->List[3];
+	m_Debug_Box.m_VertexList[18].pos = pBox->List[6];
+	m_Debug_Box.m_VertexList[19].pos = pBox->List[7];
+	// 아랫면
+	m_Debug_Box.m_VertexList[20].pos = pBox->List[1];
+	m_Debug_Box.m_VertexList[21].pos = pBox->List[0];
+	m_Debug_Box.m_VertexList[22].pos = pBox->List[5];
+	m_Debug_Box.m_VertexList[23].pos = pBox->List[4]; 
+
+	m_Debug_Box.SetMatrix(NULL, &m_pCamera->m_matView, &m_pCamera->m_matProj);
+	pContext->UpdateSubresource(
+		m_Debug_Box.m_pVertexBuffer.Get(), 0, NULL, &m_Debug_Box.m_VertexList.at(0), 0, 0);
+	m_Debug_Box.Render(pContext);
+}
+
 
 KMapLOD::KMapLOD()
 {

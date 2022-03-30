@@ -31,8 +31,6 @@ struct KMapObject
 		obj_box.Axis[0] = m_vRight;
 		obj_box.Axis[1] = m_vUp;
 		obj_box.Axis[2] = m_vLook;
-
-		// GenAABB();
 		obj_box.min = KVector3(100000, 100000, 100000);
 		obj_box.max = KVector3(-100000, -100000, -100000);
 		for (int iV = 0; iV < 8; iV++)
@@ -65,7 +63,6 @@ struct KMapObject
 				obj_box.max.z = pos.z;
 			}
 		}
-
 		KVector3 vHalf = obj_box.max - obj_box.middle;
 		obj_box.size.x = fabs(D3DXVec3Dot(&obj_box.Axis[0], &vHalf));
 		obj_box.size.y = fabs(D3DXVec3Dot(&obj_box.Axis[1], &vHalf));
@@ -114,22 +111,22 @@ public:
 	}
 	void SetRect(float x, float y, float z, float w, float h)
 	{
+		m_Center.x = x + (w / 2.0f);
+		m_Center.y = y/2.0f;
+		m_Center.z = z - (h / 2.0f);
 		this->m_rect.size = KVector2(w, h);
 		this->m_rect.min = KVector2(x, z);
 		this->m_rect.max.x = this->m_rect.min.x + w;
+		//¼öÁ¤
 		this->m_rect.max.y = this->m_rect.min.y - h;
-		m_Center.x = x + (w / 2.0f);
-		m_Center.y = y;
-		m_Center.z = z - (h / 2.0f);
 	}
 	void SetBox(float x, float y, float z, float w, float h)
 	{
-		this->m_node_box.min.x = x;
-		this->m_node_box.min.z = z;
-		this->m_node_box.max.x = x+w;
-		this->m_node_box.max.z = z;
-		this->m_node_box.min.y = y;
-		this->m_node_box.max.y = x;
+		//m_Center.x = x + (w / 2.0f);
+		//m_Center.y = y/2.0f;
+		//m_Center.z = z - (h / 2.0f);
+		this->m_node_box.min = KVector3(x,0,z);
+		this->m_node_box.max = KVector3(x+w, y ,z-h);
 		this->m_node_box.Axis[0] = KVector3(1, 0, 0);
 		this->m_node_box.Axis[1] = KVector3(0, 1, 0);
 		this->m_node_box.Axis[2] = KVector3(0, 0, 1);

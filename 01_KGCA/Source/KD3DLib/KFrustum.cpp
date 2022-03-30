@@ -113,15 +113,15 @@ void KFrustum::CreateFrustum(KMatrix& matView, KMatrix& matProj)
 	
 	m_Plane[0] = KPlane(m_Frustum[0], m_Frustum[2], m_Frustum[3]);  //-z 沥搁
 
-	m_Plane[1] = KPlane(m_Frustum[4], m_Frustum[6], m_Frustum[7]);	//+z 缔搁
+	m_Plane[1] = KPlane(m_Frustum[5], m_Frustum[7], m_Frustum[6]);	//+z 缔搁
 
-	m_Plane[2] = KPlane(m_Frustum[1], m_Frustum[3], m_Frustum[7]);	//+x 坷弗率
+	m_Plane[2] = KPlane(m_Frustum[4], m_Frustum[6], m_Frustum[2]);	//-x 哭率
 
-	m_Plane[3] = KPlane(m_Frustum[4], m_Frustum[6], m_Frustum[2]);	// -x 哭率
+	m_Plane[3] = KPlane(m_Frustum[1], m_Frustum[3], m_Frustum[7]);	//+x 坷弗率
 
-	m_Plane[4] = KPlane(m_Frustum[2], m_Frustum[6], m_Frustum[7]);	//+y 拉率
+	m_Plane[4] = KPlane(m_Frustum[4], m_Frustum[0], m_Frustum[1]);	//-y 酒阀率
 
-	m_Plane[5] = KPlane(m_Frustum[0], m_Frustum[4], m_Frustum[5]);	//-y 酒阀率
+	m_Plane[5] = KPlane(m_Frustum[2], m_Frustum[6], m_Frustum[7]);	//+y 拉率
 
 }
 
