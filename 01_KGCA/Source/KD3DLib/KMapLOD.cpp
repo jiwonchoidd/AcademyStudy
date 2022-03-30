@@ -62,6 +62,8 @@ bool  KMapLOD::LoadLODFile(std::wstring filename)
 
 		_fgetts(buffer, 256, fp);
 	}
+
+
 	for (int iLod = 0; iLod < iNumPatch; iLod++)
 	{
 		for (int iCode = 0; iCode < 16; iCode++)
@@ -275,70 +277,77 @@ bool KMapLOD::SetLOD(KVector3* vCamera)
 	}
 	return true;
 }
+DWORD KMapLOD::SetLODType(KNode* pNode)
+{
+	int iRenderCode = 0;
+	// 동서남북
+	if (pNode->m_pNeighborlist[0] &&
+		pNode->m_LodLevel < pNode->m_pNeighborlist[0]->m_LodLevel)
+	{
+		iRenderCode += 2;
+	}
+	if (pNode->m_pNeighborlist[1] &&
+		pNode->m_LodLevel < pNode->m_pNeighborlist[1]->m_LodLevel)
+	{
+		iRenderCode += 8;
+	}
+	if (pNode->m_pNeighborlist[2] &&
+		pNode->m_LodLevel < pNode->m_pNeighborlist[2]->m_LodLevel)
+	{
+		iRenderCode += 4;
+	}
+	if (pNode->m_pNeighborlist[3] &&
+		pNode->m_LodLevel < pNode->m_pNeighborlist[3]->m_LodLevel)
+	{
+		iRenderCode += 1;
+	}
+	pNode->m_LodType = iRenderCode;
+	return iRenderCode;
+}
 //보여지는 리프 노드 갱신
 
 bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 {
-	if (ImGui::Begin("test"))
-	{
-		ImGui::Text("%d",m_pDrawableLeafList.size());
-	}ImGui::End();
-
 	DrawableUpdate();
+
+	//전체 리프노드 LOD 레벨을 저장
 	SetLOD(m_pCamera->GetCameraPos());
 
 	//프로스텀에 있는 보이는 리프노드만 타입을 정해줌
+
 	for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
 	{
-		int iRenderCode = 0;
-		// 동서남북
-		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[0] &&
-			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[0]->m_LodLevel)
-		{
-			iRenderCode += 2;
-		}
-		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[1] &&
-			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[1]->m_LodLevel)
-		{
-			iRenderCode += 8;
-		}
-		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[2] &&
-			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[2]->m_LodLevel)
-		{
-			iRenderCode += 4;
-		}
-		if (m_pDrawableLeafList.at(iNode)->m_pNeighborlist[3] &&
-			m_pDrawableLeafList.at(iNode)->m_LodLevel < m_pDrawableLeafList.at(iNode)->m_pNeighborlist[3]->m_LodLevel)
-		{
-			iRenderCode += 1;
-		}
-		UINT iNumIndex = 0;
-		ID3D11Buffer* pRenderBuffer = nullptr;
-		UINT iLodLevel = m_pLeafList[iNode]->m_LodLevel;
-		if (m_pLeafList[iNode]->m_LodLevel == 0)
-		{
-			iNumIndex = m_LodPatchList[iLodLevel].IndexList[iRenderCode].size();
-			pRenderBuffer = m_LodPatchList[iLodLevel].IndexBufferList[iRenderCode].Get();
-		}
-		else if (m_pLeafList[iNode]->m_LodLevel == 1)
-		{
-			iNumIndex = m_LodPatchList[iLodLevel].IndexList[iRenderCode].size();
-			pRenderBuffer = m_LodPatchList[iLodLevel].IndexBufferList[iRenderCode].Get();
-		}
-		else if(m_pLeafList[iNode]->m_LodLevel == 2)
-		{
-			iNumIndex = m_IndexList.size();
-			pRenderBuffer = m_pLodIndexBuffer.Get();
-		}
+		KNode* pNode = m_pDrawableLeafList[iNode];
+
+		SetLODType(pNode);
+
 		m_pMap->PreRender(pContext);
 		pContext->IASetInputLayout(m_pMap->m_pVertexLayout.Get());
-		UINT pStrides = m_pMap->m_iVertexSize;
 		UINT pOffsets = 0;
+		UINT pStrides = sizeof(PNCT_VERTEX);
+
+		//노말맵을 위한 버텍스 정보
 		pContext->IASetVertexBuffers(1, 1, m_pMap->m_pVertexBuffer.GetAddressOf(),
-			&pStrides, &pOffsets);	
-		pContext->IASetVertexBuffers(0, 1, m_pLeafList[iNode]->m_pVertexBuffer.GetAddressOf(), &pStrides, &pOffsets);
-		pContext->IASetIndexBuffer(pRenderBuffer, DXGI_FORMAT_R32_UINT, 0);
-		m_pMap->PostRender(pContext, iNumIndex);
+			&pStrides, &pOffsets);
+		//----------------------------------------
+
+		//노드 당 갖고 있는 버텍스 정보
+		pContext->IASetVertexBuffers(0, 1, pNode->m_pVertexBuffer.GetAddressOf(), &pStrides, &pOffsets);
+		//----------------------------------------
+		
+		//패치 인덱스
+		if (pNode->m_LodLevel < 2)
+		{
+			pContext->IASetIndexBuffer(m_LodPatchList[pNode->m_LodLevel].IndexBufferList[pNode->m_LodType].Get(), DXGI_FORMAT_R32_UINT, 0);
+			m_pMap->PostRender(pContext, (UINT)m_LodPatchList[pNode->m_LodLevel].IndexList[pNode->m_LodType].size());
+		}
+		else
+		{
+			pContext->IASetIndexBuffer(m_pLodIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+			m_pMap->PostRender(pContext, (UINT)m_IndexList.size());
+		}
+
+		//----------------------------------------
 	}
 
 	//맵 오브젝트 렌더
@@ -351,23 +360,25 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	}*/
 
 	//todo:디버깅 박스, 플래그 설정
-	for (int iNode = 0; iNode < m_pLeafList.size(); iNode++)
+	if(ImGui::Begin(u8"지형 렌더링"))
 	{
-		DrawDebugRender(&m_pLeafList[iNode]->m_node_box, pContext);
+		ImGui::Text(u8"감지된 리프노드 %d", m_pDrawableLeafList.size());
+		if (ImGui::Button("Terrian Box Enable"))
+		{
+			m_bDebug = !m_bDebug;
+		}
+	}ImGui::End();
+	if (m_bDebug)
+	{
+		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
+		{
+			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext);
+		}
 	}
 	return true;
 }
 
-bool KMapLOD::Release()
-{
-	for (int iPatch = 0; iPatch < m_LodPatchList.size(); iPatch++)
-	{
-		m_LodPatchList[iPatch].Release();
-	}
-	KQuadTree::Release();
-	m_Debug_Box.Release();
-	return true;
-}
+
 void KMapLOD::DrawableUpdate()
 {
 	m_pDrawableLeafList.clear();
@@ -392,7 +403,7 @@ void KMapLOD::RenderTile(KNode* pNode)
 			return;
 		}
 
-		for (int iNode = 0; iNode < 3; iNode++)
+		for (int iNode = 0; iNode < pNode->m_pChildlist.size(); iNode++)
 		{
 			RenderTile(pNode->m_pChildlist[iNode]);
 		}
@@ -434,7 +445,6 @@ void KMapLOD::DrawDebugInit(ID3D11DeviceContext* pContext)
 		m_Debug_Box.m_pContext = pContext;
 	}
 }
-
 void KMapLOD::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 {
 	//add list
@@ -504,13 +514,26 @@ void KMapLOD::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 	m_Debug_Box.m_VertexList[22].pos = pBox->List[5];
 	m_Debug_Box.m_VertexList[23].pos = pBox->List[4]; 
 
+	for (int index = 0; index < m_Debug_Box.m_VertexList.size(); index++)
+	{
+		m_Debug_Box.m_VertexList[index].color = KVector4(pBox->max.y * 0.015f, 0.2f, 0.2f, 1.0f);
+	}
 	m_Debug_Box.SetMatrix(NULL, &m_pCamera->m_matView, &m_pCamera->m_matProj);
 	pContext->UpdateSubresource(
 		m_Debug_Box.m_pVertexBuffer.Get(), 0, NULL, &m_Debug_Box.m_VertexList.at(0), 0, 0);
 	m_Debug_Box.Render(pContext);
 }
 
-
+bool KMapLOD::Release()
+{
+	for (int iPatch = 0; iPatch < m_LodPatchList.size(); iPatch++)
+	{
+		m_LodPatchList[iPatch].Release();
+	}
+	KQuadTree::Release();
+	m_Debug_Box.Release();
+	return true;
+}
 KMapLOD::KMapLOD()
 {
 }

@@ -81,11 +81,12 @@ public:
 	int		m_data;
 	int		m_depth;
 public:
-	KNode*					m_pChildlist[4]; //자식 노드
-	KNode*					m_pNeighborlist[4];// 이웃 노드
+	std::vector<KNode*>     m_pChildlist; //자식 노드
+	std::vector<KNode*>   	m_pNeighborlist;// 이웃 노드
 	std::vector<DWORD>		m_CornerList;// 노드의 코너
 	KVector3				m_Center;
 	UINT					m_LodLevel;
+	UINT					m_LodType;
 	POINT					m_Element;				// 위치 포인트
 	bool					m_bLeaf;
 	std::list<KMapObject*>  m_StaticObjectList;
@@ -139,6 +140,12 @@ public:
 public:
 	KNode()
 	{
+		m_pChildlist.resize(4);
+		m_pChildlist[0] = nullptr;
+		m_pChildlist[1] = nullptr;
+		m_pChildlist[2] = nullptr;
+		m_pChildlist[3] = nullptr;
+		m_pNeighborlist.resize(4);
 		m_pParent = nullptr;
 		m_index = 0;
 		m_data = 0;
@@ -148,6 +155,17 @@ public:
 	}
 	KNode(float x, float y, float w, float h)
 	{
+		m_pChildlist.resize(4);
+		m_pChildlist[0] = nullptr;
+		m_pChildlist[1] = nullptr;
+		m_pChildlist[2] = nullptr;
+		m_pChildlist[3] = nullptr;
+		m_pNeighborlist.resize(4);
+		m_pNeighborlist[0] = nullptr;
+		m_pNeighborlist[1] = nullptr;
+		m_pNeighborlist[2] = nullptr;
+		m_pNeighborlist[3] = nullptr;
+
 		m_pParent = nullptr; m_Element = { 0,0 };
 		m_bLeaf = false; m_data = 0;
 		m_index = 0; m_depth = 0;

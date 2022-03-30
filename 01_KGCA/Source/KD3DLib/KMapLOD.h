@@ -26,6 +26,9 @@ struct KLodPatch
 };
 class KMapLOD : public KQuadTree
 {
+private:
+	bool						m_bDebug= false;
+public:
 	KMap*						m_pMap;
 	KCamera*					m_pCamera;
 public:
@@ -49,6 +52,7 @@ public:
 public:
 	virtual bool	Build(KMap* pmap, KCamera* pCamera);
 	virtual bool	SetLOD(KVector3* vCamera);
+	virtual DWORD	SetLODType(KNode* pNode);
 	virtual bool	ComputeStaticLodIndex(int numcell);
 public:
 	virtual KNode* CreateNode(KNode* pParent, float x, float y, float w, float h)override;
