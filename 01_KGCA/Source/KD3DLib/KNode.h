@@ -92,7 +92,7 @@ public:
 	std::list<KMapObject*>  m_StaticObjectList;
 	std::list<KMapObject*>  m_DynamicObjectList;
 public:
-	std::vector <DWORD>		    m_IndexList;
+	//std::vector <DWORD>		m_IndexList; 패치의 인덱스 사용으로 대체
 	std::vector <PNCT_VERTEX>	m_VertexList;
 	wrl::ComPtr<ID3D11Buffer>	m_pVertexBuffer;
 public:
@@ -120,22 +120,6 @@ public:
 		this->m_rect.max.x = this->m_rect.min.x + w;
 		//수정
 		this->m_rect.max.y = this->m_rect.min.y - h;
-	}
-	void SetBox(float x, float y, float z, float w, float h)
-	{
-		//m_Center.x = x + (w / 2.0f);
-		//m_Center.y = y/2.0f;
-		//m_Center.z = z - (h / 2.0f);
-		this->m_node_box.min = KVector3(x,-1,z);
-		this->m_node_box.max = KVector3(x+w, y ,z-h);
-		this->m_node_box.Axis[0] = KVector3(1, 0, 0);
-		this->m_node_box.Axis[1] = KVector3(0, 1, 0);
-		this->m_node_box.Axis[2] = KVector3(0, 0, 1);
-		this->m_node_box.size.x = (this->m_node_box.max.x + this->m_node_box.min.x) / 2.0f;
-		this->m_node_box.size.y = (this->m_node_box.max.y + this->m_node_box.min.y) / 2.0f;
-		this->m_node_box.size.z = (this->m_node_box.max.z + this->m_node_box.min.z) / 2.0f;
-		this->m_node_box.middle = (this->m_node_box.max + this->m_node_box.min);
-		this->m_node_box.middle /= 2.0f;
 	}
 public:
 	KNode()

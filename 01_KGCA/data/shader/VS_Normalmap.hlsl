@@ -23,6 +23,7 @@ struct VS_OUTPUT
 {
 	float4 p : SV_POSITION;
 	float2 t : TEXCOORD0;
+	float4 c : COLOR0;
 	float3 mLightDir : TEXCOORD1; //방향
 	float3 mViewDir : TEXCOORD2; //방향
 	float3 mT        : TEXCOORD3;
@@ -53,6 +54,7 @@ VS_OUTPUT VS(VS_INPUT Input)
 	float3 worldNormal = mul(Input.n, (float3x3)g_matWorld);
 	Output.p = vProj;
 	Output.t = Input.t;
+	Output.c = Input.c;
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);

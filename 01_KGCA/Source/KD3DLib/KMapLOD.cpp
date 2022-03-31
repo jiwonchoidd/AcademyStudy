@@ -134,7 +134,7 @@ KNode* KMapLOD::CreateNode(KNode* pParent, float x, float y, float w, float h)
 	KVector3 vRB = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos;
 	pNode->SetRect(vLT.x, (vRB.y- vLT.y), vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
 	//리프 노드의 바운딩 박스를 만든다.
-	pNode->SetBox(vLT.x, vLT.y, vLT.z, vRT.x - vLT.x, vLT.z - vLB.z);
+	CreateNodeBoundingBox(pNode);
 	return pNode;
 }
 
@@ -356,6 +356,9 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
 			&m_pCamera->m_matView,
 			&m_pCamera->m_matProj);
+		obj->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
+		obj->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
+		obj->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
 		obj->obj_pObject->Render(pContext);
 	}
 
@@ -378,6 +381,66 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	return true;
 }
 
+//박스 만들기.
+KBox KMapLOD::CreateNodeBoundingBox(KNode* pNode)
+{
+	KVector3 v0, v4;
+	v0 = m_pMap->m_VertexList[pNode->m_CornerList[0]].pos; // 0
+	v4 = m_pMap->m_VertexList[pNode->m_CornerList[3]].pos; // 24
+	pNode->m_node_box.min.x = v0.x;
+	pNode->m_node_box.min.z = v4.z;
+	pNode->m_node_box.max.x = v4.x;
+	pNode->m_node_box.max.z = v0.z;
+	KVector2 vHeight = GetHeightFromNode(
+		pNode->m_CornerList[0],
+		pNode->m_CornerList[1],
+		pNode->m_CornerList[2],
+		pNode->m_CornerList[3]);
+	pNode->m_node_box.min.y = vHeight.y;
+	pNode->m_node_box.max.y = vHeight.x;
+	pNode->m_node_box.Axis[0] = KVector3(1, 0, 0);
+	pNode->m_node_box.Axis[1] = KVector3(0, 1, 0);
+	pNode->m_node_box.Axis[2] = KVector3(0, 0, 1);
+	pNode->m_node_box.size.x = (pNode->m_node_box.max.x - pNode->m_node_box.min.x) / 2.0f;
+	pNode->m_node_box.size.y = (pNode->m_node_box.max.y - pNode->m_node_box.min.y) / 2.0f;
+	pNode->m_node_box.size.z = (pNode->m_node_box.max.z - pNode->m_node_box.min.z) / 2.0f;
+	pNode->m_node_box.middle = (pNode->m_node_box.max + pNode->m_node_box.min);
+	pNode->m_node_box.middle /= 2.0f;
+
+	return pNode->m_node_box;
+}
+
+KVector2 KMapLOD::GetHeightFromNode(DWORD TL, DWORD TR, DWORD BL, DWORD BR)
+{
+	DWORD dwStartRow = TL / m_width;
+	DWORD dwEndRow = BL / m_width;
+
+	DWORD dwStartCol = TL % m_width;
+	DWORD dwEndCol = TR % m_width;
+
+	KVector2 vHeight;
+	vHeight.x = -999999.0f;
+	vHeight.y = 999999.0f;
+
+	// 0,  4, 
+	// 20 ,24
+
+	for (DWORD dwRow = dwStartRow; dwRow < dwEndRow; dwRow++)
+	{
+		for (DWORD dwCol = dwStartCol; dwCol < dwEndCol; dwCol++)
+		{
+			if (m_pMap->m_VertexList[dwRow * m_width + dwCol].pos.y > vHeight.x)
+			{
+				vHeight.x = m_pMap->m_VertexList[dwRow * m_width + dwCol].pos.y;
+			}
+			if (m_pMap->m_VertexList[dwRow * m_width + dwCol].pos.y < vHeight.y)
+			{
+				vHeight.y = m_pMap->m_VertexList[dwRow * m_width + dwCol].pos.y;
+			}
+		}
+	}
+	return vHeight;
+}
 
 void KMapLOD::DrawableUpdate()
 {

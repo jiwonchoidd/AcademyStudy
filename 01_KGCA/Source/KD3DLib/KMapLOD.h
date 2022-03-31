@@ -45,6 +45,8 @@ public:
 public:
 	KBoxObj					m_Debug_Box;// Temporary debug object
 public:
+	KBox   CreateNodeBoundingBox(KNode* pNode);
+	KVector2 GetHeightFromNode(DWORD TL, DWORD TR, DWORD BL, DWORD BR);
 	void   DrawableUpdate();
 	void   RenderTile(KNode* pNode);
 	bool   AddObject(KMapObject* obj);

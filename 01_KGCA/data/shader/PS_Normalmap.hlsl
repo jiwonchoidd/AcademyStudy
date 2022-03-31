@@ -13,13 +13,13 @@ struct VS_OUTPUT
 {
 	float4 p : SV_POSITION;
 	float2 t : TEXCOORD0;
+	float4 c : COLOR0;
 	float3 mLightDir : TEXCOORD1; //방향
 	float3 mViewDir : TEXCOORD2; //방향
 	float3 mT        : TEXCOORD3;
 	float3 mB        : TEXCOORD4;
 	float3 mN        : TEXCOORD5;
 };
-
 Texture2D		g_txDiffuse : register(t0);
 Texture2D		g_txSpecular : register(t1);
 Texture2D		g_txNormal : register(t2);
@@ -56,5 +56,5 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 
    float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
 
-   return float4(ambient + diffuse + specular,1);
+   return float4(ambient + diffuse + specular,1) * Input.c;
 }
