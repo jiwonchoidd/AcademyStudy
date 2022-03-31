@@ -126,14 +126,14 @@ public:
 		//m_Center.x = x + (w / 2.0f);
 		//m_Center.y = y/2.0f;
 		//m_Center.z = z - (h / 2.0f);
-		this->m_node_box.min = KVector3(x,0,z);
+		this->m_node_box.min = KVector3(x,-1,z);
 		this->m_node_box.max = KVector3(x+w, y ,z-h);
 		this->m_node_box.Axis[0] = KVector3(1, 0, 0);
 		this->m_node_box.Axis[1] = KVector3(0, 1, 0);
 		this->m_node_box.Axis[2] = KVector3(0, 0, 1);
-		this->m_node_box.size.x = (this->m_node_box.max.x - this->m_node_box.min.x) / 2.0f;
-		this->m_node_box.size.y = (this->m_node_box.max.y - this->m_node_box.min.y) / 2.0f;
-		this->m_node_box.size.z = (this->m_node_box.max.z - this->m_node_box.min.z) / 2.0f;
+		this->m_node_box.size.x = (this->m_node_box.max.x + this->m_node_box.min.x) / 2.0f;
+		this->m_node_box.size.y = (this->m_node_box.max.y + this->m_node_box.min.y) / 2.0f;
+		this->m_node_box.size.z = (this->m_node_box.max.z + this->m_node_box.min.z) / 2.0f;
 		this->m_node_box.middle = (this->m_node_box.max + this->m_node_box.min);
 		this->m_node_box.middle /= 2.0f;
 	}

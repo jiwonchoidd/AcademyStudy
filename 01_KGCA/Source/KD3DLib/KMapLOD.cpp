@@ -351,18 +351,18 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	}
 
 	//맵 오브젝트 렌더
-	/*for (auto obj : m_ObjectList)
+	for (auto obj : m_ObjectList)
 	{
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
-			&m_pMap->m_cbData.matView,
-			&m_pMap->m_cbData.matProj);
+			&m_pCamera->m_matView,
+			&m_pCamera->m_matProj);
 		obj->obj_pObject->Render(pContext);
-	}*/
+	}
 
-	//todo:디버깅 박스, 플래그 설정
+	//디버깅 박스 렌더
 	if(ImGui::Begin(u8"지형 렌더링"))
 	{
-		ImGui::Text(u8"감지된 리프노드 %d", m_pDrawableLeafList.size());
+		ImGui::Text(u8"감지된 리프노드 : %d", m_pDrawableLeafList.size());
 		if (ImGui::Button("Terrian Box Enable"))
 		{
 			m_bDebug = !m_bDebug;

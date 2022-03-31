@@ -25,9 +25,9 @@ void KScene_Intro::SetupMapObject()
 			0.0f,
 			randstep(m_Terrian.m_BoxCollision.min.z, m_Terrian.m_BoxCollision.max.z));
 
-		D3DKMatrixScaling(&matScale, randstep(10.0f, 100.0f),
-			randstep(10.0f, 100.0f),
-			randstep(10.0f, 100.0f));
+		D3DKMatrixScaling(&matScale, randstep(0.5f, 1.0f),
+			randstep(0.5f, 1.0f),
+			randstep(0.5f, 1.0f));
 		D3DKMatrixRotationYawPitchRoll(&matRotateObj,
 			cosf(randstep(0.0f, 360.0f)) * XM_PI,
 			sinf(randstep(0.0f, 360.0f)) * XM_PI,
@@ -115,6 +115,46 @@ bool KScene_Intro::Frame()
 	m_Box.SetRotation(m_Box.m_rot);
 	m_Box.SetPosition(m_Box.m_pos);
 #pragma endregion
+
+	//마우스 피킹
+	if (g_InputData.bMouseState[0])
+	{
+		//화면 좌표계이기때문에, y를 음수
+		//화면 크기
+		POINT ptCursor;
+		GetCursorPos(&ptCursor);
+		ScreenToClient(g_hWnd, &ptCursor);
+		KVector3 v;
+		//Direction 계산
+		//현재 아래 계산으로는 미니맵 클릭시 어려움, 무조건 전체 화면 크기 기준으로
+		//제작해서..근데 미니맵에서 클릭할 일이 있을까싶어서
+		v.x = (((2.0f * ptCursor.x) / g_rtClient.right) - 1) / m_Camera.m_matProj._11;
+		v.y = -(((2.0f * ptCursor.y) / g_rtClient.bottom) - 1) / m_Camera.m_matProj._22;
+		v.z = 1.0f;
+
+		//뷰죄표계에서는 시작은 무조건 0,0,0
+		KMatrix matInverse;
+		D3DKMatrixInverse(&matInverse, nullptr, &m_Camera.m_matView);
+
+		//카메라의 월드 좌표의 레이가 만든다.
+		TRay ray;
+		//ray.position = KVector3(0, 0, 0);
+		//ray.direction = v;
+		//ray.position = ray.position * matInverse;
+		//ray.direction= ray.direction * matInverse;
+		ray.direction.x = v.x * matInverse._11 + v.y * matInverse._21 + v.z * matInverse._31;
+		ray.direction.y = v.x * matInverse._12 + v.y * matInverse._22 + v.z * matInverse._32;
+		ray.direction.z = v.x * matInverse._13 + v.y * matInverse._23 + v.z * matInverse._33;
+
+		ray.position.x = matInverse._41;
+		ray.position.y = matInverse._42;
+		ray.position.z = matInverse._43;
+
+		//교점 찾기
+		KVector3 m_vIntersect;
+		m_Terrian.m_VertexList; //local * worldmatri = world
+		m_Terrian.m_IndexList;
+	}
 
 	if (ImGui::Begin(u8"디버깅 인스펙터"))
 	{

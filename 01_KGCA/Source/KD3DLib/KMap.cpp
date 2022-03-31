@@ -20,6 +20,11 @@ bool KMap::CreateMap(UINT width, UINT height, float distance)
 	m_num_cell_col = m_num_col - 1;
 	m_num_cell_row = m_num_row - 1;
 	m_num_face = m_num_cell_col * m_num_cell_row * 2;
+
+	m_BoxCollision.max.x = (m_num_col / 2 * m_cell_distance);
+	m_BoxCollision.min.x = -m_BoxCollision.max.x;
+	m_BoxCollision.max.z = (m_num_row / 2 * m_cell_distance);
+	m_BoxCollision.min.z = -m_BoxCollision.max.z;
 	return true;
 }
 //context가 로드되어야 실행됨
