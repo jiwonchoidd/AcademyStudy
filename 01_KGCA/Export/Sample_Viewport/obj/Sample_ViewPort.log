@@ -1,7 +1,3 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(../../Export/Sample_Viewport/obj/)에 다른 프로젝트(Sample_QuadTree.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
-  KSceneManager.cpp
-  KScene_Intro.cpp
-E:\github\AcademyStudy\01_KGCA\Source\Sample_ViewPort\KScene_Intro.cpp(22,16): error C2660: 'KCamera::Init': 함수는 0개의 인수를 사용하지 않습니다.
-E:\github\AcademyStudy\01_KGCA\Include\KCamera.h(38,16): message : 'KCamera::Init' 선언을 참조하십시오.
   Sample.cpp
-  코드를 생성하고 있습니다...
+E:\github\AcademyStudy\01_KGCA\Include\ImGuiManager.h(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'imgui.h': No such file or directory

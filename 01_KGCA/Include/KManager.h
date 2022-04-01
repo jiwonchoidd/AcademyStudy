@@ -80,6 +80,7 @@ T* KManager<T, S>::Load(std::wstring filename)
 	std::shared_ptr<T> pNewData = std::make_shared<T>();
 	if (pNewData->Load(filename) == false)
 	{
+		MessageBox(g_hWnd, L"매니저 객체", L"개같이 실패", 0);
 		return nullptr;
 	}
 	pNewData->m_Name = name;

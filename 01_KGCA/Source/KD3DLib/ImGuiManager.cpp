@@ -34,7 +34,7 @@ bool ImGuiManager::isImguiEnable()
 }
 ImGuiManager::ImGuiManager()
 {
-	IMGUI_CHECKVERSION();
+	//IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
     ImGuiIO& io = ImGui::GetIO();
