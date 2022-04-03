@@ -47,7 +47,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float3 viewDir = normalize(Input.mViewDir);
 
 	  specular = saturate(dot(reflection, -viewDir));
-	  specular = pow(specular,20.0f);
+	  specular = pow(specular,30.0f);
 
 	  //스페큘러 텍스쳐
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
@@ -56,5 +56,5 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 
    float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
 
-   return float4(ambient + diffuse + specular,1) * Input.c;
+   return float4(ambient + diffuse + specular, 1);// *Input.c;
 }

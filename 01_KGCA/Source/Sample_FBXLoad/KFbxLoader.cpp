@@ -14,7 +14,7 @@ bool KFbxLoader::Load(std::wstring filename)
 	std::string temp = to_wm(filename);
 	bool bRet = m_pFbxImporter->Initialize(temp.c_str()); //파일명 넘김
 	bRet = m_pFbxImporter->Import(m_pFbxScene);
-	//FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene); //마야 Z축 버젼 사용
+	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene); //마야 Z축 버젼 사용
 
 	if (bRet)
 	{
@@ -134,16 +134,19 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			if (pSurface)
 			{
 				std::wstring texturename = to_mw(ParseMaterial(pSurface));
-				pObject->m_tex_name_diffuse = L"../../data/model/";
-				pObject->m_tex_name_diffuse += texturename;
+				if (!texturename.empty())
+				{
+					pObject->m_tex_name_diffuse = L"../../data/model/";
+					pObject->m_tex_name_diffuse += texturename;
+				}
 			}
 		}
 		//----------------------------------------------------------
 		// 폴리곤, 면 개수 만큼 돌면서 위치를 저장
 		// 삼각형, 사각형
 		int iCurpolyIndex = 0; // 증가되는 폴리곤 인덱스
-		int iNumPolyCount = pFbxMesh->GetPolygonCount();
-		FbxVector4* pVertexPositions = pFbxMesh->GetControlPoints();
+		int iNumPolyCount = pFbxMesh->GetPolygonCount(); //폴리곤 수
+		FbxVector4* pVertexPositions = pFbxMesh->GetControlPoints(); //정점 위치 
 		int iNumFace = 0;
 		for (int iPoly = 0; iPoly < iNumPolyCount; iPoly++)
 		{
@@ -232,11 +235,13 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 
 std::string KFbxLoader::ParseMaterial(FbxSurfaceMaterial* pMtrl)
 {
-	std::string name = pMtrl->GetName();
-	auto Property = pMtrl->FindProperty(FbxSurfaceMaterial::sDiffuse);
-	if (Property.IsValid())
+	std::string mtl_name = pMtrl->GetName();
+	auto dProperty = pMtrl->FindProperty(FbxSurfaceMaterial::sDiffuse);
+	auto sProperty = pMtrl->FindProperty(FbxSurfaceMaterial::sSpecular);
+	auto nProperty = pMtrl->FindProperty(FbxSurfaceMaterial::sNormalMap);
+	if (dProperty.IsValid())
 	{
-		const FBXSDK_DLL::FbxFileTexture* tex = Property.GetSrcObject<FBXSDK_DLL::FbxFileTexture>(0);
+		const FBXSDK_DLL::FbxFileTexture* tex = dProperty.GetSrcObject<FBXSDK_DLL::FbxFileTexture>(0);
 		if (tex != nullptr)
 		{
 			const CHAR* szFileName = tex->GetFileName();

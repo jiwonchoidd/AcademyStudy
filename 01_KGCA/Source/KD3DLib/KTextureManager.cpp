@@ -35,11 +35,11 @@ bool KTexture::Load(std::wstring filename)
             m_pResourceTexture.GetAddressOf(),
             m_pSRVTexture.GetAddressOf());
     }
-    static_cast<ID3D11Texture2D*>(m_pResourceTexture.Get())->GetDesc(&m_TextureDesc);
     if (FAILED(hr))
     {
         return false;
     }
+    static_cast<ID3D11Texture2D*>(m_pResourceTexture.Get())->GetDesc(&m_TextureDesc);
     return true;
 }
 

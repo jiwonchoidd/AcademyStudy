@@ -184,7 +184,7 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 	}
 	//Fbx 파일 로드
 	m_FbxLoader.Init();
-	m_FbxLoader.Load(L"../../data/model/Sphere.fbx");
+	m_FbxLoader.Load(L"../../data/model/SM_Barrel.FBX");
 	for (int iObj = 0; iObj < m_FbxLoader.m_ObjectList.size(); iObj++)
 	{
 		if (m_FbxLoader.m_ObjectList[iObj]->m_tex_name_diffuse.empty())
@@ -195,16 +195,16 @@ bool KScene_Intro::Init(ID3D11DeviceContext* context)
 		{
 			m_FbxLoader.m_ObjectList[iObj]->m_pTexture_Diffuse = g_TextureMananger.Load(m_FbxLoader.m_ObjectList[iObj]->m_tex_name_diffuse);
 		}
-		
 		m_FbxLoader.m_ObjectList[iObj]->SetPosition(KVector3(0.0f, 1.0f, 0.0f));
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._11 = 10.0f;
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._22 = 10.0f;
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._33 = 10.0f;
-		if (!m_FbxLoader.m_ObjectList[iObj]->CreateObject(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"",
-			L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg"))
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._11 = 0.2f;
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._22 = 0.2f;
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._33 = 0.2f;
+		if (!m_FbxLoader.m_ObjectList[iObj]->CreateObject(L"../../data/shader/VS_Normalmap.hlsl", L"../../data/shader/PS_Normalmap.hlsl", L"../../data/model/T_Pack_01_D.jpg",
+			L"../../data/model/T_Pack_01_S.jpg", L"../../data//T_Pack_01_N.jpg"))
 		{
 			return false;
 		}
+		
 	}
 	return true;
 }
