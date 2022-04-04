@@ -28,13 +28,13 @@ HRESULT	KShader::Load(std::wstring vs, std::wstring ps)
 	return hr;
 }
 
-ID3DBlob* KShader::LoadShaderBlob(std::wstring vs, std::string function, std::string version)
+ID3DBlob* KShader::LoadShaderBlob(std::wstring vsps, std::string function, std::string version)
 {
 	HRESULT hr = S_OK;
 	ID3DBlob* ret = nullptr;
 	ID3DBlob* error = nullptr;
 	hr = D3DCompileFromFile(
-		vs.c_str(),
+		vsps.c_str(),
 		nullptr,
 		nullptr,
 		function.c_str(),

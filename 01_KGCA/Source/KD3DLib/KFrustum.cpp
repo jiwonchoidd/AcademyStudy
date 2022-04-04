@@ -19,35 +19,35 @@ bool KFrustum::Init()
 	int color = 0;
 
 	// Á¤¸é
-	m_VertexList[color].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 1.0f);
+	m_VertexList[color].color =		KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.5f, 0.5f, 0.5f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.0f, 1.0f, 0.3f);//¿À¸¥ÂÊ
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.0f, 1.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.0f, 1.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.1f, 0.0f, 1.0f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);//¿ÞÂÊ
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 1.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);//À­¸é
+	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
-	m_VertexList[color += 1].color = KVector4(0.0f, 1.0f, 0.0f, 1.0f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);//¾Æ·§
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
 	
 	return true;
 }

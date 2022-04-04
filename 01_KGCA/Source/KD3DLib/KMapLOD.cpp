@@ -354,29 +354,12 @@ bool KMapLOD::Render(ID3D11DeviceContext* pContext)
 	for (auto obj : m_ObjectList)
 	{
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
-			&m_pCamera->m_matView,
-			&m_pCamera->m_matProj);
+			&m_pMap->m_matView,
+			&m_pMap->m_matProj);
 		obj->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
 		obj->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
 		obj->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
 		obj->obj_pObject->Render(pContext);
-	}
-
-	//디버깅 박스 렌더
-	if(ImGui::Begin(u8"지형 렌더링"))
-	{
-		ImGui::Text(u8"감지된 리프노드 : %d", m_pDrawableLeafList.size());
-		if (ImGui::Button("Terrian Box Enable"))
-		{
-			m_bDebug = !m_bDebug;
-		}
-	}ImGui::End();
-	if (m_bDebug)
-	{
-		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
-		{
-			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext);
-		}
 	}
 	return true;
 }
@@ -581,10 +564,31 @@ void KMapLOD::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 	{
 		m_Debug_Box.m_VertexList[index].color = KVector4(pBox->max.y * 0.015f, 0.2f, 0.2f, 1.0f);
 	}
-	m_Debug_Box.SetMatrix(NULL, &m_pCamera->m_matView, &m_pCamera->m_matProj);
+	m_Debug_Box.SetMatrix(NULL, &m_pMap->m_matView,
+		&m_pMap->m_matProj);
 	pContext->UpdateSubresource(
 		m_Debug_Box.m_pVertexBuffer.Get(), 0, NULL, &m_Debug_Box.m_VertexList.at(0), 0, 0);
 	m_Debug_Box.Render(pContext);
+}
+
+void KMapLOD::ImGuiRender(ID3D11DeviceContext* pContext)
+{
+	//디버깅 박스 렌더
+	if (ImGui::Begin(u8"지형 렌더링"))
+	{
+		ImGui::Text(u8"감지된 리프노드 : %d", m_pDrawableLeafList.size());
+		if (ImGui::Button("Terrian Box Enable"))
+		{
+			m_bDebug = !m_bDebug;
+		}
+	}ImGui::End();
+	if (m_bDebug)
+	{
+		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
+		{
+			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext);
+		}
+	}
 }
 
 bool KMapLOD::Release()

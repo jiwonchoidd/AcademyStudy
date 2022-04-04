@@ -151,8 +151,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="KDepthShadow.h" />
     <ClInclude Include="KFbxLoader.h" />
     <ClInclude Include="KFBXObj.h" />
+    <ClInclude Include="KLight.h" />
+    <ClInclude Include="KMiniMap.h" />
+    <ClInclude Include="KMousePicker.h" />
     <ClInclude Include="KSceneManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sample.h" />
@@ -161,6 +165,8 @@
   <ItemGroup>
     <ClCompile Include="KFbxLoader.cpp" />
     <ClCompile Include="KFBXObj.cpp" />
+    <ClCompile Include="KMiniMap.cpp" />
+    <ClCompile Include="KMousePicker.cpp" />
     <ClCompile Include="KSceneManager.cpp" />
     <ClCompile Include="KScene_Intro.cpp" />
     <ClCompile Include="Sample.cpp" />

@@ -27,6 +27,12 @@
     <ClCompile Include="KFBXObj.cpp">
       <Filter>Code</Filter>
     </ClCompile>
+    <ClCompile Include="KMiniMap.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="KMousePicker.cpp">
+      <Filter>Code</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -45,6 +51,18 @@
       <Filter>Code</Filter>
     </ClInclude>
     <ClInclude Include="KFBXObj.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KMiniMap.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KMousePicker.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KDepthShadow.h">
+      <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KLight.h">
       <Filter>Code</Filter>
     </ClInclude>
   </ItemGroup>

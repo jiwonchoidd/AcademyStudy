@@ -68,10 +68,9 @@ HRESULT KDepthStencil::CreateDepthStencilView(UINT Width, UINT Height)
 
 bool KDepthStencil::Release()
 {
-	/*SAFE_RELEASE(m_pTexture);
-	SAFE_RELEASE(m_pTextureSRV);
-	SAFE_RELEASE(m_pDepthStenV);*/
-    return false;
+	//m_pTexture.Get()->Release();
+	//m_pDepthStencilView.Get()->Release();
+    return true;
 }
 
 KDepthStencil::KDepthStencil()

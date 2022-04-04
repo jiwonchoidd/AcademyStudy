@@ -75,6 +75,7 @@ public:
 public:
 	void DrawDebugInit(ID3D11DeviceContext* pContext);
 	void DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext);
+	void ImGuiRender(ID3D11DeviceContext* pContext);
 public:
 	KMapLOD();
 	virtual ~KMapLOD();

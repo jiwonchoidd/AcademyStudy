@@ -35,7 +35,10 @@ class KObject
 {
 //오브젝트 월드 행렬
 public:
-	KMatrix					m_matWorld;
+	KMatrix			m_matWorld;
+	KMatrix			m_matView;
+	KMatrix			m_matProj;
+public:
 	bool					m_bVisibility=true;
 //상속관계 구현
 public:

@@ -2,7 +2,8 @@
 #include "KDepthStencil.h"
 class KRenderTarget
 {
-	KDepthStencil    m_DepthStencil;
+public:
+	KDepthStencil			m_DepthStencil;
 	// Store the old render targets
 	D3D11_VIEWPORT			m_vpOld[D3D11_VIEWPORT_AND_SCISSORRECT_MAX_INDEX];
 	UINT					m_nViewPorts;
@@ -19,11 +20,11 @@ public:
 	wrl::ComPtr <ID3D11RenderTargetView>	m_pRenderTargetView;// 메인 랜더타켓 뷰
 public:
 	bool	Create(UINT Width, UINT Height);
-	bool    Begin(ID3D11DeviceContext* pContext);
+	bool    Begin(ID3D11DeviceContext* pContext, float color[4]);
 	bool    End(ID3D11DeviceContext* pContext);
 	bool	Release();
 	void	Save(ID3D11DeviceContext* pContext, std::wstring saveFileName);
-	ID3D11Texture2D* CreateTexture(UINT Width, UINT Height);
+	wrl::ComPtr <ID3D11Texture2D> CreateTexture(UINT Width, UINT Height);
 	HRESULT				SetRenderTargetView(ID3D11Texture2D* pTexture);
 	HRESULT CreateRenderTargetView(UINT Width, UINT Height);
 };

@@ -1,3 +1,6 @@
-﻿  Sample.cpp
-E:\github\AcademyStudy\01_KGCA\Source\KTemplateLinkedList\Sample.cpp(20,7): error C2039: 'm_Value': 'Person'의 멤버가 아닙니다.
-E:\github\AcademyStudy\01_KGCA\Source\KTemplateLinkedList\Sample.h(3): message : 'Person' 선언을 참조하십시오.
+﻿  KNode.cpp
+  KTemplateLinkedList.cpp
+  Sample.cpp
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KTemplateLinkedList\Sample.cpp(20,7): error C2039: 'm_Value': 'Person'의 멤버가 아닙니다.
+E:\Choijiwon\AcademyStudy\01_KGCA\Source\KTemplateLinkedList\Sample.h(3): message : 'Person' 선언을 참조하십시오.
+  코드를 생성하고 있습니다...

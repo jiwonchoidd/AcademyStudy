@@ -6,20 +6,20 @@ bool KPlaneObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring text
 	{
 		{-1.0f,1.0f,1.0f},
 		{ 1.0f,1.0f,1.0f},
-		{ 1.0f,-1.0f,1.0f},
-		{-1.0f,-1.0f,1.0f},
+		{ -1.0f,-1.0f,1.0f},
+		{1.0f,-1.0f,1.0f},
 	};
 	const KVector2 uv[] =
 	{
 		{0.0f,0.0f},
 		{ 1.0f,0.0f},
-		{ 1.0f,1.0f},
-		{0.0f,1.0f},
+		{ 0.0f,1.0f},
+		{1.0f,1.0f},
 	};
 	const unsigned short indexes[] =
 	{
-		0,1,3,
-		3,1,2,
+		0,1,2,
+		2,1,3,
 	};
 
 	for (int num = 0; num < sizeof(vertices)/sizeof(KVector3); num++)
@@ -53,7 +53,7 @@ bool KPlaneObj::Frame()
 
 bool KPlaneObj::Render(ID3D11DeviceContext* pContext)
 {
-	KObject::Render(pContext);
+	K3DAsset::Render(pContext);
 	return true;
 }
 

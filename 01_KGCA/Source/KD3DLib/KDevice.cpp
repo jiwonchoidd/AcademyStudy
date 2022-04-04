@@ -113,7 +113,7 @@ HRESULT KDevice::SetDepthStencilView()
 	HRESULT hr = S_OK;
 	DXGI_SWAP_CHAIN_DESC Desc;
 	m_pSwapChain->GetDesc(&Desc);
-	hr = m_DefaultDS.CreateDepthStencilView(Desc.BufferDesc.Width,
+	hr = m_DefaultRT.m_DepthStencil.CreateDepthStencilView(Desc.BufferDesc.Width,
 		Desc.BufferDesc.Height);
 	return hr;
 }
@@ -138,7 +138,7 @@ bool KDevice::ResizeDevice(UINT width, UINT height)
 	//·»´õÅ¸°Ù, ±íÀÌ ½ºÅÙ½Ç ¹öÆÛ ÇØÁ¦
 	m_pImmediateContext.Get()->OMSetRenderTargets(0, NULL, NULL);
 	if (m_DefaultRT.m_pRenderTargetView.Get())m_DefaultRT.m_pRenderTargetView.Get()->Release();
-	if (m_DefaultDS.m_pDepthStencilView.Get())m_DefaultDS.m_pDepthStencilView.Get()->Release();
+	if (m_DefaultRT.m_DepthStencil.m_pDepthStencilView.Get())m_DefaultRT.m_DepthStencil.m_pDepthStencilView.Get()->Release();
 
 	HRESULT hr = m_pSwapChain.Get()->ResizeBuffers(m_SwapChainDesc.BufferCount,
 		width, height,

@@ -1,14 +1,14 @@
 #pragma once
-#include "KObject.h"
-class KPlaneObj : public KObject
+#include "K3DAsset.h"
+class KPlaneObj : public K3DAsset
 {
 public:
-	bool Init(std::wstring vs , std::wstring ps , std::wstring tex =nullptr);
-	bool Frame();
-	bool Render(ID3D11DeviceContext* pContext);
-	bool Release();
+	virtual bool Init(std::wstring vs , std::wstring ps , std::wstring tex =L"");
+	virtual bool Frame();
+	virtual bool Render(ID3D11DeviceContext* pContext);
+	virtual bool Release();
 public:
 	KPlaneObj();
-	~KPlaneObj();
+	virtual ~KPlaneObj();
 };
 

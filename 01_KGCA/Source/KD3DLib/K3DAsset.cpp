@@ -4,14 +4,17 @@ void K3DAsset::SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatPro
 {
     if (pMatWorld != nullptr)
     {
+        m_matWorld = *pMatWorld;
         m_cbData.matWorld = pMatWorld->Transpose();
     }
     if (pMatView != nullptr)
     {
+        m_matView = *pMatView;
         m_cbData.matView = pMatView->Transpose();
     }
     if (pMatProj != nullptr)
     {
+        m_matProj = *pMatProj;
         m_cbData.matProj = pMatProj->Transpose();
     }
     

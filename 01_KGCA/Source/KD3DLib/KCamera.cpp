@@ -14,39 +14,12 @@ bool KCamera::ResizeRatio()
     return false;
 }
 
-bool KCamera::Follow2DPos(KVector2* vPos, KVector2 offset)
-{
- // offset
-    m_vCameraPos.x = vPos->x;
-    m_vCameraPos.y = vPos->y - offset.y;
-    m_vCameraTarget.x = vPos->x;
-    m_vCameraTarget.y = vPos->y;
-   
-
-    m_matWorld._41 = m_vCameraPos.x;
-    m_matWorld._42 = m_vCameraPos.y;
-    m_matWorld._43 = m_vCameraPos.z;
-    KQuaternion q;
-    //사원수를 행렬로 변환하고 역행렬로 카메라
-    D3DKMatrixLookAtLH(&m_matView, &m_vCameraPos, &m_vCameraTarget, &m_vUp);
-    //매 프레임 마다 뷰행렬을 만든다.
-    m_vSide.x = m_matView._11;
-    m_vSide.y = m_matView._21;
-    m_vSide.z = m_matView._31;
-    m_vUp.x = m_matView._12;
-    m_vUp.y = m_matView._22;
-    m_vUp.z = m_matView._32;
-    m_vLook.x = m_matView._13;
-    m_vLook.y = m_matView._23;
-    m_vLook.z = m_matView._33;
-    return true;
-}
 KMatrix KCamera::OnMouseRotation()
 {
     if (g_Input.m_DIMouseState.rgbButtons[1])
     {
-        m_fYaw += XMConvertToRadians((g_InputData.iMouseValue[0] * m_fMouseSensitivity) *g_fSecPerFrame);
-        m_fPitch += XMConvertToRadians((g_InputData.iMouseValue[1] * m_fMouseSensitivity) * g_fSecPerFrame);
+        m_fYaw += XMConvertToRadians((g_InputData.iMouseValue[0] * g_fSecPerFrame) * m_fMouseSensitivity);
+        m_fPitch += XMConvertToRadians((g_InputData.iMouseValue[1] * g_fSecPerFrame) * m_fMouseSensitivity);
     }
     m_fRoll += 0;
     m_fRadius += 0;
@@ -56,7 +29,7 @@ KMatrix KCamera::OnMouseRotation()
     KMatrix matRotation;
     D3DKMatrixAffineTransformation(&matRotation, 1.0f, NULL, &q, &m_vCameraPos);
     D3DKMatrixInverse(&m_matView, NULL, &matRotation);
-    UpdateCamera();
+
     return matRotation;
 }
 void KCamera::UpdateCamera()
@@ -158,6 +131,7 @@ bool KDebugCamera::Frame()
 {
     ResizeRatio();
     OnMouseRotation();
+    UpdateCamera();
     if (g_InputData.bWKey)
     {
         m_vCameraPos = m_vCameraPos + m_vLook * m_fSpeed * g_fSecPerFrame;

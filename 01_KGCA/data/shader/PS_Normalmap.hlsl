@@ -58,3 +58,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 
    return float4(ambient + diffuse + specular, 1) * Input.c;
 }
+float4 PSDepth(VS_OUTPUT Input) : SV_TARGET
+{
+	return Input.c;
+}

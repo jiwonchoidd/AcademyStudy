@@ -1,11 +1,11 @@
 #include "KRenderTarget.h"
 #include "ScreenGrab.h"
 #include <wincodec.h>
-ID3D11Texture2D* KRenderTarget::CreateTexture(UINT Width, UINT Height)
+wrl::ComPtr <ID3D11Texture2D> KRenderTarget::CreateTexture(UINT Width, UINT Height)
 {
 	HRESULT hr = S_OK;
 	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
-	ID3D11Texture2D* pTexture = nullptr;
+	wrl::ComPtr<ID3D11Texture2D> pTexture = nullptr;
 	D3D11_TEXTURE2D_DESC td;
 	td.Width = Width;
 	td.Height = Height;
@@ -19,12 +19,12 @@ ID3D11Texture2D* KRenderTarget::CreateTexture(UINT Width, UINT Height)
 	td.MiscFlags = 0;
 	td.SampleDesc.Count = 1;
 	td.SampleDesc.Quality = 0;
-	hr = g_pd3dDevice->CreateTexture2D(&td, NULL, &pTexture);
+	hr = g_pd3dDevice->CreateTexture2D(&td, NULL, pTexture.GetAddressOf());
 	if (FAILED(hr))
 	{
 		return nullptr;
 	}
-	return pTexture;
+	return pTexture.Get();
 }
 
 HRESULT KRenderTarget::SetRenderTargetView(ID3D11Texture2D* pBackBuffer)
@@ -49,7 +49,7 @@ HRESULT KRenderTarget::CreateRenderTargetView(UINT Width, UINT Height)
 	HRESULT hr = S_OK;
 	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
 	m_pTexture = CreateTexture(Width, Height);
-	if (m_pTexture == nullptr)
+	if (m_pTexture.Get() == nullptr)
 	{
 		return E_FAIL;
 	}
@@ -85,22 +85,21 @@ bool KRenderTarget::Create(UINT Width, UINT Height)
 	return false;
 }
 //get으로 저장해놓고 적용
-bool KRenderTarget::Begin(ID3D11DeviceContext* pContext)
+bool KRenderTarget::Begin(ID3D11DeviceContext* pContext, float color[4])
 {
 	m_nViewPorts = 1;
 	pContext->RSGetViewports(&m_nViewPorts, m_vpOld);
 	pContext->OMGetRenderTargets(1, &m_pOldRTV, &m_pOldDSV);
 
 	////배열로 리소스뷰 최대 16개? 배열로 값 초기화
-	ID3D11RenderTargetView* pRTV = nullptr;
-	ID3D11DepthStencilView* pDSV = nullptr;
-	pContext->OMSetRenderTargets(1, &pRTV, pDSV);
-	ID3D11ShaderResourceView* ppSRVNULL[2] = { NULL, NULL };
-	pContext->PSSetShaderResources(0, 2, ppSRVNULL);
-	//배경화면 검은색 d
-	float ClearColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f }; //red,green,blue,alpha
+	wrl::ComPtr<ID3D11RenderTargetView> pRTV = nullptr;
+	wrl::ComPtr<ID3D11DepthStencilView> pDSV = nullptr;
+	pContext->OMSetRenderTargets(1, pRTV.GetAddressOf(), pDSV.Get());
+	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL };
+	pContext->PSSetShaderResources(0, 2, ppSRVNULL->GetAddressOf());
+	//배경화면 검은색 
 	pContext->ClearRenderTargetView(
-		this->m_pRenderTargetView.Get(), ClearColor);
+		this->m_pRenderTargetView.Get(), color);
 	pContext->ClearDepthStencilView(
 		this->m_DepthStencil.m_pDepthStencilView.Get(),
 		D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
@@ -114,12 +113,12 @@ bool KRenderTarget::Begin(ID3D11DeviceContext* pContext)
 //이전 DS RS 복원
 bool KRenderTarget::End(ID3D11DeviceContext* pContext)
 {
-	ID3D11RenderTargetView* pRTV = nullptr;
-	ID3D11DepthStencilView* pDSV = nullptr;
-	pContext->OMSetRenderTargets(1, &pRTV, pDSV);
-	ID3D11ShaderResourceView* ppSRVNULL[2] = { NULL, NULL };
+	wrl::ComPtr<ID3D11RenderTargetView> pRTV = nullptr;
+	wrl::ComPtr<ID3D11DepthStencilView> pDSV = nullptr;
+	pContext->OMSetRenderTargets(1, pRTV.GetAddressOf(), pDSV.Get());
+	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL };
 	//0번 슬롯에 2개 리소스
-	pContext->PSSetShaderResources(0, 2, ppSRVNULL);
+	pContext->PSSetShaderResources(0, 2, ppSRVNULL->GetAddressOf());
 	pContext->RSSetViewports(m_nViewPorts, m_vpOld);
 	pContext->OMSetRenderTargets(1, &m_pOldRTV, m_pOldDSV);
 	
@@ -159,8 +158,5 @@ void KRenderTarget::Save(ID3D11DeviceContext* pContext,
 bool KRenderTarget::Release()
 {
 	m_DepthStencil.Release();
-	/*SAFE_RELEASE(m_pTexture);
-	SAFE_RELEASE(m_pTextureSRV);
-	SAFE_RELEASE(m_pRenderTargetView);*/
 	return true;
 }

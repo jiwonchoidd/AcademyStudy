@@ -3,39 +3,33 @@
 #include "KCamera.h"
 #include "KSoundManager.h"
 #include "KSkyBox.h"
-#include "KMap.h"
 #include "KMapLOD.h"
 #include "KFbxLoader.h"
+#include "KMiniMap.h"
+#include "KRenderTarget.h"
+#include "KMousePicker.h"
+#include "KDepthShadow.h"
 class KScene_Intro : public KScene
 {
-public://Imgui 변수
-    float          m_LightPos[3] = {0,100,0};
-    float          m_LightColor[3] = { 0.9f,0.9f,0.85f};
 public:
-    KFbxLoader	   m_FbxLoader;
-    KSkyBox        m_SkyBox;
+    KLight         m_Light;
+    KDepthShadow   m_Shadow;
     KDebugCamera   m_Camera;
     KCamera        m_TopView;
-    KBoxObj        m_Box;
+public:
+    KFbxLoader	   m_FbxLoader;
+    KMousePicker   m_MousePicker;
+public:
+    KSkyBox        m_SkyBox;
     KMap           m_Terrian;
     KMapLOD        m_Lod;
+    KMiniMap       m_Minimap;
 public:
     std::shared_ptr<KBoxObj> m_pBoxObj;
     std::vector<KMapObject*> m_pObjList;
 public:
     //todo: 임시 함수 나중에 클래스화 하기
     void    SetupMapObject();
-public:
-    KVector3 m_vIntersect;
-    bool    PointInPolygon(KVector3 vert, KVector3 faceNormal,
-        KVector3 v0, KVector3 v1, KVector3 v2);
-    bool    GetIntersect(KVector3 vStart, KVector3 vEnd,
-        KVector3 v0, KVector3 v1, KVector3 v2,
-        KVector3 vNormal);
-    bool    IntersectTriangle(
-        const KVector3& orig, const KVector3& dir,
-        KVector3& v0, KVector3& v1, KVector3& v2,
-        FLOAT* t, FLOAT* u, FLOAT* v);
 public:
     bool    Load(std::wstring file) override;
 public:

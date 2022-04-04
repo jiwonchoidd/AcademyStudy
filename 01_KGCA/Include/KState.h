@@ -10,7 +10,6 @@ public:
 	static ID3D11RasterizerState* g_pCurrentRS;
 	static ID3D11BlendState* g_pCurrentBS;
 
-
 	//RS
 	static	ID3D11RasterizerState*		g_pRSSolid;
 	static	ID3D11RasterizerState*		g_pRSWireFrame;
@@ -20,6 +19,8 @@ public:
 	static	ID3D11DepthStencilState*	g_pDSS_Disabled;
 	//BS
 	static	ID3D11BlendState*			g_pBlendState;
+	static  ID3D11BlendState*			g_pAlphaBlendState;
+	//SS
 	static	ID3D11SamplerState*			g_pMirrorSS;
 	static	ID3D11SamplerState*			g_pClampSS;
 	static	ID3D11SamplerState*			g_pWrapSS;
