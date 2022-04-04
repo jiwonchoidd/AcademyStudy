@@ -32,3 +32,5 @@ Study/coding/Mine/Magic/.vs/Mine/v16/ipch/AutoPCH/c740aad8bb856bd8/TWINDOW.ipch
 *.tlog
 01_KGCA/Graphics/FBX/lib/vs2017/x64/debug/libfbxsdk-mt.lib
 01_KGCA/Graphics/FBX/lib/vs2017/x64/debug/libfbxsdk-md.lib
+*.pdb
+*.idb
