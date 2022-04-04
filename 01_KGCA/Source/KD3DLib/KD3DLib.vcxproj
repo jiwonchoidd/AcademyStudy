@@ -33,6 +33,7 @@
     <ClCompile Include="KCollider.cpp" />
     <ClCompile Include="KCollision.cpp" />
     <ClCompile Include="KCore.cpp" />
+    <ClCompile Include="KDepthStencil.cpp" />
     <ClCompile Include="KDevice.cpp" />
     <ClCompile Include="KFrustum.cpp" />
     <ClCompile Include="KInput.cpp" />
@@ -45,6 +46,7 @@
     <ClCompile Include="KObjObject.cpp" />
     <ClCompile Include="KPlaneObj.cpp" />
     <ClCompile Include="KQuadTree.cpp" />
+    <ClCompile Include="KRenderTarget.cpp" />
     <ClCompile Include="KScene.cpp" />
     <ClCompile Include="KShaderManager.cpp" />
     <ClCompile Include="KSkyBox.cpp" />
@@ -77,6 +79,7 @@
     <ClInclude Include="KCollider.h" />
     <ClInclude Include="KCollision.h" />
     <ClInclude Include="KCore.h" />
+    <ClInclude Include="KDepthStencil.h" />
     <ClInclude Include="KDevice.h" />
     <ClInclude Include="KFrustum.h" />
     <ClInclude Include="KInput.h" />
@@ -89,6 +92,7 @@
     <ClInclude Include="KObjObject.h" />
     <ClInclude Include="KPlaneObj.h" />
     <ClInclude Include="KQuadTree.h" />
+    <ClInclude Include="KRenderTarget.h" />
     <ClInclude Include="KScene.h" />
     <ClInclude Include="KShaderManager.h" />
     <ClInclude Include="KSkyBox.h" />

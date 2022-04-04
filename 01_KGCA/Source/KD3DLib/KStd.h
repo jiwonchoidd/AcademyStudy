@@ -110,6 +110,10 @@ static std::string to_wm(const std::wstring& _src)
 #define randstep(fMin,fMax) (fMin+((float)fMax-(float)fMin)*rand()/(float)RAND_MAX)
 #define clamp(x,MinX,MaxX) if (x>MaxX) x=MaxX; else if (x<MinX) x=MinX;
 
+#ifndef SAFE_RELEASE
+#define SAFE_RELEASE(A)				{ if(A) { (A)->Release(); (A)=NULL; } }
+#endif 
+
 #pragma region wWinMain 매크로
 
 //기본 매크로

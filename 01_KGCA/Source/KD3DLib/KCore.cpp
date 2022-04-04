@@ -87,13 +87,13 @@ bool	KCore::PreRender() {
 
     //새 스왑체인 뷰포트
     float ClearColor[4] = { 0.0f, 0.0f, 0.02f, 1.0f }; //red,green,blue,alpha
-    m_pImmediateContext.Get()->ClearRenderTargetView(m_pRenderTargetView.Get(), ClearColor);
+    m_pImmediateContext.Get()->ClearRenderTargetView(m_DefaultRT.m_pRenderTargetView.Get(), ClearColor);
 
     m_pImmediateContext.Get()->ClearDepthStencilView(
-        m_DepthStencilView.Get(),
+        m_DefaultDS.m_pDepthStencilView.Get(),
         D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-    m_pImmediateContext.Get()->OMSetRenderTargets(1,
-        m_pRenderTargetView.GetAddressOf(), m_DepthStencilView.Get());
+    m_pImmediateContext->OMSetRenderTargets(1,
+        m_DefaultRT.m_pRenderTargetView.GetAddressOf(), m_DefaultDS.m_pDepthStencilView.Get());
 
     m_pImmediateContext.Get()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
     ApplyDSS(m_pImmediateContext.Get(), KState::g_pCurrentDSS);

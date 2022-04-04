@@ -56,5 +56,5 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 
    float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
 
-   return float4(ambient + diffuse + specular, 1);// *Input.c;
+   return float4(ambient + diffuse + specular, 1) * Input.c;
 }

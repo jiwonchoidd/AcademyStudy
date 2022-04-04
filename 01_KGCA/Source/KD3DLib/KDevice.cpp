@@ -97,21 +97,13 @@ HRESULT KDevice::CreateDeviceAndSwapChain()
 HRESULT KDevice::SetRenderTargetView()
 {
 	HRESULT hr = S_OK;
-	ID3D11Texture2D* pBackBuffer; // ¹é¹öÆÛ
-	if (FAILED(hr = m_pSwapChain.Get()->GetBuffer(
+	ID3D11Texture2D* pBackBuffer;
+	if (FAILED(hr = m_pSwapChain->GetBuffer(
 		0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer), hr))
 	{
 		return hr;
 	}
-	hr=m_pd3dDevice.Get()->CreateRenderTargetView(
-		pBackBuffer, NULL, 
-		m_pRenderTargetView.GetAddressOf());
-	if (FAILED(hr))
-	{
-		pBackBuffer->Release();
-		return hr;
-	}
-	pBackBuffer->Release();	
+	m_DefaultRT.SetRenderTargetView(pBackBuffer);
 	return hr;
 }
 
@@ -119,42 +111,10 @@ HRESULT KDevice::SetDepthStencilView()
 {
 	// 1)ÅØ½ºÃ³ »ý¼º : ±íÀÌ,½ºÅÙ½Ç °ªÀ» ÀúÀåÇÏ´Â ¹öÆÛ¿ë
 	HRESULT hr = S_OK;
-	m_pSwapChain.Get()->GetDesc(&m_SwapChainDesc);
-	wrl::ComPtr<ID3D11Texture2D> pDSTexture;
-	D3D11_TEXTURE2D_DESC DescDepth;
-	DescDepth.Width = m_SwapChainDesc.BufferDesc.Width;
-	DescDepth.Height = m_SwapChainDesc.BufferDesc.Height;
-	DescDepth.MipLevels = 1;
-	DescDepth.ArraySize = 1;
-	//RGB´Â ÅØ½ºÃÄ ¸®¼Ò½º D24´Â µª½º
-	DescDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	DescDepth.SampleDesc.Count = 1;
-	DescDepth.SampleDesc.Quality = 0;
-	DescDepth.Usage = D3D11_USAGE_DEFAULT;
-	DescDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	DescDepth.CPUAccessFlags = 0;
-	DescDepth.MiscFlags = 0;
-	hr = g_pd3dDevice->CreateTexture2D(&DescDepth, nullptr, pDSTexture.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return hr;
-	}
-	if (pDSTexture.Get() == nullptr)
-	{
-		return E_FAIL;
-	}
-	//µª½º ½ºÅÙ½Ç ºä ¸¸µë
-	D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
-	ZeroMemory(&descDSV, sizeof(D3D11_DEPTH_STENCIL_VIEW_DESC));
-	descDSV.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	descDSV.Texture2D.MipSlice = 0;
-	hr = g_pd3dDevice->CreateDepthStencilView(pDSTexture.Get(), &descDSV,
-		m_DepthStencilView.GetAddressOf());
-	if (FAILED(hr))
-	{
-		return hr;
-	}
+	DXGI_SWAP_CHAIN_DESC Desc;
+	m_pSwapChain->GetDesc(&Desc);
+	hr = m_DefaultDS.CreateDepthStencilView(Desc.BufferDesc.Width,
+		Desc.BufferDesc.Height);
 	return hr;
 }
 
@@ -177,9 +137,8 @@ bool KDevice::ResizeDevice(UINT width, UINT height)
 	if (m_pd3dDevice.Get()==nullptr)return false;
 	//·»´õÅ¸°Ù, ±íÀÌ ½ºÅÙ½Ç ¹öÆÛ ÇØÁ¦
 	m_pImmediateContext.Get()->OMSetRenderTargets(0, NULL, NULL);
-	if (m_pRenderTargetView)m_pRenderTargetView.Get()->Release();
-	if (m_DepthStencilView)m_DepthStencilView.Get()->Release();
-	
+	if (m_DefaultRT.m_pRenderTargetView.Get())m_DefaultRT.m_pRenderTargetView.Get()->Release();
+	if (m_DefaultDS.m_pDepthStencilView.Get())m_DefaultDS.m_pDepthStencilView.Get()->Release();
 
 	HRESULT hr = m_pSwapChain.Get()->ResizeBuffers(m_SwapChainDesc.BufferCount,
 		width, height,
@@ -208,8 +167,6 @@ KDevice::KDevice()
 {
 	m_pd3dDevice = nullptr;
 	m_pSwapChain = nullptr;;
-	m_pRenderTargetView = nullptr;;
 	m_pGIFactory = nullptr;
 	m_pImmediateContext = nullptr;
-	m_DepthStencilView = nullptr;
 }

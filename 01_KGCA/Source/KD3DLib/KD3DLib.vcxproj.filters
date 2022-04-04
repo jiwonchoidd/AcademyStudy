@@ -162,6 +162,12 @@
     <ClCompile Include="KNode.cpp">
       <Filter>Code\Obj\3D\Map</Filter>
     </ClCompile>
+    <ClCompile Include="KRenderTarget.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="KDepthStencil.cpp">
+      <Filter>Code\Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KInput.h">
@@ -295,6 +301,12 @@
     </ClInclude>
     <ClInclude Include="KNode.h">
       <Filter>Code\Obj\3D\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="KRenderTarget.h">
+      <Filter>Code\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="KDepthStencil.h">
+      <Filter>Code\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
