@@ -19,13 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Graphics\ImGui\imgui.cpp" />
+    <ClCompile Include="..\..\Graphics\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="..\..\Graphics\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="..\..\Graphics\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="..\..\Graphics\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="..\..\Graphics\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
-    <ClCompile Include="ImGui\imgui.cpp" />
-    <ClCompile Include="ImGui\imgui_demo.cpp" />
-    <ClCompile Include="ImGui\imgui_draw.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="K2DAsset.cpp" />
     <ClCompile Include="K3DAsset.cpp" />
     <ClCompile Include="KBoxObj.cpp" />
@@ -39,7 +39,7 @@
     <ClCompile Include="KInput.cpp" />
     <ClCompile Include="KManager.cpp" />
     <ClCompile Include="KMap.cpp" />
-    <ClCompile Include="KMapLOD.cpp" />
+    <ClCompile Include="KMapSpace.cpp" />
     <ClCompile Include="KNode.cpp" />
     <ClCompile Include="KObject.cpp" />
     <ClCompile Include="KObjectManager.cpp" />
@@ -63,15 +63,15 @@
     <ClCompile Include="Math\KMath.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Graphics\ImGui\imconfig.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imgui.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imgui_internal.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imstb_textedit.h" />
+    <ClInclude Include="..\..\Graphics\ImGui\imstb_truetype.h" />
     <ClInclude Include="ImGuiManager.h" />
-    <ClInclude Include="ImGui\imconfig.h" />
-    <ClInclude Include="ImGui\imgui.h" />
-    <ClInclude Include="ImGui\imgui_impl_dx11.h" />
-    <ClInclude Include="ImGui\imgui_impl_win32.h" />
-    <ClInclude Include="ImGui\imgui_internal.h" />
-    <ClInclude Include="ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ImGui\imstb_textedit.h" />
-    <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="K2DAsset.h" />
     <ClInclude Include="K3DAsset.h" />
     <ClInclude Include="KBoxObj.h" />
@@ -85,7 +85,7 @@
     <ClInclude Include="KInput.h" />
     <ClInclude Include="KManager.h" />
     <ClInclude Include="KMap.h" />
-    <ClInclude Include="KMapLOD.h" />
+    <ClInclude Include="KMapSpace.h" />
     <ClInclude Include="KNode.h" />
     <ClInclude Include="KObject.h" />
     <ClInclude Include="KObjectManager.h" />
@@ -261,7 +261,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\include\\fmod;..\\..\\Graphics\\ImGui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\include;..\\..\\include\\d3dtk;..\\..\\include\\fmod</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

@@ -1,4 +1,4 @@
-cbuffer CBuf
+cbuffer CBuf : register(b0)
 {
 	matrix g_matWorld : packoffset(c0);
 	matrix g_matView : packoffset(c4);
@@ -8,6 +8,10 @@ cbuffer CBuf
 	float4 g_lightColor : packoffset(c17);  //라이트 색상
 	float4 g_camPos : packoffset(c18);		//카메라 방향
 	float4 g_value : packoffset(c19);		//기타 시간 값등
+};
+cbuffer cbDataShadow: register(b2)
+{
+	matrix g_matShadow	: packoffset(c0);
 };
 struct VS_INPUT
 {
@@ -25,10 +29,11 @@ struct VS_OUTPUT
 	float2 t : TEXCOORD0;
 	float4 c : COLOR0;
 	float3 mLightDir : TEXCOORD1; //방향
-	float3 mViewDir : TEXCOORD2; //방향
-	float3 mT        : TEXCOORD3;
-	float3 mB        : TEXCOORD4;
-	float3 mN        : TEXCOORD5;
+	float3 mViewDir  : TEXCOORD2; //방향
+	float4 mShadow	 : TEXCOORD3; //뎁스 맵 쉐도우 추가
+	float3 mT        : TEXCOORD4;
+	float3 mB        : TEXCOORD5;
+	float3 mN        : TEXCOORD6;
 };
 
 VS_OUTPUT VS(VS_INPUT Input)
@@ -45,7 +50,8 @@ VS_OUTPUT VS(VS_INPUT Input)
 	//보는 방향
 	float3 viewDir = vWorld.xyz - g_camPos.xyz;
 	Output.mViewDir = normalize(viewDir);
-	//
+	//쉐도우 행렬곱
+	Output.mShadow = mul(vWorld, g_matShadow);
 
 	float4 vView = mul(vWorld, g_matView);
 	float4 vProj = mul(vView, g_matProj);
@@ -54,7 +60,8 @@ VS_OUTPUT VS(VS_INPUT Input)
 	float3 worldNormal = mul(Input.n, (float3x3)g_matWorld);
 	Output.p = vProj;
 	Output.t = Input.t;
-	Output.c = Input.c;
+	float depth1 = vProj.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+	Output.c = float4(depth1, depth1, depth1, 1);
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);
@@ -64,7 +71,9 @@ VS_OUTPUT VS(VS_INPUT Input)
 Texture2D		g_txDiffuse : register(t0);
 Texture2D		g_txSpecular : register(t1);
 Texture2D		g_txNormal : register(t2);
+Texture2D		g_txShadow  : register(t3);
 SamplerState	g_Sample : register(s0);
+SamplerState	 g_SamplerClamp : register(s1);;
 float4 PS(VS_OUTPUT Input) : SV_TARGET
 {
 	//텍스쳐에서 노말, 법선 좌표 구해옴
@@ -75,13 +84,12 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    TBN = transpose(TBN);
    float3 worldNormal = mul(TBN, tangentNormal);
    //디퓨즈 텍스쳐
-   float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t);
+   float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t); //알베도 기본 색상 텍스쳐
    float3 lightDir = normalize(Input.mLightDir);
    float3 diffuse = saturate(dot(worldNormal, -lightDir));
    diffuse = g_lightColor.rgb * albedo.rgb * diffuse;
-
+   
    float3 specular = 0;
-
    if (diffuse.x > 0.0f)
    {
 	  float3 reflection = reflect(lightDir, worldNormal);
@@ -94,10 +102,18 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
 	  specular *= specularInten.rgb * g_lightColor;
    }
+   //쉐도우
+   float3 vShadowProj;
+   vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
+   float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
+   float depth = Input.mShadow.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+   if (shadow + 0.01f <= depth)
+   {
+	   diffuse = diffuse * float4(0.5f, 0.5f, 0.5f, 1);
+   }
 
    float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
-
-   return float4(ambient + diffuse + specular, 1) * Input.c;
+   return float4(ambient + diffuse + specular, 1);
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET
 {

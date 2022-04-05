@@ -27,6 +27,11 @@ public:
 		std::vector<PNCT_VERTEX>& retList);
 	virtual void		SetUVcoord(std::vector<PNCT_VERTEX>& retList);
 public:
+	virtual void		UpdateData();
+	virtual void		UpdateCollision();
+public:
+	virtual void        GenAABB();
+public:
 	virtual bool		CreateVertexData()override;
 	virtual bool		CreateIndexData()override;
 	virtual bool		CreateTangentSpace(KVector3* v1, KVector3* v2, KVector3* v3, KVector2* uv1,

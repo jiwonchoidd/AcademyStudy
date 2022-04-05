@@ -8,7 +8,7 @@
 //  [X] Platform: Gamepad support. Enabled with 'io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad'.
 
 #pragma once
-#include "../KWindow.h"
+#include "../Source/KD3DLib/KWindow.h"
 #include "imgui.h"
 
 IMGUI_IMPL_API bool     ImGui_ImplWin32_Init(HWND hwnd);

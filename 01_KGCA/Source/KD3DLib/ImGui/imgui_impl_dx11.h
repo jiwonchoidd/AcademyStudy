@@ -9,8 +9,8 @@
 // https://github.com/ocornut/imgui
 
 #pragma once
-#include "../KWindow.h"
-#include "../KDevice.h"
+#include "../Source/KD3DLib/KWindow.h"
+#include "../Source/KD3DLib/KDevice.h"
 #include "imgui.h"
 
 IMGUI_IMPL_API bool     ImGui_ImplDX11_Init(ID3D11Device* device, ID3D11DeviceContext* device_context);

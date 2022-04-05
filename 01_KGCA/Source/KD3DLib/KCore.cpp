@@ -48,9 +48,10 @@ bool	KCore::GameFrame()
 
     if (ImGui::Begin(u8"성능 디스플레이"))
     {
-        ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        float frame = ImGui::GetIO().Framerate;
+        float average= 1000.0f / ImGui::GetIO().Framerate;
+        ImGui::Text("Average %.3f ms/Frame (%.1f FPS)", average, frame);
         ImGui::Text("res %d, %d", g_rtClient.right, g_rtClient.bottom);
-
     }
     ImGui::End();
 

@@ -18,7 +18,7 @@
     <ClCompile Include="KSceneManager.cpp">
       <Filter>Code\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="KScene_Intro.cpp">
+    <ClCompile Include="KScene_Maptool.cpp">
       <Filter>Code\Scene</Filter>
     </ClCompile>
     <ClCompile Include="KFbxLoader.cpp">
@@ -38,7 +38,7 @@
     <ClInclude Include="resource.h">
       <Filter>Resource</Filter>
     </ClInclude>
-    <ClInclude Include="KScene_Intro.h">
+    <ClInclude Include="KScene_Maptool.h">
       <Filter>Code\Scene</Filter>
     </ClInclude>
     <ClInclude Include="KSceneManager.h">

@@ -5,17 +5,15 @@ class KScene
 public:
 	enum SceneID 
 	{
-		S_INTRO,
-		S_GAME_0,
-		S_GAME_1,
-		S_COMBAT,
+		S_MapTool,
+		S_Scene1,
+		S_Scene2,
 	};
 public:
 	BYTE				 m_SceneID;
 	ID3D11DeviceContext* m_pContext;	// 다비이스 컨텍스트 객체
 	std::vector<std::shared_ptr<KObject>> m_UIObj;
 	std::vector<std::shared_ptr<KObject>> m_MapObj;
-	std::vector<std::shared_ptr<KObject>> m_ItemObj;
 	
 	using m_iter = std::vector<KObject*>::iterator;
 public:

@@ -95,7 +95,7 @@ bool KMousePicker::IntersectTriangle(const KVector3& orig, const KVector3& dir, 
 	return true;
 }
 
-bool KMousePicker::Init(ID3D11DeviceContext* pContext, KMapLOD* pSpace, KCamera* pCam)
+bool KMousePicker::Init(ID3D11DeviceContext* pContext, KMapSpace* pSpace, KCamera* pCam)
 {
 	m_pContext = pContext;
 	m_pSpace = pSpace;

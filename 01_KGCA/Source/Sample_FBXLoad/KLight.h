@@ -32,7 +32,7 @@ public:
     }
     bool    Frame()
     {
-        D3DKMatrixRotationY(&m_matWorld, XM_PI * g_fSecPerFrame * 0.1f);
+        //D3DKMatrixRotationY(&m_matWorld, XM_PI * g_fSecPerFrame * 0.1f);
         //정점과 행렬을 곱하는 함수 coord는 w값이 1이 들어감
         D3DXVec3TransformCoord(&m_vPos, &m_vPos, &m_matWorld);
         //error C2102: '&'에 l-value가 있어야 합니다.

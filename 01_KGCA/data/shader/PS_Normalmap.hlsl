@@ -1,5 +1,5 @@
-cbuffer CBuf
-{
+cbuffer CBuf : register(b0)
+{ 
 	matrix g_matWorld : packoffset(c0);
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
@@ -9,6 +9,12 @@ cbuffer CBuf
 	float4 g_camPos : packoffset(c18); //카메라 방향
 	float4 g_value : packoffset(c19); //기타 시간 값등
 };
+
+cbuffer cbDataShadow: register(b2)
+{
+	matrix g_matShadow	: packoffset(c0);
+};
+
 struct VS_OUTPUT
 {
 	float4 p : SV_POSITION;

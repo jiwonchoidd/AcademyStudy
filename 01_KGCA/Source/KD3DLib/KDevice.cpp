@@ -1,5 +1,5 @@
 #include "KDevice.h"
-#include "ImGui/imgui_impl_dx11.h"
+#include "ImGui\imgui_impl_dx11.h"
 ID3D11Device* g_pd3dDevice = nullptr;		// 디바이스 객체
 bool	KDevice::SetDevice()
 {

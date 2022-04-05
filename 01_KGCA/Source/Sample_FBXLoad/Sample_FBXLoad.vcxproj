@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\Graphics\\FBX\\include;..\\..\\Include;..\\..\\Include\\d3dtk;..\\..\\Include\\fmod;..\\..\\Graphics\\ImGui;..\\..\\Include\KNetworkLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\Graphics\\FBX\\include;..\\..\\Graphics\\ImGui;..\\..\\Include;..\\..\\Include\\d3dtk;..\\..\\Include\\fmod</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/Ylsymbol %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -160,7 +160,7 @@
     <ClInclude Include="KSceneManager.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Sample.h" />
-    <ClInclude Include="KScene_Intro.h" />
+    <ClInclude Include="KScene_Maptool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KFbxLoader.cpp" />
@@ -168,7 +168,7 @@
     <ClCompile Include="KMiniMap.cpp" />
     <ClCompile Include="KMousePicker.cpp" />
     <ClCompile Include="KSceneManager.cpp" />
-    <ClCompile Include="KScene_Intro.cpp" />
+    <ClCompile Include="KScene_Maptool.cpp" />
     <ClCompile Include="Sample.cpp" />
   </ItemGroup>
   <ItemGroup>

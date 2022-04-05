@@ -154,9 +154,9 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 
 	if (CreateObject(vsfile,psfile,texturefile, specularfile, normalfile))
 	{
+		GenAABB();
 		return true;
 	}
-
 	return false;
 }
 

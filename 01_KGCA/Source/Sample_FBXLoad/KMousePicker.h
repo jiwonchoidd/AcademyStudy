@@ -1,11 +1,11 @@
 #pragma once
 #include "KStd.h"
-#include "KMapLOD.h"
+#include "KMapSpace.h"
 class KMousePicker
 {
 public:
 	ID3D11DeviceContext* m_pContext;
-	KMapLOD*			 m_pSpace;
+	KMapSpace*			 m_pSpace;
 	KCamera*			 m_pCamera;
 public:
 	KVector3 m_vIntersect;
@@ -17,7 +17,7 @@ public:
 		KVector3 vNormal);
 	bool IntersectTriangle(const KVector3& orig, const KVector3& dir, KVector3& v0, KVector3& v1, KVector3& v2, FLOAT* t, FLOAT* u, FLOAT* v);
 public:
-	bool Init(ID3D11DeviceContext* pContext, KMapLOD* pSpace, KCamera* pCam);
+	bool Init(ID3D11DeviceContext* pContext, KMapSpace* pSpace, KCamera* pCam);
 	bool Frame();
 	bool Release();
 public:
