@@ -4,8 +4,10 @@
 class KMiniMap : public KPlaneObj
 {
 public:
-	KRenderTarget  m_Rt;
+	KVector2		m_MinMax;
+	KRenderTarget	m_Rt;
 public:
+	bool Init(float min, float max);
 	bool Render(ID3D11DeviceContext* m_pContext);
 public:
 	bool CreateVertexData() override;

@@ -23,7 +23,8 @@ public:
     KSkyBox        m_SkyBox;
     KMap           m_Terrian;
     KMapSpace      m_Terrian_Space;
-    KMiniMap       m_Minimap;
+    KMiniMap       m_MiniMap_DebugCamera;
+    KMiniMap       m_MiniMap_DebugShadow;
 public:
     std::vector<std::shared_ptr<K3DAsset>> m_Scene_ObjList;
 public:

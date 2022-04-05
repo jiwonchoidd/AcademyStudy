@@ -119,7 +119,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\\..\\Graphics\\FBX\\include;..\\..\\Graphics\\ImGui;..\\..\\Include;..\\..\\Include\\d3dtk;..\\..\\Include\\fmod</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\\..\\Graphics\\FBX\\include;..\\..\\Graphics;..\\..\\Include;..\\..\\Include\\d3dtk;..\\..\\Include\\fmod</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/Ylsymbol %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>

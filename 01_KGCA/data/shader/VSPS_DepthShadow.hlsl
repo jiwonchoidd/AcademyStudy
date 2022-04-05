@@ -83,12 +83,22 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3x3 TBN = float3x3(normalize(Input.mT), normalize(Input.mB),normalize(Input.mN));
    TBN = transpose(TBN);
    float3 worldNormal = mul(TBN, tangentNormal);
-   //디퓨즈 텍스쳐
    float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t); //알베도 기본 색상 텍스쳐
+   //쉐도우
+   float3 vShadowProj;
+   vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
+   float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
+   float depth = Input.mShadow.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+   if (shadow + 0.01f <= depth)
+   {
+	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
+   }
+   //디퓨즈 텍스쳐
    float3 lightDir = normalize(Input.mLightDir);
-   float3 diffuse = saturate(dot(worldNormal, -lightDir));
+   float3 diffuse = saturate(dot(worldNormal, -lightDir)); // 빛드리우는 디퓨즈
    diffuse = g_lightColor.rgb * albedo.rgb * diffuse;
-   
+
+   //스페큘러맵
    float3 specular = 0;
    if (diffuse.x > 0.0f)
    {
@@ -102,16 +112,6 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
 	  specular *= specularInten.rgb * g_lightColor;
    }
-   //쉐도우
-   float3 vShadowProj;
-   vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
-   float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
-   float depth = Input.mShadow.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
-   if (shadow + 0.01f <= depth)
-   {
-	   diffuse = diffuse * float4(0.5f, 0.5f, 0.5f, 1);
-   }
-
    float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
    return float4(ambient + diffuse + specular, 1);
 }
