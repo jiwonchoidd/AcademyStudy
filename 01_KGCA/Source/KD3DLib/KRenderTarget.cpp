@@ -111,14 +111,16 @@ bool KRenderTarget::Begin(ID3D11DeviceContext* pContext, float color[4])
 	return true;
 }
 //이전 DS RS 복원
+//https://blog.daum.net/rockeracer/58
+//오류 해결 : 렌더타겟 텍스쳐 사용 후에 해제 해줘야함
 bool KRenderTarget::End(ID3D11DeviceContext* pContext)
 {
 	wrl::ComPtr<ID3D11RenderTargetView> pRTV = nullptr;
 	wrl::ComPtr<ID3D11DepthStencilView> pDSV = nullptr;
 	pContext->OMSetRenderTargets(1, pRTV.GetAddressOf(), pDSV.Get());
-	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL };
+	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[3] = { NULL, NULL, NULL};
 	//0번 슬롯에 2개 리소스
-	pContext->PSSetShaderResources(0, 2, ppSRVNULL->GetAddressOf());
+	pContext->PSSetShaderResources(0, 3, ppSRVNULL->GetAddressOf());
 	pContext->RSSetViewports(m_nViewPorts, m_vpOld);
 	pContext->OMSetRenderTargets(1, &m_pOldRTV, m_pOldDSV);
 	

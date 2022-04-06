@@ -75,7 +75,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	m_MousePicker.Init(m_pContext, &m_Terrian_Space, &m_Camera);
 
 	//라이트 그림자----------------------------------------------------------------
-	m_Light.SetLight(KVector3(100.0f,200.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f));
+	m_Light.SetLight(KVector3(100.0f,300.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f), &m_Camera);
 	m_Shadow.CreateShadow(&m_Light);
 	return true;
 }

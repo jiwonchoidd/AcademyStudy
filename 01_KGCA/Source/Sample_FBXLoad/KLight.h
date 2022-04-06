@@ -4,6 +4,7 @@ class KLight
 {
     //카메라랑 직접 바꿔도되는데 카메라와 속성이 달라서
 public:
+    KCamera*    m_pCamera = nullptr;
     KVector3    m_vPos;
     KVector3    m_vTarget;
     KVector3    m_vDir;
@@ -13,8 +14,9 @@ public:
     KMatrix     m_matProj;
     KMatrix     m_matWorld;
 public:
-    void    SetLight(KVector3 vPos, KVector3 vTarget)
+    void    SetLight(KVector3 vPos, KVector3 vTarget, KCamera* pCamera)
     {
+        m_pCamera = pCamera;
         //색깔 기본
         m_vLightColor = { 1.0f,1.0f ,1.0f ,1.0f };
         //이거 가지고 뷰행렬을 만들어 낸다.
@@ -28,7 +30,13 @@ public:
         KVector3 vUp(0, 1, 0);
         D3DKMatrixLookAtLH(&m_matView, &m_vPos, &m_vTarget, &vUp);
         //원근투영 투영행렬 만들기
-        D3DKMatrixPerspectiveFovLH(&m_matProj, XM_PI * 0.25f, 1.0f, 1.0f, 500.0f);
+        //카메라가 있을때,
+        if (m_pCamera != nullptr)
+        {
+            D3DKMatrixPerspectiveFovLH(&m_matProj, m_pCamera->m_fFov, m_pCamera->m_fAspect, m_pCamera->m_fNear, m_pCamera->m_fFar);
+            return;
+        }
+        return;
     }
     bool    Frame()
     {
@@ -40,7 +48,7 @@ public:
         D3DXVec3Normalize(&m_vDir, &m_vDir);
         KVector3 vUp(0, 1, 0);
         D3DKMatrixLookAtLH(&m_matView, &m_vPos, &m_vTarget, &vUp);
-        D3DKMatrixPerspectiveFovLH(&m_matProj, XM_PI * 0.25f, 1.0f, 1.0f, 500.0f);
+        D3DKMatrixPerspectiveFovLH(&m_matProj, m_pCamera->m_fFov, m_pCamera->m_fAspect, m_pCamera->m_fNear, m_pCamera->m_fFar);
         return true;
     }
 };
