@@ -193,7 +193,7 @@ HRESULT KObject::CreateConstantBuffer()
     D3D11_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
     data.pSysMem = &m_cbData;
-    hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pConstantBuffer);
+    hr = g_pd3dDevice->CreateBuffer(&bd, &data, m_pConstantBuffer.GetAddressOf());
     if (FAILED(hr)) return hr;
     return hr;
 }

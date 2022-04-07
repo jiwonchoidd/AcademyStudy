@@ -82,7 +82,7 @@ Texture2D		g_txSpecular : register(t1);
 Texture2D		g_txNormal : register(t2);
 Texture2D		g_txShadow  : register(t3);
 SamplerState	g_Sample : register(s0);
-SamplerState	 g_SamplerClamp : register(s1);;
+SamplerState	 g_SamplerClamp : register(s1);
 float4 PS(VS_OUTPUT Input) : SV_TARGET
 {
 	//텍스쳐에서 노말, 법선 좌표 구해옴
@@ -94,14 +94,14 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 worldNormal = mul(TBN, tangentNormal);
    float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t); //알베도 기본 색상 텍스쳐
    //쉐도우
-   float3 vShadowProj;
+  /* float3 vShadowProj;
    vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
    float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
    float depth = Input.mShadow.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
    if (shadow + 0.005f <= depth)
    {
 	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
-   }
+   }*/
    //디퓨즈 텍스쳐
    float3 lightDir = normalize(Input.mLightDir);
    float3 diffuse = saturate(dot(worldNormal, -lightDir)); // 빛드리우는 디퓨즈

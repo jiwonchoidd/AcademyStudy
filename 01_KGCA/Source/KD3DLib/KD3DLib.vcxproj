@@ -120,7 +120,7 @@
     <FxCompile Include="..\..\data\shader\PS_Plane.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
-    <FxCompile Include="..\..\data\shader\VSPS_CharacterShadow.hlsl">
+    <FxCompile Include="..\..\data\shader\VSPS_FBXShadow.hlsl">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </FxCompile>
     <FxCompile Include="..\..\data\shader\VSPS_DepthShadow.hlsl">

@@ -2,7 +2,7 @@
 
 bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 {
-	if (m_VertexList.size() <= 0) return true;
+	//if (m_VertexList.size() <= 0) return true;
 	//리소스 업데이트 데이터와 리소스 버퍼의 저장
 	pContext->UpdateSubresource(
 		m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
@@ -25,12 +25,12 @@ bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 	pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
 
 	pContext->IASetInputLayout(m_pVertexLayout.Get());
-	UINT pStrides = m_iVertexSize;
-	UINT pOffsets = 0;
+	//UINT pStrides = m_iVertexSize;
+	//UINT pOffsets = 0;
 
-	//정점버퍼 바인딩 인덱스버퍼 바인딩 
-	pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
-		&pStrides, &pOffsets);
+	////정점버퍼 바인딩 인덱스버퍼 바인딩 
+	//pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
+	//	&pStrides, &pOffsets);
 	pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	return true;
 }
@@ -44,8 +44,6 @@ bool KFBXObj::Render(ID3D11DeviceContext* context)
 
 bool KFBXObj::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 {
-	UINT StartSlot;
-	UINT NumBuffers;
 	UINT Strides[3] = { sizeof(PNCT_VERTEX) ,sizeof(BT_VERTEX), sizeof(IW_VERTEX)};
 	UINT Offsets[3] = { 0, };
 
@@ -54,18 +52,18 @@ bool KFBXObj::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 		if (m_pTextureList.size() > 0 &&
 			m_pTextureList[index] != nullptr)
 		{
-			m_pContext->PSSetShaderResources(0, 1,
+			pContext->PSSetShaderResources(0, 1,
 				m_pTextureList[index]->m_pSRVTexture.GetAddressOf());
 		}
 
 		ID3D11Buffer* buffer[3] = { m_pVBList[index], m_pVBBTList[index], m_pVBWeightList[index] };
 
-		m_pContext->IASetVertexBuffers(0, 3, buffer,Strides, Offsets);
+		pContext->IASetVertexBuffers(0, 3, buffer,Strides, Offsets);
 
 		if (m_IndexList.size() <= 0)
-			m_pContext->Draw(m_pSubVertexList[index].size(), 0);
+			pContext->Draw(m_pSubVertexList[index].size(), 0);
 		else
-			m_pContext->DrawIndexed(m_IndexList.size(), 0, 0);
+			pContext->DrawIndexed(m_IndexList.size(), 0, 0);
 	}
 	return true;
 }
@@ -94,19 +92,18 @@ bool KFBXObj::Release()
 			m_pVBWeightList[ivb]->Release();
 		}
 	}
+	if (m_pBoneCB != nullptr)
+	{
+		m_pBoneCB->Release();
+	}
 	return true;
 }
 
 bool KFBXObj::CheckVertexData()
 {
-	if (m_pSubVertexList.size() <= 0) return false;
 	return true;
 }
 
-bool KFBXObj::CheckIndexData()
-{
-	return true;
-}
 
 bool KFBXObj::CreateVertexData()
 {
@@ -114,6 +111,19 @@ bool KFBXObj::CreateVertexData()
 	{
 		m_pVBList.resize(m_pSubVertexList.size());
 	}
+	if (m_pSubIWVertexList.size() > 0)
+	{
+		m_pVBWeightList.resize(m_pSubIWVertexList.size());
+	}
+	if (m_pSubBTList.size() > 0)
+	{
+		m_pVBBTList.resize(m_pSubBTList.size());
+	}
+	return true;
+}
+
+bool KFBXObj::CreateIndexData()
+{
 	return true;
 }
 
@@ -197,8 +207,26 @@ HRESULT KFBXObj::CreateVertexBuffer()
 	return hr;
 }
 
-bool KFBXObj::CreateIndexData()
+
+bool KFBXObj::CreateBoneConstantBuffer()
 {
+	HRESULT hr;
+	//gpu메모리에 버퍼 할당(원하는 할당 크기)
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+	bd.ByteWidth = sizeof(KBoneWorld);
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+	//D3D11_SUBRESOURCE_DATA sd;
+	//ZeroMemory(&sd, sizeof(D3D11_SUBRESOURCE_DATA));
+	//sd.pSysMem = &m_matBoneArray;
+
+	if (FAILED(hr = g_pd3dDevice->CreateBuffer(&bd, NULL,
+		&m_pBoneCB)))
+	{
+		return false;
+	}
 	return true;
 }
 

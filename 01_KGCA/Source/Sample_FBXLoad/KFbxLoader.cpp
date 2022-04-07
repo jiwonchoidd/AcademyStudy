@@ -1,5 +1,8 @@
 #include "KFbxLoader.h"
-
+//------------------------------------------------------------------------
+// FBX 로더 
+// 스키닝 애니메이션
+//------------------------------------------------------------------------
 bool KFbxLoader::Init()
 {
 	m_pFbxManager = FbxManager::Create(); 
@@ -14,29 +17,33 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 	{
 		return false;
 	}
-	// 정점의 개수와 동일한다.
+	// Control point 개수는 정점의 개수와 동일함
 	int iVertexCount = pFbxMesh->GetControlPointsCount();
 	pObject->m_WeightList.resize(iVertexCount);
 
+	//디포머 (스킨 매쉬 개수)
 	for (int dwDeformerIndex = 0; dwDeformerIndex < iDeformerCount; dwDeformerIndex++)
 	{
 		auto pSkin = reinterpret_cast<FbxSkin*>(pFbxMesh->GetDeformer(dwDeformerIndex, FbxDeformer::eSkin));
 		DWORD dwClusterCount = pSkin->GetClusterCount();
 		// dwClusterCount의 행렬이 전체 정점에 영향을 주었다.
+		//가중치 : 각각의 정점에 저장해서 어떤 행렬에 미치는지 클러스터 별로 구분 
 		for (int dwClusterIndex = 0; dwClusterIndex < dwClusterCount; dwClusterIndex++)
 		{
 			auto pCluster = pSkin->GetCluster(dwClusterIndex);
-			////
-			FbxAMatrix matXBindPose;
-			FbxAMatrix matReferenceGlobalInitPosition;
+			////바인드 행렬 계산
+			FbxAMatrix matXBindPose; //바인드 포즈 T-POSE와 같은 개념
+			FbxAMatrix matReferenceGlobalInitPosition; //기존 첫 위치
 			pCluster->GetTransformLinkMatrix(matXBindPose);
 			pCluster->GetTransformMatrix(matReferenceGlobalInitPosition);
 			FbxMatrix matBindPose = matReferenceGlobalInitPosition.Inverse() * matXBindPose;
 
 			KMatrix matInvBindPos = DxConvertMatrix(ConvertMatrix(matBindPose));
 			matInvBindPos = matInvBindPos.Invert();
-			std::string name = pCluster->GetLink()->GetName();
-			m_BindPoseMatrixMap.insert(make_pair(name, matInvBindPos));
+			
+			//인덱스 바인드 포즈 맵 
+			int iMapIndex = m_pFbxNodeMap.find(pCluster->GetLink())->second;
+			pObject->m_MatrixBindPoseMap.insert(std::make_pair(iMapIndex, matInvBindPos));
 
 			int  dwClusterSize = pCluster->GetControlPointIndicesCount();
 			auto data = m_pFbxNodeMap.find(pCluster->GetLink());
@@ -64,7 +71,7 @@ bool KFbxLoader::Load(std::wstring filename)
 	bool bRet = m_pFbxImporter->Initialize(temp.c_str()); //파일명 넘김
 	bRet = m_pFbxImporter->Import(m_pFbxScene);
 	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene); //마야 Z축 버젼 사용
-
+	//파일명 임포트 성공
 	if (bRet)
 	{
 		//fbx는 트리 구조로 이어져있음
@@ -80,6 +87,7 @@ bool KFbxLoader::Load(std::wstring filename)
 		for (int iobj = 0; iobj < m_MeshList.size(); iobj++)
 		{
 			ParseMesh(m_MeshList[iobj]);
+			m_MeshList[iobj]->CreateBoneConstantBuffer();
 		}
 		return true;
 	}
@@ -212,13 +220,17 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 				}
 			}
 		}
+		//개수가 1보다 많다면 매터리얼 수만큼 배열 할당해주고 
+		// 그외에는 무조건 하나로 할당해준다.
 		if (iNumMtrl > 0)
 		{
+			pObject->m_pSubBTList.resize(iNumMtrl);
 			pObject->m_pSubVertexList.resize(iNumMtrl);
 			pObject->m_pSubIWVertexList.resize(iNumMtrl);
 		}
 		else
 		{
+			pObject->m_pSubBTList.resize(1);
 			pObject->m_pSubVertexList.resize(1);
 			pObject->m_pSubIWVertexList.resize(1);
 		}
@@ -292,7 +304,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 					pnct_vertex.color.x = color.mRed;
 					pnct_vertex.color.y = color.mGreen;
 					pnct_vertex.color.z = color.mBlue;
-					pnct_vertex.color.w = 1.0f;
+					pnct_vertex.color.w = pObject->m_iIndex; //버텍스 컬러 값에 인덱스 저장
 					//----------------------------------------------------------
 					//노말값이 있다면
 					if (NormalSet.size() > 0)
@@ -347,13 +359,41 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 					}
 
 					//pObject->m_VertexList.push_back(Vertex);//
-					pObject->m_pSubBTList[iSubMtrl].push_back(bt_vertex);
 					pObject->m_pSubVertexList[iSubMtrl].push_back(pnct_vertex);
 					pObject->m_pSubIWVertexList[iSubMtrl].push_back(iwVertex);
+					pObject->m_pSubBTList[iSubMtrl].push_back(bt_vertex);
 				}
 			}
+			//3점의 버텍스 작업이 끝난 후 바이노말, 탄젠트값이 들어가지 않았다면??
+			//조건 없이 일단 바이노말 작업함
+			IW_VERTEX iWvertex;
+			KVector3 t, b, n;
+			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos
+				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].pos,
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, 
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].tex, &n, &t, &b);
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].tangent = t;
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].binormal = b;
+			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal= n;
+
+			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos
+				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos,
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].tex,
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &n, &t, &b);
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].tangent = t;
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].binormal = b;
+			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
+
+			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos
+				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos,
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex ].tex,
+				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, &n, &t, &b);
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].tangent = t;
+			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].binormal = b;
+			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
 			iCurpolyIndex += iPolySize;
 		}
+
 	}
 }
 
@@ -477,6 +517,10 @@ bool KFbxLoader::Release()
 	for (int iObj = 0; iObj < m_ObjectList.size(); iObj++)
 	{
 		m_ObjectList[iObj]->Release();
+	}
+	for (int iObj = 0; iObj < m_MeshList.size(); iObj++)
+	{
+		m_MeshList[iObj]->Release();
 	}
 	m_pFbxScene->Destroy();
 	m_pFbxImporter->Destroy();

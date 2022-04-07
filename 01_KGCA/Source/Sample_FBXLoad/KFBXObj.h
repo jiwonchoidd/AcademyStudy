@@ -60,8 +60,10 @@ public:
 	std::vector<ID3D11Buffer*>   m_pVBList;
 	std::vector<ID3D11Buffer*>   m_pVBWeightList;
 	std::vector<ID3D11Buffer*>   m_pVBBTList;
+	ID3D11Buffer*				 m_pBoneCB = nullptr;
 	std::vector<KTexture*>		 m_pTextureList;
 	std::vector<std::wstring>	 m_strTexList;
+	std::map<int, KMatrix>		 m_MatrixBindPoseMap; // 인덱스로 구성된 바인드포즈 맵 
 public:
 	FbxNode*	 m_pFbx_ParentNode;
 	FbxNode*	 m_pFbx_ThisNode;
@@ -81,11 +83,11 @@ public:
 	virtual bool		PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)override;
 	virtual bool		Release() override;
 	virtual bool		CheckVertexData()override;
-	virtual bool		CheckIndexData()override;
 	virtual bool		CreateVertexData()override;
+	virtual bool		CreateIndexData()override;
 	virtual HRESULT		CreateVertexLayout()override;
 	virtual HRESULT		CreateVertexBuffer()override;
-	virtual bool		CreateIndexData()override; 
+	bool				CreateBoneConstantBuffer();
 public:
 	KFBXObj();
 	~KFBXObj();
