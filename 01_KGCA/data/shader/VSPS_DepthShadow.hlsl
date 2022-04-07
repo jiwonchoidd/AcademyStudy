@@ -60,7 +60,7 @@ VS_OUTPUT VS(VS_INPUT Input)
 	float3 worldNormal = mul(Input.n, (float3x3)g_matWorld);
 	Output.p = vProj;
 	Output.t = Input.t;
-	float depth1 = vProj.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+	float depth1 = vProj.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
 	Output.c = float4(depth1, depth1, depth1, 1);
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
@@ -88,10 +88,11 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 vShadowProj;
    vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
    float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
-   float depth = Input.mShadow.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
+   float depth = Input.mShadow.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
    if (shadow + 0.01f <= depth)
    {
-	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
+	   albedo = albedo * float4(0.5f
+		   , 0.5f, 0.5f, 1.0f);
    }
    //디퓨즈 텍스쳐
    float3 lightDir = normalize(Input.mLightDir);
@@ -106,7 +107,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float3 viewDir = normalize(Input.mViewDir);
 
 	  specular = saturate(dot(reflection, -viewDir));
-	  specular = pow(specular,30.0f);
+	  specular = pow(specular,20.0f);
 
 	  //스페큘러 텍스쳐
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);

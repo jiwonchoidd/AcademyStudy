@@ -130,8 +130,8 @@ KCamera::~KCamera()
 bool KDebugCamera::Frame()
 {
     ResizeRatio();
-    OnMouseRotation();
     UpdateCamera();
+    OnMouseRotation();
     if (g_InputData.bWKey)
     {
         m_vCameraPos = m_vCameraPos + m_vLook * m_fSpeed * g_fSecPerFrame;

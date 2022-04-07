@@ -73,7 +73,7 @@ HRESULT KRenderTarget::CreateRenderTargetView(UINT Width, UINT Height)
 bool KRenderTarget::Create(UINT Width, UINT Height)
 {
 	SetViewPort(Width, Height);
-	CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.5f, (float)Width / (float)Height);
+	CreateProjMatrix(1.0f, 1000.0f, XM_PI * 0.45f, (float)Width / (float)Height);
 	if (FAILED(CreateRenderTargetView(Width, Height)))
 	{
 		return false;
@@ -95,8 +95,8 @@ bool KRenderTarget::Begin(ID3D11DeviceContext* pContext, float color[4])
 	wrl::ComPtr<ID3D11RenderTargetView> pRTV = nullptr;
 	wrl::ComPtr<ID3D11DepthStencilView> pDSV = nullptr;
 	pContext->OMSetRenderTargets(1, pRTV.GetAddressOf(), pDSV.Get());
-	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL };
-	pContext->PSSetShaderResources(0, 2, ppSRVNULL->GetAddressOf());
+	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL};
+	pContext->PSSetShaderResources(3, 2, ppSRVNULL->GetAddressOf());
 	//배경화면 검은색 
 	pContext->ClearRenderTargetView(
 		this->m_pRenderTargetView.Get(), color);
@@ -118,9 +118,9 @@ bool KRenderTarget::End(ID3D11DeviceContext* pContext)
 	wrl::ComPtr<ID3D11RenderTargetView> pRTV = nullptr;
 	wrl::ComPtr<ID3D11DepthStencilView> pDSV = nullptr;
 	pContext->OMSetRenderTargets(1, pRTV.GetAddressOf(), pDSV.Get());
-	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[3] = { NULL, NULL, NULL};
+	wrl::ComPtr<ID3D11ShaderResourceView> ppSRVNULL[2] = { NULL, NULL};
 	//0번 슬롯에 2개 리소스
-	pContext->PSSetShaderResources(0, 3, ppSRVNULL->GetAddressOf());
+	pContext->PSSetShaderResources(3, 2, ppSRVNULL->GetAddressOf());
 	pContext->RSSetViewports(m_nViewPorts, m_vpOld);
 	pContext->OMSetRenderTargets(1, &m_pOldRTV, m_pOldDSV);
 	

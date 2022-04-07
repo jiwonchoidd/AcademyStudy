@@ -10,6 +10,9 @@
     <Filter Include="Code\Scene">
       <UniqueIdentifier>{775239b0-dd10-4fee-871c-19db47f4ecd7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FBX">
+      <UniqueIdentifier>{1fab19c9-e071-4722-8573-500c28dce2d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sample.cpp">
@@ -21,17 +24,20 @@
     <ClCompile Include="KScene_Maptool.cpp">
       <Filter>Code\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="KFbxLoader.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
-    <ClCompile Include="KFBXObj.cpp">
-      <Filter>Code</Filter>
-    </ClCompile>
     <ClCompile Include="KMiniMap.cpp">
       <Filter>Code</Filter>
     </ClCompile>
     <ClCompile Include="KMousePicker.cpp">
       <Filter>Code</Filter>
+    </ClCompile>
+    <ClCompile Include="KFBXObj.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="KFbxVertexLoader.cpp">
+      <Filter>FBX</Filter>
+    </ClCompile>
+    <ClCompile Include="KFbxLoader.cpp">
+      <Filter>FBX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,12 +53,6 @@
     <ClInclude Include="Sample.h">
       <Filter>Code</Filter>
     </ClInclude>
-    <ClInclude Include="KFbxLoader.h">
-      <Filter>Code</Filter>
-    </ClInclude>
-    <ClInclude Include="KFBXObj.h">
-      <Filter>Code</Filter>
-    </ClInclude>
     <ClInclude Include="KMiniMap.h">
       <Filter>Code</Filter>
     </ClInclude>
@@ -64,6 +64,13 @@
     </ClInclude>
     <ClInclude Include="KLight.h">
       <Filter>Code</Filter>
+    </ClInclude>
+    <ClInclude Include="KFbxVertexLoader.h" />
+    <ClInclude Include="KFBXObj.h">
+      <Filter>FBX</Filter>
+    </ClInclude>
+    <ClInclude Include="KFbxLoader.h">
+      <Filter>FBX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

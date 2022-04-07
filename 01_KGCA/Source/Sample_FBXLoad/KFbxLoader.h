@@ -14,18 +14,24 @@ public:
 	virtual void			ParseMesh(KFBXObj* pObject);
 	virtual std::string		ParseMaterial(FbxSurfaceMaterial* pMtrl);
 public:
-	virtual void			ReadTextureCoord(FbxMesh* pFbxMesh,
+	KMatrix     DxConvertMatrix(KMatrix m);
+	KMatrix     ConvertMatrix(FbxMatrix& m);
+	KMatrix     ConvertAMatrix(FbxAMatrix& m);
+	void		ParseAnimation();
+public:
+	void			ReadTextureCoord(FbxMesh* pFbxMesh,
 		FbxLayerElementUV* pUVSet,
 		int vertexIndex,
 		int uvIndex,
 		FbxVector2& uv);
-	virtual FbxColor		ReadColor(const FbxMesh* mesh,
+	FbxColor		ReadColor(const FbxMesh* mesh,
 		DWORD dwVertexColorCount,
 		FbxLayerElementVertexColor* pVertexColorSet,
 		DWORD dwDCCIndex, DWORD dwVertexIndex);
-	virtual FbxVector4		ReadNormal(const FbxMesh* mesh,
+	FbxVector4		ReadNormal(const FbxMesh* mesh,
 		int controlPointIndex,
 		int vertexCounter);
+	int				GetSubMaterialIndex(int iPlygon, FbxLayerElementMaterial* pMtrl);
 public:
 	bool Init();
 	bool Frame();

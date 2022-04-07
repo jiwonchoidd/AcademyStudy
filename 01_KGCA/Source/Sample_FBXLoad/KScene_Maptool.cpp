@@ -33,9 +33,9 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 			m_FbxLoader.m_ObjectList[iObj]->m_pTexture_Diffuse = g_TextureMananger.Load(m_FbxLoader.m_ObjectList[iObj]->m_tex_name_diffuse);
 		}*/
  		m_FbxLoader.m_ObjectList[iObj]->SetPosition(KVector3(0.0f, 1.0f, 0.0f));
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._11 = 0.5f;
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._22 = 0.5f;
-		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._33 = 0.5f;
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._11 = 0.1f;
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._22 = 0.1f;
+		m_FbxLoader.m_ObjectList[iObj]->m_matWorld._33 = 0.1f;
 		if (!m_FbxLoader.m_ObjectList[iObj]->CreateObject(L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/model/T_Pack_01_D.jpg",
 			L"../../data/model/T_Pack_01_S.jpg", L""))
 		{
@@ -61,22 +61,22 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	m_Camera.m_pVS = g_ShaderManager.CreateVertexShader(L"../../data/shader/VSPS_Frustum.hlsl", "VS");
 	m_Camera.m_pPS = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_Frustum.hlsl", "PS");
 	m_Camera.Init(m_pContext);
-	m_Camera.CreateViewMatrix(KVector3(100, 200, 0), KVector3(0, 0, 0));
-	m_Camera.CreateProjMatrix(1.0f, 1500.0f, XM_PI * 0.45f, 
+	m_Camera.CreateViewMatrix(KVector3(100, 100, 0), KVector3(0, 0, 0));
+	m_Camera.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.45f,
 		static_cast<float>(g_rtClient.right)/ static_cast<float>(g_rtClient.bottom));
 	
 	m_TopView.Init(m_pContext);
-	m_TopView.CreateViewMatrix(KVector3(0, 600.0f, -1),KVector3(0, 0, 0));
+	m_TopView.CreateViewMatrix(KVector3(0, 400.0f, -1),KVector3(0, 0, 0));
 	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.45f,
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
+	//라이트 그림자----------------------------------------------------------------
+	m_Light.SetLight(KVector3(100.0f,350.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f));
+	m_Shadow.CreateShadow(&m_Light);
 
 	//마우스 피커------------------------------------------------------------
 	m_MousePicker.Init(m_pContext, &m_Terrian_Space, &m_Camera);
 
-	//라이트 그림자----------------------------------------------------------------
-	m_Light.SetLight(KVector3(100.0f,300.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f), &m_Camera);
-	m_Shadow.CreateShadow(&m_Light);
 	return true;
 }
 
@@ -109,7 +109,6 @@ bool KScene_Maptool::Frame()
 bool KScene_Maptool::Render()
 {
 	//스카이박스------------------------------------------
-
 	m_SkyBox.m_matSkyView = m_Camera.m_matView;
 	m_SkyBox.m_matSkyView._41 = 0;
 	m_SkyBox.m_matSkyView._42 = 0;
@@ -156,7 +155,7 @@ bool KScene_Maptool::Render()
 	m_Shadow.m_Shadow_cbData.m_matShadow = m_Shadow.m_Shadow_cbData.m_matShadow.Transpose();
 	m_pContext->UpdateSubresource(
 		m_Shadow.m_pShadowCB.Get(), 0, NULL, &m_Shadow.m_Shadow_cbData, 0, 0);
-	//2번째 슬롯에 넣음
+	//상수버퍼 2번째 슬롯에 넣음
 	m_pContext->VSSetConstantBuffers(2, 1, m_Shadow.m_pShadowCB.GetAddressOf());
 	//샘플러 상태 : 클램프 -> 그림자용
 	ApplySS(m_pContext, KState::g_pClampSS, 1);

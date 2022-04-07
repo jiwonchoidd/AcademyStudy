@@ -9,10 +9,10 @@ struct cbDataShadow
 class KDepthShadow
 {
 public:
+	KLight*		  m_pLight=nullptr;
 	cbDataShadow  m_Shadow_cbData; // 라이트 뷰행렬 라이트투영행렬 텍스쳐 행렬 곱한, 쉐도우 행렬
 	KMatrix		  m_matTexture;
 	KRenderTarget m_ShadowRT;
-	KLight*		  m_pLight;
 	KShader*      m_pPSShadow = nullptr;
 	KShader*	  m_pPSShadowMap = nullptr;
 	wrl::ComPtr<ID3D11Buffer> m_pShadowCB = nullptr;
@@ -23,10 +23,10 @@ public:
 		m_pLight = plight;
 		m_matTexture._11 = 0.5f; m_matTexture._22 = -0.5f;
 		m_matTexture._41 = 0.5f; m_matTexture._42 = 0.5f;
-		m_ShadowRT.Create(512, 512);
+		m_ShadowRT.Create(1024, 1024);
 
-		m_pPSShadowMap = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_DepthShadow.hlsl", "PSDepth");
-		m_pPSShadow = g_ShaderManager.CreatePixelShader(L"../../data/shader/PS_Normalmap.hlsl", "PSDepth");
+		m_pPSShadowMap = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_DepthShadow.hlsl", "PSDepth");//맵
+		m_pPSShadow = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_DepthShadow.hlsl", "PSDepth");//오브젝트
 		if (!CreateConstantBuffer())
 		{
 			return false;

@@ -4,7 +4,6 @@ class KLight
 {
     //카메라랑 직접 바꿔도되는데 카메라와 속성이 달라서
 public:
-    KCamera*    m_pCamera = nullptr;
     KVector3    m_vPos;
     KVector3    m_vTarget;
     KVector3    m_vDir;
@@ -14,11 +13,10 @@ public:
     KMatrix     m_matProj;
     KMatrix     m_matWorld;
 public:
-    void    SetLight(KVector3 vPos, KVector3 vTarget, KCamera* pCamera)
+    void    SetLight(KVector3 vPos, KVector3 vTarget)
     {
-        m_pCamera = pCamera;
         //색깔 기본
-        m_vLightColor = { 1.0f,1.0f ,1.0f ,1.0f };
+        m_vLightColor = { 1.0f,1.0f,1.0f,1.0f};
         //이거 가지고 뷰행렬을 만들어 낸다.
         m_vPos = vPos;
         m_vTarget = vTarget;
@@ -30,17 +28,12 @@ public:
         KVector3 vUp(0, 1, 0);
         D3DKMatrixLookAtLH(&m_matView, &m_vPos, &m_vTarget, &vUp);
         //원근투영 투영행렬 만들기
-        //카메라가 있을때,
-        if (m_pCamera != nullptr)
-        {
-            D3DKMatrixPerspectiveFovLH(&m_matProj, m_pCamera->m_fFov, m_pCamera->m_fAspect, m_pCamera->m_fNear, m_pCamera->m_fFar);
-            return;
-        }
-        return;
+ 
+        D3DKMatrixPerspectiveFovLH(&m_matProj, XM_PI * 0.45f, 1.0f, 1.0f, 10000.0f);
     }
     bool    Frame()
     {
-        //D3DKMatrixRotationY(&m_matWorld, XM_PI * g_fSecPerFrame * 0.1f);
+        D3DKMatrixRotationY(&m_matWorld, XM_PI * g_fSecPerFrame * 0.05f);
         //정점과 행렬을 곱하는 함수 coord는 w값이 1이 들어감
         D3DXVec3TransformCoord(&m_vPos, &m_vPos, &m_matWorld);
         //error C2102: '&'에 l-value가 있어야 합니다.
@@ -48,7 +41,7 @@ public:
         D3DXVec3Normalize(&m_vDir, &m_vDir);
         KVector3 vUp(0, 1, 0);
         D3DKMatrixLookAtLH(&m_matView, &m_vPos, &m_vTarget, &vUp);
-        D3DKMatrixPerspectiveFovLH(&m_matProj, m_pCamera->m_fFov, m_pCamera->m_fAspect, m_pCamera->m_fNear, m_pCamera->m_fFar);
+        D3DKMatrixPerspectiveFovLH(&m_matProj, XM_PI * 0.45f, 1.0f, 1.0f, 10000.0f);
         return true;
     }
 };

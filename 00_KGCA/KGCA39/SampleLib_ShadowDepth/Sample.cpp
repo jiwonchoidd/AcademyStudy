@@ -17,7 +17,7 @@ HRESULT Sample::CreateConstantBuffer()
 bool		Sample::Init()
 {
 	CreateConstantBuffer();
-	m_DebugCamera.CreateViewMatrix(KVector3(-50, 100, -100), KVector3(0, 0, 0));
+	m_DebugCamera.CreateViewMatrix(KVector3(0, 100, 0), KVector3(0, 0, 0));
 	m_DebugCamera.CreateProjMatrix(1.0f, 500.0f, XM_PI * 2.5f, (float)g_rtClient.right / (float)g_rtClient.bottom);
 	
 	//텍스쳐 변환행렬
@@ -35,7 +35,7 @@ bool		Sample::Init()
 	KMatrix matWorld, matScale;
 	//맵크기를 키움
 	D3DKMatrixRotationX(&matWorld, XM_PI / 2.0f);
-	D3DKMatrixScaling(&matScale, 100.0f, 100.0f, 100.0f);
+	D3DKMatrixScaling(&matScale, 1000.0f, 1000.0f, 1000.0f);
 	m_MapObj.m_matWorld = matScale * matWorld;
 	//그림자 렌더타겟 이미지 
 	m_Rt.Create(512, 512);
