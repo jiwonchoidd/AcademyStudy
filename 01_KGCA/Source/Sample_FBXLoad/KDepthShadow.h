@@ -50,7 +50,7 @@ public:
 	};
 	bool Frame()
 	{
-		m_Shadow_cbData.m_matShadow = m_pLight->m_matView* m_pLight->m_matProj * m_matTexture;
+		m_Shadow_cbData.m_matShadow = m_pLight->m_matView * m_pLight->m_matProj * m_matTexture;
 		return true;
 	};
 	bool Release()

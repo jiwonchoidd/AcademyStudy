@@ -105,6 +105,10 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		PNCT_VERTEX pnct2;
 		PNCT_VERTEX pnct3;
 		PNCT_VERTEX pnct4;
+		BT_VERTEX bt1;
+		BT_VERTEX bt2;
+		BT_VERTEX bt3;
+		BT_VERTEX bt4;
 		pnct1.pos = vertices[num];
 		pnct1.tex = uv[num];
 		pnct1.color = { 1.0f,1.0f,1.0f,1.0f };
@@ -123,28 +127,32 @@ bool KBoxObj::Init(std::wstring vsfile, std::wstring psfile, std::wstring textur
 		KVector3 t, b, n;
 		CreateTangentSpace(&pnct1.pos, &pnct2.pos, &pnct3.pos, 
 			&pnct1.tex, &pnct2.tex, &pnct3.tex,&n, &t, &b);
-		pnct1.tangent = t;
-		pnct1.binormal = b;
+		bt1.tangent = t;
+		bt1.binormal = b;
 		pnct1.normal = n;
 		CreateTangentSpace(&pnct2.pos, &pnct3.pos, &pnct1.pos,
 			&pnct2.tex, &pnct3.tex, &pnct1.tex, &n, &t, &b);
-		pnct2.tangent = t;
-		pnct2.binormal = b;
+		bt2.tangent = t;
+		bt2.binormal = b;
 		pnct2.normal = n;
 		CreateTangentSpace(&pnct3.pos, &pnct1.pos, &pnct2.pos,
 			&pnct3.tex, &pnct1.tex, &pnct2.tex, &n, &t, &b);
-		pnct3.tangent = t;
-		pnct3.binormal = b;
+		bt3.tangent = t;
+		bt3.binormal = b;
 		pnct3.normal = n;
 		CreateTangentSpace(&pnct4.pos, &pnct3.pos, &pnct2.pos,
 			&pnct4.tex, &pnct3.tex, &pnct2.tex, &n, &t, &b);
-		pnct4.tangent = t;
-		pnct4.binormal = b;
+		bt4.tangent = t;
+		bt4.binormal = b;
 		pnct4.normal = n;
 		m_VertexList.push_back(pnct1);
 		m_VertexList.push_back(pnct2);
 		m_VertexList.push_back(pnct3);
 		m_VertexList.push_back(pnct4);
+		m_BTList.push_back(bt1);
+		m_BTList.push_back(bt2);
+		m_BTList.push_back(bt3);
+		m_BTList.push_back(bt4);
 	}
 
 	for (int num = 0; num < sizeof(indices)/ sizeof(short); num++)
@@ -178,11 +186,7 @@ bool KBoxObj::CreateIndexData()
 
 bool KBoxObj::Render(ID3D11DeviceContext* pContext)
 {
-	pContext->IASetInputLayout(m_pVertexLayout.Get());
-	UINT pStrides = m_iVertexSize;
-	UINT pOffsets = 0;
-	pContext->IASetVertexBuffers(1, 1, m_pVertexBuffer.GetAddressOf(),
-		&pStrides, &pOffsets);
+	
 	KObject::Render(pContext);
 	return true;
 }

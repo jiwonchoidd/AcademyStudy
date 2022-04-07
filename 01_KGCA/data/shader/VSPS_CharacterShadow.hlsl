@@ -9,19 +9,26 @@ cbuffer CBuf : register(b0)
 	float4 g_camPos : packoffset(c18);		//카메라 방향
 	float4 g_value : packoffset(c19);		//기타 시간 값등
 };
+cbuffer CBuf_Bone: register(b1)
+{
+	float4x4 g_matBoneWorld[255]; //65535 / 4
+};
 cbuffer cbDataShadow: register(b2)
 {
 	matrix g_matShadow	: packoffset(c0);
 };
 struct VS_INPUT
 {
-	float3 p : POSITION;
-	float3 n : NORMAL;
-	float4 c	: COLOR;
-	float2 t	: TEXCOORD;
+	float3 p		: POSITION;
+	float3 n		: NORMAL;
+	float4 c		: COLOR;
+	float2 t		: TEXCOORD;
 
 	float3 mTangent	: TANGENT;
-	float3 mBinormal : BINORMAL;
+	float3 mBinormal: BINORMAL;
+
+	float4 i		: INDEX;
+	float4 w		: WEIGHT;
 };
 struct VS_OUTPUT
 {
@@ -38,11 +45,13 @@ struct VS_OUTPUT
 
 VS_OUTPUT VS(VS_INPUT Input)
 {
-	//난반사광의 계산 동일한 계산을 PS VS 둘다 할 수 있음. 
-   //하지만 픽셀단위 계산보다 정점단위 계산이 더 연산량이 적음
 	VS_OUTPUT Output = (VS_OUTPUT)0;
+
+	//애니메이션
+	uint iIndex = Input.c.w;
 	float4 vLocal = float4(Input.p, 1.0f);
-	float4 vWorld = mul(vLocal, g_matWorld);
+	float4 vWorld = mul(vLocal, g_matBoneWorld[iIndex]); //뼈 위치로 변환
+	vWorld = mul(vWorld, g_matWorld); //뼈 위치에서 월드 행렬 곱
 
 	//라이트 방향 월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
 	float3 lightDir = vWorld.xyz - g_lightPos.xyz;
@@ -91,8 +100,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float depth = Input.mShadow.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
    if (shadow + 0.005f <= depth)
    {
-	   albedo = albedo * float4(0.5f
-		   , 0.5f, 0.5f, 1.0f);
+	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
    }
    //디퓨즈 텍스쳐
    float3 lightDir = normalize(Input.mLightDir);

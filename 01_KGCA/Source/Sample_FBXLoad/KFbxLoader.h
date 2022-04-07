@@ -8,9 +8,15 @@ public:
 	FbxScene*				m_pFbxScene; // 내가 원하는 정보를 찾아서 엔진에 맞는 렌더링 데이터로 바꿈
 	FbxNode*				m_pRootNode;
 	std::vector<KFBXObj*>	m_ObjectList;
+	std::vector<KFBXObj*>	m_MeshList;
+public:
+	std::map<std::string, KMatrix>  m_BindPoseMatrixMap; // T-POSE 행렬 원점 행렬
+	std::map<FbxNode*, int>			m_pFbxNodeMap;
+public:
+	bool					ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject);
 public:
 	virtual bool			Load(std::wstring filename);
-	virtual void			NodeProcess(FbxNode* pParentNode, FbxNode* pNode);
+	virtual void			NodeProcess(KFBXObj* pParentNode, FbxNode* pNode);
 	virtual void			ParseMesh(KFBXObj* pObject);
 	virtual std::string		ParseMaterial(FbxSurfaceMaterial* pMtrl);
 public:
@@ -28,9 +34,9 @@ public:
 		DWORD dwVertexColorCount,
 		FbxLayerElementVertexColor* pVertexColorSet,
 		DWORD dwDCCIndex, DWORD dwVertexIndex);
-	FbxVector4		ReadNormal(const FbxMesh* mesh,
-		int controlPointIndex,
-		int vertexCounter);
+	FbxVector4		ReadNormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
+	FbxVector4		ReadTangent(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
+	FbxVector4		ReadBinormal(const FbxMesh* mesh, int controlPointIndex, int vertexCounter);
 	int				GetSubMaterialIndex(int iPlygon, FbxLayerElementMaterial* pMtrl);
 public:
 	bool Init();

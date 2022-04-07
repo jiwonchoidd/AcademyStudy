@@ -7,7 +7,7 @@ bool KMap::Init(ID3D11DeviceContext* context, std::wstring heightmap)
 	m_pContext = context;
 	m_tex_offset = 4.0f;
 	CreateHeightMap(heightmap);
-	CreateMap(m_num_row, m_num_col, 3.0f);
+	CreateMap(m_num_row, m_num_col, 4.0f);
 	//CreateMap(33,33, 2.0f);
 	return true;
 }
@@ -95,7 +95,7 @@ bool KMap::CreateVertexData()
 {
 	bool bHasHeightMap = false;
 	m_VertexList.resize(m_num_vertex);
-
+	m_BTList.resize(m_num_vertex);
 	if (m_HeightList.size() > 0)bHasHeightMap = true;
 
 	float  hHalfCol = (m_num_col - 1) / 2.0f;
@@ -154,20 +154,20 @@ bool KMap::CreateIndexData()
 
 		K3DAsset::CreateTangentSpace(&m_VertexList[m_IndexList[triangle]].pos, &m_VertexList[m_IndexList[triangle+1]].pos, &m_VertexList[m_IndexList[triangle + 2]].pos,
 			&m_VertexList[m_IndexList[triangle]].tex, &m_VertexList[m_IndexList[triangle+1]].tex, &m_VertexList[m_IndexList[triangle+2]].tex, &N, &T, &B);
-		m_VertexList[m_IndexList[triangle]].tangent = T;
-		m_VertexList[m_IndexList[triangle]].binormal= B;
+		m_BTList[m_IndexList[triangle]].tangent = T;
+		m_BTList[m_IndexList[triangle]].binormal= B;
 		m_VertexList[m_IndexList[triangle]].normal	= N;
 
 		K3DAsset::CreateTangentSpace(&m_VertexList[m_IndexList[triangle+1]].pos, &m_VertexList[m_IndexList[triangle+2]].pos, &m_VertexList[m_IndexList[triangle]].pos,
 			&m_VertexList[m_IndexList[triangle+1]].tex, &m_VertexList[m_IndexList[triangle+2]].tex, &m_VertexList[m_IndexList[triangle]].tex, &N, &T, &B);
-		m_VertexList[m_IndexList[triangle+1]].tangent  = T;
-		m_VertexList[m_IndexList[triangle+1]].binormal = B;
+		m_BTList[m_IndexList[triangle+1]].tangent = T;
+		m_BTList[m_IndexList[triangle+1]].binormal = B;
 		m_VertexList[m_IndexList[triangle+1]].normal   = N;
 
 		K3DAsset::CreateTangentSpace(&m_VertexList[m_IndexList[triangle+2]].pos, &m_VertexList[m_IndexList[triangle]].pos, &m_VertexList[m_IndexList[triangle+1]].pos,
 			&m_VertexList[m_IndexList[triangle+2]].tex, &m_VertexList[m_IndexList[triangle]].tex, &m_VertexList[m_IndexList[triangle+1]].tex, &N, &T, &B);
-		m_VertexList[m_IndexList[triangle+2]].tangent  = T;
-		m_VertexList[m_IndexList[triangle+2]].binormal = B;
+		m_BTList[m_IndexList[triangle+2]].tangent = T;
+		m_BTList[m_IndexList[triangle+2]].binormal = B;
 		m_VertexList[m_IndexList[triangle+2]].normal   = N;
 		int k = 0;
 	}
@@ -189,11 +189,6 @@ KMap::KMap()
 
 bool KMap::Render(ID3D11DeviceContext* context)
 {
-	context->IASetInputLayout(m_pVertexLayout.Get());
-	UINT pStrides = m_iVertexSize;
-	UINT pOffsets = 0;
-	context->IASetVertexBuffers(1, 1, m_pVertexBuffer.GetAddressOf(),
-		&pStrides, &pOffsets);
 	KObject::Render(context);
 	return true;
 }

@@ -358,8 +358,8 @@ bool KMapSpace::Render_MapObject(ID3D11DeviceContext* pContext)
 	for (auto obj : m_ObjectList)
 	{
 		obj.get()->obj_pObject->SetMatrix(&obj.get()->obj_matWorld,
-			&m_pMap->m_matView,
-			&m_pMap->m_matProj);
+			&m_pCamera->m_matView,
+			&m_pCamera->m_matProj);
 		obj.get()->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
 		obj.get()->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
 		obj.get()->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
@@ -477,8 +477,8 @@ bool KMapSpace::RandomSetupObject(K3DAsset* obj, int amount)
 			randstep(m_pMap->m_BoxCollision.min.z, m_pMap->m_BoxCollision.max.z));
 
 		D3DKMatrixScaling(&matScale, randstep(1.0f, 4.0f),
-			randstep(1.0f, 4.0f),
-			randstep(1.0f, 4.0f));
+			randstep(1.0f, 50.0f),
+			randstep(1.0f, 50.0f));
 		D3DKMatrixRotationYawPitchRoll(&matRotateObj,
 			cosf(randstep(0.0f, 360.0f)) * XM_PI,
 			sinf(randstep(0.0f, 360.0f)) * XM_PI,

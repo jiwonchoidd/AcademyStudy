@@ -7,16 +7,22 @@ struct PNCT_VERTEX
 	KVector3 normal; // 법선	
 	KVector4 color;
 	KVector2 tex;
-	KVector3 tangent; // 접선
-	KVector3 binormal; // 종법선
 	PNCT_VERTEX()
 	{
 		pos = { 1.0f,1.0f,1.0f };
 		normal = { 0.0f,0.0f, 0.0f };
-		tangent = { 0.0f,0.0f, 0.0f };
-		binormal = { 0.0f,0.0f, 0.0f };
 		color = { 1.0f,1.0f,1.0f,1.0f };
 		tex = {0.0f,0.0f};
+	}
+};
+struct BT_VERTEX
+{
+	KVector3 tangent; // 접선
+	KVector3 binormal; // 종법선
+	BT_VERTEX()
+	{
+		tangent = { 0.0f,0.0f, 0.0f };
+		binormal = { 0.0f,0.0f, 0.0f };
 	}
 };
 struct CB_DATA
@@ -50,6 +56,7 @@ public:
 	CB_DATA					m_cbData;
 public:
 	std::vector <PNCT_VERTEX>		m_VertexList;
+	std::vector <BT_VERTEX>			m_BTList;
 	std::vector <DWORD>				m_IndexList;
 public:
 	KShader*		m_pVS = nullptr;
@@ -61,6 +68,7 @@ public://텍스쳐 디퓨즈맵, 스페큘러맵, 노말맵
 	D3D11_TEXTURE2D_DESC		m_TextureDesc;
 public:
 	wrl::ComPtr <ID3D11Buffer>	 	 m_pVertexBuffer;
+	wrl::ComPtr <ID3D11Buffer>	 	 m_pVertexBTBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pIndexBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pConstantBuffer;
 	wrl::ComPtr <ID3D11InputLayout>  m_pVertexLayout;

@@ -379,5 +379,8 @@
     <FxCompile Include="..\..\data\shader\VSPS_DepthShadow.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="..\..\data\shader\VSPS_CharacterShadow.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

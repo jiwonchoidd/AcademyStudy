@@ -81,12 +81,15 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
 
     pContext->IASetInputLayout(m_pVertexLayout.Get());
-    UINT pStrides = m_iVertexSize;
-    UINT pOffsets = 0;
+    UINT pStrides[2] = { sizeof(PNCT_VERTEX), sizeof(BT_VERTEX) };
+    UINT pOffsets[2] = {0,};
 
-    //정점버퍼 바인딩 인덱스버퍼 바인딩 
-    pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
-        &pStrides, &pOffsets);
+    //정점버퍼 바인딩 인덱스버퍼 바인딩 0번슬롯
+    //배열로 0~1 번슬롯 할당
+    ID3D11Buffer* buffer[2] = { m_pVertexBuffer.Get(), m_pVertexBTBuffer.Get()};
+    pContext->IASetVertexBuffers(0, 2, buffer,
+        pStrides, pOffsets);
+
     pContext->IASetIndexBuffer(m_pIndexBuffer.Get(),DXGI_FORMAT_R32_UINT, 0);
     return true;
 }
@@ -209,6 +212,22 @@ HRESULT KObject::CreateVertexBuffer()
     data.pSysMem = &m_VertexList.at(0);
     hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pVertexBuffer);
     if (FAILED(hr)) return hr;
+
+    if (m_BTList.size() > 0)
+    {
+        HRESULT hr = S_OK;
+        if (m_BTList.size() <= 0) return hr;
+        D3D11_BUFFER_DESC bd;
+        ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+        bd.ByteWidth = sizeof(BT_VERTEX) * m_BTList.size();
+        bd.Usage = D3D11_USAGE_DEFAULT;
+        bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        D3D11_SUBRESOURCE_DATA data;
+        ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
+        data.pSysMem = &m_BTList.at(0);
+        hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pVertexBTBuffer);
+       /* if (FAILED(hr)) return hr;*/
+    }
     return hr;
 }
 

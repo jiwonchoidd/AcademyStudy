@@ -52,7 +52,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 
 	std::shared_ptr<KBoxObj> tempBox = std::make_shared<KBoxObj>();
 	tempBox.get()->Init(L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/shader/VSPS_DepthShadow.hlsl", 
-		L"../../data/texture/brick.jpg", L"../../data/texture/SnowGround_Roughness.jpg", L"../../data/texture/brick_normal.jpg");
+		L"../../data/texture/brick.jpg", L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
 	m_Terrian_Space.RandomSetupObject(tempBox.get(),20);
 
 	m_Scene_ObjList.push_back(tempBox);
@@ -71,7 +71,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
 	//라이트 그림자----------------------------------------------------------------
-	m_Light.SetLight(KVector3(100.0f,350.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f));
+	m_Light.SetLight(KVector3(100.0f,420.0f,0.0f), KVector3(0.0f, 0.0f, 0.0f));
 	m_Shadow.CreateShadow(&m_Light);
 
 	//마우스 피커------------------------------------------------------------
@@ -122,8 +122,7 @@ bool KScene_Maptool::Render()
 	if (m_Shadow.m_ShadowRT.Begin(m_pContext, shadow))
 	{
 		//라이트 방향에서 캡쳐
-		m_Terrian.SetMatrix(&m_Terrian.m_matWorld,
-			&m_Light.m_matView, &m_Light.m_matProj);
+		m_Terrian.SetMatrix(&m_Terrian.m_matWorld,&m_Light.m_matView, &m_Light.m_matProj);
 		//쉐이더 셰이더로 교체
 		m_Terrian.PreRender(m_pContext);
 		m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
@@ -132,13 +131,11 @@ bool KScene_Maptool::Render()
 		//오브젝트
 		for (auto obj : m_Terrian_Space.m_ObjectList)
 		{
-			obj->obj_pObject->SetMatrix(&obj->obj_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
-			obj->obj_pObject->PreRender(m_pContext);
+			obj.get()->obj_pObject->SetMatrix(&obj.get()->obj_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
+			obj.get()->obj_pObject->PreRender(m_pContext);
 			m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
-			obj->obj_pObject->PostRender(m_pContext,
-				obj->obj_pObject->m_iNumIndex);//
-			D3DKMatrixInverse(&obj->obj_pObject->m_cbData.matNormal, NULL,
-				&obj->obj_matWorld);
+			obj.get()->obj_pObject->PostRender(m_pContext,
+				obj.get()->obj_pObject->m_iNumIndex);
 		}
 		for (int iObj = 0; iObj < m_FbxLoader.m_ObjectList.size(); iObj++)
 		{
@@ -162,16 +159,20 @@ bool KScene_Maptool::Render()
 	D3DKMatrixInverse(&m_Terrian.m_cbData.matNormal, NULL,
 		&m_Terrian.m_matWorld);
 	
-	//스카이박스 지형 렌더------------------------------
+	//지형 렌더------------------------------------------------------------
 	m_Terrian.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
 	m_Terrian.m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
 	m_Terrian.m_cbData.vLightPos =   { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z};
 	m_Terrian.m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
-	//3번 슬롯에 깊이 맵 텍스쳐 전달
 	m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
-
 	m_Terrian_Space.Render(m_pContext);
-	//3번 슬롯에 깊이 맵 텍스쳐 전달
+
+	//지형 오브젝트 렌더-----------------------------------------------------
+	for (auto obj : m_Terrian_Space.m_ObjectList)
+	{
+		D3DKMatrixInverse(&obj->obj_pObject->m_cbData.matNormal, NULL,
+			&obj->obj_matWorld);
+	}
 	m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
 	m_Terrian_Space.Render_MapObject(m_pContext);
 
