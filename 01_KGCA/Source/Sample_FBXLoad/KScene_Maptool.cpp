@@ -1,7 +1,7 @@
 #include "KScene_Maptool.h"
 #include "KSceneManager.h"
-#include "KSkyBox.h"
 #include "KState.h"
+#include "KFBXManager.h"
 #include "ImGuiManager.h"
 bool KScene_Maptool::Load(std::wstring file)
 {
@@ -20,21 +20,16 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	m_MiniMap_DebugShadow.Init(-1.0f, -0.4f);
 	m_MiniMap_DebugCamera.Init(0.5f, 1.0f);
 	//Fbx 파일 로드-------------------------------------------------------------
-	m_FbxLoader.Init();
-	m_FbxLoader.Load(L"../../data/model/SM_Barrel.FBX");
-	for (int iObj = 0; iObj < m_FbxLoader.m_MeshList.size(); iObj++)
+	
+	std::vector<std::wstring> listname;
+	listname.push_back(L"../../data/model/SM_Rock.FBX");
+	m_Scene_FBXList.resize(listname.size());
+
+	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
- 		m_FbxLoader.m_MeshList[iObj]->SetPosition(KVector3(0.0f, 1.0f, 0.0f));
-		m_FbxLoader.m_MeshList[iObj]->m_matWorld._11 = 1.0f;
-		m_FbxLoader.m_MeshList[iObj]->m_matWorld._22 = 1.0f;
-		m_FbxLoader.m_MeshList[iObj]->m_matWorld._33 = 1.0f;
-		if (!m_FbxLoader.m_MeshList[iObj]->CreateObject(L"../../data/shader/VSPS_FBXShadow.hlsl", 
-			L"../../data/shader/VSPS_FBXShadow.hlsl", 
-			L"../../data/model/T_Pack_01_D.jpg",
-			L"../../data/model/T_Pack_01_S.jpg", L""))
-		{
-			return false;
-		}
+		KFBXAsset* pFbx = &m_Scene_FBXList[iObj];
+ 		pFbx->m_pLoader = g_FBXManager.Load(listname[iObj]);
+		pFbx->m_DrawList.resize(pFbx->m_pLoader->m_MeshList.size());
 	}
 
 	//지형-------------------------------------------------------------
@@ -47,7 +42,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	std::shared_ptr<KBoxObj> tempBox = std::make_shared<KBoxObj>();
 	tempBox.get()->Init(L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/shader/VSPS_DepthShadow.hlsl", 
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
-	m_Terrian_Space.RandomSetupObject(tempBox.get(),20);
+	m_Terrian_Space.RandomSetupObject(tempBox.get(),40);
 
 	m_Scene_ObjList.push_back(tempBox);
 
@@ -102,110 +97,98 @@ bool KScene_Maptool::Frame()
 
 bool KScene_Maptool::Render()
 {
-	////스카이박스------------------------------------------
-	//m_SkyBox.m_matSkyView = m_Camera.m_matView;
-	//m_SkyBox.m_matSkyView._41 = 0;
-	//m_SkyBox.m_matSkyView._42 = 0;
-	//m_SkyBox.m_matSkyView._43 = 0;
+	//스카이박스------------------------------------------
+	m_SkyBox.m_matSkyView = m_Camera.m_matView;
+	m_SkyBox.m_matSkyView._41 = 0;
+	m_SkyBox.m_matSkyView._42 = 0;
+	m_SkyBox.m_matSkyView._43 = 0;
 
-	//m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
-	//m_SkyBox.Render(m_pContext);
+	m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
+	m_SkyBox.Render(m_pContext);
 
-	//float shadow[4] = { 1.0f,1.0f,1.0f,1.0f };
-	////그림자 ------------------------------------------
-	//if (m_Shadow.m_ShadowRT.Begin(m_pContext, shadow))
-	//{
-	//	//라이트 방향에서 캡쳐
-	//	m_Terrian.SetMatrix(&m_Terrian.m_matWorld,&m_Light.m_matView, &m_Light.m_matProj);
-	//	//쉐이더 셰이더로 교체
-	//	m_Terrian.PreRender(m_pContext);
-	//	m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
-	//	m_Terrian.PostRender(m_pContext,
-	//		m_Terrian.m_iNumIndex);//
-	//	//오브젝트
-	//	for (auto obj : m_Terrian_Space.m_ObjectList)
-	//	{
-	//		obj.get()->obj_pObject->SetMatrix(&obj.get()->obj_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
-	//		obj.get()->obj_pObject->PreRender(m_pContext);
-	//		m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
-	//		obj.get()->obj_pObject->PostRender(m_pContext,
-	//			obj.get()->obj_pObject->m_iNumIndex);
-	//	}
-	//	for (int iObj = 0; iObj < m_FbxLoader.m_MeshList.size(); iObj++)
-	//	{
-	//		m_FbxLoader.m_MeshList[iObj]->SetMatrix(&m_FbxLoader.m_MeshList[iObj]->m_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
-	//		m_FbxLoader.m_MeshList[iObj]->PreRender(m_pContext);
-	//		m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
-	//		m_FbxLoader.m_MeshList[iObj]->PostRender(m_pContext,
-	//			m_FbxLoader.m_MeshList[iObj]->m_iNumIndex);//
-	//		
-	//	}
-	//	//복원 작업
-	//	m_Shadow.m_ShadowRT.End(m_pContext);
-	//}
-	//m_Shadow.m_Shadow_cbData.m_matShadow = m_Shadow.m_Shadow_cbData.m_matShadow.Transpose();
-	//m_pContext->UpdateSubresource(
-	//	m_Shadow.m_pShadowCB.Get(), 0, NULL, &m_Shadow.m_Shadow_cbData, 0, 0);
-	////상수버퍼 2번째 슬롯에 넣음
-	//m_pContext->VSSetConstantBuffers(2, 1, m_Shadow.m_pShadowCB.GetAddressOf());
-	////샘플러 상태 : 클램프 -> 그림자용
-	//ApplySS(m_pContext, KState::g_pClampSS, 1);
-	//D3DKMatrixInverse(&m_Terrian.m_cbData.matNormal, NULL,
-	//	&m_Terrian.m_matWorld);
-	//
-	////지형 렌더------------------------------------------------------------
-	//m_Terrian.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-	//m_Terrian.m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
-	//m_Terrian.m_cbData.vLightPos =   { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z};
-	//m_Terrian.m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
-	//m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
-	//m_Terrian_Space.Render(m_pContext);
+	float shadow[4] = { 1.0f,1.0f,1.0f,1.0f };
+	//그림자 ------------------------------------------
+	if (m_Shadow.m_ShadowRT.Begin(m_pContext, shadow))
+	{
+		//라이트 방향에서 캡쳐
+		m_Terrian.SetMatrix(&m_Terrian.m_matWorld,&m_Light.m_matView, &m_Light.m_matProj);
+		//쉐이더 셰이더로 교체
+		m_Terrian.PreRender(m_pContext);
+		m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
+		m_Terrian.PostRender(m_pContext,
+			m_Terrian.m_iNumIndex);//
+		//오브젝트
+		for (auto obj : m_Terrian_Space.m_ObjectList)
+		{
+			obj.get()->obj_pObject->SetMatrix(&obj.get()->obj_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
+			obj.get()->obj_pObject->PreRender(m_pContext);
+			m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
+			obj.get()->obj_pObject->PostRender(m_pContext,
+				obj.get()->obj_pObject->m_iNumIndex);
+		}
+		//복원 작업
+		m_Shadow.m_ShadowRT.End(m_pContext);
+	}
+	m_Shadow.m_Shadow_cbData.m_matShadow = m_Shadow.m_Shadow_cbData.m_matShadow.Transpose();
+	m_pContext->UpdateSubresource(
+		m_Shadow.m_pShadowCB.Get(), 0, NULL, &m_Shadow.m_Shadow_cbData, 0, 0);
+	//상수버퍼 2번째 슬롯에 넣음
+	m_pContext->VSSetConstantBuffers(2, 1, m_Shadow.m_pShadowCB.GetAddressOf());
+	//샘플러 상태 : 클램프 -> 그림자용
+	ApplySS(m_pContext, KState::g_pClampSS, 1);
+	D3DKMatrixInverse(&m_Terrian.m_cbData.matNormal, NULL,
+		&m_Terrian.m_matWorld);
+	
+	//지형 렌더------------------------------------------------------------
+	m_Terrian.SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
+	m_Terrian.m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
+	m_Terrian.m_cbData.vLightPos =   { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z};
+	m_Terrian.m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
+	m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
+	m_Terrian_Space.Render(m_pContext);
 
-	////지형 오브젝트 렌더-----------------------------------------------------
-	//for (auto obj : m_Terrian_Space.m_ObjectList)
-	//{
-	//	D3DKMatrixInverse(&obj->obj_pObject->m_cbData.matNormal, NULL,
-	//		&obj->obj_matWorld);
-	//}
-	//m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
-	//m_Terrian_Space.Render_MapObject(m_pContext);
+	//지형 오브젝트 렌더-----------------------------------------------------
+	for (auto obj : m_Terrian_Space.m_ObjectList)
+	{
+		D3DKMatrixInverse(&obj->obj_pObject->m_cbData.matNormal, NULL,
+			&obj->obj_matWorld);
+	}
+	m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
+	m_Terrian_Space.Render_MapObject(m_pContext);
 
-	//m_Terrian_Space.ImGuiRender(m_pContext);
+	m_Terrian_Space.ImGuiRender(m_pContext);
 
 	//FBX Render------------------------------------------
-	for (int iObj = 0; iObj < m_FbxLoader.m_MeshList.size(); iObj++)
+	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
-		D3DKMatrixInverse(&m_FbxLoader.m_MeshList[iObj]->m_cbData.matNormal, NULL,
-			&m_FbxLoader.m_MeshList[iObj]->m_matWorld);
-		m_FbxLoader.m_MeshList[iObj]->m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
-		m_FbxLoader.m_MeshList[iObj]->m_cbData.vLightPos = { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z };
-		m_FbxLoader.m_MeshList[iObj]->m_cbData.vCamPos = { m_Camera.GetCameraPos()->x , m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
+		m_Scene_FBXList[iObj].SetMatrix(&m_Scene_FBXList[iObj].m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
+		m_Scene_FBXList[iObj].m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
+		m_Scene_FBXList[iObj].m_cbData.vLightPos = { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z };
+		m_Scene_FBXList[iObj].m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
 
-		m_FbxLoader.m_MeshList[iObj]->SetMatrix(nullptr, &m_Camera.m_matView, &m_Camera.m_matProj);
-		//m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
-		m_FbxLoader.m_MeshList[iObj]->Render(m_pContext);
+		m_Scene_FBXList[iObj].Render(m_pContext);
 	}
 
 	////미니맵------------------------------------------------
-	//m_MiniMap_DebugShadow.SetMatrix(nullptr, nullptr, nullptr);
-	//m_MiniMap_DebugShadow.PreRender(m_pContext);
-	//m_pContext->PSSetShaderResources(0, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
-	//m_MiniMap_DebugShadow.PostRender(m_pContext, m_MiniMap_DebugShadow.m_iNumIndex);
+	m_MiniMap_DebugShadow.SetMatrix(nullptr, nullptr, nullptr);
+	m_MiniMap_DebugShadow.PreRender(m_pContext);
+	m_pContext->PSSetShaderResources(0, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
+	m_MiniMap_DebugShadow.PostRender(m_pContext, m_MiniMap_DebugShadow.m_iNumIndex);
 
-	//float color[4] = { 0.2f,0.2f,0.2f,1.0f };
-	//if (m_MiniMap_DebugCamera.m_Rt.Begin(m_pContext, color))
-	//{
-	//	ApplyBS(m_pContext, KState::g_pAlphaBlendState);
-	//	m_Terrian.SetMatrix(nullptr, &m_TopView.m_matView, &m_TopView.m_matProj);
-	//	m_Terrian_Space.Render(m_pContext);
-	//	m_Camera.SetMatrix(nullptr, &m_TopView.m_matView,
-	//		&m_TopView.m_matProj);
-	//	m_Camera.Render(m_pContext);
-	//	m_MiniMap_DebugCamera.m_Rt.End(m_pContext);
-	//	KState::g_pCurrentBS = KState::g_pBlendState;
-	//}
-	//m_MiniMap_DebugCamera.Render(m_pContext);
-	//
+	float color[4] = { 0.2f,0.2f,0.2f,1.0f };
+	if (m_MiniMap_DebugCamera.m_Rt.Begin(m_pContext, color))
+	{
+		ApplyBS(m_pContext, KState::g_pAlphaBlendState);
+		m_Terrian.SetMatrix(nullptr, &m_TopView.m_matView, &m_TopView.m_matProj);
+		m_Terrian_Space.Render(m_pContext);
+		m_Camera.SetMatrix(nullptr, &m_TopView.m_matView,
+			&m_TopView.m_matProj);
+		m_Camera.Render(m_pContext);
+		m_MiniMap_DebugCamera.m_Rt.End(m_pContext);
+		KState::g_pCurrentBS = KState::g_pBlendState;
+	}
+	m_MiniMap_DebugCamera.Render(m_pContext);
+	
 	KScene::Render();
 	return true;
 }

@@ -1,6 +1,5 @@
 #pragma once
 #include "K2DAsset.h"
-
 //충돌 났을때 어떤 함수 호출할지 결정 시스템
 using CollisionFunction = std::function<void(KCollider*, DWORD)>;
 

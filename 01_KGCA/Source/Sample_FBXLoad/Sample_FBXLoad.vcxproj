@@ -152,7 +152,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="KDepthShadow.h" />
+    <ClInclude Include="KFBXAsset.h" />
     <ClInclude Include="KFbxLoader.h" />
+    <ClInclude Include="KFBXManager.h" />
     <ClInclude Include="KFBXObj.h" />
     <ClInclude Include="KFbxVertexLoader.h" />
     <ClInclude Include="KLight.h" />
@@ -164,7 +166,9 @@
     <ClInclude Include="KScene_Maptool.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="KFBXAsset.cpp" />
     <ClCompile Include="KFbxLoader.cpp" />
+    <ClCompile Include="KFBXManager.cpp" />
     <ClCompile Include="KFBXObj.cpp" />
     <ClCompile Include="KFbxVertexLoader.cpp" />
     <ClCompile Include="KMiniMap.cpp" />

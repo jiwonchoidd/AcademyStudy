@@ -35,7 +35,7 @@ bool	KCore::GameFrame()
 {
     m_Timer.Frame();
     g_Input.Frame();
-    g_ObjManager.Frame();
+    //g_ObjManager.Frame();
     m_ImGuiManager.Frame();
     if (g_InputData.bDebugRender)
     {

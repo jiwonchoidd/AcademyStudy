@@ -4,11 +4,11 @@
 #include "KSoundManager.h"
 #include "KSkyBox.h"
 #include "KMapSpace.h"
-#include "KFbxLoader.h"
 #include "KMiniMap.h"
 #include "KRenderTarget.h"
 #include "KMousePicker.h"
 #include "KDepthShadow.h"
+#include "KFBXAsset.h"
 class KScene_Maptool : public KScene
 {
 public:
@@ -27,6 +27,7 @@ public:
     KMiniMap       m_MiniMap_DebugShadow;
 public:
     std::vector<std::shared_ptr<K3DAsset>> m_Scene_ObjList;
+    std::vector<KFBXAsset> m_Scene_FBXList;
 public:
     bool    Load(std::wstring file) override;
 public:

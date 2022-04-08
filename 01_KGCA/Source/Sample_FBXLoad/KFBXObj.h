@@ -48,26 +48,31 @@ struct IW_VERTEX
 		w[0] = w[1] = w[2] = w[3] = 0.0f;
 	}
 };
+struct KScene_Animation
+{
+	UINT   iStart;
+	UINT   iEnd;
+	UINT   iFrameSpeed;
+};
 class KFBXObj : public K3DAsset
 {
-public:
-	int					m_iIndex = -1;
-	KMatrix				m_matLocal;
-	KMatrix				m_matAnim;
-	std::vector<KTrack>	m_AnimTrack;
-	bool				m_bSkinned;
-public:
-	std::vector<ID3D11Buffer*>   m_pVBList;
-	std::vector<ID3D11Buffer*>   m_pVBWeightList;
-	std::vector<ID3D11Buffer*>   m_pVBBTList;
-	ID3D11Buffer*				 m_pBoneCB = nullptr;
-	std::vector<KTexture*>		 m_pTextureList;
-	std::vector<std::wstring>	 m_strTexList;
-	std::map<int, KMatrix>		 m_MatrixBindPoseMap; // 인덱스로 구성된 바인드포즈 맵 
 public:
 	FbxNode*	 m_pFbx_ParentNode;
 	FbxNode*	 m_pFbx_ThisNode;
 	KFBXObj*	 m_pFbx_ParentObj;
+public:
+	int					m_iIndex = -1;
+	bool				m_bSkinned;
+	KMatrix				m_matLocal;
+	KMatrix				m_matAnim;
+	std::vector<KTrack>	m_AnimTrack;
+public:
+	std::vector<ID3D11Buffer*>   m_pVBList;
+	std::vector<ID3D11Buffer*>   m_pVBWeightList;
+	std::vector<ID3D11Buffer*>   m_pVBBTList;
+	std::vector<KTexture*>		 m_pTextureList;
+	std::vector<std::wstring>	 m_strTexList;
+	std::map<std::wstring, KMatrix>		 m_MatrixBindPoseMap; // 인덱스로 구성된 바인드포즈 맵 
 public:
 	//이 객체는 서브 정보로 렌더링함
 	using KSubVertex = std::vector<PNCT_VERTEX>;
@@ -87,7 +92,7 @@ public:
 	virtual bool		CreateIndexData()override;
 	virtual HRESULT		CreateVertexLayout()override;
 	virtual HRESULT		CreateVertexBuffer()override;
-	bool				CreateBoneConstantBuffer();
+
 public:
 	KFBXObj();
 	~KFBXObj();

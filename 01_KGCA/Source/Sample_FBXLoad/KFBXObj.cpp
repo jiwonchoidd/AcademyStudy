@@ -10,15 +10,15 @@ bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 	pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 	pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
-	//텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
-	if (m_pTexture_Diffuse != nullptr)
-		pContext->PSSetShaderResources(0, 1, m_pTexture_Diffuse->m_pSRVTexture.GetAddressOf());
+	////텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
+	//if (m_pTexture_Diffuse != nullptr)
+	//	pContext->PSSetShaderResources(0, 1, m_pTexture_Diffuse->m_pSRVTexture.GetAddressOf());
 
-	if (m_pTexture_Specular != nullptr)
-		pContext->PSSetShaderResources(1, 1, m_pTexture_Specular->m_pSRVTexture.GetAddressOf());
+	//if (m_pTexture_Specular != nullptr)
+	//	pContext->PSSetShaderResources(1, 1, m_pTexture_Specular->m_pSRVTexture.GetAddressOf());
 
-	if (m_pTexture_Normal != nullptr)
-		pContext->PSSetShaderResources(2, 1, m_pTexture_Normal->m_pSRVTexture.GetAddressOf());
+	//if (m_pTexture_Normal != nullptr)
+	//	pContext->PSSetShaderResources(2, 1, m_pTexture_Normal->m_pSRVTexture.GetAddressOf());
 
 	//쉐이더
 	pContext->VSSetShader(m_pVS->m_pVertexShader.Get(), NULL, 0);
@@ -31,7 +31,7 @@ bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 	////정점버퍼 바인딩 인덱스버퍼 바인딩 
 	//pContext->IASetVertexBuffers(0, 1, m_pVertexBuffer.GetAddressOf(),
 	//	&pStrides, &pOffsets);
-	pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+	//pContext->IASetIndexBuffer(m_pIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 	return true;
 }
 
@@ -49,11 +49,13 @@ bool KFBXObj::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 
 	for (int index = 0; index < m_pSubVertexList.size(); index++)
 	{
-		if (m_pTextureList.size() > 0 &&
-			m_pTextureList[index] != nullptr)
+		if (m_pTextureList.size() > 0)
 		{
-			pContext->PSSetShaderResources(0, 1,
-				m_pTextureList[index]->m_pSRVTexture.GetAddressOf());
+			for (int itex = 0; itex < m_pTextureList.size(); itex++)
+			{
+				pContext->PSSetShaderResources(itex, 1,
+						m_pTextureList[itex]->m_pSRVTexture.GetAddressOf());
+			}
 		}
 
 		ID3D11Buffer* buffer[3] = { m_pVBList[index], m_pVBBTList[index], m_pVBWeightList[index] };
@@ -91,10 +93,6 @@ bool KFBXObj::Release()
 		{
 			m_pVBWeightList[ivb]->Release();
 		}
-	}
-	if (m_pBoneCB != nullptr)
-	{
-		m_pBoneCB->Release();
 	}
 	return true;
 }
@@ -158,7 +156,7 @@ HRESULT KFBXObj::CreateVertexBuffer()
 	HRESULT hr = S_OK;
 	for (int index = 0; index < m_pSubVertexList.size(); index++)
 	{
-		if (m_pSubVertexList[index].size() <= 0) continue;
+		if (m_pSubVertexList[index].size() <= 0) return hr;
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 		bd.ByteWidth = sizeof(PNCT_VERTEX) * m_pSubVertexList[index].size();
@@ -176,7 +174,7 @@ HRESULT KFBXObj::CreateVertexBuffer()
 	for (int index = 0; index < m_pSubBTList.size(); index++)
 	{
 		HRESULT hr = S_OK;
-		if (m_pSubBTList.size() <= 0) return hr;
+		if (m_pSubBTList[index].size() <= 0) return hr;
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 		bd.ByteWidth = sizeof(BT_VERTEX) * m_pSubBTList[index].size();
@@ -186,12 +184,12 @@ HRESULT KFBXObj::CreateVertexBuffer()
 		ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
 		data.pSysMem = &m_pSubBTList[index].at(0);
 		hr = g_pd3dDevice->CreateBuffer(&bd, &data, &m_pVBBTList[index]);
-		/* if (FAILED(hr)) return hr;*/
+		if (FAILED(hr)) return hr;
 	}
 	//추가적인 Vertexlist 가중치 값
 	for (int iWeight = 0; iWeight < m_pSubIWVertexList.size(); iWeight++)
 	{
-		if (m_pSubIWVertexList[iWeight].size() <= 0) continue;
+		if (m_pSubIWVertexList[iWeight].size() <= 0) return hr;
 		D3D11_BUFFER_DESC bd;
 		ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
 		bd.ByteWidth = sizeof(IW_VERTEX) * m_pSubIWVertexList[iWeight].size();
@@ -205,29 +203,6 @@ HRESULT KFBXObj::CreateVertexBuffer()
 	}
 
 	return hr;
-}
-
-
-bool KFBXObj::CreateBoneConstantBuffer()
-{
-	HRESULT hr;
-	//gpu메모리에 버퍼 할당(원하는 할당 크기)
-	D3D11_BUFFER_DESC bd;
-	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
-	bd.ByteWidth = sizeof(KBoneWorld);
-	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-	//D3D11_SUBRESOURCE_DATA sd;
-	//ZeroMemory(&sd, sizeof(D3D11_SUBRESOURCE_DATA));
-	//sd.pSysMem = &m_matBoneArray;
-
-	if (FAILED(hr = g_pd3dDevice->CreateBuffer(&bd, NULL,
-		&m_pBoneCB)))
-	{
-		return false;
-	}
-	return true;
 }
 
 KFBXObj::KFBXObj()

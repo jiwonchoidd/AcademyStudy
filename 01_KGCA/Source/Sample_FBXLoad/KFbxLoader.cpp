@@ -26,12 +26,11 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 	{
 		auto pSkin = reinterpret_cast<FbxSkin*>(pFbxMesh->GetDeformer(dwDeformerIndex, FbxDeformer::eSkin));
 		DWORD dwClusterCount = pSkin->GetClusterCount();
-		// dwClusterCount의 행렬이 전체 정점에 영향을 주었다.
 		//가중치 : 각각의 정점에 저장해서 어떤 행렬에 미치는지 클러스터 별로 구분 
 		for (int dwClusterIndex = 0; dwClusterIndex < dwClusterCount; dwClusterIndex++)
 		{
 			auto pCluster = pSkin->GetCluster(dwClusterIndex);
-			////바인드 행렬 계산
+			//바인드 행렬 계산
 			FbxAMatrix matXBindPose; //바인드 포즈 T-POSE와 같은 개념
 			FbxAMatrix matReferenceGlobalInitPosition; //기존 첫 위치
 			pCluster->GetTransformLinkMatrix(matXBindPose);
@@ -42,8 +41,9 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 			matInvBindPos = matInvBindPos.Invert();
 			
 			//인덱스 바인드 포즈 맵 
-			int iMapIndex = m_pFbxNodeMap.find(pCluster->GetLink())->second;
-			pObject->m_MatrixBindPoseMap.insert(std::make_pair(iMapIndex, matInvBindPos));
+			int iBoneIdx = m_pFbxNodeMap.find(pCluster->GetLink())->second;
+			std::wstring name = m_FBXTreeList[iBoneIdx]->m_ObjName;
+			pObject->m_MatrixBindPoseMap.insert(std::make_pair(name, matInvBindPos));
 
 			int  dwClusterSize = pCluster->GetControlPointIndicesCount();
 			auto data = m_pFbxNodeMap.find(pCluster->GetLink());
@@ -64,9 +64,11 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 	}
 	return true;
 }
+//매니져에서 함
 bool KFbxLoader::Load(std::wstring filename)
 {
 	//파일 - > 임포터 -> 씬 (트리) 해석 -> 매쉬 -> 정보 가져오기 pnct -> 출력
+	Init();
 	std::string temp = to_wm(filename);
 	bool bRet = m_pFbxImporter->Initialize(temp.c_str()); //파일명 넘김
 	bRet = m_pFbxImporter->Import(m_pFbxScene);
@@ -74,20 +76,29 @@ bool KFbxLoader::Load(std::wstring filename)
 	//파일명 임포트 성공
 	if (bRet)
 	{
-		//fbx는 트리 구조로 이어져있음
+		//fbx는 트리 구조로 이어져있음N트리 : 자식 개수가 N개임
 		//재귀호출로 전 순회 가능, N 트리여서 자식 수를 알아야함
-		//N트리 : 자식 개수가 N개임
+		//
 		m_pRootNode = m_pFbxScene->GetRootNode();
 
 		//전 순회해서 씬에 저장되어 있는 트리구조에서 오브젝트를 찾아옴
 		NodeProcess(nullptr, m_pRootNode);
-		ParseAnimation();
+		ParseAnimation(); // 애니메이션 씬 시간 체크 했음
 
 		//N트리에서 찾아낸 오브젝트를 해석함, 단, 그릴수있는 매쉬리스트만,
 		for (int iobj = 0; iobj < m_MeshList.size(); iobj++)
 		{
 			ParseMesh(m_MeshList[iobj]);
-			m_MeshList[iobj]->CreateBoneConstantBuffer();
+		}
+
+		CreateBoneConstantBuffer();
+		for (int iobj = 0; iobj < m_MeshList.size(); iobj++)
+		{
+			//오브젝트 생성
+			if (!m_MeshList[iobj]->CreateObject(L"../../data/shader/VSPS_FBXShadow.hlsl", L"../../data/shader/VSPS_FBXShadow.hlsl"))
+			{
+				return false;
+			}
 		}
 		return true;
 	}
@@ -103,8 +114,13 @@ void KFbxLoader::NodeProcess(KFBXObj* pParentObj, FbxNode* pNode)
 		fbx->m_pFbx_ThisNode = pNode;
 		fbx->m_pFbx_ParentNode = pNode->GetParent();
 		fbx->m_pFbx_ParentObj = pParentObj;
-		fbx->m_iIndex = m_ObjectList.size();
-		m_ObjectList.push_back(fbx);
+		fbx->m_iIndex = m_FBXTreeList.size();
+		fbx->m_ObjName = to_mw(pNode->GetName());
+		m_FBXTreeList.push_back(fbx); // obj 검색 데이터를 넣을때,
+		m_pFbxNodeMap.insert(std::make_pair(pNode, fbx->m_iIndex));
+		m_pFbxObjMap.insert(std::make_pair(fbx->m_ObjName, fbx));
+		//이름으로 바로 인덱스 접근할 수 있으면 끝.
+		//m_pFbxModelMap
 	}
 	// 카메라나 라이트 등 매쉬가 아니라면 리턴
 	/*if (pNode->GetCamera() || pNode->GetLight())
@@ -181,7 +197,8 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			{
 				NormalSet.push_back(pFbxLayer->GetNormals());
 			}
-			if (pFbxLayer->GetBinormals() != nullptr)
+			//갖고 있는 파일들이 바이노말 값이 없어서 강제로 노말 바이노말 생성
+			if (pFbxLayer->GetBinormals() != nullptr) 
 			{
 				BinormalSet.push_back(pFbxLayer->GetBinormals());
 			}
@@ -200,22 +217,29 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			if (pSurface)
 			{
 				//메터리얼의 텍스쳐 이름을 가져와서 리스트 추가 및 SRV 생성
+				std::wstring dir = L"../../data/model/";
 				std::wstring strTexname = to_mw(ParseMaterial(pSurface));
+				std::wstring strTexname1 = L"../../data/model/Default_Specular.jpg";
+				std::wstring strTexname2 = L"../../data/model/Default_Normal.jpg";
 				if (!strTexname.empty())
 				{
-					std::wstring dir = L"../../data/model/";
 					dir += strTexname;
 					pObject->m_strTexList.push_back(dir);
+					pObject->m_strTexList.push_back(strTexname1);
+					pObject->m_strTexList.push_back(strTexname2);
 					//자동으로 텍스쳐를 만드는데, 실패할 경우
-					KTexture* pTex = g_TextureMananger.Load(pObject->m_strTexList[iMtrl]);
-					if (pTex != nullptr)
+					for (int tex = 0; tex < pObject->m_strTexList.size(); tex++)
 					{
-						pObject->m_pTextureList.push_back(pTex);
-					}
-					else
-					{
-						KTexture* pTex = g_TextureMananger.Load(L"../../data/texture/brick.jpg");
-						pObject->m_pTextureList.push_back(pTex);
+						KTexture* pTex1 = g_TextureMananger.Load(pObject->m_strTexList[tex]);
+						if (pTex1 != nullptr)
+						{
+							pObject->m_pTextureList.push_back(pTex1);
+						}
+						else
+						{
+							KTexture* pTex = g_TextureMananger.Load(L"../../data/model/UV.bmp");
+							pObject->m_pTextureList.push_back(pTex);
+						}
 					}
 				}
 			}
@@ -374,7 +398,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].tex, &n, &t, &b);
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].tangent = t;
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].binormal = b;
-			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal= n;
+			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal= n;
 
 			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos
 				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos,
@@ -382,7 +406,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &n, &t, &b);
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].tangent = t;
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].binormal = b;
-			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
+			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
 
 			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos
 				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos,
@@ -390,7 +414,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, &n, &t, &b);
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].tangent = t;
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].binormal = b;
-			pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
+			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
 			iCurpolyIndex += iPolySize;
 		}
 
@@ -480,25 +504,42 @@ void KFbxLoader::ParseAnimation()
 	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
 	FbxLongLong s = start.GetFrameCount(TimeMode);
 	FbxLongLong n = end.GetFrameCount(TimeMode);
-	//m_Scene.iStart = s;
-	//m_Scene.iEnd = n;
-	//m_Scene.iFrameSpeed = 30;
-	// 1초에 30 frame 
-	// 1Frame = 160 Tick
-	// 50 Frame 
+
+	m_Scene.iStart = s;
+	m_Scene.iEnd = n;
+	m_Scene.iFrameSpeed = 30;
+
 	FbxTime time;
 	KTrack tTrack;
 	for (FbxLongLong t = s; t <= n; t++)
 	{
 		time.SetFrame(t, TimeMode);
-		for (int iObj = 0; iObj < m_ObjectList.size(); iObj++)
+		for (int iObj = 0; iObj < m_FBXTreeList.size(); iObj++)
 		{
-			FbxAMatrix matGlobal = m_ObjectList[iObj]->m_pFbx_ThisNode->EvaluateGlobalTransform(time);
+			FbxAMatrix matGlobal = m_FBXTreeList[iObj]->m_pFbx_ThisNode->EvaluateGlobalTransform(time);
 			tTrack.iFrame = t;
 			tTrack.matTrack = DxConvertMatrix(ConvertAMatrix(matGlobal));
-			m_ObjectList[iObj]->m_AnimTrack.push_back(tTrack);
+			m_FBXTreeList[iObj]->m_AnimTrack.push_back(tTrack);
 		}
 	}
+}
+
+bool KFbxLoader::CreateBoneConstantBuffer()
+{
+	//3번 슬롯 뼈 상수 버퍼
+	HRESULT hr;
+	D3D11_BUFFER_DESC bd;
+	ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+	bd.ByteWidth = sizeof(KBoneWorld);
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+	if (FAILED(hr = g_pd3dDevice->CreateBuffer(&bd, NULL,
+		&m_pBoneCB)))
+	{
+		return false;
+	}
+	return true;
 }
 
 
@@ -514,16 +555,25 @@ bool KFbxLoader::Render()
 
 bool KFbxLoader::Release()
 {
-	for (int iObj = 0; iObj < m_ObjectList.size(); iObj++)
-	{
-		m_ObjectList[iObj]->Release();
-	}
 	for (int iObj = 0; iObj < m_MeshList.size(); iObj++)
 	{
 		m_MeshList[iObj]->Release();
 	}
-	m_pFbxScene->Destroy();
-	m_pFbxImporter->Destroy();
-	m_pFbxManager->Destroy();
+	if (m_pBoneCB != nullptr)
+	{
+		m_pBoneCB->Release();
+	}
+	if (m_pFbxScene != nullptr)
+	{
+		m_pFbxScene->Destroy();
+	}
+	if (m_pFbxImporter != nullptr)
+	{
+		m_pFbxImporter->Destroy();
+	}
+	if (m_pFbxManager != nullptr)
+	{
+		m_pFbxManager->Destroy();
+	}
 	return true;
 }
