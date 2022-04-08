@@ -22,7 +22,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	//Fbx 파일 로드-------------------------------------------------------------
 	
 	std::vector<std::wstring> listname;
-	listname.push_back(L"../../data/model/SM_Rock.FBX");
+	listname.push_back(L"../../data/model/man.FBX");
 	m_Scene_FBXList.resize(listname.size());
 
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)

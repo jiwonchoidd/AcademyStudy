@@ -17,5 +17,8 @@ public:
 	virtual bool	Frame()override;
 	virtual bool	Render(ID3D11DeviceContext* pContext)override;
 	virtual bool    Release() override;
+public:
+	//애니메이션 SRT 행렬로 분해해서 보간, 단 회전은 쿼터니언 구면보간 SLERP 사용
+	KMatrix			Interpolation(KFbxLoader* pAnimLoader, KFBXObj* pFbxObj, float fTime);
 };
 

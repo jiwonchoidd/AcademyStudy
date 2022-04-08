@@ -9,6 +9,10 @@ struct KTrack
 {
 	UINT	iFrame;
 	KMatrix matTrack;
+	//행렬 보간을 위해 트랙에서 SRT를 갖고 있음
+	KVector3	s;
+	KQuaternion	r;
+	KVector3	t;
 };
 struct KWeight
 {

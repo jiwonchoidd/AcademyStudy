@@ -262,12 +262,12 @@ bool KMapSpace::SetLOD(KVector3* vCamera)
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 65.0f)
+		if (fDistance < 100.0f)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 130.0f)
+		else if (fDistance < 200.0f)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 1;
 		}

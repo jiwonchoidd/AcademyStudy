@@ -21,14 +21,10 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 	m_fAnimTime += g_fSecPerFrame * m_pAnimLoader->m_Scene.iFrameSpeed * m_fAnimDir* m_fAnimSpeed;
 	if (m_fAnimTime >= m_pAnimLoader->m_Scene.iEnd)
 	{
-		m_fAnimDir *= -1.0f;
-	}
-	if (m_fAnimTime <= m_pAnimLoader->m_Scene.iStart)
-	{
-		m_fAnimDir *= -1.0f;
+		m_fAnimTime = m_pAnimLoader->m_Scene.iStart;
 	}
 	int iFrame = m_fAnimTime;
-	iFrame = max(0, min(m_pAnimLoader->m_Scene.iEnd, iFrame));
+	iFrame = max(0, min(m_pAnimLoader->m_Scene.iEnd-1, iFrame));
 
 	for (int iObj = 0; iObj < m_pLoader->m_MeshList.size(); iObj++)
 	{
@@ -94,4 +90,37 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 bool KFBXAsset::Release()
 {
 	return false;
+}
+
+//애니메이션 변경시에 보간, 혹은 슬로우모션(프레임저하)
+KMatrix KFBXAsset::Interpolation(KFbxLoader* pAnimLoader, KFBXObj* pFbxObj, float fTime)
+{
+	KMatrix  matAnim;
+	KScene_Animation scene_Anim = pAnimLoader->m_Scene;
+	int iStart = max(scene_Anim.iStart, fTime);
+	int iEnd = min(scene_Anim.iEnd, fTime + 1);
+	// 보간 = A ~ 7.5f ~ B
+	//       9.5f <=10   ~     20 -> 20.1
+	KTrack A = pFbxObj->m_AnimTrack[iStart];
+	KTrack B = pFbxObj->m_AnimTrack[iEnd];
+	float s = fTime - (float)iStart; // 0~1
+	KVector3 pos;
+	//위치 값 선형 보간 
+	D3DXVec3Lerp(&pos, &A.t, &B.t, s);
+	KVector3 scale;
+	//스케일 값 선형 보간
+	D3DXVec3Lerp(&scale, &A.s, &B.s, s);
+	KQuaternion rotation;
+	//회전 값 구면 보간
+	D3DXQuaternionSlerp(&rotation, &A.r, &B.r, s);
+	KMatrix matScale;
+	D3DKMatrixScaling(&matScale, scale.x, scale.y, scale.z);
+	KMatrix matRotation;
+	D3DKMatrixRotationQuaternion(&matRotation, &rotation);
+
+	matAnim = matScale * matRotation;
+	matAnim._41 = pos.x;
+	matAnim._42 = pos.y;
+	matAnim._43 = pos.z;
+	return matAnim;
 }

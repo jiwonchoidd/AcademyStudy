@@ -392,13 +392,18 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			//조건 없이 일단 바이노말 작업함
 			IW_VERTEX iWvertex;
 			KVector3 t, b, n;
+			/*int		index = 0;
+			if (iCurpolyIndex != 0)
+			{
+				index = iCurpolyIndex - 1;
+			}*/
 			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos
 				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].pos,
 				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, 
 				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].tex, &n, &t, &b);
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].tangent = t;
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].binormal = b;
-			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal= n;
+			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal = n;
 
 			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos
 				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos,
@@ -415,6 +420,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].tangent = t;
 			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].binormal = b;
 			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
+			
 			iCurpolyIndex += iPolySize;
 		}
 

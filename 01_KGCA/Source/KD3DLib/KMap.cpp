@@ -169,7 +169,6 @@ bool KMap::CreateIndexData()
 		m_BTList[m_IndexList[triangle+2]].tangent = T;
 		m_BTList[m_IndexList[triangle+2]].binormal = B;
 		m_VertexList[m_IndexList[triangle+2]].normal   = N;
-		int k = 0;
 	}
 
 	return true;
