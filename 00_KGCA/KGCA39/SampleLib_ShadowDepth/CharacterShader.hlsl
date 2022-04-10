@@ -60,7 +60,7 @@ VS_OUT VS(VS_IN vIn)
 	output.s = vShadowProj;
 	output.p = vProj;
 	matrix matNormal = transpose(g_matNormal);
-	output.n = normalize(mul(vNormal, (float3x3)matNormal));
+	output.n = normalize(mul(vNormal, (float3x3)g_matWorld));
 	float depth = vProj.z * 1.0f / (500.0f - 1.0f) + -1.0f / (500.0f - 1.0f);
 	output.c = float4(depth, depth, depth, 1);
 	output.t = vIn.t;

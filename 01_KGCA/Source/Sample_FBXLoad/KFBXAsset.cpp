@@ -2,7 +2,9 @@
 
 bool KFBXAsset::Init()
 {
-	return false;
+	m_fAnimTime = 61;
+	m_fAnimSpeed = 1.0f;
+	return true;
 }
 
 bool KFBXAsset::Frame()
@@ -17,12 +19,15 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 	{
 		m_pAnimLoader = m_pLoader;
 	}
-
+	//Time calculation
 	m_fAnimTime += g_fSecPerFrame * m_pAnimLoader->m_Scene.iFrameSpeed * m_fAnimDir* m_fAnimSpeed;
+	
+	//애니메이션 시간이 끝났을때 처음으로 다시 돌림
 	if (m_fAnimTime >= m_pAnimLoader->m_Scene.iEnd)
 	{
 		m_fAnimTime = m_pAnimLoader->m_Scene.iStart;
 	}
+
 	int iFrame = m_fAnimTime;
 	iFrame = max(0, min(m_pAnimLoader->m_Scene.iEnd-1, iFrame));
 
@@ -34,40 +39,42 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 		//트리를 타고 뼈 좌표계로 움직여야함
 		if (pFbxObj->m_bSkinned)
 		{
-			for (int inode = 0; inode < m_pLoader->m_FBXTreeList.size(); inode++)
+			//뼈대 하나 하나 모두 탐색
+			for (auto data : m_pAnimLoader->m_pFbxObjMap)
 			{
-				std::wstring name = m_pLoader->m_FBXTreeList[iObj]->m_ObjName;
-				KFBXObj* pFbxtree = m_pLoader->m_FBXTreeList[iObj];
-				KFBXObj* pAnimTrack = nullptr;
-
-				auto model = m_pAnimLoader->m_pFbxObjMap.find(name);
-				if (model != m_pAnimLoader->m_pFbxObjMap.end())
+				std::wstring name = data.first;
+				KFBXObj* pAnimObj = data.second;
+				auto model = m_pLoader->m_pFbxObjMap.find(name);
+				if (model == m_pLoader->m_pFbxObjMap.end())
 				{
-					pAnimTrack = model->second;
-
-					//매 프레임 검색하는것 좋지 않아서 수정 요망.
-					auto binepose = pFbxObj->m_MatrixBindPoseMap.find(name);
-					if (binepose != pFbxObj->m_MatrixBindPoseMap.end() && pAnimTrack)
-					{
-						KMatrix matInverseBindpose = binepose->second;
-						m_matBoneArray.matBoneWorld[inode] =
-							matInverseBindpose *
-							pAnimTrack->m_AnimTrack[iFrame].matTrack;
-					}
+					continue; // error
 				}
-				D3DKMatrixTranspose(&m_matBoneArray.matBoneWorld[inode],
-					&m_matBoneArray.matBoneWorld[inode]);
+				KFBXObj* pTreeObj = model->second;
+				if (pTreeObj == nullptr)
+				{
+					continue; // error
+				}
+				auto binepose = pFbxObj->m_MatrixBindPoseMap.find(name);
+				if (binepose != pFbxObj->m_MatrixBindPoseMap.end() && pAnimObj)
+				{
+					KMatrix matInverseBindpose = binepose->second;
+					m_matBoneArray.matBoneWorld[pTreeObj->m_iIndex] =
+						matInverseBindpose * Interpolation(m_pAnimLoader, pAnimObj, m_fAnimTime);
+						//pAnimObj->m_AnimTrack[iFrame].matTrack;
+				}
+				D3DKMatrixTranspose(&m_matBoneArray.matBoneWorld[pTreeObj->m_iIndex],
+					&m_matBoneArray.matBoneWorld[pTreeObj->m_iIndex]);
 			}
 		}
 		else
 		{
 			for (int inode = 0; inode < m_pLoader->m_FBXTreeList.size(); inode++)
 			{
-				KFBXObj* pFBXTree = m_pLoader->m_FBXTreeList[inode];
-				if (pFBXTree->m_AnimTrack.size() > 0)
+				KFBXObj* pFbxObj = m_pLoader->m_FBXTreeList[inode];
+				if (pFbxObj->m_AnimTrack.size() > 0)
 				{
 					m_matBoneArray.matBoneWorld[inode] =
-						pFBXTree->m_AnimTrack[iFrame].matTrack;
+						Interpolation(m_pAnimLoader, pFbxObj, m_fAnimTime);
 
 				}
 				D3DKMatrixTranspose(&m_matBoneArray.matBoneWorld[inode],
@@ -80,7 +87,8 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 		pFbxObj->m_cbData.vLightColor = { m_cbData.vLightColor.x,m_cbData.vLightColor.y,m_cbData.vLightColor.z,1.0f };
 		pFbxObj->m_cbData.vLightPos = { m_cbData.vLightPos.x,m_cbData.vLightPos.y,m_cbData.vLightPos.z };
 		pFbxObj->m_cbData.vCamPos = { m_cbData.vCamPos.x, m_cbData.vCamPos.y, m_cbData.vCamPos.z, 1.0f };
-
+		D3DKMatrixInverse(&pFbxObj->m_cbData.matNormal, NULL,
+			&pFbxObj->m_matWorld);
 		pFbxObj->SetMatrix(&m_matWorld, &m_matView, &m_matProj);
 		pFbxObj->Render(pContext);
 	}

@@ -25,11 +25,11 @@ public:
 	virtual void			NodeProcess(KFBXObj* pParentNode, FbxNode* pNode);
 	virtual void			ParseMesh(KFBXObj* pObject);
 	virtual std::string		ParseMaterial(FbxSurfaceMaterial* pMtrl);
+	void					ParseAnimation();
 public:
 	KMatrix     DxConvertMatrix(KMatrix m);
 	KMatrix     ConvertMatrix(FbxMatrix& m);
 	KMatrix     ConvertAMatrix(FbxAMatrix& m);
-	void		ParseAnimation();
 	bool		ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject);
 public:
 	bool		CreateBoneConstantBuffer();

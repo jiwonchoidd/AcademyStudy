@@ -1,6 +1,6 @@
-﻿  KScene_Intro.cpp
+﻿  KSceneManager.cpp
+  KScene_Intro.cpp
+E:\github\AcademyStudy\01_KGCA\Source\Sample_QuadTree\KScene_Intro.cpp(14,14): error C2065: 'S_INTRO': 선언되지 않은 식별자입니다.
 E:\github\AcademyStudy\01_KGCA\Source\Sample_QuadTree\KScene_Intro.cpp(32,16): error C2660: 'KCamera::Init': 함수는 0개의 인수를 사용하지 않습니다.
-E:\github\AcademyStudy\01_KGCA\Include\KCamera.h(38,16): message : 'KCamera::Init' 선언을 참조하십시오.
+E:\github\AcademyStudy\01_KGCA\Include\KCamera.h(37,16): message : 'KCamera::Init' 선언을 참조하십시오.
   Sample.cpp
-E:\github\AcademyStudy\01_KGCA\Include\ImGuiManager.h(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'imgui.h': No such file or directory
-  코드를 생성하고 있습니다...

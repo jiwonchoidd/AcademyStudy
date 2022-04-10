@@ -9,7 +9,7 @@ bool		Sample::Init()
 	m_lightPos.x = 100.0f;
 	m_lightPos.y = 100.0f;
 	m_lightPos.z = 100.0f;
-	m_lightPos.w = 0.0f;
+	m_lightPos.w = 1.0f;
 	//그림자 행렬 만들어주는 함수
 	D3DKMatrixShadow(&m_matShadow, &m_lightPos, &m_Plane);
 	//맵하고 조금 띄어놓기

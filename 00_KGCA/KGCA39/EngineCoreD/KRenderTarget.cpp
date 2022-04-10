@@ -48,12 +48,12 @@ HRESULT KRenderTarget::CreateRenderTargetView(UINT Width, UINT Height)
 {
 	HRESULT hr = S_OK;
 	// 1)텍스처 생성 : 깊이,스텐실 값을 저장하는 버퍼용
-	m_pTexture = CreateTexture(Width, Height);
+	m_pTexture = CreateTexture(Width, Height); // 빈텍스쳐 만들어서 저장
 	if (m_pTexture == nullptr)
 	{
 		return E_FAIL;
 	}
-	hr = g_pd3dDevice->CreateShaderResourceView(m_pTexture, NULL, &m_pTextureSRV);
+	hr = g_pd3dDevice->CreateShaderResourceView(m_pTexture, NULL, &m_pTextureSRV); //텍스쳐 SRV 쉐이더 리소스화
 	if (FAILED(hr))
 	{
 		m_pTexture->Release();

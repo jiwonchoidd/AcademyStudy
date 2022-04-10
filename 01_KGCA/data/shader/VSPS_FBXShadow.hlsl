@@ -47,11 +47,28 @@ VS_OUTPUT VS(VS_INPUT Input)
 {
 	VS_OUTPUT Output = (VS_OUTPUT)0;
 
-	//애니메이션
+	//애니메이션 컬러값 W 성분에 인덱스 넣어둠
 	uint iIndex = Input.c.w;
 	float4 vLocal = float4(Input.p, 1.0f);
-	float4 vWorld = mul(vLocal, g_matBoneWorld[iIndex]); //뼈 위치로 변환
-	vWorld = mul(vWorld, g_matWorld); //뼈 위치에서 월드 행렬 곱
+	//스키닝 애니메이션 움직이니까 노말값 월드값이 변경된다. 
+	float4 vWorld = 0;
+	float3 vNormal = 0;
+	float3 vTangent = 0;
+	float3 vBinormal= 0;
+	 for (int iBone = 0; iBone < 4; iBone++)
+	{
+		uint iBoneIndex = Input.i[iBone];
+		matrix matBone = g_matBoneWorld[iBoneIndex];
+
+		vWorld += mul(vLocal, matBone) * Input.w[iBone];
+		vNormal += mul(Input.n, (float3x3)matBone) * Input.w[iBone];
+		vTangent += mul(Input.mTangent, (float3x3)matBone) * Input.w[iBone];
+		vBinormal += mul(Input.mBinormal, (float3x3)matBone) * Input.w[iBone];
+	}
+	 vWorld = mul(vWorld, g_matWorld);
+	 vNormal = mul(vNormal, (float3x3)g_matNormal);
+	 vTangent = mul(vTangent, (float3x3)g_matNormal);
+	 vBinormal = mul(vBinormal, (float3x3)g_matNormal);
 
 	//라이트 방향 월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
 	float3 lightDir = vWorld.xyz - g_lightPos.xyz;
@@ -64,13 +81,13 @@ VS_OUTPUT VS(VS_INPUT Input)
 
 	float4 vView = mul(vWorld, g_matView);
 	float4 vProj = mul(vView, g_matProj);
-	float3 worldTangent = mul(Input.mTangent, (float3x3)g_matWorld);
-	float3 worldBinormal = mul(Input.mBinormal, (float3x3)g_matWorld);
-	float3 worldNormal = mul(Input.n, (float3x3)g_matWorld);
+	float3 worldTangent = vTangent;
+	float3 worldBinormal = vBinormal;
+	float3 worldNormal = vNormal;
 	Output.p = vProj;
 	Output.t = Input.t;
 	float depth1 = vProj.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
-	Output.c = float4(depth1, depth1, depth1, 1);
+	Output.c = float4(depth1, depth1, depth1, 1.0f);
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);

@@ -46,8 +46,7 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 			pObject->m_MatrixBindPoseMap.insert(std::make_pair(name, matInvBindPos));
 
 			int  dwClusterSize = pCluster->GetControlPointIndicesCount();
-			auto data = m_pFbxNodeMap.find(pCluster->GetLink());
-			int  iBoneIndex = data->second;
+
 			// 영향을 받는 정점들의 인덱스
 			int* pIndices = pCluster->GetControlPointIndices();
 			double* pWeights = pCluster->GetControlPointWeights();
@@ -58,7 +57,7 @@ bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
 				// pWeights[i]의 가중치로 적용되었다.
 				int iVertexIndex = pIndices[i];
 				float fWeight = pWeights[i];
-				pObject->m_WeightList[iVertexIndex].InsertWeight(iBoneIndex, fWeight);
+				pObject->m_WeightList[iVertexIndex].InsertWeight(iBoneIdx, fWeight);
 			}
 		}
 	}
@@ -160,9 +159,11 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 		mat_Geo.SetS(s);
 
 		//노말 행렬, 기하행렬의 역행렬의 전치
+		//노말 매트릭스
 		FbxAMatrix normalMatrix = mat_Geo;
 		normalMatrix = normalMatrix.Inverse();
 		normalMatrix = normalMatrix.Transpose();
+
 
 		std::vector<FbxLayerElementMaterial*>	 MaterialSet; // 매터리얼
 		std::vector<FbxLayerElementUV*>			 UVSet; // UV
@@ -392,35 +393,67 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 			//조건 없이 일단 바이노말 작업함
 			IW_VERTEX iWvertex;
 			KVector3 t, b, n;
-			/*int		index = 0;
-			if (iCurpolyIndex != 0)
-			{
-				index = iCurpolyIndex - 1;
-			}*/
-			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos
-				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].pos,
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, 
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+2].tex, &n, &t, &b);
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].tangent = t;
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex].binormal = b;
-			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal = n;
-
-			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos
-				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos,
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].tex,
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].tex, &n, &t, &b);
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].tangent = t;
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 1].binormal = b;
-			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
-
-			pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].pos
-				, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].pos, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].pos,
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].tex, &pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex ].tex,
-				&pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex+1].tex, &n, &t, &b);
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].tangent = t;
-			pObject->m_pSubBTList[iSubMtrl][iCurpolyIndex + 2].binormal = b;
-			//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
 			
+			int iVertexCount = pObject->m_pSubVertexList[iSubMtrl].size();
+			if (iPolySize == 4)
+			{
+				int iStart = iVertexCount-6;
+				int iEnd = iStart + 6;
+				while(iStart < iEnd)
+				{
+					pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart].pos
+						, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex, &n, &t, &b);
+					pObject->m_pSubBTList[iSubMtrl][iStart].tangent = t;
+					pObject->m_pSubBTList[iSubMtrl][iStart].binormal = b;
+					//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal = n;
+
+					pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos
+						, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart].pos,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart].tex, &n, &t, &b);
+					pObject->m_pSubBTList[iSubMtrl][iStart + 1].tangent = t;
+					pObject->m_pSubBTList[iSubMtrl][iStart + 1].binormal = b;
+					//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
+
+					pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos
+						, &pObject->m_pSubVertexList[iSubMtrl][iStart].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart].tex,
+						&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex, &n, &t, &b);
+					pObject->m_pSubBTList[iSubMtrl][iStart + 2].tangent = t;
+					pObject->m_pSubBTList[iSubMtrl][iStart + 2].binormal = b;
+					//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
+					iStart += 3;
+				}
+			}
+			else
+			{
+				int iStart = iVertexCount - 3;
+				pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart].pos
+					, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex, &n, &t, &b);
+				pObject->m_pSubBTList[iSubMtrl][iStart].tangent = t;
+				pObject->m_pSubBTList[iSubMtrl][iStart].binormal = b;
+				//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex].normal = n;
+
+				pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos
+					, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart].pos,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart].tex, &n, &t, &b);
+				pObject->m_pSubBTList[iSubMtrl][iStart + 1].tangent = t;
+				pObject->m_pSubBTList[iSubMtrl][iStart + 1].binormal = b;
+				//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 1].normal = n;
+
+				pObject->CreateTangentSpace(&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].pos
+					, &pObject->m_pSubVertexList[iSubMtrl][iStart].pos, &pObject->m_pSubVertexList[iSubMtrl][iStart + 1].pos,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart + 2].tex, &pObject->m_pSubVertexList[iSubMtrl][iStart].tex,
+					&pObject->m_pSubVertexList[iSubMtrl][iStart + 1].tex, &n, &t, &b);
+				pObject->m_pSubBTList[iSubMtrl][iStart + 2].tangent = t;
+				pObject->m_pSubBTList[iSubMtrl][iStart + 2].binormal = b;
+				//pObject->m_pSubVertexList[iSubMtrl][iCurpolyIndex + 2].normal = n;
+			}
 			iCurpolyIndex += iPolySize;
 		}
 
@@ -503,8 +536,8 @@ void KFbxLoader::ParseAnimation()
 	FbxString TakeName = stack->GetName();
 	FbxTakeInfo* TakeInfo = m_pFbxScene->GetTakeInfo(TakeName);
 	FbxTimeSpan LocalTimeSpan = TakeInfo->mLocalTimeSpan;
-	FbxTime start = LocalTimeSpan.GetStart();
-	FbxTime end = LocalTimeSpan.GetStop();
+	FbxTime start	 = LocalTimeSpan.GetStart();
+	FbxTime end		 = LocalTimeSpan.GetStop();
 	FbxTime Duration = LocalTimeSpan.GetDuration();
 
 	FbxTime::EMode TimeMode = FbxTime::GetGlobalTimeMode();
@@ -525,6 +558,8 @@ void KFbxLoader::ParseAnimation()
 			FbxAMatrix matGlobal = m_FBXTreeList[iObj]->m_pFbx_ThisNode->EvaluateGlobalTransform(time);
 			tTrack.iFrame = t;
 			tTrack.matTrack = DxConvertMatrix(ConvertAMatrix(matGlobal));
+			//Interpolation 작업을 위해 SRT 행렬을 분해한다.
+			D3DKMatrixDecompose(&tTrack.s, &tTrack.r, &tTrack.t, &tTrack.matTrack);
 			m_FBXTreeList[iObj]->m_AnimTrack.push_back(tTrack);
 		}
 	}

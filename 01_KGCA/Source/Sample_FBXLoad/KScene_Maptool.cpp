@@ -28,6 +28,11 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
 		KFBXAsset* pFbx = &m_Scene_FBXList[iObj];
+		pFbx->Init();
+		pFbx->m_matWorld._11 = 0.5f;
+		pFbx->m_matWorld._22 = 0.5f;
+		pFbx->m_matWorld._33 = 0.5f;
+		pFbx->m_matWorld._42 = 10.0f;
  		pFbx->m_pLoader = g_FBXManager.Load(listname[iObj]);
 		pFbx->m_DrawList.resize(pFbx->m_pLoader->m_MeshList.size());
 	}
@@ -158,14 +163,14 @@ bool KScene_Maptool::Render()
 
 	m_Terrian_Space.ImGuiRender(m_pContext);
 
-	//FBX Render------------------------------------------
+	//FBX OBJ Render------------------------------------------
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
 		m_Scene_FBXList[iObj].SetMatrix(&m_Scene_FBXList[iObj].m_matWorld, &m_Camera.m_matView, &m_Camera.m_matProj);
 		m_Scene_FBXList[iObj].m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
 		m_Scene_FBXList[iObj].m_cbData.vLightPos = { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z };
 		m_Scene_FBXList[iObj].m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
-
+		m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
 		m_Scene_FBXList[iObj].Render(m_pContext);
 	}
 

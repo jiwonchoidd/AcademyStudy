@@ -1,25 +1,5 @@
-﻿  KMapSpace.cpp
-E:\github\AcademyStudy\01_KGCA\Include\KNode.h(156,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\github\AcademyStudy\01_KGCA\Include\KNode.h(157,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\github\AcademyStudy\01_KGCA\Include\KNode.h(158,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\github\AcademyStudy\01_KGCA\Include\KNode.h(159,26): warning C4244: '인수': 'float'에서 '_Ty'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-          with
-          [
-              _Ty=DWORD
-          ]
-E:\github\AcademyStudy\01_KGCA\Include\ImGuiManager.h(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'imgui.h': No such file or directory
-  KNpc2D.cpp
-E:\github\AcademyStudy\01_KGCA\Include\ImGuiManager.h(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'imgui.h': No such file or directory
-  KPlayer2D.cpp
+﻿  KCombat.cpp
+E:\github\AcademyStudy\01_KGCA\Source\KClient2\KCombatCalculator.h(12,11): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KClient2\KCombatCalculator.h(13,11): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+E:\github\AcademyStudy\01_KGCA\Source\KClient2\KCombat.cpp(26,24): warning C4244: '=': 'float'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  KMapSpace.cpp

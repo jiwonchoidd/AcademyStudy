@@ -24,7 +24,7 @@ bool		Sample::Init()
 	m_matTex._11 = 0.5f; m_matTex._22 = -0.5f;
 	m_matTex._41 = 0.5f; m_matTex._42 = 0.5f;
 	//라이트 설정
-	m_Light1.SetLight(KVector3(150, 150, 150), KVector3(0, 0, 0));
+	m_Light1.SetLight(KVector3(50, 100, 0), KVector3(0, 0, 0));
 
 	m_MiniMap.CreateModel(L"../../data/shader/PlaneVS.txt",
 		L"../../data/shader/PlanePS.txt", L"");
