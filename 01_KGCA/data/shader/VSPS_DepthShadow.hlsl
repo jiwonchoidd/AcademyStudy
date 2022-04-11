@@ -103,7 +103,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 specular = 0;
    if (diffuse.x > 0.0f)
    {
-	  float3 reflection = reflect(lightDir, worldNormal);
+	  float3 reflection = reflect(lightDir, worldNormal); //นÝป็บคลอ
 	  float3 viewDir = normalize(Input.mViewDir);
 
 	  specular = saturate(dot(reflection, -viewDir));
@@ -113,7 +113,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
 	  specular *= specularInten.rgb * g_lightColor;
    }
-   float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
+   float3 ambient = float3(0.1f, 0.1f, 0.1f) * albedo;
    return float4(ambient + diffuse + specular, 1);
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET

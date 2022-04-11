@@ -35,3 +35,13 @@ Study/coding/Mine/Magic/.vs/Mine/v16/ipch/AutoPCH/c740aad8bb856bd8/TWINDOW.ipch
 *.pdb
 *.idb
 *.pdb
+/01_KGCA/Export/Sample_Graphic/obj/Sample.obj
+/01_KGCA/Export/Sample_Graphic/obj/KScene_Maptool.obj
+/01_KGCA/Export/Sample_Graphic/obj/KSceneManager.obj
+/01_KGCA/Export/Sample_Graphic/obj/KMousePicker.obj
+/01_KGCA/Export/Sample_Graphic/obj/KMiniMap.obj
+/01_KGCA/Export/Sample_Graphic/obj/KFbxVertexLoader.obj
+/01_KGCA/Export/Sample_Graphic/obj/KFBXObj.obj
+/01_KGCA/Export/Sample_Graphic/obj/KFBXManager.obj
+/01_KGCA/Export/Sample_Graphic/obj/KFbxLoader.obj
+/01_KGCA/Export/Sample_Graphic/obj/KFBXAsset.obj

@@ -138,7 +138,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
 	  specular *= specularInten.rgb * g_lightColor;
    }
-   float3 ambient = float3(0.05f, 0.05f, 0.05f) * albedo;
+   float3 ambient = float3(0.1f, 0.1f, 0.1f) * albedo;
    return float4(ambient + diffuse + specular, 1);
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET
