@@ -74,8 +74,8 @@ public:
 	std::vector<ID3D11Buffer*>   m_pVBList;
 	std::vector<ID3D11Buffer*>   m_pVBWeightList;
 	std::vector<ID3D11Buffer*>   m_pVBBTList;
-	std::vector<KTexture*>		 m_pTextureList;
-	std::vector<std::wstring>	 m_strTexList;
+	//std::vector<KTexture*>		 m_pTextureList;
+	//std::vector<std::wstring>		 m_strTexList;
 	std::map<std::wstring, KMatrix>		 m_MatrixBindPoseMap; // 인덱스로 구성된 바인드포즈 맵 
 public:
 	//이 객체는 서브 정보로 렌더링함

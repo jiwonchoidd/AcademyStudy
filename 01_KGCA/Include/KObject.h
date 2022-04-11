@@ -61,6 +61,7 @@ public:
 public:
 	KShader*		m_pVS = nullptr;
 	KShader*		m_pPS = nullptr;
+	KShader*		m_pPS_Swaped = nullptr;
 public://≈ÿΩ∫√ƒ µ«ª¡Ó∏ , Ω∫∆‰≈ß∑Ø∏ , ≥Î∏ª∏ 
 	KTexture*		m_pTexture_Diffuse = nullptr;
 	KTexture*		m_pTexture_Specular = nullptr;
@@ -79,6 +80,9 @@ public:
 		KMatrix* pMatView, KMatrix* pMatProj);
 	virtual bool		LoadShader(std::wstring vsFile, std::wstring psFile);
 	virtual bool		LoadTexture(std::wstring tex1= L"", std::wstring tex2 = L"", std::wstring tex3 = L"");
+public:
+	virtual bool		SwapVisibility();
+	virtual bool		SwapPSShader(KShader* pShader= nullptr);
 public:
 	virtual bool		CheckVertexData();
 	virtual bool		CheckIndexData();

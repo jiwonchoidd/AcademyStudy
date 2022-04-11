@@ -11,8 +11,7 @@ public:
 	float			m_fAnimDir = 1.0f;
 	float			m_fAnimTime = 0.0f;
 	float			m_fAnimSpeed = 1.0f;
-	KBoneWorld				m_matBoneArray;
-	std::vector<KFBXAsset>	m_DrawList;
+	KBoneWorld		m_matBoneArray;
 	//애니메이션 보간은 다른 애니메이션 변환시에만 사용함(프레임 저하)
 public:
 	virtual bool	Init()override;

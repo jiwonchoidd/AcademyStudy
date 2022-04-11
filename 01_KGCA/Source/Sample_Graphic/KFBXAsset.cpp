@@ -38,7 +38,13 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 	for (int iObj = 0; iObj < m_pLoader->m_MeshList.size(); iObj++)
 	{
 		KFBXObj* pFbxObj = m_pLoader->m_MeshList[iObj];
-
+		if (_tcsstr(pFbxObj->m_ObjName.c_str(), L"LOD") != nullptr)// != L"SK_Mannequin_LOD0")
+		{
+			if (_tcsstr(pFbxObj->m_ObjName.c_str(), L"LOD0") == nullptr)// != L"SK_Mannequin_LOD0")
+			{
+				continue;
+			}
+		}
 		//만약에 스키닝 캐릭터 오브젝트라면
 		//트리를 타고 뼈 좌표계로 움직여야함
 		if (pFbxObj->m_bSkinned)
@@ -94,6 +100,7 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 		D3DKMatrixInverse(&pFbxObj->m_cbData.matNormal, NULL,
 			&pFbxObj->m_matWorld);
 		pFbxObj->SetMatrix(&m_matWorld, &m_matView, &m_matProj);
+		pFbxObj->SwapPSShader(m_pPS_Swaped);
 		pFbxObj->Render(pContext);
 	}
 	return true;

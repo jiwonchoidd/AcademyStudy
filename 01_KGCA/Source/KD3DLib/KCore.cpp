@@ -26,7 +26,6 @@ bool	KCore::GameInit()
             if (m_pBackBuffer)m_pBackBuffer->Release();
         }
     }
-
     g_Write = &m_Write;
     Init();
     return true;
@@ -37,12 +36,9 @@ bool	KCore::GameFrame()
     g_Input.Frame();
     //g_ObjManager.Frame();
     m_ImGuiManager.Frame();
-    if (g_InputData.bDebugRender)
+    if (g_InputData.bChangeFillMode)
     {
-        m_bDebugMode = !m_bDebugMode;
-    }
-    if (g_Input.GetKey(DIK_F2) == KEY_PUSH)
-    {
+        m_bWireFrameMode = !m_bWireFrameMode;
         m_ImGuiManager.OnOffImgui(); 
     }
 
@@ -69,7 +65,7 @@ bool	KCore::GameRender()
         m_ImGuiManager.Render();
 
         //F1 누르면 디버그 모드 :: 와이어 프레임 모드
-        if (m_bDebugMode)
+        if (m_bWireFrameMode)
         {
             KState::g_pCurrentRS = KState::g_pRSWireFrame;
             RECT  rt = { 0, 0, m_rtClient.right, m_rtClient.bottom };

@@ -34,11 +34,11 @@
     <Filter Include="Code\Obj\3D">
       <UniqueIdentifier>{12549f7e-8259-4a9d-ae05-ac087cd6cf38}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Code\Obj\3D\TestObj">
-      <UniqueIdentifier>{67e57aef-c689-4010-83fa-f12e194b7114}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Code\Obj\3D\Map">
       <UniqueIdentifier>{823a47e9-ebdc-4aa6-aba5-6a61d36316c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Code\Obj\3D\Primitive Obj">
+      <UniqueIdentifier>{67e57aef-c689-4010-83fa-f12e194b7114}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,10 +121,10 @@
       <Filter>Code\Obj\3D</Filter>
     </ClCompile>
     <ClCompile Include="KPlaneObj.cpp">
-      <Filter>Code\Obj\3D\TestObj</Filter>
+      <Filter>Code\Obj\3D\Primitive Obj</Filter>
     </ClCompile>
     <ClCompile Include="KBoxObj.cpp">
-      <Filter>Code\Obj\3D\TestObj</Filter>
+      <Filter>Code\Obj\3D\Primitive Obj</Filter>
     </ClCompile>
     <ClCompile Include="KMapSpace.cpp">
       <Filter>Code\Obj\3D\Map</Filter>
@@ -255,10 +255,10 @@
       <Filter>Code\Obj\3D</Filter>
     </ClInclude>
     <ClInclude Include="KPlaneObj.h">
-      <Filter>Code\Obj\3D\TestObj</Filter>
+      <Filter>Code\Obj\3D\Primitive Obj</Filter>
     </ClInclude>
     <ClInclude Include="KBoxObj.h">
-      <Filter>Code\Obj\3D\TestObj</Filter>
+      <Filter>Code\Obj\3D\Primitive Obj</Filter>
     </ClInclude>
     <ClInclude Include="KMapSpace.h">
       <Filter>Code\Obj\3D\Map</Filter>

@@ -137,34 +137,6 @@ bool KInput::Frame()
         g_InputData.iMousePos[1] = m_ptPos.y;
 #pragma endregion
 
-        if (g_Input.GetKey(DIK_A) == KEY_PUSH)
-        {
-            g_InputData.bMenu = !g_InputData.bMenu;
-        }
-        if (g_Input.GetKey(DIK_X) == KEY_PUSH)
-        {
-            g_InputData.bExit = !g_InputData.bExit;
-        }
-        if (g_Input.GetKey(DIK_Z) == KEY_PUSH)
-        {
-            g_InputData.bMenu_SELECT = !g_InputData.bMenu_SELECT;
-        }
-        if (g_Input.GetKey(DIK_UP) == KEY_PUSH)
-        {
-            g_InputData.bMenu_UP = !g_InputData.bMenu_UP;
-        }
-        if (g_Input.GetKey(DIK_DOWN) == KEY_PUSH)
-        {
-            g_InputData.bMenu_DOWN = !g_InputData.bMenu_DOWN;
-        }
-        if (g_Input.GetKey(DIK_LEFT) == KEY_PUSH)
-        {
-            g_InputData.bMenu_LEFT = !g_InputData.bMenu_LEFT;
-        }
-        if (g_Input.GetKey(DIK_RIGHT) == KEY_PUSH)
-        {
-            g_InputData.bMenu_RIGHT = !g_InputData.bMenu_RIGHT;
-        }
         g_InputData.bWKey = GetKey(DIK_W);
         g_InputData.bAKey = GetKey(DIK_A);
         g_InputData.bSKey = GetKey(DIK_S);
@@ -184,6 +156,10 @@ bool KInput::Frame()
         {
             g_InputData.bDebugRender = !g_InputData.bDebugRender;
         }
+        if (g_Input.GetKey(DIK_F2) == KEY_PUSH)
+        {
+            g_InputData.bChangeFillMode = !g_InputData.bChangeFillMode;
+        }
 
 #endif // DEBUG
 
@@ -191,10 +167,7 @@ bool KInput::Frame()
         if (GetKey(DIK_RETURN) == KEY_UP)
             g_InputData.bEnter= true;
         else
-            g_InputData.bEnter = false;
-
-        if (GetKey(DIK_F5) == KEY_HOLD)
-            g_InputData.bChangeFillMode = true;
+            g_InputData.bEnter = false;;
     }
   
 

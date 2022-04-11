@@ -16,13 +16,19 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 
 	//스카이박스-------------------------------------------------------------
 	m_SkyBox.Init(context, L"../../data/shader/Skybox.hlsl",L"../../data/texture/Skybox_Miramar.dds");
+	
 	//미니맵-------------------------------------------------------------
-	m_MiniMap_DebugShadow.Init(-1.0f, -0.4f);
-	m_MiniMap_DebugCamera.Init(0.5f, 1.0f);
+	m_MiniMap_DebugShadow.Init(KRect(KVector2(-0.75f, -0.75f),0.5f, 0.5f));
+	m_MiniMap_DebugCamera.Init(KRect(KVector2(-0.25f, -0.75f), 0.5f, 0.5f));
+	//미니맵은 키입력으로 보이게 시작부터 보이지 않음
+	m_MiniMap_DebugShadow.SwapVisibility();
+	m_MiniMap_DebugCamera.SwapVisibility();
+	
 	//Fbx 파일 로드-------------------------------------------------------------
 	
 	std::vector<std::wstring> listname;
-	listname.push_back(L"../../data/model/man.FBX");
+	listname.push_back(L"../../data/model/SM_Rock.FBX");
+	listname.push_back(L"../../data/model/SM_Barrel.FBX");
 	m_Scene_FBXList.resize(listname.size());
 
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
@@ -34,7 +40,6 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 		pFbx->m_matWorld._33 = 0.5f;
 		pFbx->m_matWorld._42 = 10.0f;
  		pFbx->m_pLoader = g_FBXManager.Load(listname[iObj]);
-		pFbx->m_DrawList.resize(pFbx->m_pLoader->m_MeshList.size());
 	}
 
 	//지형-------------------------------------------------------------
@@ -56,12 +61,12 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	m_Camera.m_pPS = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_Frustum.hlsl", "PS");
 	m_Camera.Init(m_pContext);
 	m_Camera.CreateViewMatrix(KVector3(100, 100, 0), KVector3(0, 0, 0));
-	m_Camera.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.45f,
+	m_Camera.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.4f,
 		static_cast<float>(g_rtClient.right)/ static_cast<float>(g_rtClient.bottom));
 	
 	m_TopView.Init(m_pContext);
 	m_TopView.CreateViewMatrix(KVector3(0, 400.0f, -1),KVector3(0, 0, 0));
-	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.45f,
+	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.4f,
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
 	//라이트 그림자----------------------------------------------------------------
@@ -81,7 +86,7 @@ bool KScene_Maptool::Frame()
 	m_Light.Frame();
 	m_Shadow.Frame(); // 쉐도우 행렬 계산, 프로젝션 행렬 ,텍스쳐 행렬 곱한것
 
-	if (ImGui::Begin(u8"디버깅 인스펙터"))
+	if (ImGui::Begin(u8"Main Light"))
 	{
 		float* lightPos[3]	= { &m_Light .m_vPos.x,&m_Light.m_vPos.y,&m_Light.m_vPos.z};
 		float* lightColor[3] = { &m_Light.m_vLightColor.x,&m_Light.m_vLightColor.y,&m_Light.m_vLightColor.z };
@@ -92,6 +97,29 @@ bool KScene_Maptool::Frame()
 		ImGui::InputFloat3("##lightTarget", *lightTarget, 1, 0);
 		ImGui::Text(u8"Light Color"); ImGui::SameLine();
 		ImGui::InputFloat3("##lightcolor", *lightColor, 1, 0);
+	}
+	ImGui::End();
+
+	//오브젝트 리스트
+
+	std::vector<std::string> items_name;
+	for (int fbxobj = 0; fbxobj < m_Scene_FBXList.size(); fbxobj++)
+	{
+		items_name.push_back(to_wm(m_Scene_FBXList[fbxobj].m_pLoader->m_MeshList[0]->m_ObjName));
+	}
+
+	if (ImGui::Begin(u8"Inspector"))
+	{
+		ImGui::ListBoxHeader("");
+		
+		for(std::string it : items_name)
+		{
+			if (ImGui::Selectable(it.c_str()))
+			{
+				int k = 0;
+			}
+		}
+		ImGui::ListBoxFooter();
 	}
 	ImGui::End();
 
@@ -130,6 +158,13 @@ bool KScene_Maptool::Render()
 			m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
 			obj.get()->obj_pObject->PostRender(m_pContext,
 				obj.get()->obj_pObject->m_iNumIndex);
+		}
+		//FBX OBJ Render------------------------------------------
+		for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
+		{
+			m_Scene_FBXList[iObj].SetMatrix(&m_Scene_FBXList[iObj].m_matWorld, &m_Light.m_matView, &m_Light.m_matProj);
+			m_Scene_FBXList[iObj].SwapPSShader(m_Shadow.m_pPSShadow);
+			m_Scene_FBXList[iObj].Render(m_pContext);
 		}
 		//복원 작업
 		m_Shadow.m_ShadowRT.End(m_pContext);
@@ -171,10 +206,16 @@ bool KScene_Maptool::Render()
 		m_Scene_FBXList[iObj].m_cbData.vLightPos = { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z };
 		m_Scene_FBXList[iObj].m_cbData.vCamPos = { m_Camera.GetCameraPos()->x, m_Camera.GetCameraPos()->y, m_Camera.GetCameraPos()->z, 1.0f };
 		m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
+		m_Scene_FBXList[iObj].SwapPSShader();
 		m_Scene_FBXList[iObj].Render(m_pContext);
 	}
 
 	////미니맵------------------------------------------------
+	if (g_InputData.bDebugRender)
+	{
+		m_MiniMap_DebugShadow.SwapVisibility();
+		m_MiniMap_DebugCamera.SwapVisibility();
+	}
 	m_MiniMap_DebugShadow.SetMatrix(nullptr, nullptr, nullptr);
 	m_MiniMap_DebugShadow.PreRender(m_pContext);
 	m_pContext->PSSetShaderResources(0, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());

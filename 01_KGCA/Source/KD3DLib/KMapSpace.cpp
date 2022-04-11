@@ -76,6 +76,9 @@ bool  KMapSpace::LoadLODFile(std::wstring filename)
 }
 bool KMapSpace::Build(KMap* pmap, KCamera* pCamera)
 {
+	m_fStartDistance= 100.0f;
+	m_fDistance_Multiply=2.5f;
+
 	//쿼드트리 크기 지정, 쿼드트리 생성
 	if (LoadLODFile(L"../../data/script/StaticLod.txt"))
 	{
@@ -262,12 +265,12 @@ bool KMapSpace::SetLOD(KVector3* vCamera)
 		int iLodLevel = 0;
 		float fDistance = (m_pLeafList[iNode]->m_Center - *vCamera).Length();
 		//가장 가까울수록 최상단의 LOD 높을수록 복잡한 버텍스
-		if (fDistance < 100.0f)
+		if (fDistance < m_fStartDistance)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < 200.0f)
+		else if (fDistance < m_fStartDistance*m_fDistance_Multiply)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 1;
 		}
@@ -621,6 +624,10 @@ void KMapSpace::ImGuiRender(ID3D11DeviceContext* pContext)
 		{
 			m_bDebug = !m_bDebug;
 		}
+		ImGui::Text(u8"LOD Dst"); ImGui::SameLine();
+		ImGui::InputFloat("##Distance", &m_fStartDistance, 2);
+		ImGui::Text(u8"LOD Mul"); ImGui::SameLine();
+		ImGui::InputFloat("##Multiple", &m_fDistance_Multiply, 2); 
 	}ImGui::End();
 	if (m_bDebug)
 	{

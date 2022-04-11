@@ -28,6 +28,8 @@ class KMapSpace : public KQuadTree
 {
 private:
 	bool						m_bDebug= false;
+	float						m_fStartDistance;
+	float						m_fDistance_Multiply;
 public:
 	KMap*						m_pMap;
 	KCamera*					m_pCamera;

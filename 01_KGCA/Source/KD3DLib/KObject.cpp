@@ -58,6 +58,8 @@ bool KObject::Frame()
 
 bool KObject::PreRender(ID3D11DeviceContext* pContext)
 {
+    if (!m_bVisibility)return false;
+
     if (m_VertexList.size() <= 0) return true;
     //리소스 업데이트 데이터와 리소스 버퍼의 저장
     pContext->UpdateSubresource(
@@ -78,7 +80,16 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
 
     //쉐이더
     pContext->VSSetShader(m_pVS->m_pVertexShader.Get(), NULL, 0);
-    pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
+
+    if (m_pPS_Swaped!=nullptr)
+    {
+        pContext->PSSetShader(m_pPS_Swaped->m_pPixelShader.Get(), NULL, 0);
+        m_pPS_Swaped = nullptr;
+    }
+    else
+    {
+        pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
+    }
 
     pContext->IASetInputLayout(m_pVertexLayout.Get());
     UINT pStrides[2] = { sizeof(PNCT_VERTEX), sizeof(BT_VERTEX) };
@@ -96,6 +107,7 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
 
 bool KObject::Render(ID3D11DeviceContext* pContext)
 {
+    if (!m_bVisibility)return false;
     if (PreRender(pContext) == false) return false;
     if (PostRender(pContext, m_iNumIndex) == false) return false;
     return true;
@@ -103,6 +115,8 @@ bool KObject::Render(ID3D11DeviceContext* pContext)
 
 bool KObject::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 {
+    if (!m_bVisibility)return false;
+
     if (iNumIndex > 0)
     {
         pContext->DrawIndexed(iNumIndex, 0, 0);
@@ -135,6 +149,18 @@ bool KObject::LoadShader(std::wstring vsFile, std::wstring psFile)
     }
 }
 
+//딱 한 프레임 구간에서만 바꿔치고 다시 원래 PS로 바꾸기 위해 Bool 값 사용
+bool KObject::SwapPSShader(KShader* pShader)
+{
+    m_pPS_Swaped = pShader;
+    if (pShader == nullptr)
+    {
+        return false;
+    }
+    //바꿀 쉐이더
+    return true;
+}
+
 //매니져를 사용해 텍스쳐 로드
 bool KObject::LoadTexture(std::wstring tex1, std::wstring tex2, std::wstring tex3)
 {
@@ -152,6 +178,12 @@ bool KObject::LoadTexture(std::wstring tex1, std::wstring tex2, std::wstring tex
         m_pTexture_Normal = g_TextureMananger.Load(tex3);
     }
     return true;
+}
+
+bool KObject::SwapVisibility()
+{
+    m_bVisibility = !m_bVisibility;
+    return m_bVisibility;
 }
 
 bool KObject::CheckVertexData()

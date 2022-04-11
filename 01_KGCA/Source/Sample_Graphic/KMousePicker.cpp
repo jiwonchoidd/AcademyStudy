@@ -106,6 +106,7 @@ bool KMousePicker::Init(ID3D11DeviceContext* pContext, KMapSpace* pSpace, KCamer
 bool KMousePicker::Frame()
 {
 	//마우스 피킹
+	//오른쪽 마우스 눌렀을때,
 	if (g_InputData.bMouseState[0])
 	{
 		//화면 좌표계이기때문에, y를 음수

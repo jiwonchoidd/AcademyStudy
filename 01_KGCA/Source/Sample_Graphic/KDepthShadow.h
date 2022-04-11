@@ -14,7 +14,7 @@ public:
 	KMatrix		  m_matTexture;
 	KRenderTarget m_ShadowRT;
 	KShader*      m_pPSShadow = nullptr;
-	KShader*	  m_pPSShadowMap = nullptr;
+	KShader*	  m_pPSShadowFBX = nullptr;
 	wrl::ComPtr<ID3D11Buffer> m_pShadowCB = nullptr;
 public:
 	bool CreateShadow(KLight* plight)
@@ -25,7 +25,7 @@ public:
 		m_matTexture._41 = 0.5f; m_matTexture._42 = 0.5f;
 		m_ShadowRT.Create(516, 516);
 
-		m_pPSShadowMap = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_DepthShadow.hlsl", "PSDepth");//∏ 
+		m_pPSShadowFBX = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_FBXShadow.hlsl", "PSDepth");//∏ 
 		m_pPSShadow = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_DepthShadow.hlsl", "PSDepth");//ø¿∫Í¡ß∆Æ
 		if (!CreateConstantBuffer())
 		{

@@ -11,18 +11,17 @@ bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 	pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 
 	////텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
-	//if (m_pTexture_Diffuse != nullptr)
-	//	pContext->PSSetShaderResources(0, 1, m_pTexture_Diffuse->m_pSRVTexture.GetAddressOf());
-
-	//if (m_pTexture_Specular != nullptr)
-	//	pContext->PSSetShaderResources(1, 1, m_pTexture_Specular->m_pSRVTexture.GetAddressOf());
-
-	//if (m_pTexture_Normal != nullptr)
-	//	pContext->PSSetShaderResources(2, 1, m_pTexture_Normal->m_pSRVTexture.GetAddressOf());
-
 	//쉐이더
 	pContext->VSSetShader(m_pVS->m_pVertexShader.Get(), NULL, 0);
-	pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
+	if (m_pPS_Swaped!=nullptr)
+	{
+		pContext->PSSetShader(m_pPS_Swaped->m_pPixelShader.Get(), NULL, 0);
+		m_pPS_Swaped = nullptr;
+	}
+	else
+	{
+		pContext->PSSetShader(m_pPS->m_pPixelShader.Get(), NULL, 0);
+	}
 
 	pContext->IASetInputLayout(m_pVertexLayout.Get());
 	//UINT pStrides = m_iVertexSize;
@@ -49,14 +48,15 @@ bool KFBXObj::PostRender(ID3D11DeviceContext* pContext, UINT iNumIndex)
 
 	for (int index = 0; index < m_pSubVertexList.size(); index++)
 	{
-		if (m_pTextureList.size() > 0)
-		{
-			for (int itex = 0; itex < m_pTextureList.size(); itex++)
-			{
-				pContext->PSSetShaderResources(itex, 1,
-						m_pTextureList[itex]->m_pSRVTexture.GetAddressOf());
-			}
-		}
+		//텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
+		if (m_pTexture_Diffuse != nullptr)
+			pContext->PSSetShaderResources(0, 1, m_pTexture_Diffuse->m_pSRVTexture.GetAddressOf());
+
+		if (m_pTexture_Specular != nullptr)
+			pContext->PSSetShaderResources(1, 1, m_pTexture_Specular->m_pSRVTexture.GetAddressOf());
+
+		if (m_pTexture_Normal != nullptr)
+			pContext->PSSetShaderResources(2, 1, m_pTexture_Normal->m_pSRVTexture.GetAddressOf());
 
 		ID3D11Buffer* buffer[3] = { m_pVBList[index], m_pVBBTList[index], m_pVBWeightList[index] };
 
