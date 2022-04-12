@@ -193,6 +193,7 @@ bool KBoxObj::Render(ID3D11DeviceContext* pContext)
 
 bool KBoxObj::Release()
 {
+	K3DAsset::Release();
 	return true;
 }
 

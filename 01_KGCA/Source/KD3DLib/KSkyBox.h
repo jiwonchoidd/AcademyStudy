@@ -3,8 +3,8 @@
 class KSkyBox : public KBoxObj
 {
 public:
+	KTexture* m_pCubeTex;
 	KMatrix	  m_matSkyView;
-	KTexture* m_pTexArray[6];
 public:
 	void SetMatrix(KMatrix* pMatWorld, KMatrix* pMatView, KMatrix* pMatProj);
 	bool Init(ID3D11DeviceContext* context, std::wstring shader, std::wstring tex = nullptr);

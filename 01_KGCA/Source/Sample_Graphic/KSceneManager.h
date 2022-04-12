@@ -15,6 +15,7 @@ public:
 	friend class Singleton<KSceneManager>;
 public:
 	KScene*						m_pCurrentScene;
+	KCamera*					m_pCamera;
 	BYTE						m_CurrentScene_Index;
 	ID3D11DeviceContext*		m_pContext;	// 디바이스 컨텍스트 객체
 public:

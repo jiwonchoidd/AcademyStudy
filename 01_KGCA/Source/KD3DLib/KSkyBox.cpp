@@ -27,6 +27,7 @@ bool KSkyBox::Init(ID3D11DeviceContext* context,std::wstring shader, std::wstrin
 {
     m_pContext = context;
     KBoxObj::Init(shader, shader, tex, L"", L"");
+    m_pCubeTex = m_pTexture_Diffuse;
     return true;
 }
 
@@ -37,8 +38,11 @@ bool KSkyBox::Frame()
 
 bool KSkyBox::Render(ID3D11DeviceContext* pContext)
 {
+
     if (KState::g_pCurrentRS != KState::g_pRSWireFrame)
         ApplyRS(pContext, KState::g_pRSBackface);
+    //모든 쉐이더 5번에 스카이 텍스쳐를 넘긴다.
+    pContext->PSSetShaderResources(6, 1, m_pCubeTex->m_pSRVTexture.GetAddressOf());
     ApplyDSS(pContext, KState::g_pDSS_Disabled);
     KObject::Render(pContext);
     ApplyRS(pContext, KState::g_pCurrentRS);

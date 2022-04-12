@@ -10,11 +10,11 @@ wrl::ComPtr <ID3D11Texture2D> KRenderTarget::CreateTexture(UINT Width, UINT Heig
 	td.Width = Width;
 	td.Height = Height;
 	td.MipLevels = 1;
-	td.ArraySize = 1;
+	td.ArraySize = 1; //배열 사이즈  
 	//일반 텍스쳐 만들듯이
 	td.Format = DXGI_FORMAT_R8G8B8A8_UNORM;//DXGI_FORMAT_R8G8B8A8_UNORM
 	td.Usage = D3D11_USAGE_DEFAULT;
-	td.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	td.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE; //렌더타겟용 텍스쳐
 	td.CPUAccessFlags = 0;
 	td.MiscFlags = 0;
 	td.SampleDesc.Count = 1;

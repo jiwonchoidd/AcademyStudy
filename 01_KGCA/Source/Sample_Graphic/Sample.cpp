@@ -5,6 +5,7 @@ bool Sample::Init()
 	//사운드 초기화 
 	g_SoundManager.Init();
 	//씬 매니져
+	g_SceneManager.m_pCamera = &m_Camera;
 	g_SceneManager.Init(m_pImmediateContext.Get());
     return true;
 }
@@ -33,4 +34,4 @@ Sample::~Sample()
 {
 }
 
-WinMain_OPT(FBX LOAD, 960, 540);
+WinMain_OPT(환경매핑, 960, 540);

@@ -7,12 +7,17 @@
 #include "KWrite.h"
 #include "KState.h"
 #include "ImGuiManager.h"
+#include "KSkyBox.h"
+#include "KCamera.h"
 class KCore : public KWindow
 {
 public:
-	KTimer			m_Timer;
 	ImGuiManager	m_ImGuiManager;
+	KSkyBox			m_SkyBox;
+public:
+	KDebugCamera	m_Camera;
 	KWrite			m_Write;
+	KTimer			m_Timer;
 public:
 	bool		m_bWireFrameMode = false;
 	bool		m_bFreeCamera = false;

@@ -14,6 +14,17 @@ bool	KCore::GameInit()
     if (KDevice::SetDevice())
     {
         KState::SetState();
+        //스카이박스-------------------------------------------------------------
+        m_SkyBox.Init(m_pImmediateContext.Get(), L"../../data/shader/Skybox.hlsl", L"../../data/texture/Skybox_Miramar.dds");
+        //
+        //카메라-----------------------------------------------------------------
+        m_Camera.m_pVS = g_ShaderManager.CreateVertexShader(L"../../data/shader/VSPS_Frustum.hlsl", "VS");
+        m_Camera.m_pPS = g_ShaderManager.CreatePixelShader(L"../../data/shader/VSPS_Frustum.hlsl", "PS");
+        m_Camera.Init(m_pImmediateContext.Get());
+        m_Camera.CreateViewMatrix(KVector3(100, 100, 0), KVector3(0, 0, 0));
+        m_Camera.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.4f,
+            static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
+        //
         m_Timer.Init();
         g_Input.Init();
         if (m_Write.Init())
@@ -34,6 +45,7 @@ bool	KCore::GameFrame()
 {
     m_Timer.Frame();
     g_Input.Frame();
+    m_Camera.Frame();
     //g_ObjManager.Frame();
     m_ImGuiManager.Frame();
     if (g_InputData.bChangeFillMode)
@@ -57,10 +69,18 @@ bool	KCore::GameFrame()
 bool	KCore::GameRender() 
 {
     PreRender();
-        // TODO : Render Timer
         m_Timer.Render();
         g_Input.Render();
-        
+
+        //스카이박스-------------------------------------------
+        m_SkyBox.m_matSkyView = m_Camera.m_matView;
+        m_SkyBox.m_matSkyView._41 = 0;
+        m_SkyBox.m_matSkyView._42 = 0;
+        m_SkyBox.m_matSkyView._43 = 0;
+        m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
+        m_SkyBox.Render(m_pImmediateContext.Get());
+        //----------------------------------------------------
+
         Render();
         m_ImGuiManager.Render();
 
@@ -103,6 +123,7 @@ bool	KCore::PreRender() {
 
 bool	KCore::Render() 
 {
+
     return true;
 }
 
@@ -118,7 +139,8 @@ bool	KCore::GameRelease()
 {
     Release();
     KState::ReleaseState();
-
+    m_SkyBox.Release();
+    m_Camera.Release();
     m_Timer.Release();
     g_Input.Release();
     m_Write.Release();

@@ -40,8 +40,9 @@ public:
 	wrl::ComPtr<ID3D11Buffer>	m_pLodIndexBuffer;
 	std::vector<DWORD>			m_IndexList;
 public:								//오브젝트 리스트
-	std::list<std::shared_ptr<KMapObject>>	m_ObjectList;
-	std::list<std::shared_ptr<KMapObject>>	m_ObjectList_Dynamic;
+	std::list<KMapObject*>	m_ObjectList_Static; //프러스텀에 담긴 오브젝트 리스트 
+	std::list<KMapObject*>	m_ObjectList_Dynamic;
+	std::list<K3DAsset*>	m_ObjectItemList;
 public:
 	std::vector<KNode*>		m_pDrawableLeafList;//프로스텀에 보이는 리프노드
 public:
@@ -54,8 +55,8 @@ public:
 public:
 	//맵 오브젝트 추가 관련 함수
 	bool   RandomSetupObject(K3DAsset* obj, int amount); // 오브젝트를 Kmapobject 구조체로 변환
-	bool   AddObject(std::shared_ptr<KMapObject> obj); // 실제 오브젝트를 추가하는 함수
-	bool   AddDynamicObject(std::shared_ptr<KMapObject> obj);
+	bool   AddObject(KMapObject* obj); // 실제 오브젝트를 추가하는 함수
+	bool   AddDynamicObject(KMapObject* obj);
 public:
 	//LOD 거리에 따라 달라지는 정점, 
 	virtual bool	Build(KMap* pmap, KCamera* pCamera);

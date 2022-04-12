@@ -329,11 +329,6 @@ bool KMapSpace::Render(ID3D11DeviceContext* pContext)
 		UINT pOffsets = 0;
 		UINT pStrides = sizeof(PNCT_VERTEX);
 
-		//노말맵을 위한 버텍스 정보
-		pContext->IASetVertexBuffers(1, 1, m_pMap->m_pVertexBuffer.GetAddressOf(),
-			&pStrides, &pOffsets);
-		//----------------------------------------
-
 		//노드 당 갖고 있는 버텍스 정보
 		pContext->IASetVertexBuffers(0, 1, pNode->m_pVertexBuffer.GetAddressOf(), &pStrides, &pOffsets);
 		//----------------------------------------
@@ -358,15 +353,15 @@ bool KMapSpace::Render(ID3D11DeviceContext* pContext)
 bool KMapSpace::Render_MapObject(ID3D11DeviceContext* pContext)
 {
 	//맵 오브젝트 렌더 분리
-	for (auto obj : m_ObjectList)
+	for (auto obj : m_ObjectList_Static)
 	{
-		obj.get()->obj_pObject->SetMatrix(&obj.get()->obj_matWorld,
+		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
 			&m_pCamera->m_matView,
 			&m_pCamera->m_matProj);
-		obj.get()->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
-		obj.get()->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
-		obj.get()->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
-		obj.get()->obj_pObject->Render(pContext);
+		obj->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
+		obj->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
+		obj->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
+		obj->obj_pObject->Render(pContext);
 	}
 	return true;
 }
@@ -435,7 +430,7 @@ KVector2 KMapSpace::GetHeightFromNode(DWORD TL, DWORD TR, DWORD BL, DWORD BR)
 void KMapSpace::DrawableUpdate()
 {
 	m_pDrawableLeafList.clear();
-	m_ObjectList.clear();
+	m_ObjectList_Static.clear();
 	RenderTile(m_pRootNode);
 }
 void KMapSpace::RenderTile(KNode* pNode)
@@ -445,9 +440,9 @@ void KMapSpace::RenderTile(KNode* pNode)
 	{
 		for (auto obj : pNode->m_StaticObjectList)
 		{
-			if (m_pCamera->ClassifyOBB(&obj.get()->obj_box) == TRUE)
+			if (m_pCamera->ClassifyOBB(&obj->obj_box) == TRUE)
 			{
-				m_ObjectList.push_back(obj);
+				m_ObjectList_Static.push_back(obj);
 			}
 		}
 		if (pNode->m_bLeaf == true)
@@ -469,12 +464,12 @@ bool KMapSpace::RandomSetupObject(K3DAsset* obj, int amount)
 	KMatrix matRotateObj;
 	for (int iObj = 0; iObj < amount; iObj++)
 	{
-		std::shared_ptr<KMapObject> pObj = std::make_shared<KMapObject>();
+		KMapObject* pObj = new KMapObject();
 		for (int iv = 0; iv < 8; iv++)
 		{
-			pObj.get()->obj_box.List[iv] = obj->m_BoxCollision.List[iv];
+			pObj->obj_box.List[iv] = obj->m_BoxCollision.List[iv];
 		}
-		pObj.get()->obj_pos = KVector3(
+		pObj->obj_pos = KVector3(
 			randstep(m_pMap->m_BoxCollision.min.x, m_pMap->m_BoxCollision.max.x),
 			0.0f,
 			randstep(m_pMap->m_BoxCollision.min.z, m_pMap->m_BoxCollision.max.z));
@@ -486,19 +481,20 @@ bool KMapSpace::RandomSetupObject(K3DAsset* obj, int amount)
 			cosf(randstep(0.0f, 360.0f)) * XM_PI,
 			sinf(randstep(0.0f, 360.0f)) * XM_PI,
 			1.0f);
-		pObj.get()->obj_matWorld = matScale * matRotateObj;
-		pObj.get()->obj_pos.y = m_pMap->GetHeight(pObj.get()->obj_pos.x, pObj.get()->obj_pos.z);
-		pObj.get()->obj_matWorld._41 = pObj.get()->obj_pos.x;
-		pObj.get()->obj_matWorld._42 = pObj.get()->obj_pos.y;
-		pObj.get()->obj_matWorld._43 = pObj.get()->obj_pos.z;
-		pObj.get()->UpdateData();
-		pObj.get()->UpdateCollision();
-		pObj.get()->obj_pObject = obj;
+		pObj->obj_matWorld = matScale * matRotateObj;
+		pObj->obj_pos.y = m_pMap->GetHeight(pObj->obj_pos.x, pObj->obj_pos.z);
+		pObj->obj_matWorld._41 = pObj->obj_pos.x;
+		pObj->obj_matWorld._42 = pObj->obj_pos.y;
+		pObj->obj_matWorld._43 = pObj->obj_pos.z;
+		pObj->UpdateData();
+		pObj->UpdateCollision();
+		pObj->obj_pObject = obj;
 		AddObject(pObj);
 	}
+	m_ObjectItemList.push_back(obj); // 포인터 delete
 	return true;
 }
-bool KMapSpace::AddObject(std::shared_ptr<KMapObject> obj)
+bool KMapSpace::AddObject(KMapObject* obj)
 {
 	//노드 위치를 찾고 오브젝트를 추가한다.
 	KNode* pFindNode = FindNode(m_pRootNode, obj->obj_box);
@@ -510,7 +506,7 @@ bool KMapSpace::AddObject(std::shared_ptr<KMapObject> obj)
 	return false;
 }
 
-bool KMapSpace::AddDynamicObject(std::shared_ptr<KMapObject> obj)
+bool KMapSpace::AddDynamicObject(KMapObject* obj)
 {
 	KNode* pFindNode =
 		FindNode(m_pRootNode, obj->obj_box);
@@ -643,6 +639,11 @@ bool KMapSpace::Release()
 	for (int iPatch = 0; iPatch < m_LodPatchList.size(); iPatch++)
 	{
 		m_LodPatchList[iPatch].Release();
+	}
+	for (auto list : m_ObjectItemList)
+	{
+		list->Release();
+		delete list;
 	}
 	KQuadTree::Release();
 	m_Debug_Box.Release();

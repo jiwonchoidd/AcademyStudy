@@ -89,15 +89,15 @@ public:
 	UINT					m_LodType;
 	POINT					m_Element;				// 위치 포인트
 	bool					m_bLeaf;
-	std::list<std::shared_ptr<KMapObject>>  m_StaticObjectList;
-	std::list<std::shared_ptr<KMapObject>>  m_DynamicObjectList;
+	std::list<KMapObject*>  m_StaticObjectList;
+	std::list<KMapObject*>  m_DynamicObjectList;
 public:
 	//std::vector <DWORD>		m_IndexList; 패치의 인덱스 사용으로 대체
 	std::vector <PNCT_VERTEX>	m_VertexList;
 	wrl::ComPtr<ID3D11Buffer>	m_pVertexBuffer;
 public:
-	void   AddObject(std::shared_ptr<KMapObject> obj);
-	void   AddDynamicObject(std::shared_ptr<KMapObject> obj);
+	void   AddObject(KMapObject* obj);
+	void   AddDynamicObject(KMapObject* obj);
 public:
 	bool isRect(KVector2 pos)
 	{
@@ -160,26 +160,20 @@ public:
 	}
 	~KNode()
 	{
+		for (std::list<KMapObject*>::iterator iter = m_StaticObjectList.begin();
+			iter != m_StaticObjectList.end();
+			iter++)
+		{
+			KMapObject* pObj = *iter;
+			delete pObj;
+		}
+		m_StaticObjectList.clear();
 		for (int iChild = 0; iChild < 4; iChild++)
 		{
 			if (m_pChildlist[iChild] != nullptr)
 			{
 				delete m_pChildlist[iChild];
 				m_pChildlist[iChild] = nullptr;
-			}
-		}
-		for (auto ol : m_StaticObjectList)
-		{
-			if (ol != nullptr)
-			{
-				ol.get()->obj_pObject->Release();
-			}
-		}
-		for (auto ol_d : m_DynamicObjectList)
-		{
-			if (ol_d != nullptr)
-			{
-				ol_d.get()->obj_pObject->Release();
 			}
 		}
 

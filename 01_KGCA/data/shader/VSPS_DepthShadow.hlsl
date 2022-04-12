@@ -19,7 +19,6 @@ struct VS_INPUT
 	float3 n : NORMAL;
 	float4 c	: COLOR;
 	float2 t	: TEXCOORD;
-
 	float3 mTangent	: TANGENT;
 	float3 mBinormal : BINORMAL;
 };
@@ -28,8 +27,8 @@ struct VS_OUTPUT
 	float4 p : SV_POSITION;
 	float2 t : TEXCOORD0;
 	float4 c : COLOR0;
-	float3 mLightDir : TEXCOORD1; //방향
-	float3 mViewDir  : TEXCOORD2; //방향
+	float3 mLightDir : TEXCOORD1;
+	float3 mViewDir  : TEXCOORD2;
 	float4 mShadow	 : TEXCOORD3; //뎁스 맵 쉐도우 추가
 	float3 mT        : TEXCOORD4;
 	float3 mB        : TEXCOORD5;
@@ -65,13 +64,31 @@ VS_OUTPUT VS(VS_INPUT Input)
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);
-
 	return  Output;
 }
-Texture2D		g_txDiffuse : register(t0);
-Texture2D		g_txSpecular : register(t1);
-Texture2D		g_txNormal : register(t2);
-Texture2D		g_txShadow  : register(t3);
+float3 Specular(float3 vNormal, float3 vViewDir, float3 vLightDir)
+{
+	// Specular Lighting
+	float3 specular = 0;
+	float3 reflection = reflect(vLightDir, vNormal); //반사벡터
+	specular = saturate(dot(reflection, -vViewDir));
+	specular = pow(specular, 20.0f);
+	return specular;
+}
+
+float3 Diffuse(float3 vNormal, float3 vLightDir)
+{
+	float3 diffuse = 0;
+	diffuse = saturate(dot(vNormal, -vLightDir)); // 빛드리우는 디퓨즈
+	return diffuse;
+}
+
+Texture2D		g_txDiffuse : register(t0); //난반사
+Texture2D		g_txSpecular : register(t1);//정반사
+Texture2D		g_txNormal : register(t2); //노말매핑
+Texture2D		g_txShadow  : register(t3); //뎁스맵
+TextureCube	    g_txCubeMap : register(t6); //환경매핑
+
 SamplerState	g_Sample : register(s0);
 SamplerState	 g_SamplerClamp : register(s1);;
 float4 PS(VS_OUTPUT Input) : SV_TARGET
@@ -83,6 +100,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3x3 TBN = float3x3(normalize(Input.mT), normalize(Input.mB),normalize(Input.mN));
    TBN = transpose(TBN);
    float3 worldNormal = mul(TBN, tangentNormal);
+   //----------------------------------------------------------------------
    float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t); //알베도 기본 색상 텍스쳐
    //쉐도우
    float3 vShadowProj;
@@ -91,30 +109,29 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float depth = Input.mShadow.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
    if (shadow + 0.005f <= depth)
    {
-	   albedo = albedo * float4(0.5f
-		   , 0.5f, 0.5f, 1.0f);
+	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
    }
-   //디퓨즈 텍스쳐
+
+   //방향 벡터 정규화
    float3 lightDir = normalize(Input.mLightDir);
-   float3 diffuse = saturate(dot(worldNormal, -lightDir)); // 빛드리우는 디퓨즈
+   float3 viewDir = normalize(Input.mViewDir);
+
+   //디퓨즈 반사, 난반사
+   float3 diffuse = Diffuse(worldNormal, lightDir);
    diffuse = g_lightColor.rgb * albedo.rgb * diffuse;
 
-   //스페큘러맵
+   //스페큘러 반사, 정반사
    float3 specular = 0;
    if (diffuse.x > 0.0f)
    {
-	  float3 reflection = reflect(lightDir, worldNormal); //반사벡터
-	  float3 viewDir = normalize(Input.mViewDir);
-
-	  specular = saturate(dot(reflection, -viewDir));
-	  specular = pow(specular,20.0f);
-
-	  //스페큘러 텍스쳐
+	  specular = Specular(worldNormal, viewDir, lightDir);
 	  float4 specularInten = g_txSpecular.Sample(g_Sample, Input.t);
 	  specular *= specularInten.rgb * g_lightColor;
    }
    float3 ambient = float3(0.1f, 0.1f, 0.1f) * albedo;
-   return float4(ambient + diffuse + specular, 1);
+   float4 final = float4(ambient + diffuse + specular, 1);
+
+   return final;
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET
 {

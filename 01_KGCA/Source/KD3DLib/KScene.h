@@ -1,5 +1,6 @@
 #pragma once
 #include "KObjectManager.h"
+#include "KCamera.h"
 class KScene
 {
 public:

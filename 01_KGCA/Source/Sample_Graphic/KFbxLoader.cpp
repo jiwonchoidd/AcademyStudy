@@ -8,6 +8,19 @@ bool KFbxLoader::Init()
 	m_pFbxManager = FbxManager::Create(); 
 	m_pFbxImporter = FbxImporter::Create(m_pFbxManager, "");
 	m_pFbxScene = FbxScene::Create(m_pFbxManager, "");
+
+	FbxAxisSystem	 m_SceneAxisSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
+	
+	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene); //마야 Z축 버젼 사용
+	
+	m_SceneAxisSystem = m_pFbxScene->GetGlobalSettings().GetAxisSystem();
+
+	//FBX 파일 마다 단위가 다름, 언리얼 cm, 맥스 M 단위를 cm로 바꾼다.
+	FbxSystemUnit	m_SceneSystemUnit = m_pFbxScene->GetGlobalSettings().GetSystemUnit();
+	if (m_SceneSystemUnit.GetScaleFactor() != 1.0f)
+	{
+		FbxSystemUnit::cm.ConvertScene(m_pFbxScene);
+	}
 	return true;
 }
 bool KFbxLoader::ParseMeshSkinning(FbxMesh* pFbxMesh, KFBXObj* pObject)
@@ -71,7 +84,7 @@ bool KFbxLoader::Load(std::wstring filename)
 	std::string temp = to_wm(filename);
 	bool bRet = m_pFbxImporter->Initialize(temp.c_str()); //파일명 넘김
 	bRet = m_pFbxImporter->Import(m_pFbxScene);
-	FbxAxisSystem::MayaZUp.ConvertScene(m_pFbxScene); //마야 Z축 버젼 사용
+	
 	//파일명 임포트 성공
 	if (bRet)
 	{
@@ -229,7 +242,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 				std::wstring strFBXTexName = to_mw(ParseMaterial(pSurface));
 				std::wstring strTexDefault1 = L"../../data/model/Default_Diffuse.jpg";
 				std::wstring strTexDefault2 = L"../../data/model/Default_Specular.jpg";
-				std::wstring strTexDefault3 = L"../../data/model/T_Pack_01_N.jpg";
+				std::wstring strTexDefault3 = L"../../data/model/Default_Normal.jpg";
 
 				strFbxPath += strFBXTexName;
 				//자동으로 텍스쳐를 만드는데, 실패할 경우
