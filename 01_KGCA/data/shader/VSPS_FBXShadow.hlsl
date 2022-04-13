@@ -163,8 +163,13 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 env_coord = reflect(viewDir, worldNormal);//환경 매핑을 위한 텍스처 주소 반사벡터
    float4 env = g_txCubeMap.Sample(g_Sample, env_coord);
 
-   float4 final = float4(ambient + diffuse + specular + (env*0.35f), 1);
-
+   float4 final = float4(ambient + diffuse + specular + (env*0.15f), albedo.w);
+   //알파 테스팅 작업 (완전 투명과 완전 불투명일때 사용)
+   //순서를 구분하기 어려울때 애매한 알파값을 버림, 정렬된 효과를 얻음
+   if (final.a < 0.5f)
+   {
+	   discard;
+   }
    return final;
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET

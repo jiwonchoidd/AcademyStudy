@@ -487,6 +487,7 @@ bool KMapSpace::RandomSetupObject(K3DAsset* obj, int amount)
 		pObj->obj_matWorld._41 = pObj->obj_pos.x;
 		pObj->obj_matWorld._42 = pObj->obj_pos.y;
 		pObj->obj_matWorld._43 = pObj->obj_pos.z;
+		pObj->obj_name = obj->m_ObjName;
 		pObj->UpdateData();
 		pObj->UpdateCollision();
 		pObj->obj_pObject = obj;
@@ -502,6 +503,11 @@ bool KMapSpace::AddObject(KMapObject* obj)
 	if (pFindNode != nullptr)
 	{
 		pFindNode->AddObject(obj);
+
+		//이름이 중복되면 들어가지 않으니까 중복 체크 후, 이름을 다르게 만든다.
+		NameDeduplicator(&obj->obj_name);
+
+		m_ObjectMap.insert(std::make_pair(obj->obj_name, obj));
 		return true;
 	}
 	return false;
@@ -520,6 +526,32 @@ bool KMapSpace::AddDynamicObject(KMapObject* obj)
 	return false;
 }
 
+void KMapSpace::NameDeduplicator(std::wstring* name)
+{
+	int index = 0;
+	std::map<std::wstring, KMapObject*>::iterator iter;
+	//이름 중복이라면?
+	if (m_ObjectMap.count(*name) > 0)
+	{
+		//이름 바꿔주는 작업
+		for (iter = m_ObjectMap.begin(); iter != m_ObjectMap.end();)
+		{
+			std::wstring mapname = iter->first;
+			size_t nPos = mapname.find(L"#");
+			if (nPos != std::wstring::npos) { // 찾고자 하는 문자열이 있었는지 검사
+				mapname.erase(nPos);
+			}
+			if (mapname == *name)
+			{
+				index++;
+			}
+			iter++;
+		}
+		*name += L"#";
+		*name += std::to_wstring(index);
+	}
+}
+
 /// <summary>
 /// Temporary Debuging Object
 /// </summary>
@@ -531,7 +563,7 @@ void KMapSpace::DrawDebugInit(ID3D11DeviceContext* pContext)
 		m_Debug_Box.m_pContext = pContext;
 	}
 }
-void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
+void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext, float alpha)
 {
 	//add list
 	
@@ -595,19 +627,20 @@ void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 	m_Debug_Box.m_VertexList[18].pos = pBox->List[6];
 	m_Debug_Box.m_VertexList[19].pos = pBox->List[7];
 	// 아랫면
-	m_Debug_Box.m_VertexList[20].pos = pBox->List[1];
-	m_Debug_Box.m_VertexList[21].pos = pBox->List[0];
-	m_Debug_Box.m_VertexList[22].pos = pBox->List[5];
-	m_Debug_Box.m_VertexList[23].pos = pBox->List[4]; 
+	m_Debug_Box.m_VertexList[20].pos = pBox->List[4];
+	m_Debug_Box.m_VertexList[21].pos = pBox->List[5];
+	m_Debug_Box.m_VertexList[22].pos = pBox->List[0];
+	m_Debug_Box.m_VertexList[23].pos = pBox->List[1]; 
 
 	for (int index = 0; index < m_Debug_Box.m_VertexList.size(); index++)
 	{
-		m_Debug_Box.m_VertexList[index].color = KVector4(pBox->max.y * 0.005f, 0.2f, 0.2f, 1.0f);
+		float color = pBox->middle.y * 0.0085f;
+		m_Debug_Box.m_VertexList[index].color = KVector4(color, 1.0f, color, alpha);
 	}
 	m_Debug_Box.SetMatrix(NULL, &m_pMap->m_matView,
 		&m_pMap->m_matProj);
 	pContext->UpdateSubresource(
-		m_Debug_Box.m_pVertexBuffer.Get(), 0, NULL, &m_Debug_Box.m_VertexList.at(0), 0, 0);
+		m_Debug_Box.m_pVertexBuffer.Get(), 0, NULL, &m_Debug_Box.m_VertexList[0], 0, 0);
 	m_Debug_Box.Render(pContext);
 }
 
@@ -629,17 +662,15 @@ void KMapSpace::ImGuiRender(ID3D11DeviceContext* pContext)
 	}ImGui::End();
 	if (m_bDebug)
 	{
-		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
 		{
-			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext);
+			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext, 0.35f);
 		}
 
 		for (auto obj : m_ObjectList_Static)
 		{
-			DrawDebugRender(&obj->obj_box, pContext);
+			DrawDebugRender(&obj->obj_box, pContext,0.85f);
 		}
-		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }
 
@@ -651,8 +682,12 @@ bool KMapSpace::Release()
 	}
 	for (auto list : m_ObjectItemList)
 	{
-		list->Release();
-		delete list;
+		if (list!= nullptr)
+		{
+			list->Release();
+			delete list;
+			list= nullptr;
+		}
 	}
 	KQuadTree::Release();
 	m_Debug_Box.Release();

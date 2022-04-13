@@ -14,8 +14,8 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	KScene::Init(context);
 	m_SceneID = S_MapTool;
 	//미니맵-------------------------------------------------------------
-	m_MiniMap_DebugShadow.Init(KRect(KVector2(0.75f, -0.75f),0.5f, 0.5f));
-	m_MiniMap_DebugCamera.Init(KRect(KVector2(-0.5f, -0.5f), 1.0f, 1.0f));
+	m_MiniMap_DebugShadow.Init(KRect(KVector2(-0.25f, -0.75f),0.5f, 0.5f));
+	m_MiniMap_DebugCamera.Init(KRect(KVector2(-0.75f, -0.75f), 0.5f, 0.5f));
 	
 	//미니맵은 키입력으로 보이게 시작부터 보이지 않음
 	m_MiniMap_DebugShadow.SwapVisibility();
@@ -50,6 +50,7 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	m_Terrian_Space.DrawDebugInit(m_pContext);
 
 	KBoxObj* tempBox = new KBoxObj();
+	tempBox->m_ObjName = L"textbox";
 	tempBox->Init(L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/shader/VSPS_DepthShadow.hlsl", 
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
 	m_Terrian_Space.RandomSetupObject(tempBox,30);
@@ -75,42 +76,41 @@ bool KScene_Maptool::Frame()
 	m_Light.Frame();
 	m_Shadow.Frame(); // 쉐도우 행렬 계산, 프로젝션 행렬 ,텍스쳐 행렬 곱한것
 
-	if (ImGui::Begin(u8"Main Light"))
+	if (ImGui::Begin(u8"Light"))
 	{
 		float* lightPos[3]	= { &m_Light .m_vPos.x,&m_Light.m_vPos.y,&m_Light.m_vPos.z};
 		float* lightColor[3] = { &m_Light.m_vLightColor.x,&m_Light.m_vLightColor.y,&m_Light.m_vLightColor.z };
 		float* lightTarget[3] = {&m_Light.m_vTarget.x,&m_Light.m_vTarget.y,&m_Light.m_vTarget.z};
 		ImGui::Text(u8"Light Position"); ImGui::SameLine();
-		ImGui::InputFloat3("##lightpos", *lightPos, 1, 0);
+		ImGui::InputFloat3("##lightpos", *lightPos, 2, 0);
 		ImGui::Text(u8"Light Target"); ImGui::SameLine();
-		ImGui::InputFloat3("##lightTarget", *lightTarget, 1, 0);
+		ImGui::InputFloat3("##lightTarget", *lightTarget, 2, 0);
 		ImGui::Text(u8"Light Color"); ImGui::SameLine();
-		ImGui::InputFloat3("##lightcolor", *lightColor, 1, 0);
+		ImGui::InputFloat3("##lightcolor", *lightColor, 2, 0);
 	}
 	ImGui::End();
 
 	//오브젝트 리스트
+	std::vector<std::string> items_name;
+	for (int iObj = 0; iObj < m_Terrian_Space.m_ObjectMap.size() iObj++)
+	{
+		items_name.push_back(to_wm(m_Scene_FBXList[fbxobj].m_pLoader->m_MeshList[0]->m_ObjName));
+	}
 
-	//std::vector<std::string> items_name;
-	//for (int fbxobj = 0; fbxobj < m_Scene_FBXList.size(); fbxobj++)
-	//{
-	//	items_name.push_back(to_wm(m_Scene_FBXList[fbxobj].m_pLoader->m_MeshList[0]->m_ObjName));
-	//}
-
-	//if (ImGui::Begin(u8"Inspector"))
-	//{
-	//	ImGui::ListBoxHeader("");
-	//	
-	//	for(std::string it : items_name)
-	//	{
-	//		if (ImGui::Selectable(it.c_str()))
-	//		{
-	//			int k = 0;
-	//		}
-	//	}
-	//	ImGui::ListBoxFooter();
-	//}
-	//ImGui::End();
+	if (ImGui::Begin(u8"Inspector"))
+	{
+		ImGui::ListBoxHeader("");
+		
+		for(std::string it : items_name)
+		{
+			if (ImGui::Selectable(it.c_str()))
+			{
+				int k = 0;
+			}
+		}
+		ImGui::ListBoxFooter();
+	}
+	ImGui::End();
 
 	KScene::Frame();
 	return true;

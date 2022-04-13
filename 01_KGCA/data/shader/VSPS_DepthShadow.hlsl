@@ -129,8 +129,14 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
 	  specular *= specularInten.rgb * g_lightColor;
    }
    float3 ambient = float3(0.1f, 0.1f, 0.1f) * albedo;
-   float4 final = float4(ambient + diffuse + specular, 1);
+   float4 final = float4(ambient + diffuse + specular, albedo.w);
 
+   //알파 테스팅 작업 (완전 투명과 완전 불투명일때 사용)
+   //순서를 구분하기 어려울때 애매한 알파값을 버림, 정렬된 효과를 얻음
+   if (final.a < 0.5f)
+   {
+	   discard;
+   }
    return final;
 }
 float4 PSDepth(VS_OUTPUT Input) : SV_TARGET

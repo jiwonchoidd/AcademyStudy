@@ -1,5 +1,10 @@
 #pragma once
 #include "K3DAsset.h"
+//맵 오브젝트는 
+//모든 오브젝트를 담을 수 있고
+//콜라이더 역활을 하는 KBOX 클래스로
+//물체 충돌, 프러스텀 내에 들어가는지 탐색이 가능하다.
+//물체를 추가하면, KBOX를 업데이트해서 사이즈에 맞게 계산
 struct KMapObject
 {
 	std::wstring	obj_name;

@@ -9,7 +9,9 @@ public:
 	bool		Init();
 public:
 	void CreateFrustum(KMatrix& matView, KMatrix& matProj);
-	BOOL ClassifyPoint(KVector3* v);
+public:
+	//프러스텀 영역 물체 계산
+	BOOL ClassifyPoint(KVector3* v); 
 	BOOL ClassifySphere(KSphere* v);
 	BOOL ClassifyOBB(KBox* v);
 };

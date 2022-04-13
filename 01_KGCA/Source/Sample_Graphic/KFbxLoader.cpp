@@ -360,6 +360,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 						pnct_vertex.normal.x = normal.mData[0]; // x
 						pnct_vertex.normal.y = normal.mData[2]; // z
 						pnct_vertex.normal.z = normal.mData[1]; // y
+						D3DXVec3Normalize(&pnct_vertex.normal, &pnct_vertex.normal);
 					}
 
 					if (BinormalSet.size() > 0)
@@ -371,6 +372,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 						bt_vertex.binormal.x = binormal.mData[0]; // x
 						bt_vertex.binormal.y = binormal.mData[2]; // z
 						bt_vertex.binormal.z = binormal.mData[1]; // y
+						D3DXVec3Normalize(&bt_vertex.binormal, &bt_vertex.binormal);
 					}
 
 					if (TangentSet.size() > 0)
@@ -382,6 +384,7 @@ void KFbxLoader::ParseMesh(KFBXObj* pObject)
 						bt_vertex.tangent.x = tangent.mData[0]; // x
 						bt_vertex.tangent.y = tangent.mData[2]; // z
 						bt_vertex.tangent.z = tangent.mData[1]; // y
+						D3DXVec3Normalize(&bt_vertex.tangent, &bt_vertex.tangent);
 					}
 					//애니메이션을 위한 가중치
 					//캐릭터 애니메이션이 아닌 오브젝트도 스키닝화 시킨다.

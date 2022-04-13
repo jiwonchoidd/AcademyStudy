@@ -16,7 +16,7 @@ public:
     void    SetLight(KVector3 vPos, KVector3 vTarget)
     {
         //색깔 기본
-        m_vLightColor = { 1.0f,1.0f,1.0f,1.0f};
+        m_vLightColor = { 0.9f,0.85f,0.85f,1.0f};
         //이거 가지고 뷰행렬을 만들어 낸다.
         m_vPos = vPos;
         m_vTarget = vTarget;

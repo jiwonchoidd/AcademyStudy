@@ -42,7 +42,8 @@ public:
 public:								//오브젝트 리스트
 	std::list<KMapObject*>	m_ObjectList_Static; //프러스텀에 담긴 오브젝트 리스트 
 	std::list<KMapObject*>	m_ObjectList_Dynamic;
-	std::list<K3DAsset*>	m_ObjectItemList;
+	std::vector<K3DAsset*>  m_ObjectItemList; // 중복되지 않는 오브젝트 리스트
+	std::map<std::wstring, KMapObject*> m_ObjectMap;
 public:
 	std::vector<KNode*>		m_pDrawableLeafList;//프로스텀에 보이는 리프노드
 public:
@@ -57,6 +58,7 @@ public:
 	bool   RandomSetupObject(K3DAsset* obj, int amount); // 오브젝트를 Kmapobject 구조체로 변환
 	bool   AddObject(KMapObject* obj); // 실제 오브젝트를 추가하는 함수
 	bool   AddDynamicObject(KMapObject* obj);
+	void	NameDeduplicator(std::wstring* name);
 public:
 	//LOD 거리에 따라 달라지는 정점, 
 	virtual bool	Build(KMap* pmap, KCamera* pCamera);
@@ -84,7 +86,7 @@ public:
 public:
 	//디버깅 함수
 	void DrawDebugInit(ID3D11DeviceContext* pContext);
-	void DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext);
+	void DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext, float alpha = 1.0f);
 	void ImGuiRender(ID3D11DeviceContext* pContext);
 public:
 	KMapSpace();
