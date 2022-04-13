@@ -37,7 +37,7 @@ ImGuiManager::ImGuiManager()
 	ImGui::CreateContext();
 	ImGui::StyleColorsDark();
     ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 18.0f, NULL, io.Fonts->GetGlyphRangesKorean());
+    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 15.0f, NULL, io.Fonts->GetGlyphRangesKorean());
 }
 
 ImGuiManager::~ImGuiManager()

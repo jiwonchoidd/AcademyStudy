@@ -91,24 +91,20 @@ bool KScene_Maptool::Frame()
 	ImGui::End();
 
 	//오브젝트 리스트
-	std::vector<std::string> items_name;
-	for (int iObj = 0; iObj < m_Terrian_Space.m_ObjectMap.size() iObj++)
+	if (ImGui::Begin("Inspector"))
 	{
-		items_name.push_back(to_wm(m_Scene_FBXList[fbxobj].m_pLoader->m_MeshList[0]->m_ObjName));
-	}
-
-	if (ImGui::Begin(u8"Inspector"))
-	{
-		ImGui::ListBoxHeader("");
-		
-		for(std::string it : items_name)
+		if (ImGui::ListBoxHeader("Inspector"))
 		{
-			if (ImGui::Selectable(it.c_str()))
+			for (auto it : m_Terrian_Space.m_ObjectMap)
 			{
-				int k = 0;
+				if (ImGui::Selectable(to_wm(it.first).c_str()))
+				{
+					int k = 0;
+				}
 			}
 		}
 		ImGui::ListBoxFooter();
+
 	}
 	ImGui::End();
 
