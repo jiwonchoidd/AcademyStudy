@@ -14,8 +14,8 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	KScene::Init(context);
 	m_SceneID = S_MapTool;
 	//미니맵-------------------------------------------------------------
-	m_MiniMap_DebugShadow.Init(KRect(KVector2(-0.75f, -0.75f),0.5f, 0.5f));
-	m_MiniMap_DebugCamera.Init(KRect(KVector2(-0.25f, -0.75f), 0.5f, 0.5f));
+	m_MiniMap_DebugShadow.Init(KRect(KVector2(0.75f, -0.75f),0.5f, 0.5f));
+	m_MiniMap_DebugCamera.Init(KRect(KVector2(-0.5f, -0.5f), 1.0f, 1.0f));
 	
 	//미니맵은 키입력으로 보이게 시작부터 보이지 않음
 	m_MiniMap_DebugShadow.SwapVisibility();
@@ -52,11 +52,11 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	KBoxObj* tempBox = new KBoxObj();
 	tempBox->Init(L"../../data/shader/VSPS_DepthShadow.hlsl", L"../../data/shader/VSPS_DepthShadow.hlsl", 
 		L"../../data/texture/brick.jpg", L"../../data/texture/brick.jpg", L"../../data/texture/brick_normal.jpg");
-	m_Terrian_Space.RandomSetupObject(tempBox,5);
+	m_Terrian_Space.RandomSetupObject(tempBox,30);
 	
 	m_TopView.Init(m_pContext);
-	m_TopView.CreateViewMatrix(KVector3(0, 400.0f, -1),KVector3(0, 0, 0));
-	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.4f,
+	m_TopView.CreateViewMatrix(KVector3(0, 600.0f, -1),KVector3(0, 0, 0));
+	m_TopView.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.3f,
 		static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
 
 	//라이트 그림자----------------------------------------------------------------
@@ -71,7 +71,6 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 
 bool KScene_Maptool::Frame()
 {
-	
 	m_MousePicker.Frame();
 	m_Light.Frame();
 	m_Shadow.Frame(); // 쉐도우 행렬 계산, 프로젝션 행렬 ,텍스쳐 행렬 곱한것
@@ -117,7 +116,6 @@ bool KScene_Maptool::Frame()
 	return true;
 }
 
-
 bool KScene_Maptool::Render()
 {
 	//그림자 ------------------------------------------
@@ -161,7 +159,7 @@ bool KScene_Maptool::Render()
 		&m_Terrian.m_matWorld);
 	
 	//지형 렌더------------------------------------------------------------
-	m_Terrian.SetMatrix(nullptr, &g_SceneManager.m_pCamera->m_matView, &g_SceneManager.m_pCamera->m_matProj);
+	m_Terrian.SetMatrix(&m_Terrian.m_matWorld, &g_SceneManager.m_pCamera->m_matView, &g_SceneManager.m_pCamera->m_matProj);
 	m_Terrian.m_cbData.vLightColor = { m_Light.m_vLightColor.x,m_Light.m_vLightColor.y,m_Light.m_vLightColor.z,1.0f };
 	m_Terrian.m_cbData.vLightPos =   { m_Light.m_vPos.x,m_Light.m_vPos.y,m_Light.m_vPos.z};
 	m_Terrian.m_cbData.vCamPos = { g_SceneManager.m_pCamera->GetCameraPos()->x, g_SceneManager.m_pCamera->GetCameraPos()->y, g_SceneManager.m_pCamera->GetCameraPos()->z, 1.0f };
@@ -206,13 +204,14 @@ bool KScene_Maptool::Render()
 	if (m_MiniMap_DebugCamera.m_Rt.Begin(m_pContext, color))
 	{
 		ApplyBS(m_pContext, KState::g_pAlphaBlendState);
-		m_Terrian.SetMatrix(nullptr, &m_TopView.m_matView, &m_TopView.m_matProj);
-		m_Terrian_Space.Render(m_pContext);
-		g_SceneManager.m_pCamera->SetMatrix(nullptr, &m_TopView.m_matView,
+			m_Terrian.SetMatrix(&m_Terrian.m_matWorld, &m_TopView.m_matView, &m_TopView.m_matProj);
+			m_Terrian_Space.Render(m_pContext); //맵 렌더
+			m_Terrian_Space.Render_MapObject(m_pContext); //맵 오브젝트
+			g_SceneManager.m_pCamera->SetMatrix(nullptr, &m_TopView.m_matView,
 			&m_TopView.m_matProj);
-		g_SceneManager.m_pCamera->Render(m_pContext);
-		m_MiniMap_DebugCamera.m_Rt.End(m_pContext);
+			g_SceneManager.m_pCamera->Render(m_pContext); //프러스텀 렌더
 		KState::g_pCurrentBS = KState::g_pBlendState;
+		m_MiniMap_DebugCamera.m_Rt.End(m_pContext);
 	}
 	m_MiniMap_DebugCamera.Render(m_pContext);
 	

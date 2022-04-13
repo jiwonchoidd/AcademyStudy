@@ -63,12 +63,12 @@ struct KMapObject
 				obj_box.max.z = pos.z;
 			}
 		}
+		obj_box.middle = (obj_box.min + obj_box.max);
+		obj_box.middle /= 2.0f;
 		KVector3 vHalf = obj_box.max - obj_box.middle;
 		obj_box.size.x = fabs(D3DXVec3Dot(&obj_box.Axis[0], &vHalf));
 		obj_box.size.y = fabs(D3DXVec3Dot(&obj_box.Axis[1], &vHalf));
 		obj_box.size.z = fabs(D3DXVec3Dot(&obj_box.Axis[2], &vHalf));
-		obj_box.middle = (obj_box.min + obj_box.max);
-		obj_box.middle /= 2.0f;
 	}
 };
 class KNode

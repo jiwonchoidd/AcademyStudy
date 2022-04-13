@@ -39,14 +39,8 @@ VS_OUTPUT VS(VS_INPUT Input)
 	Output.r = normalize(vLocal.xyz);
 	return Output;
 }
-
-Texture2D		g_txDiffuse : register(t0);
-Texture2D		g_txSpecular : register(t1);
-Texture2D		g_txNormal : register(t2);
-SamplerState	g_Sample : register(s0);
 float4 PS(VS_OUTPUT Input) : SV_TARGET
 {
 	float4 vColor = Input.c;
-	vColor.a = 0.5f;
 	return vColor;
 }

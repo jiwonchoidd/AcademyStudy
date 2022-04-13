@@ -356,8 +356,8 @@ bool KMapSpace::Render_MapObject(ID3D11DeviceContext* pContext)
 	for (auto obj : m_ObjectList_Static)
 	{
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
-			&m_pCamera->m_matView,
-			&m_pCamera->m_matProj);
+			&m_pMap->m_matView,
+			&m_pMap->m_matProj);
 		obj->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
 		obj->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
 		obj->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
@@ -442,6 +442,7 @@ void KMapSpace::RenderTile(KNode* pNode)
 		{
 			if (m_pCamera->ClassifyOBB(&obj->obj_box) == TRUE)
 			{
+				//보여지는 오브젝트 담아서 렌더링
 				m_ObjectList_Static.push_back(obj);
 			}
 		}
@@ -544,29 +545,29 @@ void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 
 	pBox->List[0] = KVector3(pBox->min.x,
 		pBox->min.y,
-		pBox->max.z);
+		pBox->min.z);
 	pBox->List[1] = KVector3(pBox->max.x,
 		pBox->min.y,
-		pBox->max.z);
+		pBox->min.z);
 	pBox->List[2] = KVector3(pBox->min.x,
 		pBox->max.y,
-		pBox->max.z);
+		pBox->min.z);
 	pBox->List[3] = KVector3(pBox->max.x,
 		pBox->max.y,
-		pBox->max.z);
+		pBox->min.z);
 
 	pBox->List[4] = KVector3(pBox->min.x,
 		pBox->min.y,
-		pBox->min.z);
+		pBox->max.z);
 	pBox->List[5] = KVector3(pBox->max.x,
 		pBox->min.y,
-		pBox->min.z);
+		pBox->max.z);
 	pBox->List[6] = KVector3(pBox->min.x,
 		pBox->max.y,
-		pBox->min.z);
+		pBox->max.z);
 	pBox->List[7] = KVector3(pBox->max.x,
 		pBox->max.y,
-		pBox->min.z);
+		pBox->max.z);
 
 	// 정면
 	m_Debug_Box.m_VertexList[0].pos = pBox->List[0];
@@ -601,7 +602,7 @@ void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext)
 
 	for (int index = 0; index < m_Debug_Box.m_VertexList.size(); index++)
 	{
-		m_Debug_Box.m_VertexList[index].color = KVector4(pBox->max.y * 0.015f, 0.2f, 0.2f, 1.0f);
+		m_Debug_Box.m_VertexList[index].color = KVector4(pBox->max.y * 0.005f, 0.2f, 0.2f, 1.0f);
 	}
 	m_Debug_Box.SetMatrix(NULL, &m_pMap->m_matView,
 		&m_pMap->m_matProj);
@@ -615,7 +616,8 @@ void KMapSpace::ImGuiRender(ID3D11DeviceContext* pContext)
 	//디버깅 박스 렌더
 	if (ImGui::Begin(u8"지형 렌더링"))
 	{
-		ImGui::Text(u8"감지된 리프노드 : %d", m_pDrawableLeafList.size());
+		ImGui::Text(u8"Detected Nodes: %d", m_pDrawableLeafList.size());
+		ImGui::Text(u8"Detected Objects: %d", m_ObjectList_Static.size());
 		if (ImGui::Button("Terrian Box Enable"))
 		{
 			m_bDebug = !m_bDebug;
@@ -627,10 +629,17 @@ void KMapSpace::ImGuiRender(ID3D11DeviceContext* pContext)
 	}ImGui::End();
 	if (m_bDebug)
 	{
+		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
 		{
 			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext);
 		}
+
+		for (auto obj : m_ObjectList_Static)
+		{
+			DrawDebugRender(&obj->obj_box, pContext);
+		}
+		pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	}
 }
 

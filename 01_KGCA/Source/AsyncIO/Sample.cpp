@@ -28,7 +28,6 @@ int main()
 	}
 	CloseHandle(hFile);
 
-
 	HANDLE hFile_Read = CreateFile(L"test.txt", GENERIC_READ
 		, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (hFile_Read != NULL)

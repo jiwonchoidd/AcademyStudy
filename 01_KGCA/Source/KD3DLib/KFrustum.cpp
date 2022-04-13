@@ -19,10 +19,10 @@ bool KFrustum::Init()
 	int color = 0;
 
 	// Á¤¸é
-	m_VertexList[color].color =		KVector4(1.0f, 0.0f, 0.0f, 0.3f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
-	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
+	m_VertexList[color].color =		KVector4(1.0f, 1.0f, 1.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 1.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 1.0f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 1.0f, 0.3f);
 
 	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
 	m_VertexList[color += 1].color = KVector4(0.1f, 0.5f, 0.5f, 0.3f);
@@ -39,10 +39,10 @@ bool KFrustum::Init()
 	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);
 	m_VertexList[color += 1].color = KVector4(1.0f, 1.0f, 0.0f, 0.3f);
 
-	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);//À­¸é
-	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
-	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
-	m_VertexList[color += 1].color = KVector4(0.2f, 0.5f, 0.2f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.2f, 0.5f, 0.3f);//À­¸é
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.2f, 0.5f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.2f, 0.5f, 0.3f);
+	m_VertexList[color += 1].color = KVector4(0.5f, 0.2f, 0.5f, 0.3f);
 
 	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);//¾Æ·§
 	m_VertexList[color += 1].color = KVector4(1.0f, 0.0f, 0.0f, 0.3f);
@@ -103,10 +103,10 @@ void KFrustum::CreateFrustum(KMatrix& matView, KMatrix& matProj)
 		m_VertexList[18].pos = m_Frustum[6];
 		m_VertexList[19].pos = m_Frustum[7];
 		// ¾Æ·§¸é
-		m_VertexList[20].pos = m_Frustum[1];
-		m_VertexList[21].pos = m_Frustum[0];
-		m_VertexList[22].pos = m_Frustum[5];
-		m_VertexList[23].pos = m_Frustum[4];
+		m_VertexList[20].pos = m_Frustum[4];
+		m_VertexList[21].pos = m_Frustum[5];
+		m_VertexList[22].pos = m_Frustum[0];
+		m_VertexList[23].pos = m_Frustum[1];
 		m_pContext->UpdateSubresource(
 			m_pVertexBuffer.Get(), 0, NULL, &m_VertexList.at(0), 0, 0);
 	}
@@ -123,6 +123,8 @@ void KFrustum::CreateFrustum(KMatrix& matView, KMatrix& matProj)
 
 	m_Plane[5] = KPlane(m_Frustum[2], m_Frustum[6], m_Frustum[7]);	//+y À­ÂÊ
 
+	
+	int a = 3;
 }
 
 BOOL KFrustum::ClassifyPoint(KVector3* v)
