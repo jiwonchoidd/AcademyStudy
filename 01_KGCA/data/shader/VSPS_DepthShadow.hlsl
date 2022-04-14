@@ -4,14 +4,22 @@ cbuffer CBuf : register(b0)
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
 	matrix g_matNormal : packoffset(c12);
-	float4 g_lightPos : packoffset(c16);	//라이트 방향
-	float4 g_lightColor : packoffset(c17);  //라이트 색상
-	float4 g_camPos : packoffset(c18);		//카메라 방향
-	float4 g_value : packoffset(c19);		//기타 시간 값등
 };
-cbuffer cbDataShadow: register(b2)
+cbuffer CBuf_Bone: register(b1)
+{
+	float4x4 g_matBoneWorld[255]; //65535 / 4
+};
+cbuffer CBuf_Shadow: register(b2)
 {
 	matrix g_matShadow	: packoffset(c0);
+};
+cbuffer CBuf_Extra: register(b3)
+{
+	float4 g_lightColor : packoffset(c0);  //라이트 색상
+	float4 g_lightPos : packoffset(c1);		//라이트 위치
+	float4 g_lightDir : packoffset(c2);		//라이트 방향
+	float4 g_camPos : packoffset(c3);		//카메라 방향
+	float4 g_value : packoffset(c4);		//기타 시간 값등
 };
 struct VS_INPUT
 {
@@ -27,12 +35,11 @@ struct VS_OUTPUT
 	float4 p : SV_POSITION;
 	float2 t : TEXCOORD0;
 	float4 c : COLOR0;
-	float3 mLightDir : TEXCOORD1;
-	float3 mViewDir  : TEXCOORD2;
-	float4 mShadow	 : TEXCOORD3; //뎁스 맵 쉐도우 추가
-	float3 mT        : TEXCOORD4;
-	float3 mB        : TEXCOORD5;
-	float3 mN        : TEXCOORD6;
+	float3 mViewDir  : TEXCOORD1;
+	float4 mShadow	 : TEXCOORD2; //뎁스 맵 쉐도우 추가
+	float3 mT        : TEXCOORD3;
+	float3 mB        : TEXCOORD4;
+	float3 mN        : TEXCOORD5;
 };
 
 VS_OUTPUT VS(VS_INPUT Input)
@@ -43,12 +50,10 @@ VS_OUTPUT VS(VS_INPUT Input)
 	float4 vLocal = float4(Input.p, 1.0f);
 	float4 vWorld = mul(vLocal, g_matWorld);
 
-	//라이트 방향 월드 행렬 곱함, 월드 공간에서의 위치여서 여기서 광원의 위치를 뺀다.
-	float3 lightDir = vWorld.xyz - g_lightPos.xyz;
-	Output.mLightDir = normalize(lightDir);
 	//보는 방향
 	float3 viewDir = vWorld.xyz - g_camPos.xyz;
 	Output.mViewDir = normalize(viewDir);
+
 	//쉐도우 행렬곱
 	Output.mShadow = mul(vWorld, g_matShadow);
 
@@ -59,8 +64,8 @@ VS_OUTPUT VS(VS_INPUT Input)
 	float3 worldNormal = mul(Input.n, (float3x3)g_matWorld);
 	Output.p = vProj;
 	Output.t = Input.t;
-	float depth1 = vProj.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
-	Output.c = float4(depth1, depth1, depth1, 1);
+	float depth = vProj.z * 1.0f / (1200.0f - 1.0f) + -1.0f / (1200.0f - 1.0f);
+	Output.c = float4(depth, depth, depth, 1);
 	Output.mT = normalize(worldTangent);
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);
@@ -102,18 +107,19 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 worldNormal = mul(TBN, tangentNormal);
    //----------------------------------------------------------------------
    float4 albedo = g_txDiffuse.Sample(g_Sample, Input.t); //알베도 기본 색상 텍스쳐
-   //쉐도우
+   //쉐도우 
    float3 vShadowProj;
    vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
    float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
-   float depth = Input.mShadow.z * 1.0f / (1000.0f - 1.0f) + -1.0f / (1000.0f - 1.0f);
-   if (shadow + 0.005f <= depth)
+   float depth = Input.mShadow.z * 1.0f / (1200.0f - 1.0f) + -1.0f / (1200.0f - 1.0f);
+   if (shadow + 0.006f <= depth)
    {
+	   //그림자
 	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);
    }
 
    //방향 벡터 정규화
-   float3 lightDir = normalize(Input.mLightDir);
+   float3 lightDir = normalize(g_lightDir);
    float3 viewDir = normalize(Input.mViewDir);
 
    //디퓨즈 반사, 난반사

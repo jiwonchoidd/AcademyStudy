@@ -25,7 +25,6 @@ public:
     KMiniMap       m_MiniMap_DebugShadow;
 public:
     KMousePicker   m_MousePicker;
-    std::vector<std::shared_ptr<K3DAsset>> m_Scene_ObjList; //씬의 오브젝트 포인터
 public:
     bool    Load(std::wstring file) override;
 public:

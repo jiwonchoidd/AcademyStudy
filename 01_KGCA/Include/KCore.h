@@ -9,12 +9,14 @@
 #include "ImGuiManager.h"
 #include "KSkyBox.h"
 #include "KCamera.h"
+#include "KPivot.h"
 class KCore : public KWindow
 {
 public:
 	ImGuiManager	m_ImGuiManager;
 	KSkyBox			m_SkyBox;
 public:
+	KPivot			m_Pivot;
 	KDebugCamera	m_Camera;
 	KWrite			m_Write;
 	KTimer			m_Timer;

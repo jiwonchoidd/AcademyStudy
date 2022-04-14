@@ -5,9 +5,9 @@
 bool KMap::Init(ID3D11DeviceContext* context, std::wstring heightmap)
 {
 	m_pContext = context;
-	m_tex_offset = 4.0f;
+	m_tex_offset = 3.0f;
 	CreateHeightMap(heightmap);
-	CreateMap(m_num_row, m_num_col, 4.0f);
+	CreateMap(m_num_row, m_num_col, 8.0f);
 	//CreateMap(33,33, 2.0f);
 	return true;
 }
@@ -77,8 +77,8 @@ bool KMap::CreateHeightMap(std::wstring heightmap)
 					UINT colStart = col * 4;
 					UINT byte_height = pTexels[rowStart + colStart + 0];
 					//byte에 저장할수있는 최대값은 0~255
-					//따라서 높이를 조절하려면 나눗셈
-					m_HeightList[row * desc.Width + col] = (static_cast<float>(byte_height)/2.0f)-10.0f;	/// DWORD이므로 pitch/4	
+					//따라서 높이를 조절하려면 나눗셈 DWORD이므로 pitch/4
+					m_HeightList[row * desc.Width + col] = (static_cast<float>(byte_height))-30.0f;
 				}
 			}
 			m_pContext->Unmap(pTexture2D, D3D11CalcSubresource(0, 0, 1)); 

@@ -6,9 +6,14 @@ bool KFBXObj::PreRender(ID3D11DeviceContext* pContext)
 	//리소스 업데이트 데이터와 리소스 버퍼의 저장
 	pContext->UpdateSubresource(
 		m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
+	pContext->UpdateSubresource(
+		m_pConstantBuffer_EX.Get(), 0, NULL, &m_cbDataEX, 0, 0);
 
 	pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
 	pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+
+	pContext->VSSetConstantBuffers(3, 1, m_pConstantBuffer_EX.GetAddressOf());
+	pContext->PSSetConstantBuffers(3, 1, m_pConstantBuffer_EX.GetAddressOf());
 
 	////텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
 	//쉐이더

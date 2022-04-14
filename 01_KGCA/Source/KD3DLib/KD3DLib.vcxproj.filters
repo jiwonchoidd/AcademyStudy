@@ -168,6 +168,9 @@
     <ClCompile Include="..\..\Graphics\ImGui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="KPivot.cpp">
+      <Filter>Code\Obj\3D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="KInput.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Graphics\ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="KPivot.h">
+      <Filter>Code\Obj\3D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

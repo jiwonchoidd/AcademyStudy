@@ -25,6 +25,7 @@ bool	KCore::GameInit()
         m_Camera.CreateProjMatrix(1.0f, 10000.0f, XM_PI * 0.4f,
             static_cast<float>(g_rtClient.right) / static_cast<float>(g_rtClient.bottom));
         //
+        m_Pivot.Init(m_pImmediateContext.Get());
         m_Timer.Init();
         g_Input.Init();
         if (m_Write.Init())
@@ -79,8 +80,11 @@ bool	KCore::GameRender()
         m_SkyBox.m_matSkyView._43 = 0;
         m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
         m_SkyBox.Render(m_pImmediateContext.Get());
+        //ÇÇº¿------------------------------------------------
+        m_Pivot.m_Pivot_Box.SetMatrix(&m_Pivot.m_Pivot_Box.m_matWorld,
+            &m_Camera.m_matView, &m_Camera.m_matProj);
+        m_Pivot.Render(m_pImmediateContext.Get());
         //----------------------------------------------------
-
         Render();
         m_ImGuiManager.Render();
 

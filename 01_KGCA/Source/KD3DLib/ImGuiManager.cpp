@@ -1,4 +1,15 @@
 #include "ImGuiManager.h"
+void ImGuiManager::Init()
+{
+    if (!m_bCreated)
+    {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGui::StyleColorsDark();
+        ImGuiIO& io = ImGui::GetIO();
+        io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 15.0f, NULL, io.Fonts->GetGlyphRangesKorean());
+    }
+}
 void ImGuiManager::Frame()
 {
     if (m_bImguiEnable)
@@ -33,11 +44,7 @@ bool ImGuiManager::isImguiEnable()
 }
 ImGuiManager::ImGuiManager()
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGui::StyleColorsDark();
-    ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 15.0f, NULL, io.Fonts->GetGlyphRangesKorean());
+    Init();
 }
 
 ImGuiManager::~ImGuiManager()

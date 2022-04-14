@@ -170,6 +170,7 @@
     <ClCompile Include="KFBXManager.cpp" />
     <ClCompile Include="KFBXObj.cpp" />
     <ClCompile Include="KFbxVertexLoader.cpp" />
+    <ClCompile Include="KLight.cpp" />
     <ClCompile Include="KMiniMap.cpp" />
     <ClCompile Include="KMousePicker.cpp" />
     <ClCompile Include="KSceneManager.cpp" />

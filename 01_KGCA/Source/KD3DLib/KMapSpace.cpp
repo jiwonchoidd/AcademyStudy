@@ -76,8 +76,8 @@ bool  KMapSpace::LoadLODFile(std::wstring filename)
 }
 bool KMapSpace::Build(KMap* pmap, KCamera* pCamera)
 {
-	m_fStartDistance= 100.0f;
-	m_fDistance_Multiply=2.5f;
+	m_fStartDistance= 200.0f;
+	m_fDistance_Multiply=3.0f;
 
 	//쿼드트리 크기 지정, 쿼드트리 생성
 	if (LoadLODFile(L"../../data/script/StaticLod.txt"))
@@ -270,7 +270,7 @@ bool KMapSpace::SetLOD(KVector3* vCamera)
 			m_pLeafList.at(iNode)->m_LodLevel = 2;
 		}
 		//두번째 LOD 중간 버텍스
-		else if (fDistance < m_fStartDistance*m_fDistance_Multiply)
+		else if (fDistance < m_fStartDistance * m_fDistance_Multiply)
 		{
 			m_pLeafList.at(iNode)->m_LodLevel = 1;
 		}
@@ -344,9 +344,9 @@ bool KMapSpace::Render(ID3D11DeviceContext* pContext)
 			pContext->IASetIndexBuffer(m_pLodIndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 			m_pMap->PostRender(pContext, (UINT)m_IndexList.size());
 		}
+	}
 
 		//----------------------------------------
-	}
 	return true;
 }
 
@@ -358,9 +358,10 @@ bool KMapSpace::Render_MapObject(ID3D11DeviceContext* pContext)
 		obj->obj_pObject->SetMatrix(&obj->obj_matWorld,
 			&m_pMap->m_matView,
 			&m_pMap->m_matProj);
-		obj->obj_pObject->m_cbData.vCamPos = this->m_pMap->m_cbData.vCamPos;
-		obj->obj_pObject->m_cbData.vLightColor = this->m_pMap->m_cbData.vLightColor;
-		obj->obj_pObject->m_cbData.vLightPos = this->m_pMap->m_cbData.vLightPos;
+		obj->obj_pObject->m_cbDataEX.vCamPos = this->m_pMap->m_cbDataEX.vCamPos;
+		obj->obj_pObject->m_cbDataEX.vLightColor = this->m_pMap->m_cbDataEX.vLightColor;
+		obj->obj_pObject->m_cbDataEX.vLightPos = this->m_pMap->m_cbDataEX.vLightPos;
+		obj->obj_pObject->m_cbDataEX.vLightDir = this->m_pMap->m_cbDataEX.vLightDir;
 		obj->obj_pObject->Render(pContext);
 	}
 	return true;

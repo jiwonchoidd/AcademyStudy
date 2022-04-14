@@ -65,8 +65,14 @@ bool KObject::PreRender(ID3D11DeviceContext* pContext)
     pContext->UpdateSubresource(
         m_pConstantBuffer.Get(), 0, NULL, &m_cbData, 0, 0);
 
+    pContext->UpdateSubresource(
+        m_pConstantBuffer_EX.Get(), 0, NULL, &m_cbDataEX, 0, 0);
+
     pContext->VSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
     pContext->PSSetConstantBuffers(0, 1, m_pConstantBuffer.GetAddressOf());
+
+    pContext->VSSetConstantBuffers(3, 1, m_pConstantBuffer_EX.GetAddressOf());
+    pContext->PSSetConstantBuffers(3, 1, m_pConstantBuffer_EX.GetAddressOf());
 
     //텍스쳐 리소스를 0번 슬롯 - 디퓨즈 //1번 슬롯 - 스페큘러 //2번 슬롯 - 노말
     if(m_pTexture_Diffuse !=nullptr)
@@ -227,6 +233,15 @@ HRESULT KObject::CreateConstantBuffer()
     data.pSysMem = &m_cbData;
     hr = g_pd3dDevice->CreateBuffer(&bd, &data, m_pConstantBuffer.GetAddressOf());
     if (FAILED(hr)) return hr;
+
+    ZeroMemory(&bd, sizeof(D3D11_BUFFER_DESC));
+    bd.ByteWidth = sizeof(CB_DATA_EX);
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    ZeroMemory(&data, sizeof(D3D11_SUBRESOURCE_DATA));
+    data.pSysMem = &m_cbDataEX;
+    hr = g_pd3dDevice->CreateBuffer(&bd, &data, m_pConstantBuffer_EX.GetAddressOf());
+    if (FAILED(hr)) return hr;
     return hr;
 }
 
@@ -348,6 +363,7 @@ bool KObject::Release()
     m_pIndexBuffer.Reset();
     m_pConstantBuffer.Reset();
     m_pVertexLayout.Reset();
+    m_pConstantBuffer_EX.Reset();
     return true;
 }
 

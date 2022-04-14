@@ -4,10 +4,6 @@ cbuffer CBuf
 	matrix g_matView : packoffset(c4);
 	matrix g_matProj : packoffset(c8);
 	matrix g_matNormal : packoffset(c12);
-	float4 g_lightPos : packoffset(c16);	//라이트 방향
-	float4 g_lightColor : packoffset(c17);  //라이트 색상
-	float4 g_camPos : packoffset(c18);		//카메라 방향
-	float4 g_value : packoffset(c19);		//기타 시간 값등
 };
 struct VS_INPUT
 {

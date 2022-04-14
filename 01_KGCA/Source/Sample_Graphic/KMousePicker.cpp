@@ -148,13 +148,14 @@ bool KMousePicker::Frame()
 		KVector3  vStart = ray.position;
 		KVector3  vEnd = ray.position + ray.direction * m_pCamera->m_fFar;
 
+		//전체 보여지는 노드 돈다.
 		for (int iNode = 0; iNode < m_pSpace->m_pDrawableLeafList.size(); iNode++)
 		{
 			KNode* pNode = m_pSpace->m_pDrawableLeafList[iNode];
 
-			for (int i = 0; i < m_pSpace->m_IndexList.size(); i += 3)
+			for (int i = 0; i < m_pSpace->m_IndexList.size(); i += 6)
 			{
-				KVector3 v0, v1, v2;
+				KVector3 v0, v1, v2, v3, v4, v5;
 				DWORD i0 = m_pSpace->m_IndexList[i + 0];
 				DWORD i1 = m_pSpace->m_IndexList[i + 1];
 				DWORD i2 = m_pSpace->m_IndexList[i + 2];
@@ -168,9 +169,13 @@ bool KMousePicker::Frame()
 					v0, v1, v2, &t, &u, &v))
 				{
 					m_vIntersect = ray.position + ray.direction * t;
-					pNode->m_VertexList[i0].color = KVector4(1, 0, 0, 1);
-					pNode->m_VertexList[i1].color = KVector4(1, 0, 0, 1);
-					pNode->m_VertexList[i2].color = KVector4(1, 0, 0, 1);
+
+					pNode->m_VertexList[i0].pos = KVector3(v0.x, v0.y + 100 *g_fSecPerFrame, v0.z);
+
+					pNode->m_VertexList[i1].pos = KVector3(v1.x, v1.y + 100 * g_fSecPerFrame,v1.z);
+
+					pNode->m_VertexList[i2].pos = KVector3(v2.x, v2.y + 100 * g_fSecPerFrame, v2.z);
+
 					m_pContext->UpdateSubresource(
 						pNode->m_pVertexBuffer.Get(), 0, NULL,
 						&pNode->m_VertexList.at(0), 0, 0);

@@ -180,14 +180,14 @@ void KImage::FadeOut()
 }
 void KImage::MoveIMG()
 {
-	if (m_cbData.vValue.x > 1.5f)
+	if (m_cbDataEX.vValue.x > 1.5f)
 	{
 		m_bMoveImg = false;
 		m_Timer = 0.0f;
 	}
 	else
 	{
-		m_cbData.vValue.x += g_fSecPerFrame;
+		m_cbDataEX.vValue.x += g_fSecPerFrame;
 	}
 }
 

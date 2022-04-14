@@ -94,9 +94,10 @@ bool KFBXAsset::Render(ID3D11DeviceContext* pContext)
 
 		pContext->UpdateSubresource(m_pLoader->m_pBoneCB, 0, NULL, &m_matBoneArray, 0, 0);
 		pContext->VSSetConstantBuffers(1, 1, &m_pLoader->m_pBoneCB);
-		pFbxObj->m_cbData.vLightColor = { m_cbData.vLightColor.x,m_cbData.vLightColor.y,m_cbData.vLightColor.z,1.0f };
-		pFbxObj->m_cbData.vLightPos = { m_cbData.vLightPos.x,m_cbData.vLightPos.y,m_cbData.vLightPos.z };
-		pFbxObj->m_cbData.vCamPos = { m_cbData.vCamPos.x, m_cbData.vCamPos.y, m_cbData.vCamPos.z, 1.0f };
+		pFbxObj->m_cbDataEX.vLightColor = { m_cbDataEX.vLightColor.x,m_cbDataEX.vLightColor.y,m_cbDataEX.vLightColor.z,1.0f };
+		pFbxObj->m_cbDataEX.vLightPos = { m_cbDataEX.vLightPos.x,m_cbDataEX.vLightPos.y,m_cbDataEX.vLightPos.z };
+		pFbxObj->m_cbDataEX.vCamPos = { m_cbDataEX.vCamPos.x, m_cbDataEX.vCamPos.y, m_cbDataEX.vCamPos.z, 1.0f };
+		pFbxObj->m_cbDataEX.vLightDir= { m_cbDataEX.vLightDir.x, m_cbDataEX.vLightDir.y, m_cbDataEX.vLightDir.z, 1.0f };
 		D3DKMatrixInverse(&pFbxObj->m_cbData.matNormal, NULL,
 			&pFbxObj->m_matWorld);
 		pFbxObj->SetMatrix(&m_matWorld, &m_matView, &m_matProj);

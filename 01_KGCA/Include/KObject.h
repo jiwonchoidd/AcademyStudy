@@ -31,8 +31,12 @@ struct CB_DATA
 	KMatrix  matView;
 	KMatrix  matProj;
 	KMatrix  matNormal;
-	KVector4 vLightPos;
+};
+struct CB_DATA_EX
+{
 	KVector4 vLightColor;
+	KVector4 vLightPos;
+	KVector4 vLightDir;
 	KVector4 vCamPos;
 	KVector4 vValue; // ½Ã°£ °ª xyzw
 };
@@ -54,6 +58,7 @@ public:
 	UINT					m_iNumIndex = 0;
 	UINT					m_iVertexSize = 0;
 	CB_DATA					m_cbData;
+	CB_DATA_EX				m_cbDataEX;
 public:
 	std::vector <PNCT_VERTEX>		m_VertexList;
 	std::vector <BT_VERTEX>			m_BTList;
@@ -72,12 +77,14 @@ public:
 	wrl::ComPtr <ID3D11Buffer>	 	 m_pVertexBTBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pIndexBuffer;
 	wrl::ComPtr <ID3D11Buffer>		 m_pConstantBuffer;
+	wrl::ComPtr <ID3D11Buffer>		 m_pConstantBuffer_EX;
 	wrl::ComPtr <ID3D11InputLayout>  m_pVertexLayout;
 public:
 	virtual void		SetMatrix(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
 	virtual void		SetMatrix_Billboard(KMatrix* pMatWorld,
 		KMatrix* pMatView, KMatrix* pMatProj);
+public:
 	virtual bool		LoadShader(std::wstring vsFile, std::wstring psFile);
 	virtual bool		LoadTexture(std::wstring tex1= L"", std::wstring tex2 = L"", std::wstring tex3 = L"");
 public:
