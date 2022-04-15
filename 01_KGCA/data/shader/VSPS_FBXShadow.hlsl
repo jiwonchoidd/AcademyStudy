@@ -91,7 +91,7 @@ VS_OUTPUT VS(VS_INPUT Input)
 	Output.mB = normalize(worldBinormal);
 	Output.mN = normalize(worldNormal);
 	Output.mR = reflect(viewDir, worldNormal);
-	float depth = vProj.z * 1.0f / (1200.0f - 1.0f) + -1.0f / (1200.0f - 1.0f);
+	float depth = vProj.z * 1.0f / (1300.0f - 1.0f) + -1.0f / (1300.0f - 1.0f);
 	Output.c = float4(depth, depth, depth, 1);
 	return  Output;
 }
@@ -136,7 +136,7 @@ float4 PS(VS_OUTPUT Input) : SV_TARGET
    float3 vShadowProj;
    vShadowProj.xy = Input.mShadow.xy / Input.mShadow.w;
    float shadow = g_txShadow.Sample(g_SamplerClamp, vShadowProj.xy);
-   float depth = Input.mShadow.z * 1.0f / (1200.0f - 1.0f) + -1.0f / (1200.0f - 1.0f);
+   float depth = Input.mShadow.z * 1.0f / (1300.0f - 1.0f) + -1.0f / (1300.0f - 1.0f);
    if (shadow + 0.006f <= depth)
    {
 	   albedo = albedo * float4(0.5f, 0.5f, 0.5f, 1.0f);

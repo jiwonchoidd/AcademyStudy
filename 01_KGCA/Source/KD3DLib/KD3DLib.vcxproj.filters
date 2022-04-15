@@ -40,6 +40,9 @@
     <Filter Include="Code\Obj\3D\Primitive Obj">
       <UniqueIdentifier>{67e57aef-c689-4010-83fa-f12e194b7114}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Code\Obj\3D\Debug">
+      <UniqueIdentifier>{d5e9bd45-a907-4d54-a36f-c871e1a79f80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math\KMath.cpp">
@@ -168,8 +171,11 @@
     <ClCompile Include="..\..\Graphics\ImGui\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="KDebugBoxRenderer.cpp">
+      <Filter>Code\Obj\3D\Debug</Filter>
+    </ClCompile>
     <ClCompile Include="KPivot.cpp">
-      <Filter>Code\Obj\3D</Filter>
+      <Filter>Code\Obj\3D\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,8 +317,11 @@
     <ClInclude Include="..\..\Graphics\ImGui\imstb_truetype.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="KDebugBoxRenderer.h">
+      <Filter>Code\Obj\3D\Debug</Filter>
+    </ClInclude>
     <ClInclude Include="KPivot.h">
-      <Filter>Code\Obj\3D</Filter>
+      <Filter>Code\Obj\3D\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

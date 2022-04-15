@@ -81,7 +81,7 @@ bool	KCore::GameRender()
         m_SkyBox.SetMatrix(&m_SkyBox.m_matWorld, &m_SkyBox.m_matSkyView, &m_Camera.m_matProj);
         m_SkyBox.Render(m_pImmediateContext.Get());
         //ÇÇº¿------------------------------------------------
-        m_Pivot.m_Pivot_Box.SetMatrix(&m_Pivot.m_Pivot_Box.m_matWorld,
+        m_Pivot.m_PivotBox.m_RenderBox.SetMatrix(&m_Pivot.m_PivotBox.m_RenderBox.m_matWorld,
             &m_Camera.m_matView, &m_Camera.m_matProj);
         m_Pivot.Render(m_pImmediateContext.Get());
         //----------------------------------------------------

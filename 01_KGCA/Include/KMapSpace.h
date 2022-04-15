@@ -28,8 +28,9 @@ class KMapSpace : public KQuadTree
 {
 private:
 	bool						m_bDebug= false;
-	float						m_fStartDistance;
+public:
 	float						m_fDistance_Multiply;
+	float						m_fStartDistance;
 public:
 	KMap*						m_pMap;
 	KCamera*					m_pCamera;
@@ -87,7 +88,7 @@ public:
 	//µð¹ö±ë ÇÔ¼ö
 	void DrawDebugInit(ID3D11DeviceContext* pContext);
 	void DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext, float alpha = 1.0f);
-	void ImGuiRender(ID3D11DeviceContext* pContext);
+	void SetDrawDebug();
 public:
 	KMapSpace();
 	virtual ~KMapSpace();

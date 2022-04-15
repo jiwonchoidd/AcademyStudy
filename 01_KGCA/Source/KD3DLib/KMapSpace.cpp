@@ -318,13 +318,13 @@ bool KMapSpace::Render(ID3D11DeviceContext* pContext)
 
 	//프로스텀에 있는 보이는 리프노드만 타입을 정해줌
 
+	m_pMap->PreRender(pContext);
 	for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
 	{
 		KNode* pNode = m_pDrawableLeafList[iNode];
 
 		SetLODType(pNode);
 
-		m_pMap->PreRender(pContext);
 		pContext->IASetInputLayout(m_pMap->m_pVertexLayout.Get());
 		UINT pOffsets = 0;
 		UINT pStrides = sizeof(PNCT_VERTEX);
@@ -346,7 +346,19 @@ bool KMapSpace::Render(ID3D11DeviceContext* pContext)
 		}
 	}
 
-		//----------------------------------------
+	//디버그 박스 렌더링
+	if (m_bDebug)
+	{
+		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
+		{
+			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext, 0.35f);
+		}
+
+		for (auto obj : m_ObjectList_Static)
+		{
+			DrawDebugRender(&obj->obj_box, pContext, 0.85f);
+		}
+	}
 	return true;
 }
 
@@ -564,6 +576,11 @@ void KMapSpace::DrawDebugInit(ID3D11DeviceContext* pContext)
 		m_Debug_Box.m_pContext = pContext;
 	}
 }
+
+void KMapSpace::SetDrawDebug()
+{
+	m_bDebug = !m_bDebug;
+}
 void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext, float alpha)
 {
 	//add list
@@ -645,35 +662,6 @@ void KMapSpace::DrawDebugRender(KBox* pBox, ID3D11DeviceContext* pContext, float
 	m_Debug_Box.Render(pContext);
 }
 
-void KMapSpace::ImGuiRender(ID3D11DeviceContext* pContext)
-{
-	//디버깅 박스 렌더
-	if (ImGui::Begin(u8"지형 렌더링"))
-	{
-		ImGui::Text(u8"Detected Nodes: %d", m_pDrawableLeafList.size());
-		ImGui::Text(u8"Detected Objects: %d", m_ObjectList_Static.size());
-		if (ImGui::Button("Terrian Box Enable"))
-		{
-			m_bDebug = !m_bDebug;
-		}
-		ImGui::Text(u8"LOD Dst"); ImGui::SameLine();
-		ImGui::InputFloat("##Distance", &m_fStartDistance, 2);
-		ImGui::Text(u8"LOD Mul"); ImGui::SameLine();
-		ImGui::InputFloat("##Multiple", &m_fDistance_Multiply, 2); 
-	}ImGui::End();
-	if (m_bDebug)
-	{
-		for (int iNode = 0; iNode < m_pDrawableLeafList.size(); iNode++)
-		{
-			DrawDebugRender(&m_pDrawableLeafList[iNode]->m_node_box, pContext, 0.35f);
-		}
-
-		for (auto obj : m_ObjectList_Static)
-		{
-			DrawDebugRender(&obj->obj_box, pContext,0.85f);
-		}
-	}
-}
 
 bool KMapSpace::Release()
 {

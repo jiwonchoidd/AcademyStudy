@@ -25,8 +25,8 @@ bool KScene_Maptool::Init(ID3D11DeviceContext* context)
 	//Fbx 파일 로드-------------------------------------------------------------
 	
 	std::vector<std::wstring> listname;
-	//listname.push_back(L"../../data/model/SM_Rock.FBX");
-	listname.push_back(L"../../data/model/SM_Barrel.FBX");
+	listname.push_back(L"../../data/model/SM_Rock.FBX");
+	//listname.push_back(L"../../data/model/SM_Barrel.FBX");
 	m_Scene_FBXList.resize(listname.size());
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
@@ -76,32 +76,89 @@ bool KScene_Maptool::Frame()
 	m_Light.Frame();
 	m_Shadow.Frame(); // 쉐도우 행렬 계산, 프로젝션 행렬 ,텍스쳐 행렬 곱한것
 
-	if (ImGui::Begin(u8"Inspector"))
+	#pragma region IMGUI UI <- HERE
+	//IMGUI IU 
+	if (ImGui::Begin("Inspector"))
 	{
+		//----------------------------------------------------------------------------------------
 		float* lightDir[3] = { &m_Light.m_vDir.x,&m_Light.m_vDir.y,&m_Light.m_vDir.z };
 		float* lightColor[3] = { &m_Light.m_vLightColor.x,&m_Light.m_vLightColor.y,&m_Light.m_vLightColor.z };
-		ImGui::Text("[ LIGHT ]"); 
-		ImGui::BeginChild("light", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing() - 15));
-			ImGui::SliderFloat3("Dir", *lightDir, -1.0f, 1.0f);
-			ImGui::InputFloat3("Color", *lightColor, 2, 0);
+		ImGui::Text("[ LIGHT ]");
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
+		ImGui::BeginChild("light", ImVec2(0, 50));
+		ImGui::SliderFloat3("Dir", *lightDir, -1.0f, 1.0f);
+		ImGui::InputFloat3("Color", *lightColor, 2, 0);
 		ImGui::EndChild();
-		ImGui::Dummy(ImVec2(0.0f, 5));
-		ImGui::BeginChild(u8"light", ImVec2(0, -ImGui::GetItemsLineHeightWithSpacing() - 15));
+		//----------------------------------------------------------------------------------------
+		//지형
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+		ImGui::Text("[ Terrian ]");
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
+		ImGui::BeginChild("terrian", ImVec2(0, 100));
+		// 툴링 선택 라디오 버튼
+		if (ImGui::RadioButton("None", (m_iImguiSelected == 0)))
+		{
+			m_iImguiSelected = 0;
+		}ImGui::SameLine();
+		if (ImGui::RadioButton("Height", (m_iImguiSelected == 1)))
+		{
+			m_iImguiSelected = 1;
+
+		}ImGui::SameLine();
+		if (ImGui::RadioButton("Texture", (m_iImguiSelected == 2)))
+		{
+			m_iImguiSelected = 2;
+		}
+		if (m_iImguiSelected == 1)
+		{
+			ImGui::SliderFloat("Brush Size", &m_MousePicker.m_Sel_Brush_Size, 5, 50);
+			ImGui::SliderFloat("Brush Strenght", &m_MousePicker.m_Sel_Brush_Strenght, -500, 500);
+		}
+		ImGui::EndChild();
+		//----------------------------------------------------------------------------------------
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+		ImGui::Text("[ LOD, Frustum Culling ]");
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
+		ImGui::BeginChild("LOD", ImVec2(0, 150));
+		// 디버깅 박스 렌더
+		if (ImGui::Button("Terrian Box Enable"))
+		{
+			m_Terrian_Space.SetDrawDebug();
+		}
+		ImGui::Text("Detected Nodes: %d", m_Terrian_Space.m_pDrawableLeafList.size());
+		ImGui::Text("Detected Objects: %d", m_Terrian_Space.m_ObjectList_Static.size());
+		ImGui::Text(u8"LOD Dst"); ImGui::SameLine();
+		ImGui::InputFloat("##Distance", &m_Terrian_Space.m_fStartDistance, 2);
+		ImGui::Text(u8"LOD Mul"); ImGui::SameLine();
+		ImGui::InputFloat("##Multiple", &m_Terrian_Space.m_fDistance_Multiply, 2);
+		ImGui::EndChild();
+		//----------------------------------------------------------------------------------------	
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
 		ImGui::Text("[ Object ]");
-			if (ImGui::ListBoxHeader("List"))
+		ImGui::Dummy(ImVec2(0.0f, 5.0f));
+
+		ImGui::BeginChild("object", ImVec2(0, 150));
+		if (ImGui::ListBoxHeader("List"))
+		{
+			for (auto it : m_Terrian_Space.m_ObjectMap)
 			{
-				for (auto it : m_Terrian_Space.m_ObjectMap)
+				if (ImGui::Selectable(to_wm(it.first).c_str()))
 				{
-					if (ImGui::Selectable(to_wm(it.first).c_str()))
-					{
-						int k = 0;
-					}
+					int k = 0;
 				}
-				ImGui::ListBoxFooter();
 			}
+			ImGui::ListBoxFooter();
+		}
 		ImGui::EndChild();
-		ImGui::End();
+		//----------------------------------------------------------------------------------------	
 	}
+	ImGui::End();
+#pragma endregion
+
+	m_MousePicker.m_iState = m_iImguiSelected;
 
 	KScene::Frame();
 	return true;
@@ -109,6 +166,7 @@ bool KScene_Maptool::Frame()
 
 bool KScene_Maptool::Render()
 {
+	
 	//그림자 ------------------------------------------
 	float shadow[4] = { 1.0f,1.0f,1.0f,1.0f };
 	if (m_Shadow.m_ShadowRT.Begin(m_pContext, shadow))
@@ -116,10 +174,8 @@ bool KScene_Maptool::Render()
 		//라이트 방향에서 캡쳐
 		m_Terrian.SetMatrix(&m_Terrian.m_matWorld,&m_Light.m_matView, &m_Light.m_matProj);
 		//쉐이더 셰이더로 교체
-		m_Terrian.PreRender(m_pContext);
-		m_pContext->PSSetShader(m_Shadow.m_pPSShadow->m_pPixelShader.Get(), NULL, 0);
-		m_Terrian.PostRender(m_pContext,
-			m_Terrian.m_iNumIndex);//
+		m_Terrian.SwapPSShader(m_Shadow.m_pPSShadow);
+		m_Terrian_Space.Render(m_pContext);
 		//오브젝트
 		for (auto obj : m_Terrian_Space.m_ObjectList_Static)
 		{
@@ -167,8 +223,6 @@ bool KScene_Maptool::Render()
 	m_pContext->PSSetShaderResources(3, 1, m_Shadow.m_ShadowRT.m_pTextureSRV.GetAddressOf());
 	m_Terrian_Space.Render_MapObject(m_pContext);
 
-	m_Terrian_Space.ImGuiRender(m_pContext);
-
 	//FBX OBJ Render------------------------------------------
 	for (int iObj = 0; iObj < m_Scene_FBXList.size(); iObj++)
 	{
@@ -203,11 +257,16 @@ bool KScene_Maptool::Render()
 			g_SceneManager.m_pCamera->SetMatrix(nullptr, &m_TopView.m_matView,
 			&m_TopView.m_matProj);
 			g_SceneManager.m_pCamera->Render(m_pContext); //프러스텀 렌더
-		KState::g_pCurrentBS = KState::g_pBlendState;
 		m_MiniMap_DebugCamera.m_Rt.End(m_pContext);
+		KState::g_pCurrentBS = KState::g_pBlendState;
 	}
 	m_MiniMap_DebugCamera.Render(m_pContext);
 	
+
+	//마우스 피커--------------------------------------
+	m_MousePicker.m_Sel_BoxRender.m_RenderBox.SetMatrix(&m_MousePicker.m_Sel_BoxRender.m_RenderBox.m_matWorld,
+		&g_SceneManager.m_pCamera->m_matView, &g_SceneManager.m_pCamera->m_matProj);
+	m_MousePicker.Render(m_pContext);
 	KScene::Render();
 	return true;
 }

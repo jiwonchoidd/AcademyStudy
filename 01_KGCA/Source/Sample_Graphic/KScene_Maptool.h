@@ -11,6 +11,11 @@
 class KScene_Maptool : public KScene
 {
 public:
+    //imgui µð¹ö±ë º¯¼ö
+    int m_iImguiSelected = 0;
+public:
+
+public:
     KLight         m_Light;
     KDepthShadow   m_Shadow;
 public:
