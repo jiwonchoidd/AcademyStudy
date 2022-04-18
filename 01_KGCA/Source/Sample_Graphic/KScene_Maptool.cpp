@@ -113,8 +113,22 @@ bool KScene_Maptool::Frame()
 		}
 		if (m_iImguiSelected == 1)
 		{
-			ImGui::SliderFloat("Brush Size", &m_MousePicker.m_Sel_Brush_Size, 5, 50);
-			ImGui::SliderFloat("Brush Strenght", &m_MousePicker.m_Sel_Brush_Strenght, -500, 500);
+			if (ImGui::SliderFloat("Brush Size", &m_MousePicker.m_Sel_Brush_Size, 30, 150))
+			{
+				m_MousePicker.m_bImgui = true;
+			}
+			else
+			{
+				m_MousePicker.m_bImgui = false;
+			}
+			if(ImGui::SliderFloat("Brush Strenght", &m_MousePicker.m_Sel_Brush_Strenght, -500, 500))
+			{
+				m_MousePicker.m_bImgui = true;
+			}
+			else
+			{
+				m_MousePicker.m_bImgui = false;
+			}
 		}
 		ImGui::EndChild();
 		//----------------------------------------------------------------------------------------

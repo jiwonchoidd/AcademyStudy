@@ -1,50 +1,6 @@
 #include "KMousePicker.h"
 #include "KState.h"
 #include "KCollision.h"
-bool KMousePicker::PointInPolygon(KVector3 vert, KVector3 faceNormal,
-	KVector3 v0, KVector3 v1, KVector3 v2)
-{
-	KVector3 e0, e1, e2, iInter, vNormal;
-	e0 = v1 - v0;
-	e1 = v2 - v1;
-	e2 = v0 - v2;
-
-	iInter = vert - v0;
-	D3DXVec3Cross(&vNormal, &e0, &iInter);
-	D3DXVec3Normalize(&vNormal, &vNormal);
-	float fDot = D3DXVec3Dot(&faceNormal, &vNormal);
-	if (fDot < 0.0f) return false;
-
-	iInter = vert - v1;
-	D3DXVec3Cross(&vNormal, &e1, &iInter);
-	D3DXVec3Normalize(&vNormal, &vNormal);
-	fDot = D3DXVec3Dot(&faceNormal, &vNormal);
-	if (fDot < 0.0f) return false;
-
-	iInter = vert - v2;
-	D3DXVec3Cross(&vNormal, &e2, &iInter);
-	D3DXVec3Normalize(&vNormal, &vNormal);
-	fDot = D3DXVec3Dot(&faceNormal, &vNormal);
-	if (fDot < 0.0f) return false;
-	return true;
-}
-
-//페이스와 레이보다는 레이와 구 레이와 박스 형태로 계산을 줄임
-//근데 노드별로 높이 조절할려니까 이 함수는 쓰지 않을 것임 
-bool KMousePicker::GetIntersect(KVector3 vStart, KVector3 vEnd,KVector3 v0,KVector3 vNormal)
-{
-	KVector3 vDirection = vEnd - vStart;
-	KVector3 v0toStart = v0 - vStart;
-	float A = D3DXVec3Dot(&vNormal, &vDirection);
-	float a = D3DXVec3Dot(&vNormal, &v0toStart);
-	float t = a / A;
-	if (t < 0.0f || t > 1.0f)
-	{
-		return false;
-	}
-	m_vIntersect = vStart + vDirection * t;
-	return true;
-}
 
 bool KMousePicker::IntersectTriangle(const KVector3& orig, const KVector3& dir, KVector3& v0, KVector3& v1, KVector3& v2, FLOAT* t, FLOAT* u, FLOAT* v)
 {
@@ -96,33 +52,45 @@ bool KMousePicker::IntersectTriangle(const KVector3& orig, const KVector3& dir, 
 	return true;
 }
 
-bool KMousePicker::Map_HeightControl(KNode* pNode, KVector3& v0, KVector3& v1, KVector3& v2, DWORD i0, DWORD i1, DWORD i2, float HeightScale, float BrushSize)
+bool KMousePicker::Map_HeightControl(float HeightScale, float BrushSize)
 {
 #pragma region 맵 지형 높낮이
 
-	//pNode->m_VertexList[i0].pos = KVector3(v0.x, v0.y + HeightScale * g_fSecPerFrame, v0.z);
-	//pNode->m_VertexList[i1].pos = KVector3(v1.x, v1.y + HeightScale * g_fSecPerFrame, v1.z);
-	//pNode->m_VertexList[i2].pos = KVector3(v2.x, v2.y + HeightScale * g_fSecPerFrame, v2.z);
-
-	//브러쉬 사이즈 만큼 근처 이웃노드까지 높여줌
-	/*for (int size = 0; size < BrushSize/5; size++)
+	//브러쉬 박스 안에 있는 노드 검출, Rect to Rect 으로 검출함
+	for (int i = 0; i < m_pSpace->m_pDrawableLeafList.size(); i++)
 	{
-		pNode->m_pNeighborlist[]
-	}*/
-	for (int i = 1; i < 20; i++)
-	{
-		if (i == 5 || i == 10 || i == 15)
+		KNode* pNode = m_pSpace->m_pDrawableLeafList[i];
+		KRect node_Rect = KRect(KVector2(pNode->m_node_box.min.x, pNode->m_node_box.min.z), KVector2(pNode->m_node_box.max.x, pNode->m_node_box.max.z));
+		KRect brush_Rect = KRect(KVector2(m_Sel_Box.min.x, m_Sel_Box.min.z), KVector2(m_Sel_Box.max.x, m_Sel_Box.max.z));
+		int result = KCollision::RectToRect(brush_Rect, node_Rect);
+		// 0 :  떨어져 있다.
+		// 1 :  중간만 걸쳐 있다.
+		// 2 :  완전 안에 들어가있다.	
+		if (result == 0)
+		{
+			//포함되지 않는 노드
 			continue;
-		KVector3 pos = pNode->m_VertexList[i].pos;
-		pNode->m_VertexList[i].pos = KVector3(pos.x, pos.y + HeightScale * g_fSecPerFrame, pos.z);
-		pNode->m_node_box.min = KVector3();
+		}
+		else if (result == 1)
+		{
+
+		}
+		else
+		{
+			for (int i = 1; i < 20; i++)
+			{
+				if (i == 5 || i == 10 || i == 15)
+					continue;
+				KVector3 pos = pNode->m_VertexList[i].pos;
+				float newHeight = pos.y + HeightScale * g_fSecPerFrame;
+				pNode->m_VertexList[i].pos = KVector3(pos.x, newHeight, pos.z);
+				pNode->m_node_box = KBox(KVector3(pNode->m_node_box.min.x, pNode->m_node_box.min.y, pNode->m_node_box.min.z),
+					KVector3(pNode->m_node_box.max.x, newHeight, pNode->m_node_box.max.z)); 
+			}
+			Map_HeightControl_MakeSameHeight(pNode);
+
+		}
 	}
-
-	Map_HeightControl_MakeSameHeight(pNode);
-
-	m_pContext->UpdateSubresource(
-		pNode->m_pVertexBuffer.Get(), 0, NULL,
-		&pNode->m_VertexList.at(0), 0, 0);
 	return true;
 #pragma endregion
 }
@@ -208,6 +176,9 @@ bool KMousePicker::Map_HeightControl_MakeSameHeight(KNode* pNode)
 				&pNode->m_pNeighborlist[iNei]->m_VertexList.at(0), 0, 0);
 		}
 	}
+	m_pContext->UpdateSubresource(
+		pNode->m_pVertexBuffer.Get(), 0, NULL,
+		&pNode->m_VertexList.at(0), 0, 0);
 	return true;
 }
 bool KMousePicker::Init(ID3D11DeviceContext* pContext, KMapSpace* pSpace, KCamera* pCam)
@@ -215,8 +186,9 @@ bool KMousePicker::Init(ID3D11DeviceContext* pContext, KMapSpace* pSpace, KCamer
 	m_pContext = pContext;
 	m_pSpace = pSpace;
 	m_pCamera = pCam;
-
-	m_Sel_Box = KBox(KVector3(-m_Sel_Brush_Size, -5, -m_Sel_Brush_Size), KVector3(m_Sel_Brush_Size, 5, m_Sel_Brush_Size));
+	m_vIntersect = KVector3(0, -20, 0);
+	m_Sel_Box = KBox(KVector3(-m_Sel_Brush_Size + m_vIntersect.x, -1 * (m_Sel_Brush_Size * 2), -m_Sel_Brush_Size + m_vIntersect.z),
+		KVector3(m_Sel_Brush_Size + m_vIntersect.x, m_vIntersect.y + 5, m_Sel_Brush_Size + m_vIntersect.z));
 	m_Sel_Box.Axis[0] = KVector3(1, 0, 0);
 	m_Sel_Box.Axis[1] = KVector3(0, 1, 0);
 	m_Sel_Box.Axis[2] = KVector3(0, 0, 1);
@@ -284,50 +256,47 @@ bool KMousePicker::Frame()
 
 				//2번 교점
 				float t, u, v;
-				if (GetIntersect(ray.position, ray.direction, pNode->m_node_box.middle, ))
+			
+				if (IntersectTriangle(ray.position, ray.direction,
+					v0, v1, v2, &t, &u, &v))
 				{
+					m_vIntersect = ray.position + ray.direction * t;
+ 					
+					if (g_InputData.bMouseState[0] && !m_bImgui)
+					{
+						switch (m_iState)
+						{
+						case 0: {
 
+						}break;
+						case 1: {
+							Map_HeightControl(m_Sel_Brush_Strenght, m_Sel_Brush_Size);
+						}break;
+						case 2: {
+
+						}break;
+						default:
+							break;
+						}
+
+					}
 				}
-				//if (IntersectTriangle(ray.position, ray.direction,
-				//	v0, v1, v2, &t, &u, &v))
-				//{
-				//	m_vIntersect = ray.position + ray.direction * t;
-				////마우스 클릭 시
- 	
-				//	if (g_InputData.bMouseState[0])
-				//	{
-				//		switch (m_iState)
-				//		{
-				//		case 0: {
-
-				//		}break;
-				//		case 1: {
-				//			Map_HeightControl(pNode, v0, v1, v2, i0, i1, i2, m_Sel_Brush_Strenght, m_Sel_Brush_Size);
-				//		}break;
-				//		case 2: {
-
-				//		}break;
-				//		default:
-				//			break;
-				//		}
-
-				//	}
-				//}
-				//
+				
 			}
 		}
 	}
-	
-	m_Sel_Box.min = KVector3(-m_Sel_Brush_Size, -1*(m_Sel_Brush_Size *2), -m_Sel_Brush_Size);
-	m_Sel_Box.max = KVector3(m_Sel_Brush_Size, 5, m_Sel_Brush_Size);
+	m_Sel_Box = KBox(KVector3(-m_Sel_Brush_Size + m_vIntersect.x, -1 * (m_Sel_Brush_Size * 2), -m_Sel_Brush_Size + m_vIntersect.z),
+		KVector3(m_Sel_Brush_Size + m_vIntersect.x, m_vIntersect.y + 5, m_Sel_Brush_Size + m_vIntersect.z));
+
+	//m_bImgui = false;
 	return true;
 }
 
 bool KMousePicker::Render(ID3D11DeviceContext* pContext)
 {
-	m_Sel_BoxRender.m_RenderBox.m_matWorld._41 = m_vIntersect.x;
-	m_Sel_BoxRender.m_RenderBox.m_matWorld._42 = m_vIntersect.y;
-	m_Sel_BoxRender.m_RenderBox.m_matWorld._43 = m_vIntersect.z;
+	//m_Sel_BoxRender.m_RenderBox.m_matWorld._41 = m_vIntersect.x;
+	//m_Sel_BoxRender.m_RenderBox.m_matWorld._42 = m_vIntersect.y;
+	//m_Sel_BoxRender.m_RenderBox.m_matWorld._43 = m_vIntersect.z;
 	if (g_InputData.bMouseState[0])
 	{
 		m_Sel_BoxRender.DrawDebugRender(&m_Sel_Box, pContext, KVector4(0.5f, 0, 0.5f, 0.3f));
